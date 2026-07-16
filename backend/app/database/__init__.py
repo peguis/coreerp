@@ -1,4 +1,4 @@
 from .database import Base
-from .database import SessionLocal
-from .database import engine
-from .database import get_db
+from .connection import SessionLocal
+from .connection import engine
+from .connection import get_db

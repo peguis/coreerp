@@ -8,5 +8,4 @@ class Settings(BaseSettings):
         "postgresql+psycopg://postgres:postgres@localhost:5432/coreerp"
     )
 
-
 settings = Settings()
