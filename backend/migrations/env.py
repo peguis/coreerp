@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.database.database import Base
-from app.models import Empresa
+from app.models import Empresa, Usuario
 
 from app.core.config import settings
 

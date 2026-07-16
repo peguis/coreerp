@@ -3,9 +3,11 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     APP_NAME: str = "CoreERP API"
+    APP_VERSION: str = "0.1.0"
 
     DATABASE_URL: str = (
         "postgresql+psycopg://postgres:postgres@localhost:5432/coreerp"
     )
+
 
 settings = Settings()

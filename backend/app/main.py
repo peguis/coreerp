@@ -5,6 +5,8 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.middleware.error_handler import generic_exception_handler
 
+from app.api.router import router
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
@@ -28,6 +30,8 @@ app.add_middleware(
 )
 
 logger.info("CoreERP iniciado com sucesso.")
+
+app.include_router(router)
 
 @app.get("/")
 def home():
