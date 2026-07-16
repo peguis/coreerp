@@ -1,0 +1,71 @@
+2026-07-15 23:12:00,179 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:13:08,099 | INFO | coreerp | Rota raiz acessada.
+2026-07-15 23:14:45,619 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:15:16,727 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:16:03,428 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:17:07,499 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:18:19,562 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:18:26,005 | ERROR | coreerp | division by zero
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1266, in handle
+    await super().handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\main.py", line 16, in erro
+    x = 10 / 0
+        ~~~^~~
+ZeroDivisionError: division by zero
+2026-07-15 23:18:54,548 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:20:16,523 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:24:42,340 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:27:41,756 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:27:58,463 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:30:45,849 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-15 23:31:03,868 | INFO | coreerp | CoreERP iniciado com sucesso.

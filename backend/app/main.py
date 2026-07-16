@@ -1,0 +1,37 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.core.config import settings
+from app.core.logging import logger
+from app.middleware.error_handler import generic_exception_handler
+
+app = FastAPI(
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
+)
+
+app.add_exception_handler(
+    Exception,
+    generic_exception_handler,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+logger.info("CoreERP iniciado com sucesso.")
+
+@app.get("/")
+def home():
+    logger.info("Rota raiz acessada.")
+    return {
+        "mensagem": f"{settings.APP_NAME} API online!"
+    }
