@@ -32,16 +32,23 @@ def criar_cliente_endpoint(
 ):
     return criar_cliente_service(
         db,
-        cliente
+        cliente,
+        usuario
     )
 
 
-@router.get("/")
+@router.get(
+    "/",
+    response_model=list[ClienteResponse]
+)
 def listar_clientes_endpoint(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
-    return listar_clientes_service(db)
+    return listar_clientes_service(
+        db,
+        usuario
+    )
 
 
 @router.get(
@@ -53,9 +60,11 @@ def buscar_cliente(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
+
     cliente = buscar_cliente_service(
         db,
-        cliente_id
+        cliente_id,
+        usuario
     )
 
     if not cliente:
@@ -74,10 +83,12 @@ def editar_cliente(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
+
     cliente = atualizar_cliente_service(
         db,
         cliente_id,
-        dados
+        dados,
+        usuario
     )
 
     if not cliente:
@@ -95,9 +106,11 @@ def remover_cliente(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
+
     sucesso = deletar_cliente_service(
         db,
-        cliente_id
+        cliente_id,
+        usuario
     )
 
     if not sucesso:

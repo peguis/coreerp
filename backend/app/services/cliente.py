@@ -1,5 +1,3 @@
-from sqlalchemy.orm import Session
-
 from app.repositories.cliente import (
     criar_cliente,
     listar_clientes,
@@ -10,37 +8,50 @@ from app.repositories.cliente import (
 
 
 def criar_cliente_service(
-    db: Session,
-    cliente
+    db,
+    cliente,
+    usuario
 ):
+
     return criar_cliente(
         db,
-        cliente
+        cliente,
+        usuario.empresa_id
     )
 
 
-def listar_clientes_service(db):
-    return listar_clientes(db)
+def listar_clientes_service(
+    db,
+    usuario
+):
+    return listar_clientes(
+        db,
+        usuario.empresa_id
+    )
 
 
 def buscar_cliente_service(
     db,
-    cliente_id
+    cliente_id,
+    usuario
 ):
     return buscar_cliente_por_id(
         db,
-        cliente_id
+        cliente_id,
+        usuario.empresa_id
     )
 
 
 def atualizar_cliente_service(
     db,
     cliente_id,
-    dados
+    dados,
+    usuario
 ):
     cliente = buscar_cliente_por_id(
         db,
-        cliente_id
+        cliente_id,
+        usuario.empresa_id
     )
 
     if not cliente:
@@ -55,11 +66,13 @@ def atualizar_cliente_service(
 
 def deletar_cliente_service(
     db,
-    cliente_id
+    cliente_id,
+    usuario
 ):
     cliente = buscar_cliente_por_id(
         db,
-        cliente_id
+        cliente_id,
+        usuario.empresa_id
     )
 
     if not cliente:

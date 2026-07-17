@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.empresa import Empresa
 from app.schemas.empresa import EmpresaCreate, EmpresaResponse
+
 from app.services.empresa import (
     criar_empresa_service,
     listar_empresas_service,
@@ -11,7 +12,8 @@ from app.services.empresa import (
     atualizar_empresa_service,
     deletar_empresa_service,
 )
-from fastapi import HTTPException
+
+from app.auth.dependencies import get_current_user
 
 
 router = APIRouter(
@@ -26,9 +28,10 @@ router = APIRouter(
 )
 def criar_empresa_api(
     empresa: EmpresaCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
-    return criar_empresa(
+    return criar_empresa_service(
         db,
         empresa
     )
@@ -38,29 +41,23 @@ def criar_empresa_api(
     "/",
     response_model=list[EmpresaResponse]
 )
-def listar_empresas(
-    db: Session = Depends(get_db)
-):
-    return db.query(Empresa).all()
-
-@router.get("/")
-def listar_empresas_endpoint(
-    db: Session = Depends(get_db)
+def listar_empresas_api(
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
     return listar_empresas_service(db)
 
-from app.services.empresa import (
-    criar_empresa_service,
-    listar_empresas_service,
-    buscar_empresa_por_id_service
-)
 
 @router.get("/{empresa_id}")
 def buscar_empresa(
     empresa_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
-    empresa = buscar_empresa_por_id_service(db, empresa_id)
+    empresa = buscar_empresa_por_id_service(
+        db,
+        empresa_id
+    )
 
     if not empresa:
         raise HTTPException(
@@ -70,13 +67,18 @@ def buscar_empresa(
 
     return empresa
 
+
 @router.put("/{empresa_id}")
 def atualizar_empresa(
     empresa_id: int,
     empresa: EmpresaCreate,
     db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
-    empresa_db = buscar_empresa_por_id_service(db, empresa_id)
+    empresa_db = buscar_empresa_por_id_service(
+        db,
+        empresa_id
+    )
 
     if not empresa_db:
         raise HTTPException(
@@ -90,17 +92,22 @@ def atualizar_empresa(
         empresa
     )
 
+
 @router.delete("/{empresa_id}")
 def deletar_empresa(
     empresa_id: int,
     db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
-    empresa_db = buscar_empresa_por_id_service(db, empresa_id)
+    empresa_db = buscar_empresa_por_id_service(
+        db,
+        empresa_id
+    )
 
     if not empresa_db:
         raise HTTPException(
-            status_code=404,
-            detail="Empresa não encontrada"
+        status_code=404,
+        detail="Empresa não encontrada"
         )
 
     deletar_empresa_service(
@@ -111,4 +118,3 @@ def deletar_empresa(
     return {
         "mensagem": "Empresa removida com sucesso"
     }
-

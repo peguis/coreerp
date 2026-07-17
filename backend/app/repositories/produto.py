@@ -6,12 +6,15 @@ from app.schemas.produto import ProdutoCreate
 
 def criar_produto(
     db: Session,
-    produto: ProdutoCreate
+    produto: ProdutoCreate,
+    empresa_id: int
 ):
+
     novo_produto = Produto(
         nome=produto.nome,
         preco=produto.preco,
-        estoque=produto.estoque
+        estoque=produto.estoque,
+        empresa_id=empresa_id
     )
 
     db.add(novo_produto)
@@ -21,16 +24,23 @@ def criar_produto(
     return novo_produto
 
 
-def listar_produtos(db: Session):
-    return db.query(Produto).all()
+def listar_produtos(
+    db: Session,
+    empresa_id: int
+):
+    return db.query(Produto).filter(
+        Produto.empresa_id == empresa_id
+    ).all()
 
 
 def buscar_produto_por_id(
     db: Session,
-    produto_id: int
+    produto_id: int,
+    empresa_id: int
 ):
     return db.query(Produto).filter(
-        Produto.id == produto_id
+        Produto.id == produto_id,
+        Produto.empresa_id == empresa_id
     ).first()
 
 

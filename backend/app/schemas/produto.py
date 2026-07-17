@@ -9,6 +9,7 @@ class ProdutoCreate(BaseModel):
 
 class ProdutoResponse(BaseModel):
     id: int
+    empresa_id: int
     nome: str
     preco: float
     estoque: int

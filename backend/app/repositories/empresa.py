@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.empresa import Empresa
 from app.schemas.empresa import EmpresaCreate
-
+from sqlalchemy.orm import joinedload
 
 def criar_empresa(
     db: Session,
@@ -25,7 +25,12 @@ def listar_empresas(db: Session):
     return db.query(Empresa).all()
 
 def buscar_empresa_por_id(db: Session, empresa_id: int):
-    return db.query(Empresa).filter(Empresa.id == empresa_id).first()
+    return (
+    db.query(Empresa)
+    .options(joinedload(Empresa.usuarios))
+    .filter(Empresa.id == empresa_id)
+    .first()
+    )
 
 def atualizar_empresa(db: Session, empresa_db, empresa_dados):
     dados = empresa_dados.model_dump()

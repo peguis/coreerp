@@ -1,5 +1,3 @@
-from sqlalchemy.orm import Session
-
 from app.repositories.produto import (
     criar_produto,
     listar_produtos,
@@ -7,37 +5,55 @@ from app.repositories.produto import (
     atualizar_produto,
     deletar_produto
 )
+from app.models.produto import Produto
+
 
 
 def criar_produto_service(
-    db: Session,
-    produto
+    db,
+    produto,
+    usuario
 ):
-    return criar_produto(db, produto)
+
+    return criar_produto(
+        db,
+        produto,
+        usuario.empresa_id
+    )
 
 
-def listar_produtos_service(db):
-    return listar_produtos(db)
+def listar_produtos_service(
+    db,
+    usuario
+):
+    return listar_produtos(
+        db,
+        usuario.empresa_id
+    )
 
 
 def buscar_produto_service(
     db,
-    produto_id
+    produto_id,
+    usuario
 ):
     return buscar_produto_por_id(
         db,
-        produto_id
+        produto_id,
+        usuario.empresa_id
     )
 
 
 def atualizar_produto_service(
     db,
     produto_id,
-    dados
+    dados,
+    usuario
 ):
     produto = buscar_produto_por_id(
         db,
-        produto_id
+        produto_id,
+        usuario.empresa_id
     )
 
     if not produto:
@@ -52,11 +68,13 @@ def atualizar_produto_service(
 
 def deletar_produto_service(
     db,
-    produto_id
+    produto_id,
+    usuario
 ):
     produto = buscar_produto_por_id(
         db,
-        produto_id
+        produto_id,
+        usuario.empresa_id
     )
 
     if not produto:

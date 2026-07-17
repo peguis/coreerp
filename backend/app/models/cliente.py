@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy.sql import func
+
 from app.database import Base
 
 
@@ -11,15 +13,25 @@ class Cliente(Base):
         primary_key=True
     )
 
+    empresa_id = Column(
+        Integer,
+        ForeignKey("empresas.id"),
+        nullable=False
+    )
+
     nome = Column(
         String,
         nullable=False
     )
 
+    cpf_cnpj = Column(
+        String,
+        nullable=True
+    )
+
     email = Column(
         String,
-        unique=True,
-        nullable=False
+        nullable=True
     )
 
     telefone = Column(
@@ -30,4 +42,9 @@ class Cliente(Base):
     ativo = Column(
         Boolean,
         default=True
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
     )

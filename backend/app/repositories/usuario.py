@@ -10,9 +10,10 @@ def criar_usuario(
     usuario: UsuarioCreate
 ):
     novo_usuario = Usuario(
-        nome=usuario.nome,
-        email=usuario.email,
-        senha=gerar_hash(usuario.senha)
+    nome=usuario.nome,
+    email=usuario.email,
+    senha=gerar_hash(usuario.senha),
+    empresa_id=usuario.empresa_id
     )
 
     db.add(novo_usuario)

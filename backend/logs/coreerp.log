@@ -3141,3 +3141,1658 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-07-17 00:50:19,639 | INFO | coreerp | CoreERP iniciado com sucesso.
 2026-07-17 00:51:48,879 | INFO | coreerp | CoreERP iniciado com sucesso.
 2026-07-17 00:52:06,716 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:52:11,922 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:02:04,673 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:03:16,715 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:04:24,999 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:04:40,303 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:04:45,242 | ERROR | coreerp | (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 112, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 55, in login_service
+    usuario = buscar_por_email(
+        db,
+        dados.username
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 56, in buscar_por_email
+    .first()
+     ~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-17 01:04:48,490 | ERROR | coreerp | (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 112, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 55, in login_service
+    usuario = buscar_por_email(
+        db,
+        dados.username
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 56, in buscar_por_email
+    .first()
+     ~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-17 01:04:55,790 | ERROR | coreerp | (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 112, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 55, in login_service
+    usuario = buscar_por_email(
+        db,
+        dados.username
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 56, in buscar_por_email
+    .first()
+     ~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-17 01:05:14,426 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:05:14,635 | ERROR | coreerp | (psycopg.errors.UndefinedColumn) coluna "empresa_id" da relação "usuarios" não existe
+LINE 1: INSERT INTO usuarios (empresa_id, nome, email, senha, ativo,...
+                              ^
+[SQL: INSERT INTO usuarios (empresa_id, nome, email, senha, ativo, created_at) VALUES (%(empresa_id)s::INTEGER, %(nome)s::VARCHAR, %(email)s::VARCHAR, %(senha)s::VARCHAR, %(ativo)s, %(created_at)s::TIMESTAMP WITHOUT TIME ZONE) RETURNING usuarios.id]
+[parameters: {'empresa_id': 1, 'nome': 'Usuario Empresa', 'email': 'usuario@empresa.com', 'senha': '$2b$12$2kw0mFHuIoQcP8xd0SLQHeIAg125ehmuXIWmtqJB6edISvfugc5eu', 'ativo': True, 'created_at': datetime.datetime(2026, 7, 17, 4, 5, 14, 634720)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: coluna "empresa_id" da relação "usuarios" não existe
+LINE 1: INSERT INTO usuarios (empresa_id, nome, email, senha, ativo,...
+                              ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 33, in criar_usuario
+    return criar_usuario_service(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 22, in criar_usuario_service
+    return criar_usuario(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 20, in criar_usuario
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2035, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1316, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1290, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 465, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 94, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1234, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) coluna "empresa_id" da relação "usuarios" não existe
+LINE 1: INSERT INTO usuarios (empresa_id, nome, email, senha, ativo,...
+                              ^
+[SQL: INSERT INTO usuarios (empresa_id, nome, email, senha, ativo, created_at) VALUES (%(empresa_id)s::INTEGER, %(nome)s::VARCHAR, %(email)s::VARCHAR, %(senha)s::VARCHAR, %(ativo)s, %(created_at)s::TIMESTAMP WITHOUT TIME ZONE) RETURNING usuarios.id]
+[parameters: {'empresa_id': 1, 'nome': 'Usuario Empresa', 'email': 'usuario@empresa.com', 'senha': '$2b$12$2kw0mFHuIoQcP8xd0SLQHeIAg125ehmuXIWmtqJB6edISvfugc5eu', 'ativo': True, 'created_at': datetime.datetime(2026, 7, 17, 4, 5, 14, 634720)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-17 01:07:04,368 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:07:09,387 | ERROR | coreerp | (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 112, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 55, in login_service
+    usuario = buscar_por_email(
+        db,
+        dados.username
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 56, in buscar_por_email
+    .first()
+     ~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) coluna usuarios.empresa_id não existe
+LINE 1: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS us...
+                                           ^
+[SQL: SELECT usuarios.id AS usuarios_id, usuarios.empresa_id AS usuarios_empresa_id, usuarios.nome AS usuarios_nome, usuarios.email AS usuarios_email, usuarios.senha AS usuarios_senha, usuarios.ativo AS usuarios_ativo, usuarios.created_at AS usuarios_created_at 
+FROM usuarios 
+WHERE usuarios.email = %(email_1)s::VARCHAR 
+ LIMIT %(param_1)s::INTEGER]
+[parameters: {'email_1': 'pedro@test.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-17 01:11:27,083 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:11:32,241 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:12:27,012 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:12:39,422 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:13:38,704 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:15:13,641 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:16:11,891 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:16:56,364 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:17:23,610 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:18:05,227 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:18:40,612 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:19:14,010 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:22:55,285 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:23:50,431 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:24:08,565 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:24:14,013 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:27:23,831 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:27:26,636 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:27:31,736 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:45:11,466 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:45:36,657 | ERROR | coreerp | name 'criar_empresa' is not defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\empresa.py", line 31, in criar_empresa_api
+    return criar_empresa(
+           ^^^^^^^^^^^^^
+NameError: name 'criar_empresa' is not defined. Did you mean: 'criar_empresa_api'?
+2026-07-17 01:46:03,786 | ERROR | coreerp | name 'criar_empresa' is not defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\empresa.py", line 31, in criar_empresa_api
+    return criar_empresa(
+           ^^^^^^^^^^^^^
+NameError: name 'criar_empresa' is not defined. Did you mean: 'criar_empresa_api'?
+2026-07-17 01:46:21,139 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:46:43,767 | ERROR | coreerp | name 'criar_empresa' is not defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\empresa.py", line 31, in criar_empresa_api
+    return criar_empresa(
+           ^^^^^^^^^^^^^
+NameError: name 'criar_empresa' is not defined. Did you mean: 'criar_empresa_api'?
+2026-07-17 01:48:26,941 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:48:38,644 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:49:23,682 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 01:56:31,927 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:56:36,446 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 01:56:43,208 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 02:04:24,163 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:05:04,743 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:06:48,794 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:07:40,538 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:10:01,648 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:10:57,572 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:11:16,494 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:12:52,818 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:13:45,782 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:14:31,399 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:15:14,079 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:20:41,642 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:21:40,791 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:27:24,203 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:33:04,408 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:34:35,378 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:35:24,279 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:36:26,282 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:37:32,649 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:38:40,163 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:43:01,396 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:44:01,845 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:46:06,599 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:46:22,045 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:46:34,861 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:47:57,293 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:48:19,730 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:48:22,458 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:49:04,454 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:54:16,301 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 02:54:33,362 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 02:54:46,945 | ERROR | coreerp | (psycopg.errors.UndefinedTable) relação "produtos" não existe
+LINE 1: INSERT INTO produtos (empresa_id, nome, preco, estoque, ativ...
+                    ^
+[SQL: INSERT INTO produtos (empresa_id, nome, preco, estoque, ativo) VALUES (%(empresa_id)s::INTEGER, %(nome)s::VARCHAR, %(preco)s, %(estoque)s::INTEGER, %(ativo)s) RETURNING produtos.id]
+[parameters: {'empresa_id': 1, 'nome': 'Notebook Dell', 'preco': 3500.0, 'estoque': 5, 'ativo': True}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedTable: relação "produtos" não existe
+LINE 1: INSERT INTO produtos (empresa_id, nome, preco, estoque, ativ...
+                    ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\produto.py", line 33, in criar_produto_endpoint
+    return criar_produto_service(
+        db,
+        produto,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\produto.py", line 18, in criar_produto_service
+    return criar_produto(
+        db,
+        produto,
+        usuario.empresa_id
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\produto.py", line 21, in criar_produto
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2035, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1316, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1290, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 465, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 94, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1234, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedTable) relação "produtos" não existe
+LINE 1: INSERT INTO produtos (empresa_id, nome, preco, estoque, ativ...
+                    ^
+[SQL: INSERT INTO produtos (empresa_id, nome, preco, estoque, ativo) VALUES (%(empresa_id)s::INTEGER, %(nome)s::VARCHAR, %(preco)s, %(estoque)s::INTEGER, %(ativo)s) RETURNING produtos.id]
+[parameters: {'empresa_id': 1, 'nome': 'Notebook Dell', 'preco': 3500.0, 'estoque': 5, 'ativo': True}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-07-17 03:00:18,453 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:02:02,243 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:02:15,312 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 03:07:15,665 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:07:32,491 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:15:56,997 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:17:13,144 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:20:44,754 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:21:02,906 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 03:21:14,474 | ERROR | coreerp | criar_cliente_service() missing 1 required positional argument: 'usuario'
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\cliente.py", line 33, in criar_cliente_endpoint
+    return criar_cliente_service(
+        db,
+        cliente
+    )
+TypeError: criar_cliente_service() missing 1 required positional argument: 'usuario'
+2026-07-17 03:22:37,029 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:23:48,850 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 03:23:56,480 | INFO | coreerp | CoreERP iniciado com sucesso.

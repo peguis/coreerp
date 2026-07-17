@@ -1,5 +1,7 @@
-from pydantic import BaseModel
+from datetime import datetime
 
+from pydantic import BaseModel
+from app.schemas.usuario import UsuarioResponse
 
 class EmpresaCreate(BaseModel):
     nome: str
@@ -15,6 +17,9 @@ class EmpresaResponse(BaseModel):
     email: str
     telefone: str
     ativo: bool
+    created_at: datetime | None
+    usuarios: list[UsuarioResponse] = []
+
 
     class Config:
         from_attributes = True

@@ -1,15 +1,35 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from datetime import datetime
 
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
+
 from app.database import Base
-from datetime import datetime
+
 
 class Usuario(Base):
     __tablename__ = "usuarios"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(
+        Integer,
+        primary_key=True
+    )
 
-    nome = Column(String, nullable=False)
+    empresa_id = Column(
+        Integer,
+        ForeignKey("empresas.id"),
+        nullable=False,
+        index=True
+    )
+
+    empresa = relationship(
+        "Empresa",
+        back_populates="usuarios"
+    )
+
+    nome = Column(
+        String,
+        nullable=False
+    )
 
     email = Column(
         String,
@@ -31,8 +51,3 @@ class Usuario(Base):
         DateTime,
         default=datetime.utcnow
     )
-
-created_at = Column(
-    DateTime,
-    default=datetime.utcnow
-)

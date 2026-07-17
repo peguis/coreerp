@@ -32,16 +32,23 @@ def criar_produto_endpoint(
 ):
     return criar_produto_service(
         db,
-        produto
+        produto,
+        usuario
     )
 
 
-@router.get("/")
+@router.get(
+    "/",
+    response_model=list[ProdutoResponse]
+)
 def listar_produtos_endpoint(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
-    return listar_produtos_service(db)
+    return listar_produtos_service(
+        db,
+        usuario
+    )
 
 
 @router.get(
@@ -50,11 +57,14 @@ def listar_produtos_endpoint(
 )
 def buscar_produto(
     produto_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
+
     produto = buscar_produto_service(
         db,
-        produto_id
+        produto_id,
+        usuario
     )
 
     if not produto:
@@ -64,19 +74,24 @@ def buscar_produto(
         )
 
     return produto
+
 
 
 @router.put("/{produto_id}")
 def editar_produto(
     produto_id: int,
     dados: dict,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
+
     produto = atualizar_produto_service(
         db,
         produto_id,
-        dados
+        dados,
+        usuario
     )
+
 
     if not produto:
         raise HTTPException(
@@ -87,14 +102,18 @@ def editar_produto(
     return produto
 
 
+
 @router.delete("/{produto_id}")
 def remover_produto(
     produto_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user)
 ):
+
     sucesso = deletar_produto_service(
         db,
-        produto_id
+        produto_id,
+        usuario
     )
 
     if not sucesso:

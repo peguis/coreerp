@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
+
 from app.database import Base
 
 
@@ -9,6 +10,12 @@ class Produto(Base):
     id = Column(
         Integer,
         primary_key=True
+    )
+
+    empresa_id = Column(
+        Integer,
+        ForeignKey("empresas.id"),
+        nullable=False
     )
 
     nome = Column(

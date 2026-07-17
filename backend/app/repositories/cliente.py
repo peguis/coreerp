@@ -6,12 +6,15 @@ from app.schemas.cliente import ClienteCreate
 
 def criar_cliente(
     db: Session,
-    cliente: ClienteCreate
+    cliente: ClienteCreate,
+    empresa_id: int
 ):
+
     novo_cliente = Cliente(
         nome=cliente.nome,
         email=cliente.email,
-        telefone=cliente.telefone
+        telefone=cliente.telefone,
+        empresa_id=empresa_id
     )
 
     db.add(novo_cliente)
@@ -21,16 +24,23 @@ def criar_cliente(
     return novo_cliente
 
 
-def listar_clientes(db: Session):
-    return db.query(Cliente).all()
+def listar_clientes(
+    db: Session,
+    empresa_id: int
+):
+    return db.query(Cliente).filter(
+        Cliente.empresa_id == empresa_id
+    ).all()
 
 
 def buscar_cliente_por_id(
     db: Session,
-    cliente_id: int
+    cliente_id: int,
+    empresa_id: int
 ):
     return db.query(Cliente).filter(
-        Cliente.id == cliente_id
+        Cliente.id == cliente_id,
+        Cliente.empresa_id == empresa_id
     ).first()
 
 
@@ -39,6 +49,7 @@ def atualizar_cliente(
     cliente_db,
     dados
 ):
+
     for campo, valor in dados.items():
         setattr(cliente_db, campo, valor)
 

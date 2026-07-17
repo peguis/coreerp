@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import String, Boolean, DateTime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
 
@@ -44,4 +44,9 @@ class Empresa(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow
+    )
+
+    usuarios: Mapped[list["Usuario"]] = relationship(
+        "Usuario",
+        back_populates="empresa"
     )
