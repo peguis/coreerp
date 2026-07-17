@@ -1,20 +1,18 @@
-from datetime import datetime
-
 from pydantic import BaseModel, EmailStr
 
 
-class UsuarioCreate(BaseModel):
+class ClienteCreate(BaseModel):
     nome: str
     email: EmailStr
-    senha: str
+    telefone: str | None = None
 
 
-class UsuarioResponse(BaseModel):
+class ClienteResponse(BaseModel):
     id: int
     nome: str
     email: EmailStr
+    telefone: str | None
     ativo: bool
-    created_at: datetime | None
 
     class Config:
         from_attributes = True

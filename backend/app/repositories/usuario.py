@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.usuario import Usuario
 from app.schemas.usuario import UsuarioCreate
+from app.auth.hash import gerar_hash
 
 
 def criar_usuario(
@@ -11,7 +12,7 @@ def criar_usuario(
     novo_usuario = Usuario(
         nome=usuario.nome,
         email=usuario.email,
-        senha=usuario.senha
+        senha=gerar_hash(usuario.senha)
     )
 
     db.add(novo_usuario)
@@ -42,3 +43,14 @@ def atualizar_usuario(db: Session, usuario_db, dados):
 def deletar_usuario(db: Session, usuario_db):
     db.delete(usuario_db)
     db.commit()
+    
+
+def buscar_por_email(db, email):
+
+    return (
+        db.query(Usuario)
+        .filter(
+            Usuario.email == email
+        )
+        .first()
+    )

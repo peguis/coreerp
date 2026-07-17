@@ -1175,3 +1175,1969 @@ DETAIL:  Chave (email)=(pedro@email.com) já existe.
 2026-07-16 03:12:34,425 | INFO | coreerp | CoreERP iniciado com sucesso.
 2026-07-16 03:12:49,462 | INFO | coreerp | CoreERP iniciado com sucesso.
 2026-07-16 03:13:47,794 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:27:09,220 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:27:16,036 | ERROR | coreerp | `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 64, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 61, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1110, in openapi
+    schema = self.openapi()
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1086, in openapi
+    self.openapi_schema = get_openapi(
+                          ~~~~~~~~~~~^
+        title=self.title,
+        ^^^^^^^^^^^^^^^^^
+    ...<12 lines>...
+        external_docs=self.openapi_external_docs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\openapi\utils.py", line 561, in get_openapi
+    field_mapping, definitions = get_definitions(
+                                 ~~~~~~~~~~~~~~~^
+        fields=all_fields,
+        ^^^^^^^^^^^^^^^^^^
+        model_name_map=model_name_map,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        separate_input_output_schemas=separate_input_output_schemas,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\_compat\v2.py", line 336, in get_definitions
+    field_mapping, definitions = schema_generator.generate_definitions(inputs=inputs)
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 386, in generate_definitions
+    self.generate_inner(schema)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 466, in generate_inner
+    if 'ref' in schema:
+       ^^^^^^^^^^^^^^^
+  File "<frozen _collections_abc>", line 801, in __contains__
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 41, in __getitem__
+    return self._get_built().__getitem__(key)
+           ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 58, in _get_built
+    raise PydanticUserError(self._error_message, code=self._code)
+pydantic.errors.PydanticUserError: `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+2026-07-16 03:27:25,454 | ERROR | coreerp | `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 64, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 61, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1110, in openapi
+    schema = self.openapi()
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1086, in openapi
+    self.openapi_schema = get_openapi(
+                          ~~~~~~~~~~~^
+        title=self.title,
+        ^^^^^^^^^^^^^^^^^
+    ...<12 lines>...
+        external_docs=self.openapi_external_docs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\openapi\utils.py", line 561, in get_openapi
+    field_mapping, definitions = get_definitions(
+                                 ~~~~~~~~~~~~~~~^
+        fields=all_fields,
+        ^^^^^^^^^^^^^^^^^^
+        model_name_map=model_name_map,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        separate_input_output_schemas=separate_input_output_schemas,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\_compat\v2.py", line 336, in get_definitions
+    field_mapping, definitions = schema_generator.generate_definitions(inputs=inputs)
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 386, in generate_definitions
+    self.generate_inner(schema)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 466, in generate_inner
+    if 'ref' in schema:
+       ^^^^^^^^^^^^^^^
+  File "<frozen _collections_abc>", line 801, in __contains__
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 41, in __getitem__
+    return self._get_built().__getitem__(key)
+           ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 58, in _get_built
+    raise PydanticUserError(self._error_message, code=self._code)
+pydantic.errors.PydanticUserError: `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x0000018A2F574250>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+2026-07-16 03:28:24,872 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:28:31,398 | ERROR | coreerp | `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 64, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 61, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1110, in openapi
+    schema = self.openapi()
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1086, in openapi
+    self.openapi_schema = get_openapi(
+                          ~~~~~~~~~~~^
+        title=self.title,
+        ^^^^^^^^^^^^^^^^^
+    ...<12 lines>...
+        external_docs=self.openapi_external_docs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\openapi\utils.py", line 561, in get_openapi
+    field_mapping, definitions = get_definitions(
+                                 ~~~~~~~~~~~~~~~^
+        fields=all_fields,
+        ^^^^^^^^^^^^^^^^^^
+        model_name_map=model_name_map,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        separate_input_output_schemas=separate_input_output_schemas,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\_compat\v2.py", line 336, in get_definitions
+    field_mapping, definitions = schema_generator.generate_definitions(inputs=inputs)
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 386, in generate_definitions
+    self.generate_inner(schema)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 466, in generate_inner
+    if 'ref' in schema:
+       ^^^^^^^^^^^^^^^
+  File "<frozen _collections_abc>", line 801, in __contains__
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 41, in __getitem__
+    return self._get_built().__getitem__(key)
+           ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 58, in _get_built
+    raise PydanticUserError(self._error_message, code=self._code)
+pydantic.errors.PydanticUserError: `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+2026-07-16 03:28:36,485 | ERROR | coreerp | `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 64, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 61, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1110, in openapi
+    schema = self.openapi()
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1086, in openapi
+    self.openapi_schema = get_openapi(
+                          ~~~~~~~~~~~^
+        title=self.title,
+        ^^^^^^^^^^^^^^^^^
+    ...<12 lines>...
+        external_docs=self.openapi_external_docs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\openapi\utils.py", line 561, in get_openapi
+    field_mapping, definitions = get_definitions(
+                                 ~~~~~~~~~~~~~~~^
+        fields=all_fields,
+        ^^^^^^^^^^^^^^^^^^
+        model_name_map=model_name_map,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        separate_input_output_schemas=separate_input_output_schemas,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\_compat\v2.py", line 336, in get_definitions
+    field_mapping, definitions = schema_generator.generate_definitions(inputs=inputs)
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 386, in generate_definitions
+    self.generate_inner(schema)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 466, in generate_inner
+    if 'ref' in schema:
+       ^^^^^^^^^^^^^^^
+  File "<frozen _collections_abc>", line 801, in __contains__
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 41, in __getitem__
+    return self._get_built().__getitem__(key)
+           ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 58, in _get_built
+    raise PydanticUserError(self._error_message, code=self._code)
+pydantic.errors.PydanticUserError: `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193F2C840F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+2026-07-16 03:31:34,617 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:31:43,828 | ERROR | coreerp | `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193C08F40F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193C08F40F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 64, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 61, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1110, in openapi
+    schema = self.openapi()
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\applications.py", line 1086, in openapi
+    self.openapi_schema = get_openapi(
+                          ~~~~~~~~~~~^
+        title=self.title,
+        ^^^^^^^^^^^^^^^^^
+    ...<12 lines>...
+        external_docs=self.openapi_external_docs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\openapi\utils.py", line 561, in get_openapi
+    field_mapping, definitions = get_definitions(
+                                 ~~~~~~~~~~~~~~~^
+        fields=all_fields,
+        ^^^^^^^^^^^^^^^^^^
+        model_name_map=model_name_map,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        separate_input_output_schemas=separate_input_output_schemas,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\_compat\v2.py", line 336, in get_definitions
+    field_mapping, definitions = schema_generator.generate_definitions(inputs=inputs)
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 386, in generate_definitions
+    self.generate_inner(schema)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\json_schema.py", line 466, in generate_inner
+    if 'ref' in schema:
+       ^^^^^^^^^^^^^^^
+  File "<frozen _collections_abc>", line 801, in __contains__
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 41, in __getitem__
+    return self._get_built().__getitem__(key)
+           ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\pydantic\_internal\_mock_val_ser.py", line 58, in _get_built
+    raise PydanticUserError(self._error_message, code=self._code)
+pydantic.errors.PydanticUserError: `TypeAdapter[typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193C08F40F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]]` is not fully defined; you should define `typing.Annotated[ForwardRef('Login', owner=<function login at 0x00000193C08F40F0>), FieldInfo(annotation=NoneType, required=True, alias='dados', alias_priority=2, json_schema_extra={})]` and all referenced types, then call `.rebuild()` on the instance.
+
+For further information visit https://errors.pydantic.dev/2.13/u/class-not-fully-defined
+2026-07-16 03:32:47,514 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:33:57,564 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:37:44,827 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:39:40,832 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:43:24,634 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:51:57,385 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:52:37,226 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:54:56,732 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:56:00,995 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 03:56:23,784 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 04:01:42,361 | ERROR | coreerp | maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  [Previous line repeated 994 more times]
+RecursionError: maximum recursion depth exceeded
+2026-07-16 04:02:31,910 | ERROR | coreerp | maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  [Previous line repeated 994 more times]
+RecursionError: maximum recursion depth exceeded
+2026-07-16 04:04:05,519 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 04:04:18,594 | ERROR | coreerp | maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  [Previous line repeated 994 more times]
+RecursionError: maximum recursion depth exceeded
+2026-07-16 04:09:00,699 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 04:09:25,954 | ERROR | coreerp | maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  [Previous line repeated 994 more times]
+RecursionError: maximum recursion depth exceeded
+2026-07-16 04:09:26,998 | ERROR | coreerp | maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login_service
+    return login_service(
+        db,
+        dados
+    )
+  [Previous line repeated 994 more times]
+RecursionError: maximum recursion depth exceeded
+2026-07-16 04:10:41,508 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 04:11:20,337 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 22:33:04,139 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 22:33:53,830 | ERROR | coreerp | hash could not be identified
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 104, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 64, in login_service
+    if not verificar_senha(
+           ~~~~~~~~~~~~~~~^
+        dados.senha,
+        ^^^^^^^^^^^^
+        usuario.senha
+        ^^^^^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\auth\hash.py", line 14, in verificar_senha
+    return pwd_context.verify(
+           ~~~~~~~~~~~~~~~~~~^
+        senha,
+        ^^^^^^
+        hash_senha
+        ^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2343, in verify
+    record = self._get_or_identify_record(hash, scheme, category)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2031, in _get_or_identify_record
+    return self._identify_record(hash, category)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 1132, in identify_record
+    raise exc.UnknownHashError("hash could not be identified")
+passlib.exc.UnknownHashError: hash could not be identified
+2026-07-16 22:35:43,409 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 22:35:51,145 | ERROR | coreerp | hash could not be identified
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 104, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 64, in login_service
+    if not verificar_senha(
+           ~~~~~~~~~~~~~~~^
+        dados.senha,
+        ^^^^^^^^^^^^
+        usuario.senha
+        ^^^^^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\auth\hash.py", line 14, in verificar_senha
+    return pwd_context.verify(
+           ~~~~~~~~~~~~~~~~~~^
+        senha,
+        ^^^^^^
+        hash_senha
+        ^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2343, in verify
+    record = self._get_or_identify_record(hash, scheme, category)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2031, in _get_or_identify_record
+    return self._identify_record(hash, category)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 1132, in identify_record
+    raise exc.UnknownHashError("hash could not be identified")
+passlib.exc.UnknownHashError: hash could not be identified
+2026-07-16 22:39:28,358 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 22:39:28,378 | ERROR | coreerp | password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 32, in criar_usuario
+    return criar_usuario_service(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 22, in criar_usuario_service
+    return criar_usuario(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 15, in criar_usuario
+    senha=gerar_hash(usuario.senha)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\auth\hash.py", line 10, in gerar_hash
+    return pwd_context.hash(senha)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2258, in hash
+    return record.hash(secret, **kwds)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 779, in hash
+    self.checksum = self._calc_checksum(secret)
+                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-07-16 22:42:20,879 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 22:42:20,886 | ERROR | coreerp | password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 32, in criar_usuario
+    return criar_usuario_service(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 22, in criar_usuario_service
+    return criar_usuario(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 15, in criar_usuario
+    senha=gerar_hash(usuario.senha)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\auth\hash.py", line 10, in gerar_hash
+    return pwd_context.hash(senha)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2258, in hash
+    return record.hash(secret, **kwds)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 779, in hash
+    self.checksum = self._calc_checksum(secret)
+                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-07-16 22:43:39,390 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 22:44:42,014 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 22:44:42,020 | ERROR | coreerp | password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 32, in criar_usuario
+    return criar_usuario_service(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 22, in criar_usuario_service
+    return criar_usuario(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 15, in criar_usuario
+    senha=gerar_hash(usuario.senha)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\auth\hash.py", line 10, in gerar_hash
+    return pwd_context.hash(senha)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2258, in hash
+    return record.hash(secret, **kwds)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 779, in hash
+    self.checksum = self._calc_checksum(secret)
+                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-07-16 22:49:02,184 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 22:49:02,191 | ERROR | coreerp | password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 32, in criar_usuario
+    return criar_usuario_service(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 22, in criar_usuario_service
+    return criar_usuario(
+        db,
+        usuario
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\repositories\usuario.py", line 15, in criar_usuario
+    senha=gerar_hash(usuario.senha)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\auth\hash.py", line 10, in gerar_hash
+    return pwd_context.hash(senha)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\context.py", line 2258, in hash
+    return record.hash(secret, **kwds)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 779, in hash
+    self.checksum = self._calc_checksum(secret)
+                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\utils\handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-07-16 23:23:43,061 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:25:56,877 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:28:00,969 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 23:28:01,241 | ERROR | coreerp | 1 validation error:
+  {'type': 'missing', 'loc': ('response', 'created_at'), 'msg': 'Field required', 'input': <app.models.usuario.Usuario object at 0x000001B338E4BCB0>}
+
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 24, in criar_usuario
+    POST /usuarios/
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 711, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 316, in serialize_response
+    raise ResponseValidationError(
+    ...<3 lines>...
+    )
+fastapi.exceptions.ResponseValidationError: 1 validation error:
+  {'type': 'missing', 'loc': ('response', 'created_at'), 'msg': 'Field required', 'input': <app.models.usuario.Usuario object at 0x000001B338E4BCB0>}
+
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 24, in criar_usuario
+    POST /usuarios/
+2026-07-16 23:32:38,917 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:33:16,728 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:33:37,922 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 23:43:43,797 | ERROR | fastapi | Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2026-07-16 23:45:03,172 | ERROR | fastapi | Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2026-07-16 23:45:25,888 | ERROR | fastapi | Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2026-07-16 23:45:51,725 | ERROR | fastapi | Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2026-07-16 23:46:42,657 | ERROR | fastapi | Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2026-07-16 23:47:30,996 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:47:54,418 | ERROR | coreerp | 'OAuth2PasswordRequestForm' object has no attribute 'senha'
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 65, in login_service
+    dados.senha,
+    ^^^^^^^^^^^
+AttributeError: 'OAuth2PasswordRequestForm' object has no attribute 'senha'
+2026-07-16 23:48:35,163 | ERROR | coreerp | 'OAuth2PasswordRequestForm' object has no attribute 'senha'
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 65, in login_service
+    dados.senha,
+    ^^^^^^^^^^^
+AttributeError: 'OAuth2PasswordRequestForm' object has no attribute 'senha'
+2026-07-16 23:49:42,409 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:49:57,605 | ERROR | coreerp | 'OAuth2PasswordRequestForm' object has no attribute 'senha'
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 96, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\cors.py", line 154, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2683, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1764, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1753, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 2738, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1773, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 1264, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\fastapi\routing.py", line 346, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\api\usuario.py", line 105, in login
+    return login_service(
+        db,
+        dados
+    )
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\backend\app\services\usuario.py", line 65, in login_service
+    dados.senha,
+    ^^^^^^^^^^^
+AttributeError: 'OAuth2PasswordRequestForm' object has no attribute 'senha'
+2026-07-16 23:51:02,513 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:51:40,832 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:53:18,507 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-16 23:56:01,490 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:57:03,558 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:58:30,948 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:58:34,507 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-16 23:58:49,511 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:03:47,557 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:03:52,662 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:06:11,730 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:06:14,459 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:06:26,146 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:12:36,781 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:12:44,719 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:12:51,005 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:13:54,237 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:15:38,690 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:15:50,578 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:15:55,976 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:16:35,701 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:16:43,128 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:16:51,962 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:18:48,133 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:18:52,048 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:18:57,521 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:20:03,852 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:20:21,012 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:20:38,182 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:23:37,420 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:23:56,652 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:24:05,486 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:24:11,045 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:26:57,756 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:27:09,364 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:28:14,865 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:28:37,201 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:29:26,165 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:30:00,773 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:30:59,651 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:31:42,248 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:31:47,748 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:34:24,936 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:34:58,668 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:42:06,245 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:42:52,560 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:43:11,511 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:43:40,320 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:44:05,995 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:44:46,881 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:45:45,988 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:45:52,274 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\pedro\OneDrive\Documentos\PortfolioTi\coreerp\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-07-17 00:49:46,977 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:50:19,639 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:51:48,879 | INFO | coreerp | CoreERP iniciado com sucesso.
+2026-07-17 00:52:06,716 | INFO | coreerp | CoreERP iniciado com sucesso.

@@ -10,6 +10,10 @@ from app.repositories.usuario import (
     atualizar_usuario,
     deletar_usuario
 )
+from app.repositories.usuario import buscar_por_email
+
+from app.auth.hash import verificar_senha
+from app.auth.jwt import criar_token
 
 def criar_usuario_service(
     db: Session,
@@ -45,3 +49,30 @@ def deletar_usuario_service(db, usuario_id):
     deletar_usuario(db, usuario)
 
     return True
+
+def login_service(db, dados):
+
+    usuario = buscar_por_email(
+        db,
+        dados.username
+    )
+
+    if not usuario:
+        return None
+
+    if not verificar_senha(
+        dados.password,
+        usuario.senha
+    ):
+        return None
+
+    token = criar_token(
+        {
+            "sub": usuario.email
+        }
+    )
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+    }

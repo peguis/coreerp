@@ -9,5 +9,9 @@ class Settings(BaseSettings):
         "postgresql+psycopg://postgres:postgres@localhost:5432/coreerp"
     )
 
+    SECRET_KEY: str = "sua-chave-super-secreta"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+
 
 settings = Settings()
