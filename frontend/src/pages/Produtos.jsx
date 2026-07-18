@@ -55,138 +55,152 @@ function Produtos() {
 
     return (
 
-        <>
-
-            <main style={{ padding: 30 }}>
+        <main style={{ padding: 30 }}>
 
 
-                <h1>
-                    Produtos
-                </h1>
+            <h1>
+                Produtos
+            </h1>
 
 
 
-                <Link to="/produtos/novo">
+            <Link to="/produtos/novo">
 
-                    <button>
-                        Novo Produto
-                    </button>
+                <button>
+                    Novo Produto
+                </button>
 
-                </Link>
-
-
-
-                <br />
-                <br />
+            </Link>
 
 
 
-                <table border="1" cellPadding="10">
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                ID
-                            </th>
-
-                            <th>
-                                Nome
-                            </th>
-
-                            <th>
-                                Preço
-                            </th>
-
-                            <th>
-                                Estoque
-                            </th>
-
-                            <th>
-                                Ações
-                            </th>
-
-                        </tr>
-
-                    </thead>
+            <br />
+            <br />
 
 
 
-                    <tbody>
+            {
+                produtos.length === 0 ? (
+
+                    <p>
+                        Nenhum produto cadastrado.
+                    </p>
+
+                ) : (
 
 
-                        {
-                            produtos.map((produto) => (
+                    <table
+                        border="1"
+                        cellPadding="10"
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse"
+                        }}
+                    >
 
 
-                                <tr key={produto.id}>
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Nome</th>
+
+                                <th>Preço</th>
+
+                                <th>Estoque</th>
+
+                                <th>Ações</th>
+
+                            </tr>
+
+                        </thead>
 
 
-                                    <td>
-                                        {produto.id}
-                                    </td>
+
+                        <tbody>
 
 
-                                    <td>
-                                        {produto.nome}
-                                    </td>
+                            {
+                                produtos.map((produto) => (
 
 
-                                    <td>
-                                        R$ {produto.preco}
-                                    </td>
+                                    <tr key={produto.id}>
 
 
-                                    <td>
-                                        {produto.estoque}
-                                    </td>
+                                        <td>
+                                            {produto.id}
+                                        </td>
 
 
-                                    <td>
+
+                                        <td>
+                                            {produto.nome}
+                                        </td>
 
 
-                                        <Link
-                                            to={`/produtos/${produto.id}`}
-                                        >
 
-                                            <button>
-                                                Editar
+                                        <td>
+                                            R$ {
+                                                Number(produto.preco)
+                                                    .toFixed(2)
+                                            }
+                                        </td>
+
+
+
+                                        <td>
+                                            {produto.estoque}
+                                        </td>
+
+
+
+                                        <td>
+
+
+                                            <Link
+                                                to={`/produtos/${produto.id}`}
+                                            >
+
+                                                <button>
+                                                    Editar
+                                                </button>
+
+                                            </Link>
+
+
+
+                                            <button
+                                                onClick={() => remover(produto.id)}
+                                            >
+
+                                                Excluir
+
                                             </button>
 
-                                        </Link>
+
+                                        </td>
 
 
-
-                                        <button
-                                            onClick={() => remover(produto.id)}
-                                        >
-
-                                            Excluir
-
-                                        </button>
+                                    </tr>
 
 
-                                    </td>
+                                ))
+                            }
 
 
-                                </tr>
+                        </tbody>
 
 
-                            ))
-                        }
+                    </table>
 
 
-                    </tbody>
+                )
+            }
 
 
-                </table>
-
-
-            </main>
-
-        </>
+        </main>
 
     );
 

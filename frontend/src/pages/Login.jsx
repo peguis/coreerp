@@ -6,68 +6,139 @@ import { AuthContext } from "../auth/AuthContext";
 import { loginRequest } from "../api/auth";
 
 
-function Login(){
+function Login() {
+
 
     const navigate = useNavigate();
 
-    const [username,setUsername] = useState("");
-    const [password,setPassword] = useState("");
 
-    const {login} = useContext(AuthContext);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
 
-    async function entrar() {
+    const { login } = useContext(AuthContext);
 
-    const data = await loginRequest(
-        username,
-        password
-    );
 
-    login(
-        data.access_token
-    );
 
-    navigate("/dashboard");
+    async function entrar(e) {
 
-}
+        e.preventDefault();
+
+
+        try {
+
+
+            const data = await loginRequest(
+                username,
+                password
+            );
+
+
+            login(
+                data.access_token
+            );
+
+
+            navigate("/dashboard");
+
+
+
+        } catch (erro) {
+
+
+            alert(
+                "Usuário ou senha inválidos"
+            );
+
+
+        }
+
+
+    }
+
 
 
     return (
 
-        <div>
+
+        <div
+            style={{
+                padding: 40
+            }}
+        >
+
 
             <h1>
                 CoreERP Login
             </h1>
 
 
-            <input
-                placeholder="Email"
-                value={username}
-                onChange={
-                    e=>setUsername(e.target.value)
-                }
-            />
+
+            <form onSubmit={entrar}>
 
 
-            <input
-                placeholder="Senha"
-                type="password"
-                value={password}
-                onChange={
-                    e=>setPassword(e.target.value)
-                }
-            />
+                <div>
+
+                    <input
+
+                        placeholder="Email"
+
+                        value={username}
+
+                        onChange={
+                            e => setUsername(e.target.value)
+                        }
+
+                    />
+
+                </div>
 
 
-            <button onClick={entrar}>
-                Entrar
-            </button>
+
+                <br />
+
+
+
+                <div>
+
+                    <input
+
+                        placeholder="Senha"
+
+                        type="password"
+
+                        value={password}
+
+                        onChange={
+                            e => setPassword(e.target.value)
+                        }
+
+                    />
+
+                </div>
+
+
+
+                <br />
+
+
+
+                <button type="submit">
+
+                    Entrar
+
+                </button>
+
+
+
+            </form>
 
 
         </div>
 
-    )
+
+    );
+
 
 }
 

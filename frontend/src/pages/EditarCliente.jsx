@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
 import {
     buscarCliente,
     atualizarCliente
 } from "../services/clienteService";
 
+import Mensagem from "../components/Mensagem";
+
 
 function EditarCliente() {
+
 
     const { id } = useParams();
 
@@ -18,6 +20,10 @@ function EditarCliente() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [telefone, setTelefone] = useState("");
+
+
+    const [mensagem, setMensagem] = useState("");
+    const [tipo, setTipo] = useState("");
 
 
 
@@ -31,6 +37,7 @@ function EditarCliente() {
 
     async function carregarCliente() {
 
+
         const dados = await buscarCliente(id);
 
 
@@ -38,25 +45,63 @@ function EditarCliente() {
         setEmail(dados.email);
         setTelefone(dados.telefone);
 
+
     }
 
 
 
     async function salvar(e) {
 
+
         e.preventDefault();
 
 
-        await atualizarCliente(id, {
-
-            nome,
-            email,
-            telefone
-
-        });
+        try {
 
 
-        navigate("/clientes");
+            await atualizarCliente(id, {
+
+
+                nome,
+
+                email,
+
+                telefone
+
+
+            });
+
+
+
+            setTipo("sucesso");
+
+            setMensagem(
+                "Cliente atualizado com sucesso"
+            );
+
+
+
+            setTimeout(() => {
+
+                navigate("/clientes");
+
+            }, 1000);
+
+
+
+        } catch (erro) {
+
+
+            setTipo("erro");
+
+            setMensagem(
+                erro.response?.data?.detail ||
+                "Erro ao atualizar cliente"
+            );
+
+
+        }
+
 
     }
 
@@ -64,91 +109,126 @@ function EditarCliente() {
 
     return (
 
-        <div style={{ display: "flex" }}>
+
+        <main style={{ padding: 30 }}>
+
+
+            <h1>
+                Editar Cliente
+            </h1>
 
 
 
-            <main style={{ padding: 30 }}>
+            <Mensagem
+                tipo={tipo}
+                texto={mensagem}
+            />
 
 
-                <h1>Editar Cliente</h1>
+
+            <form onSubmit={salvar}>
 
 
-                <form onSubmit={salvar}>
+                <div>
 
-
-                    <div>
-
-                        <label>
-                            Nome:
-                        </label>
-
-                        <br />
-
-                        <input
-                            value={nome}
-                            onChange={(e) => setNome(e.target.value)}
-                        />
-
-                    </div>
-
+                    <label>
+                        Nome:
+                    </label>
 
                     <br />
 
+                    <input
 
-                    <div>
+                        value={nome}
 
-                        <label>
-                            Email:
-                        </label>
+                        onChange={
+                            (e) =>
+                                setNome(e.target.value)
+                        }
 
-                        <br />
+                    />
 
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                    </div>
+                </div>
 
 
-                    <br />
+
+                <br />
 
 
-                    <div>
 
-                        <label>
-                            Telefone:
-                        </label>
+                <div>
 
-                        <br />
-
-                        <input
-                            value={telefone}
-                            onChange={(e) => setTelefone(e.target.value)}
-                        />
-
-                    </div>
-
+                    <label>
+                        Email:
+                    </label>
 
                     <br />
 
+                    <input
 
-                    <button type="submit">
-                        Atualizar
-                    </button>
+                        type="email"
+
+                        value={email}
+
+                        onChange={
+                            (e) =>
+                                setEmail(e.target.value)
+                        }
+
+                    />
+
+                </div>
 
 
-                </form>
+
+                <br />
 
 
-            </main>
+
+                <div>
+
+                    <label>
+                        Telefone:
+                    </label>
+
+                    <br />
+
+                    <input
+
+                        value={telefone}
+
+                        onChange={
+                            (e) =>
+                                setTelefone(e.target.value)
+                        }
+
+                    />
+
+                </div>
 
 
-        </div>
+
+                <br />
+
+
+
+                <button type="submit">
+
+                    Atualizar
+
+                </button>
+
+
+
+            </form>
+
+
+
+        </main>
+
 
     );
+
 
 }
 

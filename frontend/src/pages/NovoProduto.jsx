@@ -1,31 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import {
+    criarProduto
+} from "../services/produtoService";
 
-import { criarProduto } from "../services/produtoService";
 import Mensagem from "../components/Mensagem";
+
 
 function NovoProduto() {
 
+
     const navigate = useNavigate();
+
 
     const [nome, setNome] = useState("");
     const [preco, setPreco] = useState("");
     const [estoque, setEstoque] = useState("");
+
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
 
-    async function salvar() {
+
+
+    async function salvar(e) {
+
+
+        e.preventDefault();
+
 
         try {
+
 
             await criarProduto({
 
                 nome,
-                preco,
-                estoque
+                preco: Number(preco),
+                estoque: Number(estoque)
 
             });
+
 
 
             setTipo("sucesso");
@@ -33,6 +47,7 @@ function NovoProduto() {
             setMensagem(
                 "Produto criado com sucesso"
             );
+
 
 
             setTimeout(() => {
@@ -56,56 +71,95 @@ function NovoProduto() {
 
         }
 
+
     }
+
+
 
     return (
 
-        <div style={{ display: "flex" }}>
+
+        <main style={{ padding: 30 }}>
 
 
-            <main style={{ padding: 30 }}>
+            <h1>
+                Novo Produto
+            </h1>
 
-                <h1>Novo Produto</h1>
 
-                <Mensagem
-                    tipo={tipo}
-                    texto={mensagem}
-                />
+
+            <Mensagem
+                tipo={tipo}
+                texto={mensagem}
+            />
+
+
+
+            <form onSubmit={salvar}>
+
 
                 <input
                     placeholder="Nome"
                     value={nome}
-                    onChange={e => setNome(e.target.value)}
+                    onChange={
+                        e => setNome(e.target.value)
+                    }
                 />
 
-                <br /><br />
+
+
+                <br />
+                <br />
+
+
 
                 <input
                     placeholder="Preço"
+                    type="number"
                     value={preco}
-                    onChange={e => setPreco(e.target.value)}
+                    onChange={
+                        e => setPreco(e.target.value)
+                    }
                 />
 
-                <br /><br />
+
+
+                <br />
+                <br />
+
+
 
                 <input
                     placeholder="Estoque"
+                    type="number"
                     value={estoque}
-                    onChange={e => setEstoque(e.target.value)}
+                    onChange={
+                        e => setEstoque(e.target.value)
+                    }
                 />
 
-                <br /><br />
 
-                <button onClick={salvar}>
+
+                <br />
+                <br />
+
+
+
+                <button type="submit">
                     Salvar
                 </button>
 
-            </main>
 
-        </div>
+            </form>
+
+
+        </main>
+
 
     );
 
+
 }
+
 
 export default NovoProduto;

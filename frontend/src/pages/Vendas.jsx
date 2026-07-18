@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 import {
     listarVendas,
     excluirVenda
 } from "../services/vendaService";
-
 
 
 function Vendas() {
@@ -58,161 +56,173 @@ function Vendas() {
 
     return (
 
-        <>
+
+        <main style={{ padding: 30 }}>
 
 
-            <main style={{ padding: 30 }}>
-
-
-                <h1>
-                    Vendas
-                </h1>
-
-
-
-                <Link to="/vendas/nova">
-
-                    <button>
-                        Nova Venda
-                    </button>
-
-                </Link>
+            <h1>
+                Vendas
+            </h1>
 
 
 
-                <br />
-                <br />
+            <Link to="/vendas/nova">
+
+                <button>
+                    Nova Venda
+                </button>
+
+            </Link>
 
 
 
-                <table border="1" cellPadding="10">
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                ID
-                            </th>
-
-                            <th>
-                                Cliente
-                            </th>
-
-                            <th>
-                                Total
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Data
-                            </th>
-
-                            <th>
-                                Ações
-                            </th>
-
-                        </tr>
-
-                    </thead>
+            <br />
+            <br />
 
 
 
-                    <tbody>
+            {
+                vendas.length === 0 ? (
+
+                    <p>
+                        Nenhuma venda registrada.
+                    </p>
+
+                ) : (
 
 
-                        {
-                            vendas.map((venda) => (
+                    <table
+                        border="1"
+                        cellPadding="10"
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse"
+                        }}
+                    >
 
 
-                                <tr key={venda.id}>
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Cliente</th>
+
+                                <th>Total</th>
+
+                                <th>Status</th>
+
+                                <th>Data</th>
+
+                                <th>Ações</th>
+
+                            </tr>
+
+                        </thead>
 
 
-                                    <td>
-                                        {venda.id}
-                                    </td>
+
+                        <tbody>
 
 
-                                    <td>
-                                        {venda.cliente_id}
-                                    </td>
+                            {
+                                vendas.map((venda) => (
 
 
-                                    <td>
-                                        R$ {venda.total}
-                                    </td>
+                                    <tr key={venda.id}>
 
 
-                                    <td>
-                                        {venda.status}
-                                    </td>
+                                        <td>
+                                            {venda.id}
+                                        </td>
 
 
-                                    <td>
 
-                                        {
-                                            new Date(
-                                                venda.created_at
-                                            ).toLocaleDateString()
-                                        }
-
-                                    </td>
+                                        <td>
+                                            {venda.cliente_id}
+                                        </td>
 
 
-                                    <td>
+
+                                        <td>
+                                            R$ {
+                                                Number(venda.total)
+                                                    .toFixed(2)
+                                            }
+                                        </td>
 
 
-                                        <Link
-                                            to={`/vendas/${venda.id}`}
-                                        >
 
-                                            <button>
-                                                Detalhes
+                                        <td>
+                                            {venda.status}
+                                        </td>
+
+
+
+                                        <td>
+
+                                            {
+                                                new Date(
+                                                    venda.created_at
+                                                ).toLocaleDateString()
+                                            }
+
+                                        </td>
+
+
+
+                                        <td>
+
+
+                                            <Link
+                                                to={`/vendas/${venda.id}`}
+                                            >
+
+                                                <button>
+                                                    Detalhes
+                                                </button>
+
+                                            </Link>
+
+
+
+                                            <button
+                                                onClick={() => remover(venda.id)}
+                                            >
+
+                                                Excluir
+
                                             </button>
 
-                                        </Link>
+
+                                        </td>
 
 
-
-                                        <button
-                                            onClick={() => remover(venda.id)}
-                                        >
-
-                                            Excluir
-
-                                        </button>
+                                    </tr>
 
 
-                                    </td>
+                                ))
+                            }
 
 
-                                </tr>
+                        </tbody>
 
 
-                            ))
-                        }
+                    </table>
 
 
-                    </tbody>
+                )
+            }
 
 
-                </table>
+        </main>
 
-
-            </main>
-
-
-        </>
 
     );
 
 
 }
-
 
 
 export default Vendas;

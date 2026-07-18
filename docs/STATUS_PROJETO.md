@@ -1,4 +1,4 @@
-# Status do Projeto
+# Status do Projeto — CoreERP
 
 ## Ambiente
 
@@ -103,7 +103,6 @@ Segurança:
 * [x] Current User
 * [x] Rotas privadas
 
-
 Status: 100% ✅
 
 
@@ -134,7 +133,6 @@ Controle:
 * [x] Produto ativo/inativo
 * [x] Isolamento por empresa
 
-
 Status: 100% ✅
 
 
@@ -163,7 +161,6 @@ Controle:
 * [x] Empresa vinculada
 * [x] Controle por tenant
 
-
 Status: 100% ✅
 
 
@@ -173,6 +170,7 @@ Status: 100% ✅
 
 * [x] Login JWT
 * [x] Geração de Token
+* [x] Refresh Token
 * [x] Proteção de rotas
 * [x] Hash Bcrypt
 * [x] Current User
@@ -219,6 +217,8 @@ Implementado:
 * [x] Histórico de movimentações
 * [x] Usuário responsável
 * [x] Controle por empresa
+* [x] Baixa automática ao realizar venda
+* [x] Retorno automático de estoque ao excluir venda
 
 
 Status: 100% ✅
@@ -234,17 +234,20 @@ Implementado:
 * [x] Selecionar cliente
 * [x] Adicionar produtos
 * [x] Criar itens da venda
-* [x] Calcular total
+* [x] Calcular total automaticamente
 * [x] Baixa automática no estoque
 * [x] Histórico de vendas
 * [x] Buscar detalhes da venda
-* [x] Excluir venda
+* [x] Exclusão de venda
+* [x] Restauração automática do estoque ao excluir venda
 
 
 Pendências:
 
-* [ ] Cancelamento com retorno de estoque
-* [ ] Edição de venda
+* [ ] Cancelamento de venda com status próprio
+* [ ] Alteração de venda existente
+* [ ] Controle de pagamentos
+* [ ] Status da venda (Aberta, Finalizada, Cancelada)
 
 
 Status: 90% 🟢
@@ -293,8 +296,9 @@ Pendências:
 
 * [ ] Melhorar layout
 * [ ] Componentes reutilizáveis
-* [ ] Loading
-* [ ] Tratamento de erros visual
+* [ ] Loading global
+* [ ] Tratamento visual de erros
+* [ ] Melhorar responsividade
 
 
 Status: 80% 🟡
@@ -304,39 +308,48 @@ Status: 80% 🟡
 
 # Próximas Etapas
 
-## FASE 1 — Melhorias Backend
 
-⬜ Cancelamento de venda
-⬜ Retorno automático de estoque
-⬜ Validações avançadas
-⬜ Paginação
-⬜ Filtros
+## FASE 1 — Finalização Backend
 
+⬜ Implementar cancelamento real de venda  
+⬜ Criar status de venda (Aberta, Finalizada, Cancelada)  
+⬜ Permitir edição de vendas  
+⬜ Criar validações avançadas  
+⬜ Paginação  
+⬜ Filtros de busca  
+
+
+---
 
 ## FASE 2 — Melhorias Frontend
 
-⬜ Dashboard visual com cards
-⬜ Formulários melhores
-⬜ Mensagens de sucesso/erro
-⬜ Melhorar tabelas
-⬜ Responsividade
+⬜ Dashboard com gráficos  
+⬜ Formulários melhores  
+⬜ Mensagens de sucesso/erro  
+⬜ Melhorar tabelas  
+⬜ Responsividade mobile  
 
 
-## FASE 3 — SaaS
+---
 
-⬜ Logo da empresa
-⬜ Personalização por empresa
-⬜ Configurações do ambiente
+## FASE 3 — Transformação SaaS
 
+⬜ Logo e identidade visual por empresa  
+⬜ Personalização do ambiente  
+⬜ Configurações por empresa  
+⬜ Perfis e permissões de usuários  
+
+
+---
 
 ## FASE 4 — Produção
 
-⬜ Docker
-⬜ Docker Compose
-⬜ Deploy Cloud
-⬜ Banco PostgreSQL produção
-⬜ HTTPS
-⬜ Backup
+⬜ Docker  
+⬜ Docker Compose  
+⬜ Deploy Cloud  
+⬜ PostgreSQL produção  
+⬜ HTTPS  
+⬜ Backup automático  
 
 
 ---
@@ -355,3 +368,32 @@ Status: 80% 🟡
 * Dashboard backend criado.
 * Frontend React integrado.
 * Sistema funcional ponta a ponta.
+* Exclusão de vendas com retorno automático de estoque implementada.
+
+
+---
+
+# Status Geral Atual
+
+Backend: 95% 🟢  
+Frontend: 80% 🟡  
+SaaS: 60% 🟡  
+Produção: 30% 🔴  
+
+
+## Estado Atual
+
+O CoreERP já possui um fluxo funcional completo:
+
+Usuário
+→ Login JWT
+→ Empresa
+→ Produtos
+→ Clientes
+→ Estoque
+→ Venda
+→ Baixa automática
+→ Dashboard
+
+
+O sistema atualmente funciona como um ERP MVP multiempresa, faltando principalmente melhorias de experiência, regras comerciais e preparação para produção.

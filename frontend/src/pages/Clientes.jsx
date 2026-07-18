@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 import {
     listarClientes,
     excluirCliente
@@ -55,151 +54,158 @@ function Clientes() {
 
 
 
-
     return (
 
-        <>
+
+        <main style={{ padding: 30 }}>
 
 
-            <main style={{ padding: 30 }}>
-
-
-                <h1>
-                    Clientes
-                </h1>
-
-
-
-                <Link to="/clientes/novo">
-
-                    <button>
-                        Novo Cliente
-                    </button>
-
-                </Link>
+            <h1>
+                Clientes
+            </h1>
 
 
 
-                <br />
-                <br />
+            <Link to="/clientes/novo">
+
+                <button>
+                    Novo Cliente
+                </button>
+
+            </Link>
 
 
 
-                <table border="1" cellPadding="10">
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                ID
-                            </th>
-
-                            <th>
-                                Nome
-                            </th>
-
-                            <th>
-                                Email
-                            </th>
-
-                            <th>
-                                Telefone
-                            </th>
-
-                            <th>
-                                Ações
-                            </th>
-
-                        </tr>
-
-                    </thead>
+            <br />
+            <br />
 
 
 
-                    <tbody>
+            {
+                clientes.length === 0 ? (
+
+                    <p>
+                        Nenhum cliente cadastrado.
+                    </p>
+
+                ) : (
 
 
-                        {
-                            clientes.map((cliente) => (
+                    <table
+                        border="1"
+                        cellPadding="10"
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse"
+                        }}
+                    >
 
 
-                                <tr key={cliente.id}>
+                        <thead>
 
+                            <tr>
 
-                                    <td>
-                                        {cliente.id}
-                                    </td>
+                                <th>ID</th>
 
+                                <th>Nome</th>
 
-                                    <td>
-                                        {cliente.nome}
-                                    </td>
+                                <th>Email</th>
 
+                                <th>Telefone</th>
 
-                                    <td>
-                                        {cliente.email}
-                                    </td>
+                                <th>Ações</th>
 
+                            </tr>
 
-                                    <td>
-                                        {cliente.telefone}
-                                    </td>
+                        </thead>
 
 
 
-                                    <td>
+                        <tbody>
 
 
-                                        <Link
-                                            to={`/clientes/${cliente.id}`}
-                                        >
+                            {
+                                clientes.map((cliente) => (
 
-                                            <button>
-                                                Editar
+
+                                    <tr key={cliente.id}>
+
+
+                                        <td>
+                                            {cliente.id}
+                                        </td>
+
+
+
+                                        <td>
+                                            {cliente.nome}
+                                        </td>
+
+
+
+                                        <td>
+                                            {cliente.email}
+                                        </td>
+
+
+
+                                        <td>
+                                            {cliente.telefone}
+                                        </td>
+
+
+
+                                        <td>
+
+
+                                            <Link
+                                                to={`/clientes/${cliente.id}`}
+                                            >
+
+                                                <button>
+                                                    Editar
+                                                </button>
+
+                                            </Link>
+
+
+
+                                            <button
+                                                onClick={() => remover(cliente.id)}
+                                            >
+
+                                                Excluir
+
                                             </button>
 
-                                        </Link>
+
+                                        </td>
 
 
-
-                                        <button
-                                            onClick={() => remover(cliente.id)}
-                                        >
-
-                                            Excluir
-
-                                        </button>
+                                    </tr>
 
 
-                                    </td>
+                                ))
+                            }
 
 
-                                </tr>
+                        </tbody>
 
 
-                            ))
-                        }
+                    </table>
 
 
-                    </tbody>
+                )
+            }
 
 
-                </table>
+        </main>
 
-
-
-            </main>
-
-
-        </>
 
     );
 
 
 }
-
 
 
 export default Clientes;

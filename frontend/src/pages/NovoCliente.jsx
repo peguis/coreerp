@@ -8,6 +8,7 @@ import { criarCliente } from "../services/clienteService";
 
 function NovoCliente() {
 
+
     const navigate = useNavigate();
 
 
@@ -22,6 +23,7 @@ function NovoCliente() {
 
 
     async function salvar(e) {
+
 
         e.preventDefault();
 
@@ -38,10 +40,13 @@ function NovoCliente() {
             });
 
 
+
             setTipo("sucesso");
+
             setMensagem(
                 "Cliente criado com sucesso"
             );
+
 
 
             setTimeout(() => {
@@ -63,7 +68,6 @@ function NovoCliente() {
             );
 
 
-
         }
 
 
@@ -73,134 +77,138 @@ function NovoCliente() {
 
     return (
 
-        <div style={{ display: "flex" }}>
+
+        <main style={{ padding: 30 }}>
+
+
+            <h1>
+                Novo Cliente
+            </h1>
 
 
 
-
-            <main style={{ padding: 30 }}>
-
-
-                <h1>
-                    Novo Cliente
-                </h1>
+            <Mensagem
+                tipo={tipo}
+                texto={mensagem}
+            />
 
 
 
-                <Mensagem
-                    tipo={tipo}
-                    texto={mensagem}
-                />
+            <form onSubmit={salvar}>
 
 
+                <div>
 
-                <form onSubmit={salvar}>
+
+                    <label>
+                        Nome:
+                    </label>
 
 
-                    <div>
+                    <br />
 
-                        <label>
-                            Nome:
-                        </label>
 
-                        <br />
+                    <input
 
-                        <input
+                        value={nome}
 
-                            value={nome}
-
-                            onChange={
-                                (e) =>
+                        onChange={
+                            (e) =>
                                 setNome(e.target.value)
-                            }
+                        }
 
-                        />
+                    />
 
-                    </div>
 
+                </div>
+
+
+
+                <br />
+
+
+
+                <div>
+
+
+                    <label>
+                        Email:
+                    </label>
 
 
                     <br />
 
 
+                    <input
 
-                    <div>
+                        type="email"
 
-                        <label>
-                            Email:
-                        </label>
+                        value={email}
 
-                        <br />
-
-
-                        <input
-
-                            type="email"
-
-                            value={email}
-
-                            onChange={
-                                (e) =>
+                        onChange={
+                            (e) =>
                                 setEmail(e.target.value)
-                            }
+                        }
 
-                        />
+                    />
 
-                    </div>
 
+                </div>
+
+
+
+                <br />
+
+
+
+                <div>
+
+
+                    <label>
+                        Telefone:
+                    </label>
 
 
                     <br />
 
 
+                    <input
 
-                    <div>
+                        value={telefone}
 
-                        <label>
-                            Telefone:
-                        </label>
-
-                        <br />
-
-
-                        <input
-
-                            value={telefone}
-
-                            onChange={
-                                (e) =>
+                        onChange={
+                            (e) =>
                                 setTelefone(e.target.value)
-                            }
+                        }
 
-                        />
-
-                    </div>
+                    />
 
 
-
-                    <br />
+                </div>
 
 
 
-                    <button type="submit">
-
-                        Salvar
-
-                    </button>
+                <br />
 
 
 
-                </form>
+                <button type="submit">
+
+                    Salvar
+
+                </button>
 
 
 
-            </main>
+            </form>
 
 
 
-        </div>
+        </main>
+
 
     );
+
 
 }
 

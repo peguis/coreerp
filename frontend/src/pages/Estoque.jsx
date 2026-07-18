@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 import {
     listarMovimentos
 } from "../services/estoqueService";
-
 
 
 function Estoque() {
@@ -35,125 +33,134 @@ function Estoque() {
 
     return (
 
-        <>
+
+        <main style={{ padding: 30 }}>
 
 
-            <main style={{ padding: 30 }}>
-
-
-                <h1>
-                    Movimentos de Estoque
-                </h1>
-
-
-
-                <Link to="/estoque/novo">
-
-                    <button>
-                        Nova Movimentação
-                    </button>
-
-                </Link>
+            <h1>
+                Movimentos de Estoque
+            </h1>
 
 
 
-                <br />
-                <br />
+            <Link to="/estoque/novo">
+
+                <button>
+                    Nova Movimentação
+                </button>
+
+            </Link>
 
 
 
-                <table border="1" cellPadding="10">
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                ID
-                            </th>
-
-                            <th>
-                                Produto
-                            </th>
-
-                            <th>
-                                Tipo
-                            </th>
-
-                            <th>
-                                Quantidade
-                            </th>
-
-                            <th>
-                                Observação
-                            </th>
-
-                        </tr>
-
-                    </thead>
+            <br />
+            <br />
 
 
 
-                    <tbody>
+            {
+                movimentos.length === 0 ? (
+
+                    <p>
+                        Nenhuma movimentação encontrada.
+                    </p>
+
+                ) : (
 
 
-                        {
-                            movimentos.map((movimento) => (
+                    <table
+                        border="1"
+                        cellPadding="10"
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse"
+                        }}
+                    >
 
 
-                                <tr key={movimento.id}>
+                        <thead>
 
+                            <tr>
 
-                                    <td>
-                                        {movimento.id}
-                                    </td>
+                                <th>ID</th>
 
+                                <th>Produto</th>
 
-                                    <td>
-                                        {movimento.produto_id}
-                                    </td>
+                                <th>Tipo</th>
 
+                                <th>Quantidade</th>
 
-                                    <td>
-                                        {movimento.tipo}
-                                    </td>
+                                <th>Observação</th>
 
+                            </tr>
 
-                                    <td>
-                                        {movimento.quantidade}
-                                    </td>
-
-
-                                    <td>
-                                        {movimento.observacao}
-                                    </td>
-
-
-                                </tr>
-
-
-                            ))
-                        }
-
-
-                    </tbody>
-
-
-                </table>
+                        </thead>
 
 
 
-            </main>
+                        <tbody>
 
 
-        </>
+                            {
+                                movimentos.map((movimento) => (
+
+
+                                    <tr key={movimento.id}>
+
+
+                                        <td>
+                                            {movimento.id}
+                                        </td>
+
+
+
+                                        <td>
+                                            {movimento.produto_id}
+                                        </td>
+
+
+
+                                        <td>
+                                            {movimento.tipo}
+                                        </td>
+
+
+
+                                        <td>
+                                            {movimento.quantidade}
+                                        </td>
+
+
+
+                                        <td>
+                                            {movimento.observacao || "-"}
+                                        </td>
+
+
+                                    </tr>
+
+
+                                ))
+                            }
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                )
+            }
+
+
+        </main>
+
 
     );
 
 
 }
-
 
 
 export default Estoque;

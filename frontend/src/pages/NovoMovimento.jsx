@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 import {
     criarMovimento
 } from "../services/estoqueService";
+
+import Mensagem from "../components/Mensagem";
 
 
 function NovoMovimento() {
@@ -19,26 +20,84 @@ function NovoMovimento() {
     const [observacao, setObservacao] = useState("");
 
 
+    const [mensagem, setMensagem] = useState("");
+    const [tipoMensagem, setTipoMensagem] = useState("");
+
+
 
     async function salvar(e) {
+
 
         e.preventDefault();
 
 
-        await criarMovimento({
 
-            produto_id: Number(produtoId),
-
-            tipo,
-
-            quantidade: Number(quantidade),
-
-            observacao
-
-        });
+        if (!produtoId || !quantidade) {
 
 
-        navigate("/estoque");
+            setTipoMensagem("erro");
+
+            setMensagem(
+                "Informe produto e quantidade"
+            );
+
+            return;
+
+        }
+
+
+
+        try {
+
+
+            await criarMovimento({
+
+
+                produto_id: Number(produtoId),
+
+                tipo,
+
+                quantidade: Number(quantidade),
+
+                observacao
+
+
+            });
+
+
+
+            setTipoMensagem("sucesso");
+
+            setMensagem(
+                "Movimentação criada com sucesso"
+            );
+
+
+
+            setTimeout(() => {
+
+                navigate("/estoque");
+
+            }, 1000);
+
+
+
+        } catch (erro) {
+
+
+            setTipoMensagem("erro");
+
+            setMensagem(
+
+                erro.response?.data?.detail ||
+
+                "Erro ao criar movimentação"
+
+            );
+
+
+        }
+
 
     }
 
@@ -46,134 +105,171 @@ function NovoMovimento() {
 
     return (
 
-        <div style={{ display: "flex" }}>
+
+        <main style={{ padding: 30 }}>
+
+
+            <h1>
+                Nova Movimentação
+            </h1>
 
 
 
-            <main style={{ padding: 30 }}>
+            <Mensagem
 
+                tipo={tipoMensagem}
 
-                <h1>
-                    Nova Movimentação
-                </h1>
+                texto={mensagem}
 
-
-
-                <form onSubmit={salvar}>
-
-
-                    <label>
-                        Produto ID
-                    </label>
-
-                    <br />
-
-                    <input
-                        value={produtoId}
-                        onChange={
-                            e => setProdutoId(e.target.value)
-                        }
-                    />
-
-
-                    <br /><br />
-
-
-                    <label>
-                        Tipo
-                    </label>
-
-                    <br />
-
-
-                    <select
-                        value={tipo}
-                        onChange={
-                            e => setTipo(e.target.value)
-                        }
-                    >
-
-                        <option value="ENTRADA">
-                            Entrada
-                        </option>
-
-
-                        <option value="SAIDA">
-                            Saída
-                        </option>
-
-
-                        <option value="AJUSTE">
-                            Ajuste
-                        </option>
-
-
-                    </select>
+            />
 
 
 
-                    <br /><br />
+            <form onSubmit={salvar}>
 
 
-                    <label>
-                        Quantidade
-                    </label>
-
-                    <br />
+                <label>
+                    Produto ID
+                </label>
 
 
-                    <input
-                        type="number"
-                        value={quantidade}
-                        onChange={
-                            e => setQuantidade(e.target.value)
-                        }
-                    />
+                <br />
 
 
+                <input
 
-                    <br /><br />
+                    value={produtoId}
 
+                    onChange={
+                        e => setProdutoId(e.target.value)
+                    }
 
-
-                    <label>
-                        Observação
-                    </label>
-
-
-                    <br />
-
-
-                    <input
-
-                        value={observacao}
-
-                        onChange={
-                            e => setObservacao(e.target.value)
-                        }
-
-                    />
+                />
 
 
 
-                    <br /><br />
-
-
-                    <button>
-                        Salvar
-                    </button>
+                <br />
+                <br />
 
 
 
-                </form>
+                <label>
+                    Tipo
+                </label>
 
 
-            </main>
+                <br />
 
 
-        </div>
+
+                <select
+
+                    value={tipo}
+
+                    onChange={
+                        e => setTipo(e.target.value)
+                    }
+
+                >
+
+
+                    <option value="ENTRADA">
+                        Entrada
+                    </option>
+
+
+                    <option value="SAIDA">
+                        Saída
+                    </option>
+
+
+                    <option value="AJUSTE">
+                        Ajuste
+                    </option>
+
+
+                </select>
+
+
+
+                <br />
+                <br />
+
+
+
+                <label>
+                    Quantidade
+                </label>
+
+
+                <br />
+
+
+
+                <input
+
+                    type="number"
+
+                    min="1"
+
+                    value={quantidade}
+
+                    onChange={
+                        e => setQuantidade(e.target.value)
+                    }
+
+                />
+
+
+
+                <br />
+                <br />
+
+
+
+                <label>
+                    Observação
+                </label>
+
+
+                <br />
+
+
+
+                <input
+
+                    value={observacao}
+
+                    onChange={
+                        e => setObservacao(e.target.value)
+                    }
+
+                />
+
+
+
+                <br />
+                <br />
+
+
+
+                <button type="submit">
+
+                    Salvar
+
+                </button>
+
+
+
+            </form>
+
+
+
+        </main>
+
 
     );
+
 
 }
 

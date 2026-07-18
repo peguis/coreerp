@@ -1,0 +1,14 @@
+# Environment
+.env
+*.env
+
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+postgres_data/git add .
