@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
 
 import { listarClientes } from "../services/clienteService";
 import { listarProdutos } from "../services/produtoService";
 import { criarVenda } from "../services/vendaService";
+import Mensagem from "../components/Mensagem";
 
 
 function NovaVenda() {
@@ -21,6 +21,8 @@ function NovaVenda() {
     const [clienteId, setClienteId] = useState("");
     const [produtoId, setProdutoId] = useState("");
     const [quantidade, setQuantidade] = useState(1);
+    const [mensagem, setMensagem] = useState("");
+    const [tipo, setTipo] = useState("");
 
 
 
@@ -52,21 +54,55 @@ function NovaVenda() {
         e.preventDefault();
 
 
-        await criarVenda({
-
-            cliente_id: Number(clienteId),
-
-            itens: [
-                {
-                    produto_id: Number(produtoId),
-                    quantidade: Number(quantidade)
-                }
-            ]
-
-        });
+        try {
 
 
-        navigate("/vendas");
+            await criarVenda({
+
+                cliente_id: Number(clienteId),
+
+                itens: [
+
+                    {
+                        produto_id: Number(produtoId),
+                        quantidade: Number(quantidade)
+                    }
+
+                ]
+
+            });
+
+
+
+            setTipo("sucesso");
+
+            setMensagem(
+                "Venda criada com sucesso"
+            );
+
+
+
+            setTimeout(() => {
+
+                navigate("/vendas");
+
+            }, 1000);
+
+
+
+        } catch (erro) {
+
+
+            setTipo("erro");
+
+            setMensagem(
+                erro.response?.data?.detail ||
+                "Erro ao criar venda"
+            );
+
+
+        }
+
 
     }
 
@@ -77,13 +113,17 @@ function NovaVenda() {
         <div style={{ display: "flex" }}>
 
 
-            <Sidebar />
 
 
             <main style={{ padding: 30 }}>
 
 
                 <h1>Nova Venda</h1>
+
+                <Mensagem
+                    tipo={tipo}
+                    texto={mensagem}
+                />
 
 
                 <form onSubmit={salvar}>

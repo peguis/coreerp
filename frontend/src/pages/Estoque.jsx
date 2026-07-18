@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
 
 import {
     listarMovimentos
 } from "../services/estoqueService";
 
-import { Link } from "react-router-dom";
 
 
 function Estoque() {
@@ -36,10 +35,7 @@ function Estoque() {
 
     return (
 
-        <div style={{ display: "flex" }}>
-
-
-            <Sidebar />
+        <>
 
 
             <main style={{ padding: 30 }}>
@@ -48,6 +44,8 @@ function Estoque() {
                 <h1>
                     Movimentos de Estoque
                 </h1>
+
+
 
                 <Link to="/estoque/novo">
 
@@ -59,6 +57,11 @@ function Estoque() {
 
 
 
+                <br />
+                <br />
+
+
+
                 <table border="1" cellPadding="10">
 
 
@@ -66,15 +69,25 @@ function Estoque() {
 
                         <tr>
 
-                            <th>ID</th>
+                            <th>
+                                ID
+                            </th>
 
-                            <th>Produto</th>
+                            <th>
+                                Produto
+                            </th>
 
-                            <th>Tipo</th>
+                            <th>
+                                Tipo
+                            </th>
 
-                            <th>Quantidade</th>
+                            <th>
+                                Quantidade
+                            </th>
 
-                            <th>Observação</th>
+                            <th>
+                                Observação
+                            </th>
 
                         </tr>
 
@@ -130,14 +143,17 @@ function Estoque() {
                 </table>
 
 
+
             </main>
 
 
-        </div>
+        </>
 
     );
 
+
 }
+
 
 
 export default Estoque;

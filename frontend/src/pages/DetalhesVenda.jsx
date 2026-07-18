@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
 
 import { buscarVenda } from "../services/vendaService";
 
@@ -45,7 +44,6 @@ function DetalhesVenda() {
         <div style={{ display: "flex" }}>
 
 
-            <Sidebar />
 
 
             <main style={{ padding: 30 }}>

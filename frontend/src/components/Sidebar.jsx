@@ -1,7 +1,31 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
 
 function Sidebar() {
+
+
+    const linkStyle = ({ isActive }) => ({
+
+        color: "white",
+
+        textDecoration: "none",
+
+        display: "block",
+
+        padding: "10px",
+
+        borderRadius: "6px",
+
+        background: isActive
+            ? "#334155"
+            : "transparent"
+
+    });
+
+
+
     return (
+
         <aside
             style={{
                 width: "220px",
@@ -11,17 +35,80 @@ function Sidebar() {
                 padding: "20px"
             }}
         >
-            <h2>CoreERP</h2>
+
+
+            <h2>
+                CoreERP
+            </h2>
+
+
 
             <nav>
-                <p><Link to="/dashboard">Dashboard</Link></p>
-                <p><Link to="/produtos">Produtos</Link></p>
-                <p><Link to="/clientes">Clientes</Link></p>
-                <p><Link to="/vendas">Vendas</Link></p>
-                <p><Link to="/estoque">Estoque</Link></p>
+
+
+                <p>
+                    <NavLink
+                        to="/dashboard"
+                        style={linkStyle}
+                    >
+                        Dashboard
+                    </NavLink>
+                </p>
+
+
+
+                <p>
+                    <NavLink
+                        to="/produtos"
+                        style={linkStyle}
+                    >
+                        Produtos
+                    </NavLink>
+                </p>
+
+
+
+                <p>
+                    <NavLink
+                        to="/clientes"
+                        style={linkStyle}
+                    >
+                        Clientes
+                    </NavLink>
+                </p>
+
+
+
+                <p>
+                    <NavLink
+                        to="/vendas"
+                        style={linkStyle}
+                    >
+                        Vendas
+                    </NavLink>
+                </p>
+
+
+
+                <p>
+                    <NavLink
+                        to="/estoque"
+                        style={linkStyle}
+                    >
+                        Estoque
+                    </NavLink>
+                </p>
+
+
+
             </nav>
+
+
         </aside>
+
     );
+
 }
+
 
 export default Sidebar;

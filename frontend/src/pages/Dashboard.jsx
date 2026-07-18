@@ -40,107 +40,100 @@ function Dashboard() {
 
 
 
+    const cards = [
+
+        {
+            titulo: "Produtos",
+            valor: dados.total_produtos
+        },
+
+        {
+            titulo: "Clientes",
+            valor: dados.total_clientes
+        },
+
+        {
+            titulo: "Vendas",
+            valor: dados.total_vendas
+        },
+
+        {
+            titulo: "Estoque baixo",
+            valor: dados.estoque_baixo
+        },
+
+        {
+            titulo: "Faturamento",
+            valor: `R$ ${dados.faturamento}`
+        }
+
+    ];
+
+
+
     return (
 
-        <div style={{ display: "flex" }}>
+
+        <div>
 
 
-            <Sidebar />
-
-
-            <main style={{ padding: 30 }}>
-
-
-                <h1>
-                    Dashboard
-                </h1>
+            <h1>
+                Dashboard
+            </h1>
 
 
 
-                <div style={{
+            <div
+                style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(3, 200px)",
-                    gap: 20
-                }}>
+                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                    gap: "20px",
+                    marginTop: "30px"
+                }}
+            >
 
 
-                    <div>
-                        <h3>
-                            Produtos
-                        </h3>
-
-                        <h2>
-                            {dados.total_produtos}
-                        </h2>
-
-                    </div>
+                {
+                    cards.map((card) => (
 
 
+                        <div
+                            key={card.titulo}
+                            style={{
+                                padding: "25px",
+                                borderRadius: "10px",
+                                background: "#f8fafc",
+                                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+                            }}
+                        >
 
-                    <div>
 
-                        <h3>
-                            Clientes
-                        </h3>
-
-                        <h2>
-                            {dados.total_clientes}
-                        </h2>
-
-                    </div>
+                            <h3>
+                                {card.titulo}
+                            </h3>
 
 
 
-                    <div>
-
-                        <h3>
-                            Vendas
-                        </h3>
-
-                        <h2>
-                            {dados.total_vendas}
-                        </h2>
-
-                    </div>
+                            <h1>
+                                {card.valor}
+                            </h1>
 
 
-
-                    <div>
-
-                        <h3>
-                            Estoque baixo
-                        </h3>
-
-                        <h2>
-                            {dados.estoque_baixo}
-                        </h2>
-
-                    </div>
+                        </div>
 
 
-
-                    <div>
-
-                        <h3>
-                            Faturamento
-                        </h3>
-
-                        <h2>
-                            R$ {dados.faturamento}
-                        </h2>
-
-                    </div>
+                    ))
+                }
 
 
-                </div>
-
-
-            </main>
+            </div>
 
 
         </div>
 
+
     );
+
 
 }
 

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
 
 import {
     criarMovimento
@@ -49,7 +48,6 @@ function NovoMovimento() {
 
         <div style={{ display: "flex" }}>
 
-            <Sidebar />
 
 
             <main style={{ padding: 30 }}>

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
 
 import {
     listarVendas,
     excluirVenda
 } from "../services/vendaService";
+
 
 
 function Vendas() {
@@ -46,6 +46,7 @@ function Vendas() {
             return;
 
 
+
         await excluirVenda(id);
 
 
@@ -57,16 +58,16 @@ function Vendas() {
 
     return (
 
-        <div style={{ display: "flex" }}>
-
-
-            <Sidebar />
+        <>
 
 
             <main style={{ padding: 30 }}>
 
 
-                <h1>Vendas</h1>
+                <h1>
+                    Vendas
+                </h1>
+
 
 
                 <Link to="/vendas/nova">
@@ -78,7 +79,9 @@ function Vendas() {
                 </Link>
 
 
-                <br /><br />
+
+                <br />
+                <br />
 
 
 
@@ -89,17 +92,29 @@ function Vendas() {
 
                         <tr>
 
-                            <th>ID</th>
+                            <th>
+                                ID
+                            </th>
 
-                            <th>Cliente</th>
+                            <th>
+                                Cliente
+                            </th>
 
-                            <th>Total</th>
+                            <th>
+                                Total
+                            </th>
 
-                            <th>Status</th>
+                            <th>
+                                Status
+                            </th>
 
-                            <th>Data</th>
+                            <th>
+                                Data
+                            </th>
 
-                            <th>Ações</th>
+                            <th>
+                                Ações
+                            </th>
 
                         </tr>
 
@@ -138,21 +153,29 @@ function Vendas() {
 
 
                                     <td>
+
                                         {
                                             new Date(
                                                 venda.created_at
                                             ).toLocaleDateString()
                                         }
+
                                     </td>
 
 
                                     <td>
 
-                                        <Link to={`/vendas/${venda.id}`}>
+
+                                        <Link
+                                            to={`/vendas/${venda.id}`}
+                                        >
+
                                             <button>
                                                 Detalhes
                                             </button>
+
                                         </Link>
+
 
 
                                         <button
@@ -183,12 +206,13 @@ function Vendas() {
             </main>
 
 
-        </div>
+        </>
 
     );
 
 
 }
+
 
 
 export default Vendas;

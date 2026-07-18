@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+
+import Mensagem from "../components/Mensagem";
 
 import { criarCliente } from "../services/clienteService";
 
@@ -15,20 +16,56 @@ function NovoCliente() {
     const [telefone, setTelefone] = useState("");
 
 
+    const [mensagem, setMensagem] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
 
     async function salvar(e) {
 
         e.preventDefault();
 
 
-        await criarCliente({
-            nome,
-            email,
-            telefone
-        });
+        try {
 
 
-        navigate("/clientes");
+            await criarCliente({
+
+                nome,
+                email,
+                telefone
+
+            });
+
+
+            setTipo("sucesso");
+            setMensagem(
+                "Cliente criado com sucesso"
+            );
+
+
+            setTimeout(() => {
+
+                navigate("/clientes");
+
+            }, 1000);
+
+
+
+        } catch (erro) {
+
+
+            setTipo("erro");
+
+            setMensagem(
+                erro.response?.data?.detail ||
+                "Erro ao criar cliente"
+            );
+
+
+
+        }
+
 
     }
 
@@ -38,13 +75,23 @@ function NovoCliente() {
 
         <div style={{ display: "flex" }}>
 
-            <Sidebar />
+
 
 
             <main style={{ padding: 30 }}>
 
 
-                <h1>Novo Cliente</h1>
+                <h1>
+                    Novo Cliente
+                </h1>
+
+
+
+                <Mensagem
+                    tipo={tipo}
+                    texto={mensagem}
+                />
+
 
 
                 <form onSubmit={salvar}>
@@ -59,14 +106,22 @@ function NovoCliente() {
                         <br />
 
                         <input
+
                             value={nome}
-                            onChange={(e) => setNome(e.target.value)}
+
+                            onChange={
+                                (e) =>
+                                setNome(e.target.value)
+                            }
+
                         />
 
                     </div>
 
 
+
                     <br />
+
 
 
                     <div>
@@ -77,16 +132,26 @@ function NovoCliente() {
 
                         <br />
 
+
                         <input
+
                             type="email"
+
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+
+                            onChange={
+                                (e) =>
+                                setEmail(e.target.value)
+                            }
+
                         />
 
                     </div>
 
 
+
                     <br />
+
 
 
                     <div>
@@ -97,26 +162,40 @@ function NovoCliente() {
 
                         <br />
 
+
                         <input
+
                             value={telefone}
-                            onChange={(e) => setTelefone(e.target.value)}
+
+                            onChange={
+                                (e) =>
+                                setTelefone(e.target.value)
+                            }
+
                         />
 
                     </div>
 
 
+
                     <br />
 
 
+
                     <button type="submit">
+
                         Salvar
+
                     </button>
+
 
 
                 </form>
 
 
+
             </main>
+
 
 
         </div>

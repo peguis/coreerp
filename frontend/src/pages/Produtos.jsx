@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
 import { Link } from "react-router-dom";
+
 import {
     listarProdutos,
     excluirProduto
 } from "../services/produtoService";
 
+
 function Produtos() {
 
+
     const [produtos, setProdutos] = useState([]);
+
+
 
     useEffect(() => {
 
         carregarProdutos();
 
     }, []);
+
+
 
     async function carregarProdutos() {
 
@@ -24,93 +30,168 @@ function Produtos() {
 
     }
 
+
+
     async function remover(id) {
 
         const confirmar = window.confirm(
             "Deseja realmente excluir?"
         );
 
-        if (!confirmar) return;
+
+        if (!confirmar)
+            return;
+
+
 
         await excluirProduto(id);
+
 
         carregarProdutos();
 
     }
 
+
+
     return (
 
-        <div style={{ display: "flex" }}>
-
-            <Sidebar />
+        <>
 
             <main style={{ padding: 30 }}>
 
-                <h1>Produtos</h1>
+
+                <h1>
+                    Produtos
+                </h1>
+
+
 
                 <Link to="/produtos/novo">
+
                     <button>
                         Novo Produto
                     </button>
+
                 </Link>
 
-                <br /><br />
+
+
+                <br />
+                <br />
+
+
 
                 <table border="1" cellPadding="10">
+
 
                     <thead>
 
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Preço</th>
-                            <th>Estoque</th>
-                            <th>Ações</th>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Nome
+                            </th>
+
+                            <th>
+                                Preço
+                            </th>
+
+                            <th>
+                                Estoque
+                            </th>
+
+                            <th>
+                                Ações
+                            </th>
+
                         </tr>
 
                     </thead>
 
+
+
                     <tbody>
 
-                        {produtos.map((produto) => (
 
-                            <tr key={produto.id}>
+                        {
+                            produtos.map((produto) => (
 
-                                <td>{produto.id}</td>
-                                <td>{produto.nome}</td>
-                                <td>R$ {produto.preco}</td>
-                                <td>{produto.estoque}</td>
 
-                                <td>
+                                <tr key={produto.id}>
 
-                                    <Link to={`/produtos/${produto.id}`}>
-                                        <button>
-                                            Editar
+
+                                    <td>
+                                        {produto.id}
+                                    </td>
+
+
+                                    <td>
+                                        {produto.nome}
+                                    </td>
+
+
+                                    <td>
+                                        R$ {produto.preco}
+                                    </td>
+
+
+                                    <td>
+                                        {produto.estoque}
+                                    </td>
+
+
+                                    <td>
+
+
+                                        <Link
+                                            to={`/produtos/${produto.id}`}
+                                        >
+
+                                            <button>
+                                                Editar
+                                            </button>
+
+                                        </Link>
+
+
+
+                                        <button
+                                            onClick={() => remover(produto.id)}
+                                        >
+
+                                            Excluir
+
                                         </button>
-                                    </Link>
 
-                                    <button
-                                        onClick={() => remover(produto.id)}
-                                    >
-                                        Excluir
-                                    </button>
 
-                                </td>
+                                    </td>
 
-                            </tr>
 
-                        ))}
+                                </tr>
+
+
+                            ))
+                        }
+
 
                     </tbody>
 
+
                 </table>
+
 
             </main>
 
-        </div>
+        </>
 
     );
 
+
 }
+
 
 export default Produtos;

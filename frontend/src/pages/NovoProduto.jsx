@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
+
 import { criarProduto } from "../services/produtoService";
+import Mensagem from "../components/Mensagem";
 
 function NovoProduto() {
 
@@ -11,17 +12,49 @@ function NovoProduto() {
     const [nome, setNome] = useState("");
     const [preco, setPreco] = useState("");
     const [estoque, setEstoque] = useState("");
+    const [mensagem, setMensagem] = useState("");
+    const [tipo, setTipo] = useState("");
 
     async function salvar() {
 
-        await criarProduto({
-            nome,
-            preco: Number(preco),
-            estoque: Number(estoque),
-            ativo: true
-        });
+        try {
 
-        navigate("/produtos");
+            await criarProduto({
+
+                nome,
+                preco,
+                estoque
+
+            });
+
+
+            setTipo("sucesso");
+
+            setMensagem(
+                "Produto criado com sucesso"
+            );
+
+
+            setTimeout(() => {
+
+                navigate("/produtos");
+
+            }, 1000);
+
+
+
+        } catch (erro) {
+
+
+            setTipo("erro");
+
+            setMensagem(
+                erro.response?.data?.detail ||
+                "Erro ao criar produto"
+            );
+
+
+        }
 
     }
 
@@ -29,11 +62,15 @@ function NovoProduto() {
 
         <div style={{ display: "flex" }}>
 
-            <Sidebar />
 
             <main style={{ padding: 30 }}>
 
                 <h1>Novo Produto</h1>
+
+                <Mensagem
+                    tipo={tipo}
+                    texto={mensagem}
+                />
 
                 <input
                     placeholder="Nome"

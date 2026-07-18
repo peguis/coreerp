@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
 
 import {
     listarClientes,
@@ -42,7 +41,8 @@ function Clientes() {
         );
 
 
-        if (!confirmar) return;
+        if (!confirmar)
+            return;
 
 
 
@@ -58,17 +58,15 @@ function Clientes() {
 
     return (
 
-
-        <div style={{ display: "flex" }}>
-
-
-            <Sidebar />
+        <>
 
 
             <main style={{ padding: 30 }}>
 
 
-                <h1>Clientes</h1>
+                <h1>
+                    Clientes
+                </h1>
 
 
 
@@ -92,21 +90,29 @@ function Clientes() {
 
                     <thead>
 
-
                         <tr>
 
-                            <th>ID</th>
+                            <th>
+                                ID
+                            </th>
 
-                            <th>Nome</th>
+                            <th>
+                                Nome
+                            </th>
 
-                            <th>Email</th>
+                            <th>
+                                Email
+                            </th>
 
-                            <th>Telefone</th>
+                            <th>
+                                Telefone
+                            </th>
 
-                            <th>Ações</th>
+                            <th>
+                                Ações
+                            </th>
 
                         </tr>
-
 
                     </thead>
 
@@ -115,64 +121,66 @@ function Clientes() {
                     <tbody>
 
 
-                        {clientes.map((cliente) => (
+                        {
+                            clientes.map((cliente) => (
 
 
-                            <tr key={cliente.id}>
+                                <tr key={cliente.id}>
 
 
-                                <td>
-                                    {cliente.id}
-                                </td>
+                                    <td>
+                                        {cliente.id}
+                                    </td>
 
 
-                                <td>
-                                    {cliente.nome}
-                                </td>
+                                    <td>
+                                        {cliente.nome}
+                                    </td>
 
 
-                                <td>
-                                    {cliente.email}
-                                </td>
+                                    <td>
+                                        {cliente.email}
+                                    </td>
 
 
-                                <td>
-                                    {cliente.telefone}
-                                </td>
+                                    <td>
+                                        {cliente.telefone}
+                                    </td>
 
 
 
-                                <td>
+                                    <td>
 
 
-                                    <Link to={`/clientes/${cliente.id}`}>
+                                        <Link
+                                            to={`/clientes/${cliente.id}`}
+                                        >
 
-                                        <button>
-                                            Editar
+                                            <button>
+                                                Editar
+                                            </button>
+
+                                        </Link>
+
+
+
+                                        <button
+                                            onClick={() => remover(cliente.id)}
+                                        >
+
+                                            Excluir
+
                                         </button>
 
-                                    </Link>
+
+                                    </td>
 
 
-
-                                    <button
-                                        onClick={() => remover(cliente.id)}
-                                    >
-
-                                        Excluir
-
-                                    </button>
+                                </tr>
 
 
-
-                                </td>
-
-
-                            </tr>
-
-
-                        ))}
-
+                            ))
+                        }
 
 
                     </tbody>
@@ -185,10 +193,10 @@ function Clientes() {
             </main>
 
 
-        </div>
-
+        </>
 
     );
+
 
 }
 
