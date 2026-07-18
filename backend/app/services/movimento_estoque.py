@@ -1,0 +1,75 @@
+from app.repositories.movimento_estoque import (
+    criar_movimento,
+    listar_movimentos,
+    buscar_movimento_por_id
+)
+
+from app.repositories.produto import (
+    buscar_produto_por_id,
+    atualizar_produto
+)
+
+
+def criar_movimento_service(
+    db,
+    movimento,
+    usuario
+):
+    produto = buscar_produto_por_id(
+        db,
+        movimento.produto_id,
+        usuario.empresa_id
+    )
+
+    if not produto:
+        return None
+
+    if movimento.tipo == "ENTRADA":
+        produto.estoque += movimento.quantidade
+
+    elif movimento.tipo == "SAIDA":
+
+        if produto.estoque < movimento.quantidade:
+            return False
+
+        produto.estoque -= movimento.quantidade
+
+    elif movimento.tipo == "AJUSTE":
+        produto.estoque = movimento.quantidade
+
+    atualizar_produto(
+        db,
+        produto,
+        {
+            "estoque": produto.estoque
+        }
+    )
+
+    return criar_movimento(
+        db,
+        movimento,
+        usuario.empresa_id,
+        usuario.id
+    )
+
+
+def listar_movimentos_service(
+    db,
+    usuario
+):
+    return listar_movimentos(
+        db,
+        usuario.empresa_id
+    )
+
+
+def buscar_movimento_service(
+    db,
+    movimento_id,
+    usuario
+):
+    return buscar_movimento_por_id(
+        db,
+        movimento_id,
+        usuario.empresa_id
+    )

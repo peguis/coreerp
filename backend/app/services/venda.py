@@ -1,0 +1,214 @@
+from app.repositories.venda import (
+    criar_venda,
+    listar_vendas,
+    buscar_venda_por_id,
+    atualizar_venda,
+    deletar_venda
+)
+
+from app.models.venda import Venda
+from app.models.item_venda import ItemVenda
+from app.models.produto import Produto
+from app.models.cliente import Cliente
+
+
+
+def criar_venda_service(
+    db,
+    dados,
+    usuario
+):
+
+    total = 0
+    itens = []
+
+
+    # valida cliente
+    cliente = db.query(Cliente).filter(
+        Cliente.id == dados.cliente_id,
+        Cliente.empresa_id == usuario.empresa_id
+    ).first()
+
+
+    if not cliente:
+        print("Cliente não encontrado:", dados.cliente_id)
+        return None
+
+
+
+    # valida produtos e calcula valores
+    for item in dados.itens:
+
+        produto = db.query(Produto).filter(
+            Produto.id == item.produto_id,
+            Produto.empresa_id == usuario.empresa_id
+        ).first()
+
+
+        if not produto:
+            print("Produto não encontrado:", item.produto_id)
+            return None
+
+
+
+        if produto.estoque < item.quantidade:
+            print(
+                "Estoque insuficiente:",
+                produto.estoque,
+                "solicitado:",
+                item.quantidade
+            )
+            return None
+
+
+
+        subtotal = produto.preco * item.quantidade
+
+        total += subtotal
+
+
+        produto.estoque -= item.quantidade
+
+
+
+        novo_item = ItemVenda(
+            produto_id=item.produto_id,
+            quantidade=item.quantidade,
+            preco_unitario=produto.preco,
+            subtotal=subtotal
+        )
+
+
+        itens.append(novo_item)
+
+
+
+    # cria venda
+    venda = Venda(
+        empresa_id=usuario.empresa_id,
+        cliente_id=dados.cliente_id,
+        usuario_id=usuario.id,
+        total=total,
+        status="ABERTA"
+    )
+
+
+    # salva venda primeiro para gerar ID
+    db.add(venda)
+    db.commit()
+    db.refresh(venda)
+
+
+
+    # associa itens
+    for item in itens:
+
+        item.venda_id = venda.id
+
+        db.add(item)
+
+
+
+    db.commit()
+    db.refresh(venda)
+
+
+    return venda
+
+
+
+
+
+def listar_vendas_service(
+    db,
+    usuario
+):
+
+    return listar_vendas(
+        db,
+        usuario.empresa_id
+    )
+
+
+
+def buscar_venda_service(
+    db,
+    venda_id,
+    usuario
+):
+
+    return buscar_venda_por_id(
+        db,
+        venda_id,
+        usuario.empresa_id
+    )
+
+
+
+def atualizar_venda_service(
+    db,
+    venda_id,
+    dados,
+    usuario
+):
+
+    venda = buscar_venda_por_id(
+        db,
+        venda_id,
+        usuario.empresa_id
+    )
+
+
+    if not venda:
+        return None
+
+
+    return atualizar_venda(
+        db,
+        venda,
+        dados
+    )
+
+
+
+def deletar_venda_service(
+    db,
+    venda_id,
+    usuario
+):
+
+    venda = buscar_venda_por_id(
+        db,
+        venda_id,
+        usuario.empresa_id
+    )
+
+
+    if not venda:
+        return False
+
+
+    itens = db.query(ItemVenda).filter(
+        ItemVenda.venda_id == venda.id
+    ).all()
+
+
+    for item in itens:
+
+        produto = db.query(Produto).filter(
+            Produto.id == item.produto_id
+        ).first()
+
+
+        if produto:
+            produto.estoque += item.quantidade
+
+
+
+    deletar_venda(
+        db,
+        venda
+    )
+
+
+    return True

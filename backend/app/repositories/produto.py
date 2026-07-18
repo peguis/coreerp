@@ -29,7 +29,8 @@ def listar_produtos(
     empresa_id: int
 ):
     return db.query(Produto).filter(
-        Produto.empresa_id == empresa_id
+    Produto.empresa_id == empresa_id,
+    Produto.ativo == True
     ).all()
 
 
@@ -62,5 +63,10 @@ def deletar_produto(
     db: Session,
     produto_db
 ):
-    db.delete(produto_db)
+    produto_db.ativo = False
+
     db.commit()
+
+    db.refresh(produto_db)
+
+    return produto_db
