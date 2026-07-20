@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 
 
@@ -71,7 +71,7 @@ class ProdutoResponse(BaseModel):
 
     ativo: bool
 
-    imagens: List[ProdutoImagemResponse] = []
+    imagens: List[ProdutoImagemResponse] = Field(default_factory=list)
 
     class Config:
         from_attributes = True

@@ -32,6 +32,7 @@ function EditarProduto() {
 
     const [imagens, setImagens] = useState([]);
     const [arquivo, setArquivo] = useState(null);
+    const [enviandoImagem, setEnviandoImagem] = useState(false);
 
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
@@ -84,12 +85,23 @@ function EditarProduto() {
 
     async function carregarImagens() {
 
-        const resposta = await api.get(
-            `/produtos/${id}/imagens`
-        );
+        try {
+
+            const resposta = await api.get(
+                `/produtos/${id}/imagens`
+            );
 
 
-        setImagens(resposta.data);
+            setImagens(
+                resposta.data
+            );
+
+
+        } catch {
+
+            setImagens([]);
+
+        }
 
     }
 
@@ -112,20 +124,51 @@ function EditarProduto() {
         );
 
 
-        await api.post(
-            `/produtos/${id}/imagem`,
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data"
+        try {
+
+            setEnviandoImagem(true);
+
+
+            await api.post(
+                `/produtos/${id}/imagem`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
                 }
-            }
-        );
+            );
 
 
-        setArquivo(null);
+            setArquivo(null);
 
-        carregarImagens();
+
+            setTipo("sucesso");
+
+            setMensagem(
+                "Imagem enviada com sucesso."
+            );
+
+
+            carregarImagens();
+
+
+        } catch (erro) {
+
+
+            setTipo("erro");
+
+            setMensagem(
+                erro.response?.data?.detail ||
+                "Erro ao enviar imagem."
+            );
+
+
+        } finally {
+
+            setEnviandoImagem(false);
+
+        }
 
     }
 
@@ -145,12 +188,35 @@ function EditarProduto() {
 
 
 
-        await api.delete(
-            `/produtos/${id}/imagem/${imagemId}`
-        );
+        try {
 
 
-        carregarImagens();
+            await api.delete(
+                `/produtos/${id}/imagem/${imagemId}`
+            );
+
+
+            setTipo("sucesso");
+
+            setMensagem(
+                "Imagem removida."
+            );
+
+
+            carregarImagens();
+
+
+
+        } catch {
+
+
+            setTipo("erro");
+
+            setMensagem(
+                "Erro ao remover imagem."
+            );
+
+        }
 
     }
 
@@ -177,6 +243,7 @@ function EditarProduto() {
                 descricao,
 
                 preco: Number(preco),
+
                 estoque: Number(estoque),
 
                 estoque_minimo:
@@ -226,6 +293,7 @@ function EditarProduto() {
 
 
 
+
     return (
 
         <main style={{ padding: 30 }}>
@@ -251,19 +319,44 @@ function EditarProduto() {
 
 
             <input
+
                 type="file"
+
+                accept="image/*"
+
                 onChange={
-                    e => setArquivo(e.target.files[0])
+                    e => setArquivo(
+                        e.target.files[0]
+                    )
                 }
+
             />
 
 
+
             <button
+
                 type="button"
+
                 onClick={enviarImagem}
+
+                disabled={
+                    !arquivo || enviandoImagem
+                }
+
             >
-                Enviar Imagem
+
+                {
+                    enviandoImagem
+                        ?
+                        "Enviando..."
+                        :
+                        "Enviar Imagem"
+                }
+
+
             </button>
+
 
 
 
@@ -296,7 +389,9 @@ function EditarProduto() {
                         imagens.map(imagem => (
 
 
-                            <div key={imagem.id}>
+                            <div
+                                key={imagem.id}
+                            >
 
 
                                 <img
@@ -317,17 +412,16 @@ function EditarProduto() {
                                 />
 
 
+
                                 <br />
 
 
+
                                 {
-
                                     imagem.principal &&
-
                                     <strong>
                                         Principal
                                     </strong>
-
                                 }
 
 
@@ -335,12 +429,15 @@ function EditarProduto() {
                                 <br />
 
 
+
                                 <button
 
                                     type="button"
 
                                     onClick={() =>
-                                        excluirImagem(imagem.id)
+                                        excluirImagem(
+                                            imagem.id
+                                        )
                                     }
 
                                 >
@@ -363,7 +460,9 @@ function EditarProduto() {
 
 
 
+
             <hr />
+
 
 
 
@@ -443,6 +542,7 @@ function EditarProduto() {
                 <br /><br />
 
 
+
                 <textarea
 
                     placeholder="Descrição"
@@ -456,7 +556,9 @@ function EditarProduto() {
                 />
 
 
+
                 <br /><br />
+
 
 
                 <input
@@ -476,7 +578,9 @@ function EditarProduto() {
                 />
 
 
+
                 <br /><br />
+
 
 
                 <input
@@ -494,7 +598,9 @@ function EditarProduto() {
                 />
 
 
+
                 <br /><br />
+
 
 
                 <button type="submit">
@@ -508,10 +614,10 @@ function EditarProduto() {
             </form>
 
 
+
         </main>
 
     );
-
 
 }
 
