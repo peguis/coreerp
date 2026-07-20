@@ -12,14 +12,19 @@ function NovoProduto() {
 
 
     const navigate = useNavigate();
-
-
     const [nome, setNome] = useState("");
     const [preco, setPreco] = useState("");
     const [estoque, setEstoque] = useState("");
-
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
+    const [categoria, setCategoria] = useState("");
+    const [codigoInterno, setCodigoInterno] = useState("");
+    const [codigoBarras, setCodigoBarras] = useState("");
+    const [marca, setMarca] = useState("");
+    const [unidade, setUnidade] = useState("UN");
+    const [descricao, setDescricao] = useState("");
+    const [estoque_minimo, setEstoqueMinimo] = useState("");
+    const [estoque_maximo, setEstoqueMaximo] = useState("");
 
 
 
@@ -35,8 +40,17 @@ function NovoProduto() {
             await criarProduto({
 
                 nome,
+                categoria,
+                codigo_interno: codigoInterno,
+                codigo_barras: codigoBarras,
+                marca,
+                unidade,
+                descricao,
+                
                 preco: Number(preco),
-                estoque: Number(estoque)
+                estoque: Number(estoque),
+                estoque_minimo: Number(estoque_minimo),
+                estoque_maximo: Number(estoque_maximo),
 
             });
 
@@ -111,7 +125,73 @@ function NovoProduto() {
                 <br />
                 <br />
 
+                <input
+                    placeholder="Categoria"
+                    value={categoria}
+                    onChange={e => setCategoria(e.target.value)}
+                />
 
+                <br /><br />
+
+                <input
+                    placeholder="Código Interno"
+                    value={codigoInterno}
+                    onChange={e => setCodigoInterno(e.target.value)}
+                />
+
+                <br /><br />
+
+                <input
+                    placeholder="Código de Barras"
+                    value={codigoBarras}
+                    onChange={e => setCodigoBarras(e.target.value)}
+                />
+
+                <br /><br />
+
+                <input
+                    placeholder="Marca"
+                    value={marca}
+                    onChange={e => setMarca(e.target.value)}
+                />
+
+                <br /><br />
+
+                <input
+                    placeholder="Unidade"
+                    value={unidade}
+                    onChange={e => setUnidade(e.target.value)}
+                />
+
+                <br /><br />
+
+                <textarea
+                    placeholder="Descrição"
+                    value={descricao}
+                    onChange={e => setDescricao(e.target.value)}
+                />
+
+                <br /><br />
+
+                <input
+                    placeholder="Estoque Mínimo"
+                    type="number"
+                    value={estoque_minimo}
+                    onChange={(e) => setEstoqueMinimo(e.target.value)}
+                />
+
+                <br />
+                <br />
+
+                <input
+                    placeholder="Estoque Máximo"
+                    type="number"
+                    value={estoque_maximo}
+                    onChange={(e) => setEstoqueMaximo(e.target.value)}
+                />
+
+                <br />
+                <br />
 
                 <input
                     placeholder="Preço"

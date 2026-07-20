@@ -5,3 +5,4 @@ from app.models.cliente import Cliente
 from app.models.movimento_estoque import MovimentoEstoque
 from app.models.venda import Venda
 from app.models.item_venda import ItemVenda
+from app.models.produto_imagem import ProdutoImagem

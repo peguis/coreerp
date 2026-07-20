@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -48,6 +48,7 @@ class Usuario(Base):
     )
 
     created_at = Column(
-        DateTime,
-        default=datetime.utcnow
+    DateTime(timezone=True),
+    server_default=func.now(),
+    nullable=False
     )

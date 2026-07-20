@@ -11,10 +11,19 @@ def criar_produto(
 ):
 
     novo_produto = Produto(
+        empresa_id=empresa_id,
+
         nome=produto.nome,
+        categoria=produto.categoria,
+        codigo_interno=produto.codigo_interno,
+        codigo_barras=produto.codigo_barras,
+        marca=produto.marca,
+        unidade=produto.unidade,
+        descricao=produto.descricao,
         preco=produto.preco,
         estoque=produto.estoque,
-        empresa_id=empresa_id
+        estoque_minimo=produto.estoque_minimo,
+        estoque_maximo=produto.estoque_maximo,
     )
 
     db.add(novo_produto)
@@ -22,7 +31,6 @@ def criar_produto(
     db.refresh(novo_produto)
 
     return novo_produto
-
 
 def listar_produtos(
     db: Session,

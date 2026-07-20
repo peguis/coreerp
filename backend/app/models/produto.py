@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, Text, DateTime
 
 from app.database import Base
 
@@ -23,15 +23,102 @@ class Produto(Base):
         nullable=False
     )
 
+    categoria = Column(
+        String,
+        nullable=True
+    )
+
+    codigo_interno = Column(
+        String,
+        unique=False,
+        nullable=True
+    )
+
+    codigo_barras = Column(
+        String,
+        unique=False,
+        nullable=True
+    )
+
+    marca = Column(
+        String,
+        nullable=True
+    )
+
+    unidade = Column(
+        String,
+        default="UN"
+    )
+
+    descricao = Column(
+        Text,
+        nullable=True
+    )
+
     preco = Column(
         Float,
         nullable=False
     )
 
     estoque = Column(
-        Integer,
-        default=0
+        Float,
+        default=0,
+        nullable=False
+        
     )
+    estoque_minimo = Column(
+        Float,
+        default=0,
+        nullable=False
+    )
+
+    estoque_maximo = Column(
+        Float,
+        default=0,
+        nullable=False
+    )
+    
+    peso = Column(
+        Float,
+        nullable=True
+    )
+
+    altura = Column(
+        Float,
+        nullable=True
+    )
+
+    largura = Column(
+        Float,
+        nullable=True
+    )
+
+    comprimento = Column(
+        Float,
+        nullable=True
+    )
+
+    localizacao = Column(
+        String,
+        nullable=True
+    )
+
+    custo_medio = Column(
+        Float,
+        default=0,
+        nullable=False
+    )
+
+    ultima_entrada = Column(
+        DateTime,
+        nullable=True
+    )
+
+    ultima_saida = Column(
+        DateTime,
+        nullable=True
+    )
+       
 
     ativo = Column(
         Boolean,
