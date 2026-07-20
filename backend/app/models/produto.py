@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, Text, DateTime
+from sqlalchemy.orm import relationship
 
 from app.database import Base
 
@@ -123,4 +124,10 @@ class Produto(Base):
     ativo = Column(
         Boolean,
         default=True
+    )
+
+    imagens = relationship(
+    "ProdutoImagem",
+    cascade="all, delete-orphan",
+    backref="produto"
     )

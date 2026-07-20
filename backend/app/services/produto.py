@@ -24,11 +24,20 @@ def criar_produto_service(
 
 def listar_produtos_service(
     db,
-    usuario
+    usuario,
+    busca=None,
+    categoria=None,
+    pagina=1,
+    limite=10
 ):
+
     return listar_produtos(
         db,
-        usuario.empresa_id
+        usuario.empresa_id,
+        busca,
+        categoria,
+        pagina,
+        limite
     )
 
 

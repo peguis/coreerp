@@ -11,19 +11,30 @@ def criar_produto(
 ):
 
     novo_produto = Produto(
-        empresa_id=empresa_id,
+    empresa_id=empresa_id,
 
-        nome=produto.nome,
-        categoria=produto.categoria,
-        codigo_interno=produto.codigo_interno,
-        codigo_barras=produto.codigo_barras,
-        marca=produto.marca,
-        unidade=produto.unidade,
-        descricao=produto.descricao,
-        preco=produto.preco,
-        estoque=produto.estoque,
-        estoque_minimo=produto.estoque_minimo,
-        estoque_maximo=produto.estoque_maximo,
+    nome=produto.nome,
+    categoria=produto.categoria,
+    codigo_interno=produto.codigo_interno,
+    codigo_barras=produto.codigo_barras,
+    marca=produto.marca,
+    unidade=produto.unidade,
+    descricao=produto.descricao,
+
+    preco=produto.preco,
+    estoque=produto.estoque,
+
+    estoque_minimo=produto.estoque_minimo,
+    estoque_maximo=produto.estoque_maximo,
+
+    peso=produto.peso,
+    altura=produto.altura,
+    largura=produto.largura,
+    comprimento=produto.comprimento,
+
+    localizacao=produto.localizacao,
+
+    custo_medio=produto.custo_medio
     )
 
     db.add(novo_produto)
@@ -34,13 +45,39 @@ def criar_produto(
 
 def listar_produtos(
     db: Session,
-    empresa_id: int
+    empresa_id: int,
+    busca=None,
+    categoria=None,
+    pagina=1,
+    limite=10
 ):
-    return db.query(Produto).filter(
-    Produto.empresa_id == empresa_id,
-    Produto.ativo == True
+
+    query = db.query(Produto).filter(
+        Produto.empresa_id == empresa_id,
+        Produto.ativo == True
+    )
+
+
+    if busca:
+        query = query.filter(
+            Produto.nome.ilike(f"%{busca}%")
+        )
+
+
+    if categoria:
+        query = query.filter(
+            Produto.categoria == categoria
+        )
+
+
+    produtos = query.offset(
+        (pagina - 1) * limite
+    ).limit(
+        limite
     ).all()
 
+
+    return produtos
 
 def buscar_produto_por_id(
     db: Session,

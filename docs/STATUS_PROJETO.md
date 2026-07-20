@@ -6,6 +6,10 @@
 * [x] FastAPI configurado
 * [x] Uvicorn configurado
 * [x] Requirements criado
+* [x] Git configurado
+* [x] React configurado
+* [x] Docker configurado
+* [x] Docker Compose configurado
 
 Status: 100% ✅
 
@@ -21,30 +25,37 @@ Status: 100% ✅
 * [x] Base declarativa criada
 * [x] Alembic configurado
 * [x] Migrations funcionando
+* [x] Relacionamentos entre tabelas
 
 Status: 100% ✅
 
 
 ---
 
-# Estrutura
+# Arquitetura Backend
 
-* [x] Arquitetura em camadas
+Arquitetura:
 
 API
- ↓
+↓
 Service
- ↓
+↓
 Repository
- ↓
+↓
 Model
- ↓
+↓
 Banco
 
 
+Implementado:
+
+* [x] Repository Pattern
+* [x] Service Layer
+* [x] Schemas Pydantic
+* [x] Models SQLAlchemy
 * [x] Configuração centralizada
 * [x] Sistema de logs
-* [x] Middleware global de erros
+* [x] Tratamento global de erros
 * [x] CORS
 
 Status: 100% ✅
@@ -52,24 +63,25 @@ Status: 100% ✅
 
 ---
 
-# Funcionalidades Implementadas
-
-
 # Empresa
 
-* [x] Model
-* [x] Schema
+Implementado:
+
+* [x] Model Empresa
+* [x] Schema Empresa
 * [x] Repository
 * [x] Service
 * [x] API
 
+
 CRUD:
 
-* [x] Criar Empresa
-* [x] Listar Empresas
-* [x] Buscar Empresa
-* [x] Atualizar Empresa
-* [x] Excluir Empresa
+* [x] Criar empresa
+* [x] Listar empresas
+* [x] Buscar empresa
+* [x] Atualizar empresa
+* [x] Excluir empresa
+
 
 Status: 100% ✅
 
@@ -78,19 +90,13 @@ Status: 100% ✅
 
 # Usuários
 
-* [x] Model
-* [x] Schema
+Implementado:
+
+* [x] Model Usuário
+* [x] Schema Usuário
 * [x] Repository
 * [x] Service
 * [x] API
-
-CRUD:
-
-* [x] Criar Usuário
-* [x] Listar Usuários
-* [x] Buscar Usuário
-* [x] Atualizar Usuário
-* [x] Excluir Usuário
 
 
 Segurança:
@@ -103,63 +109,6 @@ Segurança:
 * [x] Current User
 * [x] Rotas privadas
 
-Status: 100% ✅
-
-
----
-
-# Produtos
-
-* [x] Model
-* [x] Schema
-* [x] Repository
-* [x] Service
-* [x] API
-
-
-CRUD:
-
-* [x] Criar Produto
-* [x] Listar Produtos
-* [x] Buscar Produto
-* [x] Atualizar Produto
-* [x] Excluir Produto
-
-
-Controle:
-
-* [x] Preço
-* [x] Estoque inicial
-* [x] Produto ativo/inativo
-* [x] Isolamento por empresa
-
-Status: 100% ✅
-
-
----
-
-# Clientes
-
-* [x] Model
-* [x] Schema
-* [x] Repository
-* [x] Service
-* [x] API
-
-
-CRUD:
-
-* [x] Criar Cliente
-* [x] Listar Clientes
-* [x] Buscar Cliente
-* [x] Atualizar Cliente
-* [x] Excluir Cliente
-
-
-Controle:
-
-* [x] Empresa vinculada
-* [x] Controle por tenant
 
 Status: 100% ✅
 
@@ -168,13 +117,21 @@ Status: 100% ✅
 
 # Autenticação
 
+Backend:
+
 * [x] Login JWT
-* [x] Geração de Token
-* [x] Refresh Token
-* [x] Proteção de rotas
-* [x] Hash Bcrypt
-* [x] Current User
-* [x] Axios interceptor no frontend
+* [x] Geração de token
+* [x] Refresh token
+* [x] Proteção de endpoints
+* [x] Current user
+
+
+Frontend:
+
+* [x] AuthContext
+* [x] Persistência login
+* [x] Axios interceptor
+* [x] Rotas protegidas
 
 
 Status: 100% ✅
@@ -186,19 +143,135 @@ Status: 100% ✅
 
 Implementado:
 
-* [x] Empresa possui usuários
+* [x] Empresa vinculada aos usuários
 * [x] Usuário possui empresa_id
 * [x] Produtos isolados por empresa
 * [x] Clientes isolados por empresa
-* [x] Vendas isoladas por empresa
 * [x] Estoque isolado por empresa
+* [x] Vendas isoladas por empresa
 
 
 Pendências:
 
 * [ ] Middleware global Tenant
-* [ ] Sistema de permissões
 * [ ] Perfis de usuário
+* [ ] Sistema de permissões
+
+
+Status: 80% 🟡
+
+
+---
+
+# Produtos
+
+Implementado:
+
+* [x] Model Produto
+* [x] Schema Produto
+* [x] Repository
+* [x] Service
+* [x] API
+
+
+CRUD:
+
+* [x] Criar produto
+* [x] Listar produtos
+* [x] Buscar produto
+* [x] Atualizar produto
+* [x] Excluir produto
+
+
+Cadastro profissional:
+
+* [x] Categoria
+* [x] Código interno
+* [x] Código de barras
+* [x] Marca
+* [x] Unidade
+* [x] Descrição
+* [x] Peso
+* [x] Dimensões
+* [x] Localização
+* [x] Produto ativo/inativo
+
+
+Estoque:
+
+* [x] Estoque inicial
+* [x] Estoque mínimo
+* [x] Estoque máximo
+* [x] Custo médio
+* [x] Última entrada
+* [x] Última saída
+
+
+Imagens:
+
+* [x] Upload de imagem
+* [x] Múltiplas imagens
+* [x] Imagem principal
+* [x] Exclusão de imagem
+* [x] Associação produto/imagem
+* [x] Retorno das imagens no produto
+
+
+Pesquisa:
+
+* [x] Busca por nome
+* [x] Filtro por categoria
+* [x] Paginação
+
+
+Pendências:
+
+* [ ] Ordenação
+* [ ] Busca avançada
+* [ ] Interface com cards e fotos
+
+
+Status: 95% 🟢
+
+
+---
+
+# Clientes
+
+Implementado:
+
+* [x] Model Cliente
+* [x] Schema Cliente
+* [x] Repository
+* [x] Service
+* [x] API
+
+
+CRUD:
+
+* [x] Criar cliente
+* [x] Listar clientes
+* [x] Buscar cliente
+* [x] Atualizar cliente
+* [x] Excluir cliente
+
+
+Controle:
+
+* [x] Empresa vinculada
+* [x] Isolamento por tenant
+
+
+Pendências:
+
+* [ ] CPF/CNPJ
+* [ ] Tipo pessoa Física/Jurídica
+* [ ] Endereço completo
+* [ ] Histórico de compras
+* [ ] Valor gasto
+* [ ] Ticket médio
+* [ ] Tags
+* [ ] Cliente VIP
 
 
 Status: 80% 🟡
@@ -217,8 +290,8 @@ Implementado:
 * [x] Histórico de movimentações
 * [x] Usuário responsável
 * [x] Controle por empresa
-* [x] Baixa automática ao realizar venda
-* [x] Retorno automático de estoque ao excluir venda
+* [x] Baixa automática em vendas
+* [x] Retorno automático ao excluir venda
 
 
 Status: 100% ✅
@@ -235,19 +308,22 @@ Implementado:
 * [x] Adicionar produtos
 * [x] Criar itens da venda
 * [x] Calcular total automaticamente
-* [x] Baixa automática no estoque
+* [x] Baixa automática estoque
 * [x] Histórico de vendas
-* [x] Buscar detalhes da venda
-* [x] Exclusão de venda
-* [x] Restauração automática do estoque ao excluir venda
+* [x] Detalhes da venda
+* [x] Exclusão da venda
+* [x] Restauração de estoque
 
 
 Pendências:
 
-* [ ] Cancelamento de venda com status próprio
-* [ ] Alteração de venda existente
-* [ ] Controle de pagamentos
-* [ ] Status da venda (Aberta, Finalizada, Cancelada)
+* [ ] Status da venda
+* [ ] Cancelamento real
+* [ ] Alteração de venda
+* [ ] Pagamentos
+* [ ] Parcelamento
+* [ ] Impressão pedido
+* [ ] PDF
 
 
 Status: 90% 🟢
@@ -259,15 +335,22 @@ Status: 90% 🟢
 
 Backend:
 
-* [x] Indicadores gerais
 * [x] Produtos cadastrados
 * [x] Clientes cadastrados
 * [x] Estoque baixo
-* [x] Quantidade de vendas
+* [x] Quantidade vendas
 * [x] Faturamento
 
 
-Status: 100% ✅
+Pendências:
+
+* [ ] Gráficos
+* [ ] Ranking produtos
+* [ ] Ranking clientes
+* [ ] Indicadores avançados
+
+
+Status: 75% 🟡
 
 
 ---
@@ -277,9 +360,9 @@ Status: 100% ✅
 Implementado:
 
 * [x] React configurado
-* [x] Axios configurado
+* [x] Axios
 * [x] Login
-* [x] JWT no frontend
+* [x] JWT
 * [x] Rotas protegidas
 * [x] Sidebar
 * [x] Dashboard
@@ -288,8 +371,7 @@ Implementado:
 * [x] Estoque
 * [x] Vendas
 * [x] Nova venda
-* [x] Detalhes da venda
-* [x] Exclusão de vendas
+* [x] Detalhes venda
 
 
 Pendências:
@@ -298,7 +380,8 @@ Pendências:
 * [ ] Componentes reutilizáveis
 * [ ] Loading global
 * [ ] Tratamento visual de erros
-* [ ] Melhorar responsividade
+* [ ] Responsividade
+* [ ] Tema escuro
 
 
 Status: 80% 🟡
@@ -308,48 +391,49 @@ Status: 80% 🟡
 
 # Próximas Etapas
 
+## FASE 6 — Clientes CRM
 
-## FASE 1 — Finalização Backend
-
-⬜ Implementar cancelamento real de venda  
-⬜ Criar status de venda (Aberta, Finalizada, Cancelada)  
-⬜ Permitir edição de vendas  
-⬜ Criar validações avançadas  
-⬜ Paginação  
-⬜ Filtros de busca  
-
-
----
-
-## FASE 2 — Melhorias Frontend
-
-⬜ Dashboard com gráficos  
-⬜ Formulários melhores  
-⬜ Mensagens de sucesso/erro  
-⬜ Melhorar tabelas  
-⬜ Responsividade mobile  
+⬜ CPF/CNPJ  
+⬜ Tipo pessoa  
+⬜ Endereço completo  
+⬜ Histórico compras  
+⬜ Ticket médio  
+⬜ Tags  
+⬜ Cliente VIP  
 
 
 ---
 
-## FASE 3 — Transformação SaaS
+## FASE 7 — Melhorias Comerciais
 
-⬜ Logo e identidade visual por empresa  
-⬜ Personalização do ambiente  
-⬜ Configurações por empresa  
-⬜ Perfis e permissões de usuários  
+⬜ Status de vendas  
+⬜ Cancelamento real  
+⬜ Pagamentos  
+⬜ Parcelamento  
+⬜ PDF pedidos  
 
 
 ---
 
-## FASE 4 — Produção
+## FASE 8 — SaaS
 
-⬜ Docker  
-⬜ Docker Compose  
-⬜ Deploy Cloud  
-⬜ PostgreSQL produção  
+⬜ Middleware Tenant  
+⬜ Perfis usuários  
+⬜ Permissões  
+⬜ Personalização empresa  
+
+
+---
+
+## FASE 9 — Produção
+
+⬜ VPS  
+⬜ Domínio  
 ⬜ HTTPS  
+⬜ Nginx  
+⬜ CI/CD  
 ⬜ Backup automático  
+⬜ Monitoramento
 
 
 ---
@@ -362,28 +446,31 @@ Status: 80% 🟡
 * Arquitetura Repository + Service consolidada.
 * Autenticação JWT implementada.
 * Multiempresa implementado.
-* CRUD completo de produtos e clientes.
+* CRUD produtos e clientes criado.
 * Controle de estoque implementado.
 * Sistema de vendas implementado.
 * Dashboard backend criado.
 * Frontend React integrado.
-* Sistema funcional ponta a ponta.
-* Exclusão de vendas com retorno automático de estoque implementada.
+* Upload múltiplas imagens de produtos implementado.
+* Produtos retornando imagens associadas.
+* Paginação e filtros de produtos implementados.
 
 
 ---
 
 # Status Geral Atual
 
-Backend: 95% 🟢  
+Backend: 96% 🟢  
 Frontend: 80% 🟡  
 SaaS: 60% 🟡  
-Produção: 30% 🔴  
+Produção: 30% 🔴
 
 
-## Estado Atual
+---
 
-O CoreERP já possui um fluxo funcional completo:
+# Estado Atual
+
+O CoreERP possui um fluxo ERP funcional:
 
 Usuário
 → Login JWT
@@ -396,4 +483,11 @@ Usuário
 → Dashboard
 
 
-O sistema atualmente funciona como um ERP MVP multiempresa, faltando principalmente melhorias de experiência, regras comerciais e preparação para produção.
+O sistema atualmente funciona como um ERP MVP multiempresa.
+
+Próximos focos:
+
+1. Evoluir Clientes para CRM.
+2. Melhorar regras comerciais de vendas.
+3. Transformar o sistema em SaaS completo.
+4. Preparar ambiente de produção.

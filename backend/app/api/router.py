@@ -7,6 +7,7 @@ from app.api.cliente import router as cliente_router
 from app.api.movimento_estoque import router as movimento_estoque_router
 from app.api.venda import router as venda_router
 from app.api.dashboard import router as dashboard_router
+from app.api.produto_imagem import router as produto_imagem_router
 
 router = APIRouter()
 
@@ -37,4 +38,8 @@ router.include_router(
 
 router.include_router(
     dashboard_router
+)
+
+router.include_router(
+    produto_imagem_router
 )
