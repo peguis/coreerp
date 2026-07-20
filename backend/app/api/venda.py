@@ -91,9 +91,7 @@ def buscar_venda(
     return venda
 
 
-@router.put(
-    "/{venda_id}"
-)
+@router.put("/{venda_id}")
 def editar_venda(
     venda_id: int,
     dados: dict,

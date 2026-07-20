@@ -9,23 +9,42 @@ from app.repositories.produto import (
     atualizar_produto
 )
 
+from app.core.validators.movimento_estoque import validar_movimento
+
+
 
 def criar_movimento_service(
     db,
     movimento,
     usuario
 ):
+
+    validar_movimento(
+        movimento.quantidade,
+        movimento.tipo
+    )
+
+
+    movimento.tipo = movimento.tipo.upper()
+
+
     produto = buscar_produto_por_id(
         db,
         movimento.produto_id,
         usuario.empresa_id
     )
 
+
     if not produto:
         return None
 
+
+
     if movimento.tipo == "ENTRADA":
+
         produto.estoque += movimento.quantidade
+
+
 
     elif movimento.tipo == "SAIDA":
 
@@ -34,8 +53,13 @@ def criar_movimento_service(
 
         produto.estoque -= movimento.quantidade
 
+
+
     elif movimento.tipo == "AJUSTE":
+
         produto.estoque = movimento.quantidade
+
+
 
     atualizar_produto(
         db,
@@ -45,6 +69,7 @@ def criar_movimento_service(
         }
     )
 
+
     return criar_movimento(
         db,
         movimento,
@@ -53,14 +78,17 @@ def criar_movimento_service(
     )
 
 
+
 def listar_movimentos_service(
     db,
     usuario
 ):
+
     return listar_movimentos(
         db,
         usuario.empresa_id
     )
+
 
 
 def buscar_movimento_service(
@@ -68,6 +96,7 @@ def buscar_movimento_service(
     movimento_id,
     usuario
 ):
+
     return buscar_movimento_por_id(
         db,
         movimento_id,

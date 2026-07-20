@@ -10,7 +10,16 @@ from app.models.venda import Venda
 from app.models.item_venda import ItemVenda
 from app.models.produto import Produto
 from app.models.cliente import Cliente
+from app.core.validators.venda import validar_venda
 
+
+STATUS_VALIDOS = [
+    "ABERTA",
+    "SEPARACAO",
+    "FATURADA",
+    "PAGA",
+    "CANCELADA"
+]
 
 
 def criar_venda_service(
@@ -22,21 +31,15 @@ def criar_venda_service(
     total = 0
     itens = []
 
-
-    # valida cliente
     cliente = db.query(Cliente).filter(
         Cliente.id == dados.cliente_id,
         Cliente.empresa_id == usuario.empresa_id
     ).first()
 
-
     if not cliente:
         print("Cliente não encontrado:", dados.cliente_id)
         return None
 
-
-
-    # valida produtos e calcula valores
     for item in dados.itens:
 
         produto = db.query(Produto).filter(
@@ -44,12 +47,9 @@ def criar_venda_service(
             Produto.empresa_id == usuario.empresa_id
         ).first()
 
-
         if not produto:
             print("Produto não encontrado:", item.produto_id)
             return None
-
-
 
         if produto.estoque < item.quantidade:
             print(
@@ -60,16 +60,11 @@ def criar_venda_service(
             )
             return None
 
-
-
         subtotal = produto.preco * item.quantidade
 
         total += subtotal
 
-
         produto.estoque -= item.quantidade
-
-
 
         novo_item = ItemVenda(
             produto_id=item.produto_id,
@@ -78,12 +73,14 @@ def criar_venda_service(
             subtotal=subtotal
         )
 
-
         itens.append(novo_item)
 
+    validar_venda(
+        itens=itens,
+        valor_total=total,
+        cliente_id=dados.cliente_id
+    )
 
-
-    # cria venda
     venda = Venda(
         empresa_id=usuario.empresa_id,
         cliente_id=dados.cliente_id,
@@ -92,31 +89,18 @@ def criar_venda_service(
         status="ABERTA"
     )
 
-
-    # salva venda primeiro para gerar ID
     db.add(venda)
     db.commit()
     db.refresh(venda)
 
-
-
-    # associa itens
     for item in itens:
-
         item.venda_id = venda.id
-
         db.add(item)
-
-
 
     db.commit()
     db.refresh(venda)
 
-
     return venda
-
-
-
 
 
 def listar_vendas_service(
@@ -128,7 +112,6 @@ def listar_vendas_service(
         db,
         usuario.empresa_id
     )
-
 
 
 def buscar_venda_service(
@@ -144,7 +127,6 @@ def buscar_venda_service(
     )
 
 
-
 def atualizar_venda_service(
     db,
     venda_id,
@@ -158,18 +140,21 @@ def atualizar_venda_service(
         usuario.empresa_id
     )
 
-
     if not venda:
         return None
 
+    from app.core.validators.venda import validar_status_venda
+
+    if "status" in dados:
+        dados["status"] = validar_status_venda(
+            dados["status"]
+        )
 
     return atualizar_venda(
         db,
         venda,
         dados
     )
-
-
 
 def deletar_venda_service(
     db,
@@ -183,15 +168,12 @@ def deletar_venda_service(
         usuario.empresa_id
     )
 
-
     if not venda:
         return False
-
 
     itens = db.query(ItemVenda).filter(
         ItemVenda.venda_id == venda.id
     ).all()
-
 
     for item in itens:
 
@@ -199,16 +181,12 @@ def deletar_venda_service(
             Produto.id == item.produto_id
         ).first()
 
-
         if produto:
             produto.estoque += item.quantidade
-
-
 
     deletar_venda(
         db,
         venda
     )
-
 
     return True

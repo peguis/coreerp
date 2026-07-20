@@ -6,12 +6,21 @@ from app.repositories.cliente import (
     deletar_cliente
 )
 
+from app.core.validators.cliente import validar_cliente
+
+
 
 def criar_cliente_service(
     db,
     cliente,
     usuario
 ):
+
+    validar_cliente(
+        cliente.nome,
+        cliente.email,
+        cliente.telefone
+    )
 
     return criar_cliente(
         db,
@@ -20,14 +29,17 @@ def criar_cliente_service(
     )
 
 
+
 def listar_clientes_service(
     db,
     usuario
 ):
+
     return listar_clientes(
         db,
         usuario.empresa_id
     )
+
 
 
 def buscar_cliente_service(
@@ -35,11 +47,13 @@ def buscar_cliente_service(
     cliente_id,
     usuario
 ):
+
     return buscar_cliente_por_id(
         db,
         cliente_id,
         usuario.empresa_id
     )
+
 
 
 def atualizar_cliente_service(
@@ -48,14 +62,37 @@ def atualizar_cliente_service(
     dados,
     usuario
 ):
+
     cliente = buscar_cliente_por_id(
         db,
         cliente_id,
         usuario.empresa_id
     )
 
+
     if not cliente:
         return None
+
+
+    if "nome" in dados or "email" in dados or "telefone" in dados:
+
+        validar_cliente(
+            dados.get(
+                "nome",
+                cliente.nome
+            ),
+
+            dados.get(
+                "email",
+                cliente.email
+            ),
+
+            dados.get(
+                "telefone",
+                cliente.telefone
+            )
+        )
+
 
     return atualizar_cliente(
         db,
@@ -64,23 +101,28 @@ def atualizar_cliente_service(
     )
 
 
+
 def deletar_cliente_service(
     db,
     cliente_id,
     usuario
 ):
+
     cliente = buscar_cliente_por_id(
         db,
         cliente_id,
         usuario.empresa_id
     )
 
+
     if not cliente:
         return False
+
 
     deletar_cliente(
         db,
         cliente
     )
+
 
     return True

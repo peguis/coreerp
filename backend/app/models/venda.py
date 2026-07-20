@@ -38,9 +38,9 @@ class Venda(Base):
     )
 
     status = Column(
-        String,
-        nullable=False,
-        default="ABERTA"
+    String,
+    nullable=False,
+    default="ABERTA"
     )
 
     created_at = Column(
