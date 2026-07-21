@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.movimento_estoque import MovimentoEstoque
 from app.schemas.movimento_estoque import MovimentoEstoqueCreate
+from sqlalchemy import desc
 
 
 def criar_movimento(
@@ -30,8 +31,13 @@ def listar_movimentos(
     db: Session,
     empresa_id: int
 ):
-    return db.query(MovimentoEstoque).filter(
+
+    return db.query(
+        MovimentoEstoque
+    ).filter(
         MovimentoEstoque.empresa_id == empresa_id
+    ).order_by(
+        desc(MovimentoEstoque.id)
     ).all()
 
 

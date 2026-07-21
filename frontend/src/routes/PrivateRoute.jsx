@@ -1,23 +1,35 @@
 import { Navigate, Outlet } from "react-router-dom";
 
+import { useContext } from "react";
+
+import { AuthContext } from "../auth/AuthContext";
+
+
+
 
 function PrivateRoute() {
 
 
-    const token = localStorage.getItem("token");
+    const { autenticado, token } =
+        useContext(AuthContext);
 
 
-    if (!token) {
+    console.log(
+        "PRIVATE ROUTE:",
+        autenticado,
+        token
+    );
 
-        return <Navigate to="/" />;
 
-    }
+
 
 
     return <Outlet />;
 
 
 }
+
+
 
 
 export default PrivateRoute;

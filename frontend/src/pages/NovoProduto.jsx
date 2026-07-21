@@ -12,19 +12,56 @@ function NovoProduto() {
 
 
     const navigate = useNavigate();
-    const [nome, setNome] = useState("");
-    const [preco, setPreco] = useState("");
-    const [estoque, setEstoque] = useState("");
+
+
+    const [form, setForm] = useState({
+
+        nome: "",
+        categoria: "",
+        codigo_interno: "",
+        codigo_barras: "",
+        marca: "",
+        unidade: "UN",
+        descricao: "",
+        preco: "",
+        estoque: "",
+        estoque_minimo: "",
+        estoque_maximo: "",
+        peso: "",
+        altura: "",
+        largura: "",
+        comprimento: "",
+        localizacao: "",
+        custo_medio: ""
+
+    });
+
+
+
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
-    const [categoria, setCategoria] = useState("");
-    const [codigoInterno, setCodigoInterno] = useState("");
-    const [codigoBarras, setCodigoBarras] = useState("");
-    const [marca, setMarca] = useState("");
-    const [unidade, setUnidade] = useState("UN");
-    const [descricao, setDescricao] = useState("");
-    const [estoque_minimo, setEstoqueMinimo] = useState("");
-    const [estoque_maximo, setEstoqueMaximo] = useState("");
+
+
+
+
+
+    function alterar(e) {
+
+
+        setForm({
+
+            ...form,
+
+            [e.target.name]:
+                e.target.value
+
+        });
+
+
+    }
+
+
+
 
 
 
@@ -34,23 +71,56 @@ function NovoProduto() {
         e.preventDefault();
 
 
+
         try {
 
 
             await criarProduto({
 
-                nome,
-                categoria,
-                codigo_interno: codigoInterno,
-                codigo_barras: codigoBarras,
-                marca,
-                unidade,
-                descricao,
-                
-                preco: Number(preco),
-                estoque: Number(estoque),
-                estoque_minimo: Number(estoque_minimo),
-                estoque_maximo: Number(estoque_maximo),
+                ...form,
+
+                preco: Number(form.preco),
+
+                estoque: Number(form.estoque),
+
+                estoque_minimo: Number(form.estoque_minimo),
+
+                estoque_maximo: Number(form.estoque_maximo),
+
+                peso:
+                    form.peso
+                        ?
+                        Number(form.peso)
+                        :
+                        null,
+
+                altura:
+                    form.altura
+                        ?
+                        Number(form.altura)
+                        :
+                        null,
+
+                largura:
+                    form.largura
+                        ?
+                        Number(form.largura)
+                        :
+                        null,
+
+                comprimento:
+                    form.comprimento
+                        ?
+                        Number(form.comprimento)
+                        :
+                        null,
+
+                custo_medio:
+                    form.custo_medio
+                        ?
+                        Number(form.custo_medio)
+                        :
+                        0
 
             });
 
@@ -59,7 +129,7 @@ function NovoProduto() {
             setTipo("sucesso");
 
             setMensagem(
-                "Produto criado com sucesso"
+                "Produto criado com sucesso."
             );
 
 
@@ -72,14 +142,18 @@ function NovoProduto() {
 
 
 
+
         } catch (erro) {
 
 
             setTipo("erro");
 
             setMensagem(
+
                 erro.response?.data?.detail ||
-                "Erro ao criar produto"
+
+                "Erro ao criar produto."
+
             );
 
 
@@ -87,6 +161,9 @@ function NovoProduto() {
 
 
     }
+
+
+
 
 
 
@@ -103,131 +180,141 @@ function NovoProduto() {
 
 
             <Mensagem
+
                 tipo={tipo}
+
                 texto={mensagem}
+
             />
+
+
 
 
 
             <form onSubmit={salvar}>
 
 
-                <input
-                    placeholder="Nome"
-                    value={nome}
-                    onChange={
-                        e => setNome(e.target.value)
-                    }
-                />
+                {
+                    [
+
+                        ["nome", "Nome"],
+
+                        ["categoria", "Categoria"],
+
+                        ["codigo_interno", "Código Interno"],
+
+                        ["codigo_barras", "Código Barras"],
+
+                        ["marca", "Marca"],
+
+                        ["unidade", "Unidade"],
+
+                        ["localizacao", "Localização"],
+
+                        ["preco", "Preço"],
+
+                        ["estoque", "Estoque"],
+
+                        ["estoque_minimo", "Estoque Mínimo"],
+
+                        ["estoque_maximo", "Estoque Máximo"],
+
+                        ["peso", "Peso"],
+
+                        ["altura", "Altura"],
+
+                        ["largura", "Largura"],
+
+                        ["comprimento", "Comprimento"],
+
+                        ["custo_medio", "Custo Médio"]
+
+                    ]
+
+                        .map(campo => (
+
+
+                            <div key={campo[0]}>
+
+
+                                <input
+
+                                    name={campo[0]}
+
+                                    placeholder={campo[1]}
+
+                                    value={form[campo[0]]}
+
+                                    type={
+                                        [
+                                            "preco",
+                                            "estoque",
+                                            "estoque_minimo",
+                                            "estoque_maximo",
+                                            "peso",
+                                            "altura",
+                                            "largura",
+                                            "comprimento",
+                                            "custo_medio"
+
+                                        ].includes(campo[0])
+
+                                            ?
+
+                                            "number"
+
+                                            :
+
+                                            "text"
+
+                                    }
+
+                                    step="0.01"
+
+                                    onChange={alterar}
+
+                                />
+
+
+                                <br /><br />
+
+
+                            </div>
+
+
+                        ))
+
+                }
 
 
 
-                <br />
-                <br />
 
-                <input
-                    placeholder="Categoria"
-                    value={categoria}
-                    onChange={e => setCategoria(e.target.value)}
-                />
-
-                <br /><br />
-
-                <input
-                    placeholder="Código Interno"
-                    value={codigoInterno}
-                    onChange={e => setCodigoInterno(e.target.value)}
-                />
-
-                <br /><br />
-
-                <input
-                    placeholder="Código de Barras"
-                    value={codigoBarras}
-                    onChange={e => setCodigoBarras(e.target.value)}
-                />
-
-                <br /><br />
-
-                <input
-                    placeholder="Marca"
-                    value={marca}
-                    onChange={e => setMarca(e.target.value)}
-                />
-
-                <br /><br />
-
-                <input
-                    placeholder="Unidade"
-                    value={unidade}
-                    onChange={e => setUnidade(e.target.value)}
-                />
-
-                <br /><br />
 
                 <textarea
+
+                    name="descricao"
+
                     placeholder="Descrição"
-                    value={descricao}
-                    onChange={e => setDescricao(e.target.value)}
+
+                    value={form.descricao}
+
+                    onChange={alterar}
+
                 />
+
+
 
                 <br /><br />
 
-                <input
-                    placeholder="Estoque Mínimo"
-                    type="number"
-                    value={estoque_minimo}
-                    onChange={(e) => setEstoqueMinimo(e.target.value)}
-                />
-
-                <br />
-                <br />
-
-                <input
-                    placeholder="Estoque Máximo"
-                    type="number"
-                    value={estoque_maximo}
-                    onChange={(e) => setEstoqueMaximo(e.target.value)}
-                />
-
-                <br />
-                <br />
-
-                <input
-                    placeholder="Preço"
-                    type="number"
-                    value={preco}
-                    onChange={
-                        e => setPreco(e.target.value)
-                    }
-                />
-
-
-
-                <br />
-                <br />
-
-
-
-                <input
-                    placeholder="Estoque"
-                    type="number"
-                    value={estoque}
-                    onChange={
-                        e => setEstoque(e.target.value)
-                    }
-                />
-
-
-
-                <br />
-                <br />
 
 
 
                 <button type="submit">
+
                     Salvar
+
                 </button>
+
 
 
             </form>

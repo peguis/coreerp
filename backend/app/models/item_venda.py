@@ -15,6 +15,13 @@ class ItemVenda(Base):
     )
 
 
+    empresa_id = Column(
+        Integer,
+        ForeignKey("empresas.id"),
+        nullable=False
+    )
+
+
     venda_id = Column(
         Integer,
         ForeignKey("vendas.id"),

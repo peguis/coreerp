@@ -13,6 +13,7 @@ import api from "../api/axios";
 
 function EditarProduto() {
 
+
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -31,11 +32,15 @@ function EditarProduto() {
     const [estoque_maximo, setEstoqueMaximo] = useState("");
 
     const [imagens, setImagens] = useState([]);
+
     const [arquivo, setArquivo] = useState(null);
-    const [enviandoImagem, setEnviandoImagem] = useState(false);
+
+    const [preview, setPreview] = useState(null);
 
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
+
+    const [enviandoImagem, setEnviandoImagem] = useState(false);
 
 
 
@@ -45,6 +50,8 @@ function EditarProduto() {
         carregarImagens();
 
     }, []);
+
+
 
 
 
@@ -83,6 +90,8 @@ function EditarProduto() {
 
 
 
+
+
     async function carregarImagens() {
 
         try {
@@ -90,7 +99,6 @@ function EditarProduto() {
             const resposta = await api.get(
                 `/produtos/${id}/imagens`
             );
-
 
             setImagens(
                 resposta.data
@@ -108,11 +116,67 @@ function EditarProduto() {
 
 
 
+
+    function selecionarImagem(e) {
+
+
+        const imagem =
+            e.target.files[0];
+
+
+        if (!imagem)
+            return;
+
+
+
+        if (!imagem.type.startsWith("image")) {
+
+            setTipo("erro");
+
+            setMensagem(
+                "Selecione apenas imagens."
+            );
+
+            return;
+
+        }
+
+
+
+        if (imagem.size > 5 * 1024 * 1024) {
+
+            setTipo("erro");
+
+            setMensagem(
+                "Imagem deve ter no máximo 5MB."
+            );
+
+            return;
+
+        }
+
+
+
+        setArquivo(imagem);
+
+
+        setPreview(
+            URL.createObjectURL(imagem)
+        );
+
+
+    }
+
+
+
+
+
     async function enviarImagem() {
 
 
         if (!arquivo)
             return;
+
 
 
         const formData = new FormData();
@@ -124,33 +188,48 @@ function EditarProduto() {
         );
 
 
+
         try {
+
 
             setEnviandoImagem(true);
 
 
+
             await api.post(
+
                 `/produtos/${id}/imagem`,
+
                 formData,
+
                 {
+
                     headers: {
-                        "Content-Type": "multipart/form-data"
+                        "Content-Type":
+                            "multipart/form-data"
                     }
+
                 }
+
             );
 
 
+
             setArquivo(null);
+
+            setPreview(null);
 
 
             setTipo("sucesso");
 
             setMensagem(
-                "Imagem enviada com sucesso."
+                "Imagem enviada."
             );
 
 
+
             carregarImagens();
+
 
 
         } catch (erro) {
@@ -166,11 +245,16 @@ function EditarProduto() {
 
         } finally {
 
+
             setEnviandoImagem(false);
+
 
         }
 
+
     }
+
+
 
 
 
@@ -178,9 +262,10 @@ function EditarProduto() {
     async function excluirImagem(imagemId) {
 
 
-        const confirmar = window.confirm(
-            "Excluir imagem?"
-        );
+        const confirmar =
+            window.confirm(
+                "Excluir imagem?"
+            );
 
 
         if (!confirmar)
@@ -188,35 +273,21 @@ function EditarProduto() {
 
 
 
-        try {
-
-
-            await api.delete(
-                `/produtos/${id}/imagem/${imagemId}`
-            );
-
-
-            setTipo("sucesso");
-
-            setMensagem(
-                "Imagem removida."
-            );
-
-
-            carregarImagens();
+        await api.delete(
+            `/produtos/${id}/imagem/${imagemId}`
+        );
 
 
 
-        } catch {
+        setTipo("sucesso");
+
+        setMensagem(
+            "Imagem removida."
+        );
 
 
-            setTipo("erro");
+        carregarImagens();
 
-            setMensagem(
-                "Erro ao remover imagem."
-            );
-
-        }
 
     }
 
@@ -224,7 +295,9 @@ function EditarProduto() {
 
 
 
+
     async function salvar(e) {
+
 
         e.preventDefault();
 
@@ -246,11 +319,9 @@ function EditarProduto() {
 
                 estoque: Number(estoque),
 
-                estoque_minimo:
-                    Number(estoque_minimo),
+                estoque_minimo: Number(estoque_minimo),
 
-                estoque_maximo:
-                    Number(estoque_maximo),
+                estoque_maximo: Number(estoque_maximo),
 
                 ativo: true
 
@@ -261,7 +332,7 @@ function EditarProduto() {
             setTipo("sucesso");
 
             setMensagem(
-                "Produto atualizado com sucesso."
+                "Produto atualizado."
             );
 
 
@@ -304,7 +375,6 @@ function EditarProduto() {
             </h1>
 
 
-
             <Mensagem
                 tipo={tipo}
                 texto={mensagem}
@@ -324,13 +394,40 @@ function EditarProduto() {
 
                 accept="image/*"
 
-                onChange={
-                    e => setArquivo(
-                        e.target.files[0]
-                    )
-                }
+                onChange={selecionarImagem}
 
             />
+
+
+
+            {
+                preview &&
+
+                <div>
+
+                    <p>
+                        Preview:
+                    </p>
+
+
+                    <img
+
+                        src={preview}
+
+                        width="150"
+
+                        height="150"
+
+                        style={{
+                            objectFit: "cover"
+                        }}
+
+                    />
+
+
+                </div>
+
+            }
 
 
 
@@ -338,11 +435,11 @@ function EditarProduto() {
 
                 type="button"
 
-                onClick={enviarImagem}
-
                 disabled={
                     !arquivo || enviandoImagem
                 }
+
+                onClick={enviarImagem}
 
             >
 
@@ -360,103 +457,70 @@ function EditarProduto() {
 
 
 
-            <br /><br />
+
+            <hr />
 
 
 
-            <div
-                style={{
-                    display: "flex",
-                    gap: 20
-                }}
-            >
+
+            <div style={{
+                display: "flex",
+                gap: 20,
+                flexWrap: "wrap"
+            }}>
 
 
                 {
-
-                    imagens.length === 0
-
-                        ?
-
-                        <p>
-                            Sem imagens
-                        </p>
+                    imagens.map(imagem => (
 
 
-                        :
+                        <div key={imagem.id}>
 
 
-                        imagens.map(imagem => (
+                            <img
 
-
-                            <div
-                                key={imagem.id}
-                            >
-
-
-                                <img
-
-                                    src={
-                                        `http://127.0.0.1:8000/${imagem.caminho}`
-                                    }
-
-                                    width="120"
-
-                                    height="120"
-
-                                    style={{
-                                        objectFit: "cover",
-                                        borderRadius: 10
-                                    }}
-
-                                />
-
-
-
-                                <br />
-
-
-
-                                {
-                                    imagem.principal &&
-                                    <strong>
-                                        Principal
-                                    </strong>
+                                src={
+                                    `http://127.0.0.1:8000/${imagem.caminho}`
                                 }
 
+                                width="120"
+
+                                height="120"
+
+                                style={{
+                                    objectFit: "cover"
+                                }}
+
+                            />
 
 
-                                <br />
+                            <br />
 
 
+                            <button
 
-                                <button
+                                type="button"
 
-                                    type="button"
+                                onClick={() =>
+                                    excluirImagem(imagem.id)
+                                }
 
-                                    onClick={() =>
-                                        excluirImagem(
-                                            imagem.id
-                                        )
-                                    }
+                            >
 
-                                >
+                                Excluir
 
-                                    Excluir
-
-                                </button>
+                            </button>
 
 
+                        </div>
 
-                            </div>
 
-
-                        ))
-
+                    ))
                 }
 
 
             </div>
+
 
 
 
@@ -473,11 +537,8 @@ function EditarProduto() {
                 <input
                     placeholder="Nome"
                     value={nome}
-                    onChange={
-                        e => setNome(e.target.value)
-                    }
+                    onChange={e => setNome(e.target.value)}
                 />
-
 
                 <br /><br />
 
@@ -485,33 +546,7 @@ function EditarProduto() {
                 <input
                     placeholder="Categoria"
                     value={categoria}
-                    onChange={
-                        e => setCategoria(e.target.value)
-                    }
-                />
-
-
-                <br /><br />
-
-
-                <input
-                    placeholder="Código Interno"
-                    value={codigo_interno}
-                    onChange={
-                        e => setCodigoInterno(e.target.value)
-                    }
-                />
-
-
-                <br /><br />
-
-
-                <input
-                    placeholder="Código Barras"
-                    value={codigo_barras}
-                    onChange={
-                        e => setCodigoBarras(e.target.value)
-                    }
+                    onChange={e => setCategoria(e.target.value)}
                 />
 
 
@@ -521,26 +556,10 @@ function EditarProduto() {
                 <input
                     placeholder="Marca"
                     value={marca}
-                    onChange={
-                        e => setMarca(e.target.value)
-                    }
+                    onChange={e => setMarca(e.target.value)}
                 />
 
-
                 <br /><br />
-
-
-                <input
-                    placeholder="Unidade"
-                    value={unidade}
-                    onChange={
-                        e => setUnidade(e.target.value)
-                    }
-                />
-
-
-                <br /><br />
-
 
 
                 <textarea
@@ -549,16 +568,12 @@ function EditarProduto() {
 
                     value={descricao}
 
-                    onChange={
-                        e => setDescricao(e.target.value)
-                    }
+                    onChange={e => setDescricao(e.target.value)}
 
                 />
 
 
-
                 <br /><br />
-
 
 
                 <input
@@ -567,52 +582,37 @@ function EditarProduto() {
 
                     step="0.01"
 
-                    placeholder="Preço"
-
                     value={preco}
 
-                    onChange={
-                        e => setPreco(e.target.value)
-                    }
+                    onChange={e => setPreco(e.target.value)}
 
                 />
 
 
-
                 <br /><br />
-
 
 
                 <input
 
                     type="number"
 
-                    placeholder="Estoque"
-
                     value={estoque}
 
-                    onChange={
-                        e => setEstoque(e.target.value)
-                    }
+                    onChange={e => setEstoque(e.target.value)}
 
                 />
-
 
 
                 <br /><br />
 
 
-
-                <button type="submit">
-
+                <button>
                     Salvar
-
                 </button>
 
 
 
             </form>
-
 
 
         </main>

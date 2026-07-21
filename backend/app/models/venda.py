@@ -38,9 +38,9 @@ class Venda(Base):
     )
 
     status = Column(
-    String,
-    nullable=False,
-    default="ABERTA"
+        String,
+        nullable=False,
+        default="ABERTA"
     )
 
     created_at = Column(
@@ -48,12 +48,21 @@ class Venda(Base):
         server_default=func.now()
     )
 
+
+
     itens = relationship(
-    "ItemVenda",
-    cascade="all, delete",
-    lazy="joined"
+
+        "ItemVenda",
+
+        cascade="all, delete",
+
+        lazy="joined",
+
+        backref="venda"
+
     )
 
+
     cliente = relationship(
-    "Cliente"
+        "Cliente"
     )

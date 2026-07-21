@@ -18,7 +18,7 @@ router = APIRouter(
 @router.get("/")
 def dashboard(
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario = Depends(get_current_user)
 ):
 
     return buscar_dashboard_service(

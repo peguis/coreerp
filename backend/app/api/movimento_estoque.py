@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+
 from app.schemas.movimento_estoque import (
     MovimentoEstoqueCreate,
     MovimentoEstoqueResponse
@@ -16,10 +17,12 @@ from app.services.movimento_estoque import (
 from app.auth.dependencies import get_current_user
 
 
+
 router = APIRouter(
     prefix="/movimentos-estoque",
     tags=["Movimentos de Estoque"]
 )
+
 
 
 @router.post(
@@ -38,21 +41,20 @@ def criar_movimento_endpoint(
         usuario
     )
 
+
     if novo_movimento is None:
+
         raise HTTPException(
             status_code=404,
             detail="Produto não encontrado"
         )
 
-    if novo_movimento is False:
-        raise HTTPException(
-            status_code=400,
-            detail="Estoque insuficiente"
-        )
 
     return novo_movimento
 
-    
+
+
+
 
 @router.get(
     "/",
@@ -62,10 +64,14 @@ def listar_movimentos_endpoint(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
+
     return listar_movimentos_service(
         db,
         usuario
     )
+
+
+
 
 
 @router.get(
@@ -84,10 +90,13 @@ def buscar_movimento(
         usuario
     )
 
+
     if not movimento:
+
         raise HTTPException(
             status_code=404,
             detail="Movimento não encontrado"
         )
+
 
     return movimento

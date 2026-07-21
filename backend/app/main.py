@@ -6,6 +6,7 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.middleware.error_handler import generic_exception_handler
 
+
 from app.api.router import router
 
 
@@ -29,14 +30,20 @@ app.add_exception_handler(
 
 
 app.add_middleware(
+
     CORSMiddleware,
+
     allow_origins=[
         "http://localhost:5173",
-        "https://linda-ordered-chance-cognitive.trycloudflare.com"
+        "https://realized-producing-confidentiality-compatibility.trycloudflare.com"
     ],
+
     allow_credentials=True,
+
     allow_methods=["*"],
+
     allow_headers=["*"],
+
 )
 
 

@@ -10,6 +10,7 @@ from app.repositories.produto import (
 )
 
 from app.core.validators.movimento_estoque import validar_movimento
+from fastapi import HTTPException
 
 
 
@@ -49,7 +50,10 @@ def criar_movimento_service(
     elif movimento.tipo == "SAIDA":
 
         if produto.estoque < movimento.quantidade:
-            return False
+            raise HTTPException(
+                status_code=400,
+                detail="Estoque insuficiente."
+            )
 
         produto.estoque -= movimento.quantidade
 

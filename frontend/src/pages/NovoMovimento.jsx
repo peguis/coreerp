@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
     criarMovimento
 } from "../services/estoqueService";
 
+
+import {
+    listarProdutos
+} from "../services/produtoService";
+
+
 import Mensagem from "../components/Mensagem";
+
 
 
 function NovoMovimento() {
@@ -14,14 +21,47 @@ function NovoMovimento() {
     const navigate = useNavigate();
 
 
+    const [produtos, setProdutos] = useState([]);
+
+
     const [produtoId, setProdutoId] = useState("");
+
     const [tipo, setTipo] = useState("ENTRADA");
+
     const [quantidade, setQuantidade] = useState("");
+
     const [observacao, setObservacao] = useState("");
 
 
+
     const [mensagem, setMensagem] = useState("");
+
     const [tipoMensagem, setTipoMensagem] = useState("");
+
+
+
+
+    useEffect(() => {
+
+        carregarProdutos();
+
+    }, []);
+
+
+
+
+
+    async function carregarProdutos() {
+
+        const dados = await listarProdutos();
+
+        setProdutos(dados);
+
+    }
+
+
+
+
 
 
 
@@ -38,7 +78,7 @@ function NovoMovimento() {
             setTipoMensagem("erro");
 
             setMensagem(
-                "Informe produto e quantidade"
+                "Selecione produto e informe quantidade"
             );
 
             return;
@@ -47,11 +87,11 @@ function NovoMovimento() {
 
 
 
+
         try {
 
 
             await criarMovimento({
-
 
                 produto_id: Number(produtoId),
 
@@ -61,12 +101,13 @@ function NovoMovimento() {
 
                 observacao
 
-
             });
 
 
 
+
             setTipoMensagem("sucesso");
+
 
             setMensagem(
                 "Movimentação criada com sucesso"
@@ -76,9 +117,12 @@ function NovoMovimento() {
 
             setTimeout(() => {
 
+
                 navigate("/estoque");
 
+
             }, 1000);
+
 
 
 
@@ -86,6 +130,7 @@ function NovoMovimento() {
 
 
             setTipoMensagem("erro");
+
 
             setMensagem(
 
@@ -100,6 +145,10 @@ function NovoMovimento() {
 
 
     }
+
+
+
+
 
 
 
@@ -125,37 +174,16 @@ function NovoMovimento() {
 
 
 
+
+
             <form onSubmit={salvar}>
 
 
-                <label>
-                    Produto ID
-                </label>
-
-
-                <br />
-
-
-                <input
-
-                    value={produtoId}
-
-                    onChange={
-                        e => setProdutoId(e.target.value)
-                    }
-
-                />
-
-
-
-                <br />
-                <br />
-
-
 
                 <label>
-                    Tipo
+                    Produto
                 </label>
+
 
 
                 <br />
@@ -164,11 +192,85 @@ function NovoMovimento() {
 
                 <select
 
-                    value={tipo}
+
+                    value={produtoId}
+
 
                     onChange={
-                        e => setTipo(e.target.value)
+                        e =>
+                            setProdutoId(e.target.value)
                     }
+
+
+                >
+
+
+                    <option value="">
+                        Selecione um produto
+                    </option>
+
+
+
+                    {
+                        produtos.map(produto => (
+
+
+                            <option
+
+                                key={produto.id}
+
+                                value={produto.id}
+
+                            >
+
+                                {produto.nome}
+
+                                {" - Estoque: "}
+
+                                {produto.estoque}
+
+
+                            </option>
+
+
+                        ))
+                    }
+
+
+
+                </select>
+
+
+
+
+
+                <br /><br />
+
+
+
+
+
+                <label>
+                    Tipo
+                </label>
+
+
+
+                <br />
+
+
+
+                <select
+
+
+                    value={tipo}
+
+
+                    onChange={
+                        e =>
+                            setTipo(e.target.value)
+                    }
+
 
                 >
 
@@ -188,12 +290,16 @@ function NovoMovimento() {
                     </option>
 
 
+
                 </select>
 
 
 
-                <br />
-                <br />
+
+
+                <br /><br />
+
+
 
 
 
@@ -202,28 +308,39 @@ function NovoMovimento() {
                 </label>
 
 
+
                 <br />
 
 
 
                 <input
 
+
                     type="number"
 
-                    min="1"
+                    step="0.01"
+
+                    min="0.01"
+
 
                     value={quantidade}
 
+
                     onChange={
-                        e => setQuantidade(e.target.value)
+                        e =>
+                            setQuantidade(e.target.value)
                     }
+
 
                 />
 
 
 
-                <br />
-                <br />
+
+
+                <br /><br />
+
+
 
 
 
@@ -232,24 +349,32 @@ function NovoMovimento() {
                 </label>
 
 
+
                 <br />
 
 
 
                 <input
 
+
                     value={observacao}
 
+
                     onChange={
-                        e => setObservacao(e.target.value)
+                        e =>
+                            setObservacao(e.target.value)
                     }
+
 
                 />
 
 
 
-                <br />
-                <br />
+
+
+                <br /><br />
+
+
 
 
 
@@ -261,7 +386,9 @@ function NovoMovimento() {
 
 
 
+
             </form>
+
 
 
 
@@ -272,6 +399,7 @@ function NovoMovimento() {
 
 
 }
+
 
 
 export default NovoMovimento;

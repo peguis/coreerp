@@ -53,112 +53,144 @@ function Estoque() {
 
 
 
-            <br />
-            <br />
+            <br /><br />
 
 
 
             {
-                movimentos.length === 0 ? (
+                movimentos.length === 0 ?
 
-                    <p>
-                        Nenhuma movimentação encontrada.
-                    </p>
+                    (
 
-                ) : (
+                        <p>
+                            Nenhuma movimentação encontrada.
+                        </p>
 
+                    )
 
-                    <table
-                        border="1"
-                        cellPadding="10"
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse"
-                        }}
-                    >
+                    :
 
+                    (
 
-                        <thead>
+                        <table
 
-                            <tr>
+                            border="1"
 
-                                <th>ID</th>
+                            cellPadding="10"
 
-                                <th>Produto</th>
+                            style={{
+                                width: "100%",
+                                borderCollapse: "collapse"
+                            }}
 
-                                <th>Tipo</th>
-
-                                <th>Quantidade</th>
-
-                                <th>Observação</th>
-
-                            </tr>
-
-                        </thead>
+                        >
 
 
+                            <thead>
 
-                        <tbody>
+                                <tr>
+
+                                    <th>ID</th>
+
+                                    <th>Produto</th>
+
+                                    <th>Tipo</th>
+
+                                    <th>Quantidade</th>
+
+                                    <th>Observação</th>
+
+                                    <th>Data</th>
 
 
-                            {
-                                movimentos.map((movimento) => (
+                                </tr>
 
 
-                                    <tr key={movimento.id}>
-
-
-                                        <td>
-                                            {movimento.id}
-                                        </td>
+                            </thead>
 
 
 
-                                        <td>
-                                            {movimento.produto_id}
-                                        </td>
+                            <tbody>
+
+
+                                {
+                                    movimentos.map(movimento => (
+
+                                        <tr key={movimento.id}>
+
+
+                                            <td>
+                                                {movimento.id}
+                                            </td>
+
+
+                                            <td>
+                                                Produto #{movimento.produto_id}
+                                            </td>
+
+
+                                            <td>
+
+                                                {
+                                                    movimento.tipo === "ENTRADA"
+                                                        ? "⬆ Entrada"
+                                                        :
+                                                        movimento.tipo === "SAIDA"
+                                                            ? "⬇ Saída"
+                                                            :
+                                                            "⚙ Ajuste"
+                                                }
+
+                                            </td>
 
 
 
-                                        <td>
-                                            {movimento.tipo}
-                                        </td>
+                                            <td>
+                                                {movimento.quantidade}
+                                            </td>
 
 
 
-                                        <td>
-                                            {movimento.quantidade}
-                                        </td>
+                                            <td>
+                                                {movimento.observacao || "-"}
+                                            </td>
 
 
 
-                                        <td>
-                                            {movimento.observacao || "-"}
-                                        </td>
+                                            <td>
+                                                {
+                                                    new Date(
+                                                        movimento.created_at
+                                                    )
+                                                        .toLocaleString()
+                                                }
+                                            </td>
 
 
-                                    </tr>
+
+                                        </tr>
 
 
-                                ))
-                            }
+                                    ))
+                                }
 
 
-                        </tbody>
+                            </tbody>
 
 
-                    </table>
 
+                        </table>
 
-                )
+                    )
+
             }
+
 
 
         </main>
 
 
     );
-
 
 }
 
