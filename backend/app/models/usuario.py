@@ -1,18 +1,31 @@
-from datetime import datetime
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    func
+)
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
+
+from app.core.enums import PerfilUsuario
 
 from app.database import Base
 
 
+
 class Usuario(Base):
+
     __tablename__ = "usuarios"
+
 
     id = Column(
         Integer,
         primary_key=True
     )
+
 
     empresa_id = Column(
         Integer,
@@ -21,15 +34,18 @@ class Usuario(Base):
         index=True
     )
 
+
     empresa = relationship(
         "Empresa",
         back_populates="usuarios"
     )
 
+
     nome = Column(
         String,
         nullable=False
     )
+
 
     email = Column(
         String,
@@ -37,18 +53,40 @@ class Usuario(Base):
         nullable=False
     )
 
+
     senha = Column(
         String,
         nullable=False
     )
+
+
+    perfil = Column(
+        String,
+        nullable=False,
+        default=PerfilUsuario.OPERADOR.value
+    )
+
 
     ativo = Column(
         Boolean,
         default=True
     )
 
+
     created_at = Column(
-    DateTime(timezone=True),
-    server_default=func.now(),
-    nullable=False
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False
+    )
+
+
+    movimentos_estoque = relationship(
+        "MovimentoEstoque",
+        back_populates="usuario"
+    )
+
+
+    vendas = relationship(
+        "Venda",
+        back_populates="usuario"
     )

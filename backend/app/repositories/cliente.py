@@ -4,6 +4,7 @@ from app.models.cliente import Cliente
 from app.schemas.cliente import ClienteCreate
 
 
+
 def criar_cliente(
     db: Session,
     cliente: ClienteCreate,
@@ -14,8 +15,10 @@ def criar_cliente(
         nome=cliente.nome,
         email=cliente.email,
         telefone=cliente.telefone,
+        cpf_cnpj=cliente.cpf_cnpj,
         empresa_id=empresa_id
     )
+
 
     db.add(novo_cliente)
     db.commit()
@@ -24,13 +27,20 @@ def criar_cliente(
     return novo_cliente
 
 
+
 def listar_clientes(
     db: Session,
     empresa_id: int
 ):
-    return db.query(Cliente).filter(
-        Cliente.empresa_id == empresa_id
-    ).all()
+
+    return (
+        db.query(Cliente)
+        .filter(
+            Cliente.empresa_id == empresa_id
+        )
+        .all()
+    )
+
 
 
 def buscar_cliente_por_id(
@@ -38,10 +48,16 @@ def buscar_cliente_por_id(
     cliente_id: int,
     empresa_id: int
 ):
-    return db.query(Cliente).filter(
-        Cliente.id == cliente_id,
-        Cliente.empresa_id == empresa_id
-    ).first()
+
+    return (
+        db.query(Cliente)
+        .filter(
+            Cliente.id == cliente_id,
+            Cliente.empresa_id == empresa_id
+        )
+        .first()
+    )
+
 
 
 def atualizar_cliente(
@@ -51,7 +67,12 @@ def atualizar_cliente(
 ):
 
     for campo, valor in dados.items():
-        setattr(cliente_db, campo, valor)
+        setattr(
+            cliente_db,
+            campo,
+            valor
+        )
+
 
     db.commit()
     db.refresh(cliente_db)
@@ -59,9 +80,11 @@ def atualizar_cliente(
     return cliente_db
 
 
+
 def deletar_cliente(
     db: Session,
     cliente_db
 ):
+
     db.delete(cliente_db)
     db.commit()

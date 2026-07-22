@@ -10,10 +10,11 @@ def criar_usuario(
     usuario: UsuarioCreate
 ):
     novo_usuario = Usuario(
-    nome=usuario.nome,
-    email=usuario.email,
-    senha=gerar_hash(usuario.senha),
-    empresa_id=usuario.empresa_id
+        nome=usuario.nome,
+        email=usuario.email,
+        senha=gerar_hash(usuario.senha),
+        empresa_id=usuario.empresa_id,
+        perfil=usuario.perfil.value
     )
 
     db.add(novo_usuario)
@@ -22,8 +23,10 @@ def criar_usuario(
 
     return novo_usuario
 
+
 def listar_usuarios(db: Session):
     return db.query(Usuario).all()
+
 
 def buscar_usuario_por_id(db: Session, usuario_id: int):
     return db.query(Usuario).filter(
@@ -44,10 +47,9 @@ def atualizar_usuario(db: Session, usuario_db, dados):
 def deletar_usuario(db: Session, usuario_db):
     db.delete(usuario_db)
     db.commit()
-    
+
 
 def buscar_por_email(db, email):
-
     return (
         db.query(Usuario)
         .filter(

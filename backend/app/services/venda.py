@@ -14,17 +14,11 @@ from app.models.cliente import Cliente
 from app.models.movimento_estoque import MovimentoEstoque
 
 
-from app.core.validators.venda import validar_venda
+from app.core.validators.venda import (
+    validar_venda,
+    validar_status_venda
+)
 
-
-
-STATUS_VALIDOS = [
-    "ABERTA",
-    "SEPARACAO",
-    "FATURADA",
-    "PAGA",
-    "CANCELADA"
-]
 
 
 
@@ -35,20 +29,20 @@ def criar_venda_service(
     usuario
 ):
 
-
     total = 0
 
     itens = []
 
 
 
-    cliente = db.query(Cliente).filter(
-
-        Cliente.id == dados.cliente_id,
-
-        Cliente.empresa_id == usuario.empresa_id
-
-    ).first()
+    cliente = (
+        db.query(Cliente)
+        .filter(
+            Cliente.id == dados.cliente_id,
+            Cliente.empresa_id == usuario.empresa_id
+        )
+        .first()
+    )
 
 
 
@@ -60,169 +54,165 @@ def criar_venda_service(
 
 
 
-    for item in dados.itens:
+    try:
 
 
-        # compatibilidade caso venha como dict ou objeto Pydantic
-        if isinstance(item, dict):
-
-            produto_id = item["produto_id"]
-            quantidade = item["quantidade"]
-
-        else:
-
-            produto_id = item.produto_id
-            quantidade = item.quantidade
+        for item in dados.itens:
 
 
+            if isinstance(item, dict):
+
+                produto_id = item["produto_id"]
+
+                quantidade = item["quantidade"]
 
 
+            else:
 
-        produto = db.query(Produto).filter(
+                produto_id = item.produto_id
 
-            Produto.id == produto_id,
-
-            Produto.empresa_id == usuario.empresa_id
-
-        ).first()
-
-
-
-        if not produto:
-
-            return None
+                quantidade = item.quantidade
 
 
 
 
 
-        if produto.estoque < quantidade:
-
-            return None
-
-
-
-
-
-        subtotal = produto.preco * quantidade
-
-
-        total += subtotal
+            produto = (
+                db.query(Produto)
+                .filter(
+                    Produto.id == produto_id,
+                    Produto.empresa_id == usuario.empresa_id
+                )
+                .first()
+            )
 
 
 
+            if not produto:
 
-
-        produto.estoque -= quantidade
+                return None
 
 
 
 
 
-        novo_item = ItemVenda(
+            if produto.estoque < quantidade:
 
-            empresa_id=usuario.empresa_id,
+                return None
 
-            produto_id=produto_id,
 
-            quantidade=quantidade,
 
-            preco_unitario=produto.preco,
 
-            subtotal=subtotal
+
+            subtotal = (
+                produto.preco *
+                quantidade
+            )
+
+
+            total += subtotal
+
+
+
+            produto.estoque -= quantidade
+
+
+
+
+
+            novo_item = ItemVenda(
+
+                empresa_id=usuario.empresa_id,
+
+                produto_id=produto_id,
+
+                quantidade=quantidade,
+
+                preco_unitario=produto.preco,
+
+                subtotal=subtotal
+
+            )
+
+
+            itens.append(novo_item)
+
+
+
+
+
+
+
+        validar_venda(
+
+            itens=itens,
+
+            valor_total=total,
+
+            cliente_id=dados.cliente_id
 
         )
 
 
 
-        itens.append(novo_item)
 
 
 
 
-
-
-    validar_venda(
-
-        itens=itens,
-
-        valor_total=total,
-
-        cliente_id=dados.cliente_id
-
-    )
-
-
-
-
-
-
-
-    venda = Venda(
-
-        empresa_id=usuario.empresa_id,
-
-        cliente_id=dados.cliente_id,
-
-        usuario_id=usuario.id,
-
-        total=total,
-
-        status="ABERTA"
-
-    )
-
-
-
-
-
-    db.add(venda)
-
-    db.commit()
-
-    db.refresh(venda)
-
-
-
-
-
-
-
-    for item in itens:
-
-
-        item.venda_id = venda.id
-
-        db.add(item)
-
-
-
-
-
-
-
-    for item in itens:
-
-
-
-        movimento = MovimentoEstoque(
+        venda = Venda(
 
             empresa_id=usuario.empresa_id,
 
-            produto_id=item.produto_id,
+            cliente_id=dados.cliente_id,
 
             usuario_id=usuario.id,
 
-            tipo="SAIDA",
+            total=total,
 
-            quantidade=item.quantidade,
-
-            observacao=f"Venda #{venda.id}"
+            status="ABERTA"
 
         )
 
 
-        db.add(movimento)
+
+
+
+        db.add(venda)
+
+        db.flush()
+
+
+
+
+
+        for item in itens:
+
+
+            item.venda_id = venda.id
+
+
+            db.add(item)
+
+
+
+            movimento = MovimentoEstoque(
+
+                empresa_id=usuario.empresa_id,
+
+                produto_id=item.produto_id,
+
+                usuario_id=usuario.id,
+
+                tipo="SAIDA",
+
+                quantidade=item.quantidade,
+
+                observacao=f"Venda #{venda.id}"
+
+            )
+
+
+            db.add(movimento)
 
 
 
@@ -230,13 +220,26 @@ def criar_venda_service(
 
 
 
-    db.commit()
-
-    db.refresh(venda)
+        db.commit()
 
 
+        db.refresh(venda)
 
-    return venda
+
+
+        return venda
+
+
+
+
+
+
+    except Exception:
+
+
+        db.rollback()
+
+        raise
 
 
 
@@ -263,6 +266,7 @@ def listar_vendas_service(
 
 
 
+
 def buscar_venda_service(
     db,
     venda_id,
@@ -278,6 +282,7 @@ def buscar_venda_service(
         usuario.empresa_id
 
     )
+
 
 
 
@@ -313,17 +318,16 @@ def atualizar_venda_service(
 
 
 
-    from app.core.validators.venda import validar_status_venda
-
-
-
     if "status" in dados:
+
 
         dados["status"] = validar_status_venda(
 
             dados["status"]
 
         )
+
+
 
 
 
@@ -336,6 +340,7 @@ def atualizar_venda_service(
         dados
 
     )
+
 
 
 
@@ -371,33 +376,24 @@ def deletar_venda_service(
 
 
 
-    itens = db.query(ItemVenda).filter(
-
-        ItemVenda.venda_id == venda.id
-
-    ).all()
+    for item in venda.itens:
 
 
 
-
-
-
-    for item in itens:
-
-
-
-        produto = db.query(Produto).filter(
-
-            Produto.id == item.produto_id
-
-        ).first()
+        produto = (
+            db.query(Produto)
+            .filter(
+                Produto.id == item.produto_id,
+                Produto.empresa_id == usuario.empresa_id
+            )
+            .first()
+        )
 
 
 
         if produto:
 
             produto.estoque += item.quantidade
-
 
 
 

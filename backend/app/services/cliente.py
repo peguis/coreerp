@@ -74,20 +74,38 @@ def atualizar_cliente_service(
         return None
 
 
-    if "nome" in dados or "email" in dados or "telefone" in dados:
+    campos_permitidos = [
+        "nome",
+        "email",
+        "telefone",
+        "cpf_cnpj",
+        "ativo"
+    ]
+
+
+    dados_filtrados = {
+        campo: valor
+        for campo, valor in dados.items()
+        if campo in campos_permitidos
+    }
+
+
+    if (
+        "nome" in dados_filtrados
+        or "email" in dados_filtrados
+        or "telefone" in dados_filtrados
+    ):
 
         validar_cliente(
-            dados.get(
+            dados_filtrados.get(
                 "nome",
                 cliente.nome
             ),
-
-            dados.get(
+            dados_filtrados.get(
                 "email",
                 cliente.email
             ),
-
-            dados.get(
+            dados_filtrados.get(
                 "telefone",
                 cliente.telefone
             )
@@ -97,7 +115,7 @@ def atualizar_cliente_service(
     return atualizar_cliente(
         db,
         cliente,
-        dados
+        dados_filtrados
     )
 
 

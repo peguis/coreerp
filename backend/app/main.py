@@ -6,7 +6,6 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.middleware.error_handler import generic_exception_handler
 
-
 from app.api.router import router
 
 
@@ -33,10 +32,7 @@ app.add_middleware(
 
     CORSMiddleware,
 
-    allow_origins=[
-        "http://localhost:5173",
-        "https://realized-producing-confidentiality-compatibility.trycloudflare.com"
-    ],
+    allow_origins=settings.CORS_ORIGINS.split(","),
 
     allow_credentials=True,
 
@@ -55,6 +51,7 @@ app.include_router(router)
 
 @app.get("/")
 def home():
+
     logger.info("Rota raiz acessada.")
 
     return {

@@ -1,41 +1,61 @@
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime
+from sqlalchemy import (
+    Column,
+    Integer,
+    Float,
+    String,
+    ForeignKey,
+    DateTime
+)
+
 from sqlalchemy.sql import func
 
-from app.database import Base
 from sqlalchemy.orm import relationship
+
+from app.database import Base
+
 
 
 class Venda(Base):
 
     __tablename__ = "vendas"
 
+
     id = Column(
         Integer,
         primary_key=True
     )
 
+
     empresa_id = Column(
         Integer,
         ForeignKey("empresas.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
+
 
     cliente_id = Column(
         Integer,
         ForeignKey("clientes.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
+
 
     usuario_id = Column(
         Integer,
         ForeignKey("usuarios.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
+
 
     total = Column(
         Float,
+        nullable=False,
         default=0
     )
+
 
     status = Column(
         String,
@@ -43,26 +63,35 @@ class Venda(Base):
         default="ABERTA"
     )
 
+
     created_at = Column(
         DateTime(timezone=True),
-        server_default=func.now()
+        server_default=func.now(),
+        nullable=False
     )
 
 
-
-    itens = relationship(
-
-        "ItemVenda",
-
-        cascade="all, delete",
-
-        lazy="joined",
-
-        backref="venda"
-
+    empresa = relationship(
+        "Empresa",
+        back_populates="vendas"
     )
 
 
     cliente = relationship(
-        "Cliente"
+        "Cliente",
+        back_populates="vendas"
+    )
+
+
+    usuario = relationship(
+        "Usuario",
+        back_populates="vendas"
+    )
+
+
+    itens = relationship(
+        "ItemVenda",
+        back_populates="venda",
+        cascade="all, delete-orphan",
+        lazy="joined"
     )

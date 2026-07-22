@@ -4,6 +4,9 @@ from app.models.produto import Produto
 from app.schemas.produto import ProdutoCreate
 
 
+
+
+
 def criar_produto(
     db: Session,
     produto: ProdutoCreate,
@@ -11,37 +14,65 @@ def criar_produto(
 ):
 
     novo_produto = Produto(
-    empresa_id=empresa_id,
 
-    nome=produto.nome,
-    categoria=produto.categoria,
-    codigo_interno=produto.codigo_interno,
-    codigo_barras=produto.codigo_barras,
-    marca=produto.marca,
-    unidade=produto.unidade,
-    descricao=produto.descricao,
+        empresa_id=empresa_id,
 
-    preco=produto.preco,
-    estoque=produto.estoque,
+        nome=produto.nome,
 
-    estoque_minimo=produto.estoque_minimo,
-    estoque_maximo=produto.estoque_maximo,
+        categoria=produto.categoria,
 
-    peso=produto.peso,
-    altura=produto.altura,
-    largura=produto.largura,
-    comprimento=produto.comprimento,
+        codigo_interno=produto.codigo_interno,
 
-    localizacao=produto.localizacao,
+        codigo_barras=produto.codigo_barras,
 
-    custo_medio=produto.custo_medio
+        marca=produto.marca,
+
+        unidade=produto.unidade,
+
+        descricao=produto.descricao,
+
+
+        preco=produto.preco,
+
+        estoque=produto.estoque,
+
+
+        estoque_minimo=produto.estoque_minimo,
+
+        estoque_maximo=produto.estoque_maximo,
+
+
+        peso=produto.peso,
+
+        altura=produto.altura,
+
+        largura=produto.largura,
+
+        comprimento=produto.comprimento,
+
+
+        localizacao=produto.localizacao,
+
+
+        custo_medio=produto.custo_medio
+
     )
 
+
     db.add(novo_produto)
+
     db.commit()
+
     db.refresh(novo_produto)
 
+
     return novo_produto
+
+
+
+
+
+
 
 def listar_produtos(
     db: Session,
@@ -52,42 +83,73 @@ def listar_produtos(
     limite=10
 ):
 
-    query = db.query(Produto).filter(
-        Produto.empresa_id == empresa_id,
-        Produto.ativo == True
+    query = (
+        db.query(Produto)
+        .filter(
+            Produto.empresa_id == empresa_id,
+            Produto.ativo == True
+        )
     )
 
 
+
     if busca:
+
         query = query.filter(
-            Produto.nome.ilike(f"%{busca}%")
+            Produto.nome.ilike(
+                f"%{busca}%"
+            )
         )
 
 
+
     if categoria:
+
         query = query.filter(
             Produto.categoria == categoria
         )
 
 
-    produtos = query.offset(
-        (pagina - 1) * limite
-    ).limit(
-        limite
-    ).all()
+
+    return (
+        query
+        .order_by(
+            Produto.id.desc()
+        )
+        .offset(
+            (pagina - 1) * limite
+        )
+        .limit(
+            limite
+        )
+        .all()
+    )
 
 
-    return produtos
+
+
+
+
 
 def buscar_produto_por_id(
     db: Session,
     produto_id: int,
     empresa_id: int
 ):
-    return db.query(Produto).filter(
-        Produto.id == produto_id,
-        Produto.empresa_id == empresa_id
-    ).first()
+
+    return (
+        db.query(Produto)
+        .filter(
+            Produto.id == produto_id,
+            Produto.empresa_id == empresa_id
+        )
+        .first()
+    )
+
+
+
+
+
 
 
 def atualizar_produto(
@@ -95,23 +157,68 @@ def atualizar_produto(
     produto_db,
     dados
 ):
+
+    campos_permitidos = [
+
+        "nome",
+        "categoria",
+        "codigo_interno",
+        "codigo_barras",
+        "marca",
+        "unidade",
+        "descricao",
+        "preco",
+        "estoque",
+        "estoque_minimo",
+        "estoque_maximo",
+        "peso",
+        "altura",
+        "largura",
+        "comprimento",
+        "localizacao",
+        "custo_medio",
+        "ativo"
+
+    ]
+
+
+
     for campo, valor in dados.items():
-        setattr(produto_db, campo, valor)
+
+        if campo in campos_permitidos:
+
+            setattr(
+                produto_db,
+                campo,
+                valor
+            )
+
+
 
     db.commit()
+
     db.refresh(produto_db)
 
+
     return produto_db
+
+
+
+
+
 
 
 def deletar_produto(
     db: Session,
     produto_db
 ):
+
     produto_db.ativo = False
+
 
     db.commit()
 
     db.refresh(produto_db)
+
 
     return produto_db

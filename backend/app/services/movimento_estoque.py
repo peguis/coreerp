@@ -5,11 +5,13 @@ from app.repositories.movimento_estoque import (
 )
 
 from app.repositories.produto import (
-    buscar_produto_por_id,
-    atualizar_produto
+    buscar_produto_por_id
 )
 
-from app.core.validators.movimento_estoque import validar_movimento
+from app.core.validators.movimento_estoque import (
+    validar_movimento
+)
+
 from fastapi import HTTPException
 
 
@@ -29,6 +31,7 @@ def criar_movimento_service(
     movimento.tipo = movimento.tipo.upper()
 
 
+
     produto = buscar_produto_por_id(
         db,
         movimento.produto_id,
@@ -36,50 +39,70 @@ def criar_movimento_service(
     )
 
 
+
     if not produto:
         return None
 
 
 
-    if movimento.tipo == "ENTRADA":
+    try:
 
-        produto.estoque += movimento.quantidade
+        if movimento.tipo == "ENTRADA":
 
 
-
-    elif movimento.tipo == "SAIDA":
-
-        if produto.estoque < movimento.quantidade:
-            raise HTTPException(
-                status_code=400,
-                detail="Estoque insuficiente."
-            )
-
-        produto.estoque -= movimento.quantidade
+            produto.estoque += movimento.quantidade
 
 
 
-    elif movimento.tipo == "AJUSTE":
-
-        produto.estoque = movimento.quantidade
+        elif movimento.tipo == "SAIDA":
 
 
+            if produto.estoque < movimento.quantidade:
 
-    atualizar_produto(
-        db,
-        produto,
-        {
-            "estoque": produto.estoque
-        }
-    )
+                raise HTTPException(
+                    status_code=400,
+                    detail="Estoque insuficiente"
+                )
 
 
-    return criar_movimento(
-        db,
-        movimento,
-        usuario.empresa_id,
-        usuario.id
-    )
+            produto.estoque -= movimento.quantidade
+
+
+
+        elif movimento.tipo == "AJUSTE":
+
+
+            produto.estoque = movimento.quantidade
+
+
+
+        movimento.empresa_id = usuario.empresa_id
+
+        movimento.usuario_id = usuario.id
+
+
+
+        db.add(produto)
+
+        db.add(movimento)
+
+        db.commit()
+
+        db.refresh(movimento)
+
+
+
+        return movimento
+
+
+
+    except Exception:
+
+        db.rollback()
+
+        raise
+
+
 
 
 
@@ -92,6 +115,8 @@ def listar_movimentos_service(
         db,
         usuario.empresa_id
     )
+
+
 
 
 

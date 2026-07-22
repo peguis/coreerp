@@ -5,8 +5,9 @@ from app.repositories.produto import (
     atualizar_produto,
     deletar_produto
 )
-from app.models.produto import Produto
+
 from app.core.validators.produto import validar_produto
+
 
 
 
@@ -17,13 +18,21 @@ def criar_produto_service(
     usuario
 ):
 
-    validar_produto(produto)
+    validar_produto(
+        produto
+    )
+
 
     return criar_produto(
         db,
         produto,
         usuario.empresa_id
     )
+
+
+
+
+
 
 
 def listar_produtos_service(
@@ -45,16 +54,27 @@ def listar_produtos_service(
     )
 
 
+
+
+
+
+
 def buscar_produto_service(
     db,
     produto_id,
     usuario
 ):
+
     return buscar_produto_por_id(
         db,
         produto_id,
         usuario.empresa_id
     )
+
+
+
+
+
 
 
 def atualizar_produto_service(
@@ -70,20 +90,49 @@ def atualizar_produto_service(
         usuario.empresa_id
     )
 
+
     if not produto:
+
         return None
 
+
+
+
+
     if "nome" in dados:
-        if len(dados["nome"].strip()) < 3:
+
+        if not dados["nome"] or len(
+            dados["nome"].strip()
+        ) < 3:
+
             return None
+
+
+
+
+
 
     if "preco" in dados:
-        if dados["preco"] <= 0:
+
+        if dados["preco"] < 0:
+
             return None
 
+
+
+
+
+
     if "estoque" in dados:
+
         if dados["estoque"] < 0:
+
             return None
+
+
+
+
+
 
     return atualizar_produto(
         db,
@@ -92,23 +141,38 @@ def atualizar_produto_service(
     )
 
 
+
+
+
+
+
+
+
 def deletar_produto_service(
     db,
     produto_id,
     usuario
 ):
+
     produto = buscar_produto_por_id(
         db,
         produto_id,
         usuario.empresa_id
     )
 
+
     if not produto:
+
         return False
+
+
+
+
 
     deletar_produto(
         db,
         produto
     )
+
 
     return True

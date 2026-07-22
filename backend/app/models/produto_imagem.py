@@ -9,6 +9,8 @@ from sqlalchemy import (
 
 from sqlalchemy.sql import func
 
+from sqlalchemy.orm import relationship
+
 from app.database import Base
 
 
@@ -64,4 +66,15 @@ class ProdutoImagem(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         nullable=False
+    )
+
+
+    produto = relationship(
+        "Produto",
+        back_populates="imagens"
+    )
+
+
+    empresa = relationship(
+        "Empresa"
     )

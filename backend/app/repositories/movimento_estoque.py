@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 
 from app.models.movimento_estoque import MovimentoEstoque
 from app.schemas.movimento_estoque import MovimentoEstoqueCreate
-from sqlalchemy import desc
+
 
 
 def criar_movimento(
@@ -11,20 +12,35 @@ def criar_movimento(
     empresa_id: int,
     usuario_id: int
 ):
+
     novo_movimento = MovimentoEstoque(
+
         empresa_id=empresa_id,
+
         produto_id=movimento.produto_id,
+
         usuario_id=usuario_id,
+
         tipo=movimento.tipo,
+
         quantidade=movimento.quantidade,
+
         observacao=movimento.observacao
+
     )
 
+
     db.add(novo_movimento)
+
     db.commit()
+
     db.refresh(novo_movimento)
 
+
     return novo_movimento
+
+
+
 
 
 def listar_movimentos(
@@ -32,13 +48,19 @@ def listar_movimentos(
     empresa_id: int
 ):
 
-    return db.query(
-        MovimentoEstoque
-    ).filter(
-        MovimentoEstoque.empresa_id == empresa_id
-    ).order_by(
-        desc(MovimentoEstoque.id)
-    ).all()
+    return (
+        db.query(MovimentoEstoque)
+        .filter(
+            MovimentoEstoque.empresa_id == empresa_id
+        )
+        .order_by(
+            desc(MovimentoEstoque.created_at)
+        )
+        .all()
+    )
+
+
+
 
 
 def buscar_movimento_por_id(
@@ -46,7 +68,12 @@ def buscar_movimento_por_id(
     movimento_id: int,
     empresa_id: int
 ):
-    return db.query(MovimentoEstoque).filter(
-        MovimentoEstoque.id == movimento_id,
-        MovimentoEstoque.empresa_id == empresa_id
-    ).first()
+
+    return (
+        db.query(MovimentoEstoque)
+        .filter(
+            MovimentoEstoque.id == movimento_id,
+            MovimentoEstoque.empresa_id == empresa_id
+        )
+        .first()
+    )

@@ -46,3 +46,20 @@ def get_current_user(
 
     except JWTError:
         raise credentials_exception
+
+
+def require_perfil(*perfis):
+
+    def verificar(
+        usuario = Depends(get_current_user)
+    ):
+
+        if usuario.perfil not in perfis:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Sem permissão"
+            )
+
+        return usuario
+
+    return verificar

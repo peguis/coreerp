@@ -1,7 +1,14 @@
-from sqlalchemy import Column, Integer, Float, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    Float,
+    ForeignKey
+)
+
 from sqlalchemy.orm import relationship
 
 from app.database import Base
+
 
 
 class ItemVenda(Base):
@@ -18,21 +25,24 @@ class ItemVenda(Base):
     empresa_id = Column(
         Integer,
         ForeignKey("empresas.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
 
 
     venda_id = Column(
         Integer,
         ForeignKey("vendas.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
 
 
     produto_id = Column(
         Integer,
         ForeignKey("produtos.id"),
-        nullable=False
+        nullable=False,
+        index=True
     )
 
 
@@ -51,6 +61,12 @@ class ItemVenda(Base):
     subtotal = Column(
         Float,
         nullable=False
+    )
+
+
+    venda = relationship(
+        "Venda",
+        back_populates="itens"
     )
 
 

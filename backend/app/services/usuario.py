@@ -119,7 +119,9 @@ def login_service(
 
     token = criar_token(
         {
-            "sub": usuario.email
+            "sub": usuario.email,
+            "empresa_id": usuario.empresa_id,
+            "perfil": usuario.perfil
         }
     )
 

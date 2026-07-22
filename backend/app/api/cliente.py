@@ -2,7 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.schemas.cliente import ClienteCreate, ClienteResponse
+
+from app.schemas.cliente import (
+    ClienteCreate,
+    ClienteResponse
+)
 
 from app.services.cliente import (
     criar_cliente_service,
@@ -12,7 +16,10 @@ from app.services.cliente import (
     deletar_cliente_service
 )
 
-from app.auth.dependencies import get_current_user
+from app.auth.dependencies import (
+    get_current_user,
+    require_perfil
+)
 
 
 router = APIRouter(
@@ -28,8 +35,9 @@ router = APIRouter(
 def criar_cliente_endpoint(
     cliente: ClienteCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente"))
 ):
+
     return criar_cliente_service(
         db,
         cliente,
@@ -45,6 +53,7 @@ def listar_clientes_endpoint(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
+
     return listar_clientes_service(
         db,
         usuario
@@ -76,12 +85,15 @@ def buscar_cliente(
     return cliente
 
 
-@router.put("/{cliente_id}")
+@router.put(
+    "/{cliente_id}",
+    response_model=ClienteResponse
+)
 def editar_cliente(
     cliente_id: int,
     dados: dict,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente"))
 ):
 
     cliente = atualizar_cliente_service(
@@ -100,11 +112,13 @@ def editar_cliente(
     return cliente
 
 
-@router.delete("/{cliente_id}")
+@router.delete(
+    "/{cliente_id}"
+)
 def remover_cliente(
     cliente_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin"))
 ):
 
     sucesso = deletar_cliente_service(

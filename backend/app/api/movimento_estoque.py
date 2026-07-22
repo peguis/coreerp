@@ -14,15 +14,16 @@ from app.services.movimento_estoque import (
     buscar_movimento_service
 )
 
-from app.auth.dependencies import get_current_user
-
+from app.auth.dependencies import (
+    get_current_user,
+    require_perfil
+)
 
 
 router = APIRouter(
     prefix="/movimentos-estoque",
     tags=["Movimentos de Estoque"]
 )
-
 
 
 @router.post(
@@ -32,7 +33,7 @@ router = APIRouter(
 def criar_movimento_endpoint(
     movimento: MovimentoEstoqueCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "estoquista"))
 ):
 
     novo_movimento = criar_movimento_service(
@@ -41,18 +42,14 @@ def criar_movimento_endpoint(
         usuario
     )
 
-
-    if novo_movimento is None:
+    if not novo_movimento:
 
         raise HTTPException(
             status_code=404,
             detail="Produto não encontrado"
         )
 
-
     return novo_movimento
-
-
 
 
 
@@ -72,8 +69,6 @@ def listar_movimentos_endpoint(
 
 
 
-
-
 @router.get(
     "/{movimento_id}",
     response_model=MovimentoEstoqueResponse
@@ -90,13 +85,11 @@ def buscar_movimento(
         usuario
     )
 
-
     if not movimento:
 
         raise HTTPException(
             status_code=404,
             detail="Movimento não encontrado"
         )
-
 
     return movimento

@@ -16,7 +16,10 @@ from app.services.venda import (
     deletar_venda_service
 )
 
-from app.auth.dependencies import get_current_user
+from app.auth.dependencies import (
+    get_current_user,
+    require_perfil
+)
 
 
 router = APIRouter(
@@ -33,7 +36,7 @@ router = APIRouter(
 def criar_venda_endpoint(
     venda: VendaCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "vendedor"))
 ):
 
     resultado = criar_venda_service(
@@ -43,12 +46,14 @@ def criar_venda_endpoint(
     )
 
     if not resultado:
+
         raise HTTPException(
             status_code=400,
             detail="Erro ao criar venda. Produto inexistente ou estoque insuficiente"
         )
 
     return resultado
+
 
 
 @router.get(
@@ -64,6 +69,7 @@ def listar_vendas_endpoint(
         db,
         usuario
     )
+
 
 
 @router.get(
@@ -83,6 +89,7 @@ def buscar_venda(
     )
 
     if not venda:
+
         raise HTTPException(
             status_code=404,
             detail="Venda não encontrada"
@@ -91,12 +98,15 @@ def buscar_venda(
     return venda
 
 
-@router.put("/{venda_id}")
+
+@router.put(
+    "/{venda_id}"
+)
 def editar_venda(
     venda_id: int,
     dados: dict,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente"))
 ):
 
     venda = atualizar_venda_service(
@@ -107,6 +117,7 @@ def editar_venda(
     )
 
     if not venda:
+
         raise HTTPException(
             status_code=404,
             detail="Venda não encontrada"
@@ -115,13 +126,14 @@ def editar_venda(
     return venda
 
 
+
 @router.delete(
     "/{venda_id}"
 )
 def remover_venda(
     venda_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin"))
 ):
 
     sucesso = deletar_venda_service(
@@ -131,6 +143,7 @@ def remover_venda(
     )
 
     if not sucesso:
+
         raise HTTPException(
             status_code=404,
             detail="Venda não encontrada"
