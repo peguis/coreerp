@@ -1,0 +1,323 @@
+.sidebar {
+
+
+    width: 270px;
+
+    height: 100vh;
+
+    background: #0f172a;
+
+    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 24px 16px;
+
+    position: sticky;
+
+    top: 0;
+
+    transition: .3s ease;
+
+    z-index: 100;
+
+
+
+}
+
+
+
+.sidebar.collapsed {
+
+
+    width: 82px;
+
+
+}
+
+
+
+
+
+.sidebar-top {
+
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+}
+
+
+
+
+
+.sidebar-logo h2 {
+
+
+    margin: 0;
+
+    font-size: 28px;
+
+
+}
+
+
+
+.sidebar-logo span {
+
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+
+}
+
+
+
+
+
+.sidebar-toggle {
+
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    cursor: pointer;
+
+
+}
+
+
+
+
+
+
+.sidebar-menu {
+
+
+    margin-top: 35px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    flex: 1;
+
+
+}
+
+
+
+
+
+
+.menu-item {
+
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 13px 15px;
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    border-radius: 12px;
+
+    transition: .25s;
+
+
+}
+
+
+
+
+
+.menu-item:hover {
+
+
+    background: rgba(255, 255, 255, .08);
+
+    color: white;
+
+    transform: translateX(4px);
+
+
+}
+
+
+
+
+
+.menu-item.active {
+
+
+    background: #2563eb;
+
+    color: white;
+
+
+}
+
+
+
+
+
+
+.sidebar-logout {
+
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #dc2626;
+
+    color: white;
+
+    cursor: pointer;
+
+
+}
+
+
+
+
+
+.sidebar-logout:hover {
+
+
+    background: #b91c1c;
+
+
+}
+
+
+
+
+
+
+
+.sidebar.collapsed .sidebar-logo span,
+.sidebar.collapsed .sidebar-logo h2 {
+
+    display: none;
+
+}
+
+.sidebar.collapsed .menu-item span,
+
+.sidebar.collapsed .sidebar-logout span {
+
+
+    display: none;
+
+
+}
+
+
+
+
+
+.sidebar.collapsed .menu-item {
+
+
+    justify-content: center;
+
+
+}
+
+
+
+
+
+
+@media(max-width:900px) {
+
+
+
+    .sidebar {
+
+
+        position: fixed;
+
+        left: 0;
+
+        transform: translateX(-100%);
+
+
+    }
+
+
+
+
+    .sidebar.mobile-open {
+
+
+        transform: translateX(0);
+
+
+    }
+
+
+
+}
+
+.sidebar-toggle {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, .08);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+
+.sidebar-toggle:hover {
+
+    background: rgba(255, 255, 255, .15);
+
+}

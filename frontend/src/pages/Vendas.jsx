@@ -2,15 +2,70 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
+    ShoppingCart,
+    Eye,
+    Trash2
+} from "lucide-react";
+
+import {
+
+    confirmDelete
+
+} from "../utils/dialog";
+
+import {
+
+    formatDate
+
+} from "../utils/date";
+
+
+import {
     listarVendas,
     excluirVenda
 } from "../services/vendaService";
+
+
+
+import {
+    formatarMoeda
+} from "../utils/formatters";
+
+import {
+
+    badgeStatus
+
+} from "../utils/status";
+
+
+import PageHeader from "../components/ui/PageHeader";
+import SectionCard from "../components/ui/SectionCard";
+import DataTable from "../components/ui/DataTable";
+import EmptyState from "../components/ui/EmptyState";
+import SearchInput from "../components/forms/SearchInput";
+
+import Badge from "../components/Badge";
+import Button from "../components/forms/Button";
+
+import Loading from "../components/Loading";
+import Mensagem from "../components/Mensagem";
+
+
+import "./Vendas.css";
+
 
 
 function Vendas() {
 
 
     const [vendas, setVendas] = useState([]);
+
+    const [carregando, setCarregando] = useState(true);
+
+    const [erro, setErro] = useState("");
+
+    const [pesquisa, setPesquisa] = useState("");
+
 
 
 
@@ -22,21 +77,67 @@ function Vendas() {
 
 
 
+
     async function carregarVendas() {
 
-        const dados = await listarVendas();
 
-        setVendas(dados);
+        try {
+
+
+            setCarregando(true);
+
+            setErro("");
+
+
+
+            const dados = await listarVendas();
+
+
+
+            setVendas(
+
+                Array.isArray(dados)
+
+                    ? dados
+
+                    : []
+
+            );
+
+
+
+        } catch {
+
+
+            setErro(
+                "Não foi possível carregar vendas."
+            );
+
+
+        } finally {
+
+
+            setCarregando(false);
+
+
+        }
+
 
     }
+
+
 
 
 
     async function remover(id) {
 
 
-        const confirmar = window.confirm(
-            "Deseja realmente excluir esta venda?"
+        const confirmar =
+
+            confirmDelete(
+
+                "Deseja excluir?"
+
         );
 
 
@@ -45,175 +146,520 @@ function Vendas() {
 
 
 
-        await excluirVenda(id);
+
+        try {
 
 
-        carregarVendas();
+            await excluirVenda(id);
+
+
+            carregarVendas();
+
+
+
+        } catch (error) {
+
+            setErro(
+
+                getErrorMessage(
+
+                    error,
+
+                    "Erro ao excluir."
+
+                )
+
+            );
+
+        }
+
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+    function definirBadge(status) {
+
+
+        const mapa = {
+
+
+            ABERTA: "warning",
+
+            FINALIZADA: "success",
+
+            CANCELADA: "danger"
+
+
+        };
+
+
+        return mapa[status] || "default";
+
+
+    }
+
+
+
+
+
+
+
+    const vendasFiltradas = vendas.filter((venda) => {
+
+
+        const texto = pesquisa
+            .toLowerCase()
+            .trim();
+
+
+
+        return (
+
+
+            venda.cliente?.nome
+                ?.toLowerCase()
+                .includes(texto)
+
+
+
+            ||
+
+
+
+            venda.status
+                ?.toLowerCase()
+                .includes(texto)
+
+
+
+            ||
+
+
+
+            String(venda.id)
+                .includes(texto)
+
+
+
+        );
+
+
+    });
+
+
+
+
+
+
+
+
+
+    const columns = [
+
+
+
+        {
+
+            key: "id",
+
+            title: "Venda"
+
+        },
+
+
+
+
+
+        {
+
+            key: "cliente",
+
+            title: "Cliente",
+
+
+            render: (_, venda) => (
+
+                venda.cliente?.nome
+
+                ||
+
+                `Cliente #${venda.cliente_id}`
+
+            )
+
+        },
+
+
+
+
+
+        {
+
+            key: "total",
+
+            title: "Total",
+
+
+            render: (valor) => (
+
+                formatarMoeda(valor)
+
+            )
+
+        },
+
+
+
+
+
+        {
+
+            key: "status",
+
+            title: "Status",
+
+
+            render: (valor) => (
+
+
+                <Badge
+
+                    tipo={badgeStatus(valor)}
+                >
+
+                    {valor || "SEM STATUS"}
+
+                </Badge>
+
+
+            )
+
+
+        },
+
+
+
+
+
+        {
+            key: "created_at",
+            title: "Data",
+
+            render: (valor) => (
+
+                formatDate(valor)
+
+            )
+        },
+
+
+
+
+
+        {
+
+            key: "acoes",
+
+            title: "Ações",
+
+
+            render: (_, venda) => (
+
+
+
+                <div className="venda-actions">
+
+
+
+                    <Link
+
+                        to={`/vendas/${venda.id}`}
+
+                    >
+
+
+
+                        <Button
+
+                            variant="secondary"
+
+                        >
+
+
+                            <Eye size={16} />
+
+
+                        </Button>
+
+
+
+                    </Link>
+
+
+
+
+
+
+
+                    <Button
+
+                        variant="danger"
+
+                        onClick={() => remover(venda.id)}
+
+                    >
+
+
+
+                        <Trash2 size={16} />
+
+
+
+                    </Button>
+
+
+
+                </div>
+
+
+            )
+
+
+        }
+
+
+    ];
+
+
+
+
+
+
 
 
 
     return (
 
 
-        <main style={{ padding: 30 }}>
-
-
-            <h1>
-                Vendas
-            </h1>
+        <main className="vendas-page">
 
 
 
-            <Link to="/vendas/nova">
-
-                <button>
-                    Nova Venda
-                </button>
-
-            </Link>
 
 
+            <PageHeader
 
-            <br />
-            <br />
+                titulo="Vendas"
+
+                subtitulo="Gerencie as vendas realizadas"
+
+            >
+
+
+
+                <div className="vendas-header-actions">
+
+
+
+                    <Link
+
+                        to="/vendas/nova"
+
+                    >
+
+
+
+                        <Button
+
+                            variant="primary"
+
+                        >
+
+
+
+                            <ShoppingCart size={18} />
+
+
+                            Nova Venda
+
+
+
+                        </Button>
+
+
+
+                    </Link>
+
+
+
+                </div>
+
+
+
+            </PageHeader>
+
+
+
+
+
 
 
 
             {
-                vendas.length === 0 ? (
 
-                    <p>
-                        Nenhuma venda registrada.
-                    </p>
-
-                ) : (
+                erro && (
 
 
-                    <table
-                        border="1"
-                        cellPadding="10"
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse"
-                        }}
-                    >
+                    <Mensagem
 
+                        tipo="erro"
 
-                        <thead>
+                        texto={erro}
 
-                            <tr>
-
-                                <th>ID</th>
-
-                                <th>Cliente</th>
-
-                                <th>Total</th>
-
-                                <th>Status</th>
-
-                                <th>Data</th>
-
-                                <th>Ações</th>
-
-                            </tr>
-
-                        </thead>
-
-
-
-                        <tbody>
-
-
-                            {
-                                vendas.map((venda) => (
-
-
-                                    <tr key={venda.id}>
-
-
-                                        <td>
-                                            {venda.id}
-                                        </td>
-
-
-
-                                        <td>
-                                            {venda.cliente_id}
-                                        </td>
-
-
-
-                                        <td>
-                                            R$ {
-                                                Number(venda.total)
-                                                    .toFixed(2)
-                                            }
-                                        </td>
-
-
-
-                                        <td>
-                                            {venda.status}
-                                        </td>
-
-
-
-                                        <td>
-
-                                            {
-                                                new Date(
-                                                    venda.created_at
-                                                ).toLocaleDateString()
-                                            }
-
-                                        </td>
-
-
-
-                                        <td>
-
-
-                                            <Link
-                                                to={`/vendas/${venda.id}`}
-                                            >
-
-                                                <button>
-                                                    Detalhes
-                                                </button>
-
-                                            </Link>
-
-
-
-                                            <button
-                                                onClick={() => remover(venda.id)}
-                                            >
-
-                                                Excluir
-
-                                            </button>
-
-
-                                        </td>
-
-
-                                    </tr>
-
-
-                                ))
-                            }
-
-
-                        </tbody>
-
-
-                    </table>
+                    />
 
 
                 )
+
             }
+
+
+
+
+
+
+
+
+            <SectionCard>
+
+
+
+
+
+                <div className="vendas-filtros">
+
+
+                    <SearchInput
+
+                        value={pesquisa}
+
+                        onChange={(e) =>
+
+                            setPesquisa(e.target.value)
+
+                        }
+
+                        placeholder="Buscar venda..."
+
+                    />
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                {
+
+
+                    carregando ? (
+
+
+                        <Loading
+
+                            texto="Carregando vendas..."
+
+                        />
+
+
+                    )
+
+                        :
+
+
+                        vendasFiltradas.length === 0 ? (
+
+
+                            <EmptyState
+
+
+                                titulo="Nenhuma venda encontrada"
+
+
+                                descricao="Registre uma nova venda para começar."
+
+
+                                icone="🛒"
+
+
+                            />
+
+
+                        )
+
+
+                            :
+
+
+                            (
+
+
+                                <DataTable
+
+
+                                    columns={columns}
+
+
+                                    data={vendasFiltradas}
+
+
+                                    emptyMessage="Nenhuma venda encontrada."
+
+
+                                />
+
+
+                            )
+
+
+                }
+
+
+
+
+
+
+
+            </SectionCard>
+
+
+
+
 
 
         </main>
@@ -223,6 +669,7 @@ function Vendas() {
 
 
 }
+
 
 
 export default Vendas;

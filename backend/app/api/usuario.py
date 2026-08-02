@@ -24,10 +24,12 @@ from app.auth.dependencies import (
 )
 
 
+
 router = APIRouter(
     prefix="/usuarios",
     tags=["Usuários"]
 )
+
 
 
 @router.post(
@@ -37,27 +39,40 @@ router = APIRouter(
 def criar_usuario(
     usuario: UsuarioCreate,
     db: Session = Depends(get_db),
-    usuario_logado=Depends(require_perfil("admin"))
+    usuario_logado=Depends(
+        require_perfil(
+            "admin"
+        )
+    )
 ):
 
     return criar_usuario_service(
         db,
-        usuario
+        usuario,
+        usuario_logado.empresa_id
     )
+
 
 
 @router.get(
     "/",
     response_model=list[UsuarioResponse]
 )
-def listar_usuarios_endpoint(
+def listar_usuarios(
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente"
+        )
+    )
 ):
 
     return listar_usuarios_service(
-        db
+        db,
+        usuario.empresa_id
     )
+
 
 
 @router.get(
@@ -71,6 +86,7 @@ def usuario_logado(
     return usuario
 
 
+
 @router.get(
     "/{usuario_id}",
     response_model=UsuarioResponse
@@ -78,21 +94,26 @@ def usuario_logado(
 def buscar_usuario(
     usuario_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario_logado=Depends(get_current_user)
 ):
 
     usuario_encontrado = buscar_usuario_service(
         db,
-        usuario_id
+        usuario_id,
+        usuario_logado.empresa_id
     )
 
+
     if not usuario_encontrado:
+
         raise HTTPException(
             status_code=404,
             detail="Usuário não encontrado"
         )
 
+
     return usuario_encontrado
+
 
 
 @router.put(
@@ -103,22 +124,31 @@ def editar_usuario(
     usuario_id: int,
     dados: dict,
     db: Session = Depends(get_db),
-    usuario_logado=Depends(require_perfil("admin"))
+    usuario_logado=Depends(
+        require_perfil(
+            "admin"
+        )
+    )
 ):
 
     usuario_atualizado = atualizar_usuario_service(
         db,
         usuario_id,
+        usuario_logado.empresa_id,
         dados
     )
 
+
     if not usuario_atualizado:
+
         raise HTTPException(
             status_code=404,
             detail="Usuário não encontrado"
         )
 
+
     return usuario_atualizado
+
 
 
 @router.delete(
@@ -127,23 +157,32 @@ def editar_usuario(
 def remover_usuario(
     usuario_id: int,
     db: Session = Depends(get_db),
-    usuario_logado=Depends(require_perfil("admin"))
+    usuario_logado=Depends(
+        require_perfil(
+            "admin"
+        )
+    )
 ):
 
     sucesso = deletar_usuario_service(
         db,
-        usuario_id
+        usuario_id,
+        usuario_logado.empresa_id
     )
 
+
     if not sucesso:
+
         raise HTTPException(
             status_code=404,
             detail="Usuário não encontrado"
         )
 
+
     return {
         "mensagem": "Usuário removido"
     }
+
 
 
 @router.post(
@@ -159,10 +198,13 @@ def login(
         dados
     )
 
+
     if not resultado:
+
         raise HTTPException(
             status_code=401,
             detail="Usuário ou senha inválidos"
         )
+
 
     return resultado

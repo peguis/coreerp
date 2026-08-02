@@ -1,8 +1,36 @@
 import { useEffect, useState } from "react";
 
+
 import {
     obterDashboard
 } from "../services/dashboardService";
+
+
+import DashboardSkeleton from "../components/dashboard/DashboardSkeleton";
+
+
+import MetricCard from "../components/dashboard/MetricCard";
+import FinanceiroCards from "../components/dashboard/FinanceiroCards";
+import AlertasDashboard from "../components/dashboard/AlertasDashboard";
+import EstoqueBaixo from "../components/dashboard/EstoqueBaixo";
+import EstoqueParado from "../components/dashboard/EstoqueParado";
+import TabelaVendas from "../components/dashboard/TabelaVendas";
+import RevenueChart from "../components/dashboard/RevenueChart";
+import SalesChart from "../components/dashboard/SalesChart";
+import TopClientes from "../components/dashboard/TopClientes";
+import FluxoCaixaChart from "../components/dashboard/FluxoCaixaChart";
+
+
+import {
+    formatarMoeda
+} from "../utils/formatters";
+
+
+import PageHeader from "../components/ui/PageHeader";
+
+
+import "./Dashboard.css";
+
 
 
 function Dashboard() {
@@ -20,73 +48,127 @@ function Dashboard() {
 
 
 
+
     async function carregar() {
+
 
         try {
 
-            const resposta = await obterDashboard();
+
+            const resposta =
+                await obterDashboard();
+
 
             setDados(resposta);
 
+
         } catch (erro) {
 
-            console.log(
+
+            console.error(
+
                 "Erro dashboard:",
-                erro.response?.data
+
+                erro.response?.data || erro
+
             );
+
 
         }
 
+
     }
+
 
 
 
     if (!dados) {
 
-        return (
-            <h1>
-                Carregando...
-            </h1>
-        );
+
+        return <DashboardSkeleton />;
+
 
     }
+
+
+
+
+
+    const financeiro = dados.financeiro || {
+
+
+        saldo: 0,
+
+        total_receber: 0,
+
+        total_pagar: 0,
+
+        receitas_recebidas: 0,
+
+        despesas_pagas: 0
+
+
+    };
+
+
 
 
 
 
     const cards = [
 
+
         {
             titulo: "Produtos",
-            valor: dados.total_produtos
+            valor: dados.total_produtos ?? 0
         },
 
 
         {
             titulo: "Clientes",
-            valor: dados.total_clientes
+            valor: dados.total_clientes ?? 0
         },
 
 
         {
             titulo: "Vendas",
-            valor: dados.total_vendas
+            valor: dados.total_vendas ?? 0
         },
 
 
         {
             titulo: "Estoque baixo",
-            valor: dados.estoque_baixo
+            valor: dados.estoque_baixo ?? 0
         },
 
 
         {
             titulo: "Faturamento",
-            valor:
-                `R$ ${Number(dados.faturamento).toFixed(2)}`
+            valor: formatarMoeda(dados.faturamento ?? 0)
+        },
+
+
+        {
+            titulo: "Saldo financeiro",
+            valor: formatarMoeda(financeiro.saldo)
+        },
+
+
+        {
+            titulo: "A receber",
+            valor: formatarMoeda(financeiro.total_receber)
+        },
+
+
+        {
+            titulo: "A pagar",
+            valor: formatarMoeda(financeiro.total_pagar)
         }
 
+
     ];
+
+
 
 
 
@@ -94,292 +176,189 @@ function Dashboard() {
     return (
 
 
-        <main>
+        <main className="dashboard-page">
 
 
-            <h1>
-                Dashboard
-            </h1>
+            <PageHeader
+
+                titulo="Dashboard"
+
+                subtitulo="Visão geral da empresa"
+
+            />
 
 
 
 
-            <div
 
-                style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fit,minmax(200px,1fr))",
-                    gap: 20,
-                    marginTop: 30
-                }}
-
-            >
+            <section className="dashboard-cards">
 
 
                 {
+
                     cards.map(card => (
 
 
-                        <div
+                        <MetricCard
 
                             key={card.titulo}
 
-                            style={{
-                                padding: 25,
-                                borderRadius: 10,
-                                background: "#f8fafc",
-                                boxShadow:
-                                    "0 2px 8px rgba(0,0,0,0.1)"
-                            }}
+                            titulo={card.titulo}
 
-                        >
+                            valor={card.valor}
 
-
-                            <h3>
-                                {card.titulo}
-                            </h3>
-
-
-                            <h1>
-                                {card.valor}
-                            </h1>
-
-
-                        </div>
+                        />
 
 
                     ))
+
                 }
 
 
-            </div>
+            </section>
 
 
 
 
 
-            <br />
+            <FinanceiroCards
 
+                financeiro={financeiro}
 
-            <hr />
+            />
 
 
 
 
 
-            <h2>
-                Produtos com estoque baixo
-            </h2>
 
+            <AlertasDashboard
 
+                alertas={
 
-            {
-                dados.produtos_baixo_estoque.length === 0
+                    dados.alertas || {
 
+                        produtos_zerados: [],
 
-                    ?
+                        produtos_criticos: [],
 
+                        contas_pendentes: []
 
-                    <p>
-                        Nenhum produto com estoque baixo.
-                    </p>
+                    }
 
+                }
 
-                    :
+            />
 
 
-                    <table
 
-                        border="1"
 
-                        cellPadding="10"
 
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse"
-                        }}
 
-                    >
+            <section className="dashboard-grid">
 
 
-                        <thead>
+                <EstoqueBaixo
 
-                            <tr>
+                    produtos={
 
-                                <th>
-                                    Produto
-                                </th>
+                        dados.produtos_baixo_estoque || []
 
-                                <th>
-                                    Estoque atual
-                                </th>
+                    }
 
-                                <th>
-                                    Estoque mínimo
-                                </th>
+                />
 
-                            </tr>
 
 
-                        </thead>
+                <TabelaVendas
 
+                    vendas={
 
+                        dados.ultimas_vendas || []
 
-                        <tbody>
+                    }
 
+                />
 
-                            {
-                                dados.produtos_baixo_estoque.map(produto => (
 
+            </section>
 
-                                    <tr key={produto.id}>
 
 
-                                        <td>
-                                            {produto.nome}
-                                        </td>
 
 
-                                        <td>
-                                            {produto.estoque}
-                                        </td>
 
+            <section className="dashboard-grid">
 
-                                        <td>
-                                            {produto.minimo}
-                                        </td>
 
+                <EstoqueParado
 
-                                    </tr>
+                    produtos={
 
+                        dados.produtos_sem_giro || []
 
-                                ))
-                            }
+                    }
 
+                />
 
-                        </tbody>
 
 
-                    </table>
+                <FluxoCaixaChart
 
-            }
+                    financeiro={financeiro}
 
+                />
 
 
+            </section>
 
 
-            <br />
 
 
-            <hr />
 
 
+            <section className="dashboard-grid">
 
 
+                <RevenueChart
 
-            <h2>
-                Últimas vendas
-            </h2>
+                    dados={
 
+                        dados.vendas_por_mes || []
 
+                    }
 
+                />
 
-            {
-                dados.ultimas_vendas.length === 0
 
 
-                    ?
+                <SalesChart
 
+                    dados={
 
-                    <p>
-                        Nenhuma venda registrada.
-                    </p>
+                        dados.produtos_mais_vendidos || []
 
+                    }
 
-                    :
+                />
 
 
+            </section>
 
-                    <table
 
-                        border="1"
 
-                        cellPadding="10"
 
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse"
-                        }}
 
-                    >
 
+            <TopClientes
 
-                        <thead>
+                dados={
 
-                            <tr>
+                    dados.clientes_top || []
 
-                                <th>
-                                    ID
-                                </th>
+                }
 
-
-                                <th>
-                                    Total
-                                </th>
-
-
-                                <th>
-                                    Status
-                                </th>
-
-
-                            </tr>
-
-
-                        </thead>
-
-
-
-                        <tbody>
-
-
-                            {
-                                dados.ultimas_vendas.map(venda => (
-
-
-                                    <tr key={venda.id}>
-
-
-                                        <td>
-                                            #{venda.id}
-                                        </td>
-
-
-                                        <td>
-                                            R$ {Number(venda.total).toFixed(2)}
-                                        </td>
-
-
-                                        <td>
-                                            {venda.status}
-                                        </td>
-
-
-                                    </tr>
-
-
-                                ))
-                            }
-
-
-                        </tbody>
-
-
-                    </table>
-
-
-            }
+            />
 
 
 
@@ -390,6 +369,7 @@ function Dashboard() {
 
 
 }
+
 
 
 export default Dashboard;

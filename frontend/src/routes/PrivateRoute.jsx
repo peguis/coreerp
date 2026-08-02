@@ -10,8 +10,18 @@ import { AuthContext } from "../auth/AuthContext";
 function PrivateRoute() {
 
 
-    const { autenticado, token } =
-        useContext(AuthContext);
+    const {
+
+        autenticado,
+
+        token,
+
+        carregando
+
+    } = useContext(AuthContext);
+
+
+
 
 
     console.log(
@@ -19,6 +29,37 @@ function PrivateRoute() {
         autenticado,
         token
     );
+
+
+
+
+
+
+    if (carregando) {
+
+        return null;
+
+    }
+
+
+
+
+
+    if (!autenticado || !token) {
+
+        return (
+
+            <Navigate
+
+                to="/login"
+
+                replace
+
+            />
+
+        );
+
+    }
 
 
 

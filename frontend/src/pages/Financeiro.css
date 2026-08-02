@@ -1,0 +1,279 @@
+.financeiro-page {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+
+    padding: 30px;
+
+}
+
+
+
+/* =========================
+   RESUMO FINANCEIRO
+========================= */
+
+
+.financeiro-resumo {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+
+}
+
+
+
+.financeiro-card {
+
+    background: linear-gradient(135deg,
+            #ffffff,
+            #f8fafc);
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow);
+
+    transition: .25s ease;
+
+}
+
+
+
+.financeiro-card:hover {
+
+    transform: translateY(-4px);
+
+}
+
+
+
+.financeiro-card svg {
+
+    width: 45px;
+
+    height: 45px;
+
+    padding: 10px;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+
+    color: var(--primary);
+
+}
+
+
+
+.financeiro-card span {
+
+    display: block;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+
+.financeiro-card strong {
+
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 26px;
+
+    color: var(--text);
+
+}
+
+
+
+
+
+/* =========================
+   FILTROS
+========================= */
+
+
+.financeiro-filtros {
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.financeiro-filtros input,
+
+.financeiro-filtros select {
+
+    padding: 12px 16px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .2s ease;
+
+}
+
+
+
+.financeiro-filtros input {
+
+    flex: 1;
+
+    min-width: 240px;
+
+}
+
+
+
+.financeiro-filtros input:focus,
+
+.financeiro-filtros select:focus {
+
+    border-color: var(--primary);
+
+}
+
+
+
+
+
+/* =========================
+   AÇÕES TABELA
+========================= */
+
+
+.financeiro-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+
+.financeiro-actions button {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+
+@media(max-width:992px) {
+
+
+    .financeiro-resumo {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+}
+
+
+
+
+@media(max-width:768px) {
+
+
+    .financeiro-page {
+
+        padding: 20px;
+
+    }
+
+
+
+    .financeiro-filtros {
+
+        flex-direction: column;
+
+    }
+
+
+
+    .financeiro-filtros input,
+
+    .financeiro-filtros select,
+
+    .financeiro-filtros button {
+
+        width: 100%;
+
+        min-width: 100%;
+
+    }
+
+
+
+    .financeiro-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+
+    .financeiro-actions button {
+
+        width: 100%;
+
+    }
+
+
+}

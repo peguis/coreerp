@@ -1,0 +1,122 @@
+/* HEADER */
+
+.produto-form-header {
+    margin-bottom: 25px;
+}
+
+.produto-form-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #1e293b;
+}
+
+.produto-form-header p {
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* GRID */
+
+.produto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* CAMPOS */
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.campo input,
+.campo textarea {
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    outline: none;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    border-color: #2563eb;
+}
+
+.campo-full {
+    margin-top: 20px;
+}
+
+.campo textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* IMAGENS */
+
+.imagem-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.imagem-preview img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.imagem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.imagem-card {
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+    border-radius: 12px;
+    background: white;
+}
+
+.imagem-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* BOTÕES */
+
+.produto-footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+    .produto-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .produto-footer-actions {
+        flex-direction: column;
+    }
+
+}

@@ -1,0 +1,90 @@
+.nova-venda-page {
+
+    padding: 30px;
+
+}
+
+
+
+.venda-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+}
+
+
+
+.campo {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+
+.campo label {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+
+
+.campo input,
+.campo select {
+
+    padding: 11px 14px;
+
+    border-radius: 8px;
+
+    border: 1px solid #cbd5e1;
+
+    font-size: 14px;
+
+}
+
+
+
+.venda-footer-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 20px;
+
+}
+
+
+
+@media(max-width:768px) {
+
+
+    .nova-venda-page {
+
+        padding: 20px;
+
+    }
+
+
+
+    .venda-footer-actions button {
+
+        width: 100%;
+
+    }
+
+
+}

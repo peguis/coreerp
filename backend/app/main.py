@@ -6,6 +6,7 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.middleware.error_handler import generic_exception_handler
 
+
 from app.api.router import router
 
 
@@ -29,18 +30,17 @@ app.add_exception_handler(
 
 
 app.add_middleware(
-
     CORSMiddleware,
-
-    allow_origins=settings.CORS_ORIGINS.split(","),
-
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+    ],
     allow_credentials=True,
-
     allow_methods=["*"],
-
     allow_headers=["*"],
-
 )
+
+
 
 
 logger.info("CoreERP iniciado com sucesso.")

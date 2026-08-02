@@ -1,0 +1,74 @@
+.dashboard-page {
+
+    padding: 24px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+
+}
+
+
+
+.dashboard-cards {
+
+
+    display: grid;
+
+
+    grid-template-columns:
+
+        repeat(auto-fit, minmax(220px, 1fr));
+
+
+    gap: 20px;
+
+
+}
+
+
+
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(360px, 1fr));
+
+    gap: 24px;
+
+}
+
+
+
+
+
+@media(max-width:768px) {
+
+
+    .dashboard-page {
+
+        padding: 16px;
+
+    }
+
+
+
+    .dashboard-cards,
+
+    .dashboard-grid {
+
+
+        grid-template-columns: 1fr;
+
+
+        gap: 16px;
+
+
+    }
+
+
+}

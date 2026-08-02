@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+    ArrowLeft
+} from "lucide-react";
+
+
+import {
     criarMovimento
 } from "../services/estoqueService";
 
@@ -11,7 +16,20 @@ import {
 } from "../services/produtoService";
 
 
+import PageHeader from "../components/ui/PageHeader";
+
+
+import FormCard from "../components/forms/FormCard";
+import Button from "../components/forms/Button";
+import Input from "../components/forms/Input";
+import Select from "../components/forms/Select";
+import Textarea from "../components/forms/Textarea";
+
+
 import Mensagem from "../components/Mensagem";
+
+
+import "./NovoMovimento.css";
 
 
 
@@ -21,7 +39,9 @@ function NovoMovimento() {
     const navigate = useNavigate();
 
 
+
     const [produtos, setProdutos] = useState([]);
+
 
 
     const [produtoId, setProdutoId] = useState("");
@@ -41,9 +61,12 @@ function NovoMovimento() {
 
 
 
+
     useEffect(() => {
 
+
         carregarProdutos();
+
 
     }, []);
 
@@ -51,11 +74,44 @@ function NovoMovimento() {
 
 
 
+
     async function carregarProdutos() {
 
-        const dados = await listarProdutos();
 
-        setProdutos(dados);
+        try {
+
+
+            const dados = await listarProdutos();
+
+
+
+            setProdutos(
+
+                Array.isArray(dados)
+
+                    ? dados
+
+                    : []
+
+            );
+
+
+
+        } catch {
+
+
+            setTipoMensagem("erro");
+
+
+            setMensagem(
+
+                "Erro ao carregar produtos."
+
+            );
+
+
+        }
+
 
     }
 
@@ -72,18 +128,29 @@ function NovoMovimento() {
 
 
 
+
         if (!produtoId || !quantidade) {
+
 
 
             setTipoMensagem("erro");
 
+
             setMensagem(
-                "Selecione produto e informe quantidade"
+
+                "Selecione produto e informe quantidade."
+
             );
+
 
             return;
 
+
         }
+
+
+
+
 
 
 
@@ -91,17 +158,31 @@ function NovoMovimento() {
         try {
 
 
+
+
             await criarMovimento({
+
+
 
                 produto_id: Number(produtoId),
 
+
+
                 tipo,
+
+
 
                 quantidade: Number(quantidade),
 
+
+
                 observacao
 
+
+
             });
+
+
 
 
 
@@ -110,15 +191,23 @@ function NovoMovimento() {
 
 
             setMensagem(
-                "Movimentação criada com sucesso"
+
+                "Movimentação criada com sucesso."
+
             );
+
+
+
+
 
 
 
             setTimeout(() => {
 
 
+
                 navigate("/estoque");
+
 
 
             }, 1000);
@@ -126,7 +215,10 @@ function NovoMovimento() {
 
 
 
+
+
         } catch (erro) {
+
 
 
             setTipoMensagem("erro");
@@ -134,14 +226,19 @@ function NovoMovimento() {
 
             setMensagem(
 
+
                 erro.response?.data?.detail ||
 
-                "Erro ao criar movimentação"
+
+                "Erro ao criar movimentação."
+
 
             );
 
 
+
         }
+
 
 
     }
@@ -152,247 +249,421 @@ function NovoMovimento() {
 
 
 
+
+
     return (
 
 
-        <main style={{ padding: 30 }}>
 
-
-            <h1>
-                Nova Movimentação
-            </h1>
-
-
-
-            <Mensagem
-
-                tipo={tipoMensagem}
-
-                texto={mensagem}
-
-            />
+        <main className="novo-movimento-page">
 
 
 
 
 
-            <form onSubmit={salvar}>
+            <PageHeader
+
+
+                titulo="Nova Movimentação"
+
+
+                subtitulo="Registre entradas, saídas e ajustes de estoque"
 
 
 
-                <label>
-                    Produto
-                </label>
+            >
 
 
 
-                <br />
+                <Button
 
 
-
-                <select
-
-
-                    value={produtoId}
+                    variant="secondary"
 
 
-                    onChange={
-                        e =>
-                            setProdutoId(e.target.value)
-                    }
+                    onClick={() => navigate("/estoque")}
+
 
 
                 >
 
 
-                    <option value="">
-                        Selecione um produto
-                    </option>
+
+                    <ArrowLeft size={18} />
 
 
 
-                    {
-                        produtos.map(produto => (
-
-
-                            <option
-
-                                key={produto.id}
-
-                                value={produto.id}
-
-                            >
-
-                                {produto.nome}
-
-                                {" - Estoque: "}
-
-                                {produto.estoque}
-
-
-                            </option>
-
-
-                        ))
-                    }
+                    Voltar
 
 
 
-                </select>
+                </Button>
+
+
+
+            </PageHeader>
 
 
 
 
 
-                <br /><br />
+
+
+
+
+            <FormCard
+
+
+                titulo="Nova Movimentação"
+
+
+                subtitulo="Controle entradas, saídas e ajustes do estoque"
+
+
+
+            >
 
 
 
 
 
-                <label>
-                    Tipo
-                </label>
+                {
+
+                    mensagem &&
 
 
 
-                <br />
+                    <Mensagem
+
+
+                        tipo={tipoMensagem}
+
+
+                        texto={mensagem}
 
 
 
-                <select
+                    />
 
 
-                    value={tipo}
+                }
 
 
-                    onChange={
-                        e =>
-                            setTipo(e.target.value)
-                    }
+
+
+
+
+
+
+
+                <form
+
+
+                    className="movimento-form"
+
+
+                    onSubmit={salvar}
+
 
 
                 >
 
 
-                    <option value="ENTRADA">
-                        Entrada
-                    </option>
 
 
-                    <option value="SAIDA">
-                        Saída
-                    </option>
 
 
-                    <option value="AJUSTE">
-                        Ajuste
-                    </option>
 
 
+                    <Select
 
-                </select>
 
+                        label="Produto"
 
 
+                        value={produtoId}
 
 
-                <br /><br />
+                        onChange={(e) =>
 
+                            setProdutoId(
 
+                                e.target.value
 
+                            )
 
+                        }
 
-                <label>
-                    Quantidade
-                </label>
 
+                        placeholder="Selecione um produto"
 
 
-                <br />
+                        options={
 
 
 
-                <input
+                            produtos.map(produto => ({
 
 
-                    type="number"
 
-                    step="0.01"
+                                value: produto.id,
 
-                    min="0.01"
 
 
-                    value={quantidade}
+                                label:
 
+                                    `${produto.nome} - Estoque: ${produto.estoque}`
 
-                    onChange={
-                        e =>
-                            setQuantidade(e.target.value)
-                    }
 
 
-                />
+                            }))
 
 
 
+                        }
 
 
-                <br /><br />
+                    />
 
 
 
 
 
-                <label>
-                    Observação
-                </label>
 
 
 
-                <br />
 
 
 
-                <input
+                    <Select
 
 
-                    value={observacao}
+                        label="Tipo"
 
 
-                    onChange={
-                        e =>
-                            setObservacao(e.target.value)
-                    }
+                        value={tipo}
 
 
-                />
+                        onChange={(e) =>
 
+                            setTipo(
 
+                                e.target.value
 
+                            )
 
+                        }
 
-                <br /><br />
 
+                        options={[
 
 
 
+                            {
 
-                <button type="submit">
+                                value: "ENTRADA",
 
-                    Salvar
+                                label: "Entrada"
 
-                </button>
+                            },
 
 
 
+                            {
 
-            </form>
+                                value: "SAIDA",
+
+                                label: "Saída"
+
+                            },
+
+
+
+                            {
+
+                                value: "AJUSTE",
+
+                                label: "Ajuste"
+
+                            }
+
+
+
+                        ]}
+
+
+
+                    />
+
+
+
+
+
+
+
+
+
+                    <Input
+
+
+                        label="Quantidade"
+
+
+                        type="number"
+
+
+                        step="0.01"
+
+
+                        min="0.01"
+
+
+                        value={quantidade}
+
+
+                        onChange={(e) =>
+
+                            setQuantidade(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+
+
+                    />
+
+
+
+
+
+
+
+
+
+                    <Textarea
+
+
+                        label="Observação"
+
+
+                        value={observacao}
+
+
+                        onChange={(e) =>
+
+                            setObservacao(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+
+                        placeholder="Ex: Compra fornecedor"
+
+
+                        rows={3}
+
+
+
+                    />
+
+
+
+
+
+
+
+
+
+                    <div className="movimento-actions">
+
+
+
+
+
+                        <Button
+
+
+                            type="button"
+
+
+                            variant="secondary"
+
+
+                            onClick={() => navigate("/estoque")}
+
+
+
+                        >
+
+
+
+                            Cancelar
+
+
+
+                        </Button>
+
+
+
+
+
+
+
+                        <Button
+
+
+                            type="submit"
+
+
+                            variant="primary"
+
+
+
+                        >
+
+
+
+                            Salvar Movimentação
+
+
+
+                        </Button>
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </form>
+
+
+
+
+
+
+            </FormCard>
+
+
 
 
 
 
         </main>
+
 
 
     );

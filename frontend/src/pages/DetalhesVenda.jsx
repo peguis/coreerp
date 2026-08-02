@@ -1,15 +1,43 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { buscarVenda } from "../services/vendaService";
+import {
+    ArrowLeft
+} from "lucide-react";
+
+
+import {
+    buscarVenda
+} from "../services/vendaService";
+
+
+import PageHeader from "../components/ui/PageHeader";
+import SectionCard from "../components/ui/SectionCard";
+
+import Button from "../components/forms/Button";
+
+import {
+    formatarDataHora
+} from "../utils/formatters";
+
+import "./DetalhesVenda.css";
+
 
 
 function DetalhesVenda() {
 
 
-    const { id } = useParams();
+    const {
+        id
+    } = useParams();
+
+
+    const navigate = useNavigate();
+
+
 
     const [venda, setVenda] = useState(null);
+
 
 
 
@@ -21,207 +49,397 @@ function DetalhesVenda() {
 
 
 
+
+
     async function carregar() {
 
 
-        const dados = await buscarVenda(id);
+        try {
 
-        setVenda(dados);
+
+            const dados =
+                await buscarVenda(id);
+
+
+            setVenda(dados);
+
+
+
+        } catch (erro) {
+
+
+            console.error(
+                "Erro ao carregar venda:",
+                erro
+            );
+
+
+        }
 
 
     }
+
+
+
+
+
+
+
+    function moeda(valor) {
+
+
+        return new Intl.NumberFormat(
+            "pt-PT",
+            {
+                style: "currency",
+                currency: "EUR"
+            }
+
+        ).format(
+
+            Number(valor || 0)
+
+        );
+
+
+    }
+
+
+
+
 
 
 
     if (!venda) {
 
 
-        return <h1>Carregando...</h1>;
+        return (
+
+            <main className="detalhes-venda-page">
+
+                <h2>
+                    Carregando venda...
+                </h2>
+
+            </main>
+
+        );
 
 
     }
 
 
 
+
+
+
+
+
     return (
 
 
-        <main style={{ padding: 30 }}>
-
-
-            <h1>
-                Detalhes da Venda
-            </h1>
+        <main className="detalhes-venda-page">
 
 
 
-            <p>
-
-                <strong>ID:</strong> {venda.id}
-
-            </p>
 
 
+            <PageHeader
 
-            <p>
+                titulo={`Venda #${venda.id}`}
 
-                <strong>Cliente:</strong> {venda.cliente_id}
-
-            </p>
-
-
-
-            <p>
-
-                <strong>Total:</strong> R$ {
-                    Number(venda.total)
-                        .toFixed(2)
-                }
-
-            </p>
-
-
-
-            <p>
-
-                <strong>Status:</strong> {venda.status}
-
-            </p>
-
-
-
-            <p>
-
-                <strong>Data:</strong>{" "}
-
-                {
-                    new Date(
-                        venda.created_at
-                    ).toLocaleString()
-                }
-
-            </p>
-
-
-
-            <h2>
-                Produtos
-            </h2>
-
-
-
-            <table
-
-                border="1"
-
-                cellPadding="10"
-
-                style={{
-
-                    width: "100%",
-
-                    borderCollapse: "collapse"
-
-                }}
+                subtitulo="Detalhes da venda realizada"
 
             >
 
 
-                <thead>
 
+                <Button
 
-                    <tr>
+                    variant="secondary"
 
-
-                        <th>
-                            Produto
-                        </th>
-
-
-                        <th>
-                            Quantidade
-                        </th>
-
-
-                        <th>
-                            Preço Unitário
-                        </th>
-
-
-                        <th>
-                            Subtotal
-                        </th>
-
-
-                    </tr>
-
-
-                </thead>
-
-
-
-                <tbody>
-
-
-                    {
-                        venda.itens.map((item) => (
-
-
-                            <tr key={item.id}>
-
-
-                                <td>
-
-                                    {
-                                        item.produto?.nome ||
-                                        item.produto_id
-                                    }
-
-                                </td>
-
-
-
-                                <td>
-                                    {item.quantidade}
-                                </td>
-
-
-
-                                <td>
-
-                                    R$ {
-                                        Number(
-                                            item.preco_unitario
-                                        ).toFixed(2)
-                                    }
-
-                                </td>
-
-
-
-                                <td>
-
-                                    R$ {
-                                        Number(
-                                            item.subtotal
-                                        ).toFixed(2)
-                                    }
-
-                                </td>
-
-
-
-                            </tr>
-
-
-                        ))
+                    onClick={() =>
+                        navigate("/vendas")
                     }
 
+                >
 
-                </tbody>
+                    <ArrowLeft size={18} />
+
+                    Voltar
 
 
-            </table>
+                </Button>
+
+
+
+            </PageHeader>
+
+
+
+
+
+
+
+
+
+            <div className="venda-info-grid">
+
+
+
+
+
+                <SectionCard>
+
+
+                    <h2>
+                        Informações da Venda
+                    </h2>
+
+
+
+                    <p>
+
+                        <strong>Status:</strong>
+
+                        {" "}
+
+                        {venda.status}
+
+                    </p>
+
+
+
+                    <p>
+
+                        <strong>Data:</strong>{" "}
+
+                        {formatarDataHora(venda.created_at)}
+
+                    </p>
+
+
+
+                    <p>
+
+                        <strong>Cliente ID:</strong>
+
+                        {" "}
+
+                        {venda.cliente_id}
+
+
+                    </p>
+
+
+
+                </SectionCard>
+
+
+
+
+
+
+
+
+                <SectionCard>
+
+
+                    <h2>
+                        Resumo Financeiro
+                    </h2>
+
+
+
+                    <div className="total-venda">
+
+
+                        {moeda(venda.total)}
+
+
+                    </div>
+
+
+
+                </SectionCard>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            <SectionCard>
+
+
+                <h2>
+                    Produtos da Venda
+                </h2>
+
+
+
+
+
+                {
+
+                    !venda.itens ||
+                        venda.itens.length === 0
+
+                        ?
+
+                        <p>
+                            Nenhum item encontrado.
+                        </p>
+
+
+                        :
+
+
+
+                        <table className="venda-table">
+
+
+                            <thead>
+
+
+                                <tr>
+
+                                    <th>
+                                        Produto
+                                    </th>
+
+
+                                    <th>
+                                        Quantidade
+                                    </th>
+
+
+                                    <th>
+                                        Preço Unitário
+                                    </th>
+
+
+                                    <th>
+                                        Subtotal
+                                    </th>
+
+
+                                </tr>
+
+
+                            </thead>
+
+
+
+
+
+                            <tbody>
+
+
+                                {
+
+                                    venda.itens.map(
+                                        item => (
+
+
+                                            <tr
+                                                key={
+                                                    item.id
+                                                }
+                                            >
+
+
+                                                <td>
+
+
+                                                    {
+
+                                                        item.produto?.nome
+
+                                                        ||
+
+                                                        `Produto ${item.produto_id}`
+
+                                                    }
+
+
+                                                </td>
+
+
+
+
+                                                <td>
+
+                                                    {
+                                                        item.quantidade
+                                                    }
+
+                                                </td>
+
+
+
+
+                                                <td>
+
+                                                    {
+                                                        moeda(
+                                                            item.preco_unitario
+                                                        )
+                                                    }
+
+
+                                                </td>
+
+
+
+
+                                                <td>
+
+                                                    {
+                                                        moeda(
+                                                            item.subtotal
+                                                        )
+                                                    }
+
+
+                                                </td>
+
+
+
+
+                                            </tr>
+
+
+                                        )
+
+                                    )
+
+                                }
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                }
+
+
+
+
+
+            </SectionCard>
+
+
+
+
 
 
 
@@ -232,6 +450,7 @@ function DetalhesVenda() {
 
 
 }
+
 
 
 export default DetalhesVenda;

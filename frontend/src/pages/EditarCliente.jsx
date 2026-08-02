@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { ArrowLeft } from "lucide-react";
+
+import Mensagem from "../components/Mensagem";
+import PageHeader from "../components/ui/PageHeader";
+
+import FormCard from "../components/forms/FormCard";
+import Input from "../components/forms/Input";
+import Button from "../components/forms/Button";
+
 import {
     buscarCliente,
     atualizarCliente
 } from "../services/clienteService";
 
-import Mensagem from "../components/Mensagem";
+import "./Clientes.css";
 
 
 function EditarCliente() {
@@ -17,13 +26,23 @@ function EditarCliente() {
     const navigate = useNavigate();
 
 
+
     const [nome, setNome] = useState("");
+
     const [email, setEmail] = useState("");
+
     const [telefone, setTelefone] = useState("");
 
 
+
     const [mensagem, setMensagem] = useState("");
+
     const [tipo, setTipo] = useState("");
+
+
+
+    const [carregando, setCarregando] = useState(true);
+
 
 
 
@@ -31,22 +50,64 @@ function EditarCliente() {
 
         carregarCliente();
 
-    }, []);
+    }, [id]);
+
+
 
 
 
     async function carregarCliente() {
 
 
-        const dados = await buscarCliente(id);
+        try {
 
 
-        setNome(dados.nome);
-        setEmail(dados.email);
-        setTelefone(dados.telefone);
+            setCarregando(true);
+
+
+            const dados = await buscarCliente(id);
+
+
+
+            setNome(dados.nome || "");
+
+            setEmail(dados.email || "");
+
+            setTelefone(dados.telefone || "");
+
+
+
+        } catch (erro) {
+
+
+            console.error(
+                "Erro ao carregar cliente:",
+                erro
+            );
+
+
+            setTipo("erro");
+
+            setMensagem(
+                "Erro ao carregar cliente"
+            );
+
+
+        } finally {
+
+
+            setCarregando(false);
+
+
+        }
 
 
     }
+
+
+
+
+
 
 
 
@@ -56,18 +117,18 @@ function EditarCliente() {
         e.preventDefault();
 
 
+
         try {
 
 
-            await atualizarCliente(id, {
 
+            await atualizarCliente(id, {
 
                 nome,
 
                 email,
 
                 telefone
-
 
             });
 
@@ -83,7 +144,9 @@ function EditarCliente() {
 
             setTimeout(() => {
 
+
                 navigate("/clientes");
+
 
             }, 1000);
 
@@ -92,11 +155,21 @@ function EditarCliente() {
         } catch (erro) {
 
 
+            console.error(
+                "Erro ao atualizar cliente:",
+                erro
+            );
+
+
             setTipo("erro");
 
+
             setMensagem(
+
                 erro.response?.data?.detail ||
+
                 "Erro ao atualizar cliente"
+
             );
 
 
@@ -107,120 +180,187 @@ function EditarCliente() {
 
 
 
+
+
+
+    if (carregando) {
+
+
+        return (
+
+            <main className="clientes-page">
+
+                <h2>
+                    Carregando cliente...
+                </h2>
+
+            </main>
+
+        );
+
+
+    }
+
+
+
+
+
+
+
     return (
 
 
-        <main style={{ padding: 30 }}>
 
-
-            <h1>
-                Editar Cliente
-            </h1>
+        <main className="clientes-page">
 
 
 
-            <Mensagem
-                tipo={tipo}
-                texto={mensagem}
+            <PageHeader
+
+                titulo="Editar Cliente"
+
+                subtitulo="Atualize os dados do cliente"
+
             />
 
 
 
-            <form onSubmit={salvar}>
 
 
-                <div>
+            <div className="form-actions">
 
-                    <label>
-                        Nome:
-                    </label>
 
-                    <br />
+                <Button
 
-                    <input
+                    variant="secondary"
+
+                    onClick={() => navigate("/clientes")}
+
+                >
+
+                    <ArrowLeft size={18} />
+
+                    Voltar
+
+
+                </Button>
+
+
+
+            </div>
+
+
+
+
+
+
+            <FormCard
+
+                titulo="Informações do cliente"
+
+                subtitulo="Edite os dados cadastrados"
+
+            >
+
+
+
+                <Mensagem
+
+                    tipo={tipo}
+
+                    texto={mensagem}
+
+                />
+
+
+
+
+
+                <form onSubmit={salvar}>
+
+
+                    <Input
+
+                        label="Nome"
 
                         value={nome}
 
-                        onChange={
-                            (e) =>
-                                setNome(e.target.value)
+                        onChange={(e) =>
+
+                            setNome(e.target.value)
+
                         }
+
+                        required
 
                     />
 
-                </div>
 
 
 
-                <br />
 
+                    <Input
 
-
-                <div>
-
-                    <label>
-                        Email:
-                    </label>
-
-                    <br />
-
-                    <input
+                        label="Email"
 
                         type="email"
 
                         value={email}
 
-                        onChange={
-                            (e) =>
-                                setEmail(e.target.value)
+                        onChange={(e) =>
+
+                            setEmail(e.target.value)
+
                         }
+
+                        required
 
                     />
 
-                </div>
 
 
 
-                <br />
 
+                    <Input
 
-
-                <div>
-
-                    <label>
-                        Telefone:
-                    </label>
-
-                    <br />
-
-                    <input
+                        label="Telefone"
 
                         value={telefone}
 
-                        onChange={
-                            (e) =>
-                                setTelefone(e.target.value)
+                        onChange={(e) =>
+
+                            setTelefone(e.target.value)
+
                         }
 
                     />
 
-                </div>
 
 
 
-                <br />
+
+
+                    <Button
+
+                        type="submit"
+
+                        variant="primary"
+
+                    >
+
+                        Atualizar Cliente
+
+                    </Button>
 
 
 
-                <button type="submit">
 
-                    Atualizar
-
-                </button>
+                </form>
 
 
 
-            </form>
+            </FormCard>
+
 
 
 
@@ -231,6 +371,7 @@ function EditarCliente() {
 
 
 }
+
 
 
 export default EditarCliente;

@@ -71,5 +71,6 @@ class ItemVenda(Base):
 
 
     produto = relationship(
-        "Produto"
+        "Produto",
+        back_populates="itens_venda"
     )

@@ -14,12 +14,13 @@ class UsuarioCreate(BaseModel):
 
 
 class UsuarioResponse(BaseModel):
+
     id: int
     nome: str
     email: EmailStr
     ativo: bool
     created_at: datetime | None
-    empresa_id: int | None
+    empresa_id: int
     perfil: PerfilUsuario
 
     class Config:

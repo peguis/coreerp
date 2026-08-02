@@ -1,9 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { ArrowLeft } from "lucide-react";
+
 import Mensagem from "../components/Mensagem";
 
-import { criarCliente } from "../services/clienteService";
+import PageHeader from "../components/ui/PageHeader";
+
+import FormCard from "../components/forms/FormCard";
+import Input from "../components/forms/Input";
+import Button from "../components/forms/Button";
+
+
+import {
+    criarCliente
+} from "../services/clienteService";
+
+
+import "./Clientes.css";
+
 
 
 function NovoCliente() {
@@ -22,6 +37,7 @@ function NovoCliente() {
 
 
 
+
     async function salvar(e) {
 
 
@@ -34,7 +50,9 @@ function NovoCliente() {
             await criarCliente({
 
                 nome,
+
                 email,
+
                 telefone
 
             });
@@ -42,6 +60,7 @@ function NovoCliente() {
 
 
             setTipo("sucesso");
+
 
             setMensagem(
                 "Cliente criado com sucesso"
@@ -51,7 +70,9 @@ function NovoCliente() {
 
             setTimeout(() => {
 
+
                 navigate("/clientes");
+
 
             }, 1000);
 
@@ -62,9 +83,13 @@ function NovoCliente() {
 
             setTipo("erro");
 
+
             setMensagem(
+
                 erro.response?.data?.detail ||
+
                 "Erro ao criar cliente"
+
             );
 
 
@@ -75,132 +100,123 @@ function NovoCliente() {
 
 
 
+
+
     return (
 
 
-        <main style={{ padding: 30 }}>
+        <main className="clientes-page">
 
 
-            <h1>
-                Novo Cliente
-            </h1>
+            <PageHeader
 
+                titulo="Novo Cliente"
 
+                subtitulo="Cadastre um novo cliente"
 
-            <Mensagem
-                tipo={tipo}
-                texto={mensagem}
             />
 
 
 
-            <form onSubmit={salvar}>
+            <div className="form-actions">
 
 
-                <div>
+                <Button
+
+                    variant="secondary"
+
+                    onClick={() => navigate("/clientes")}
+
+                >
+
+                    <ArrowLeft size={18} />
+
+                    Voltar
+
+                </Button>
 
 
-                    <label>
-                        Nome:
-                    </label>
+            </div>
 
 
-                    <br />
 
 
-                    <input
+            <FormCard
+                titulo="Informações do cliente"
+                subtitulo="Preencha os dados para cadastrar um novo cliente"
+            >
+
+
+                <Mensagem
+
+                    tipo={tipo}
+
+                    texto={mensagem}
+
+                />
+
+
+
+                <form onSubmit={salvar}>
+
+
+                    <Input
+
+                        label="Nome"
 
                         value={nome}
 
                         onChange={
-                            (e) =>
-                                setNome(e.target.value)
+                            e => setNome(e.target.value)
                         }
 
                     />
 
 
-                </div>
 
+                    <Input
 
-
-                <br />
-
-
-
-                <div>
-
-
-                    <label>
-                        Email:
-                    </label>
-
-
-                    <br />
-
-
-                    <input
+                        label="Email"
 
                         type="email"
 
                         value={email}
 
                         onChange={
-                            (e) =>
-                                setEmail(e.target.value)
+                            e => setEmail(e.target.value)
                         }
 
                     />
 
 
-                </div>
 
+                    <Input
 
-
-                <br />
-
-
-
-                <div>
-
-
-                    <label>
-                        Telefone:
-                    </label>
-
-
-                    <br />
-
-
-                    <input
+                        label="Telefone"
 
                         value={telefone}
 
                         onChange={
-                            (e) =>
-                                setTelefone(e.target.value)
+                            e => setTelefone(e.target.value)
                         }
 
                     />
 
 
-                </div>
+
+                    <Button
+                        type="submit"
+                        variant="primary"
+                    >
+                        Salvar Cliente
+                    </Button>
+
+
+                </form>
 
 
 
-                <br />
-
-
-
-                <button type="submit">
-
-                    Salvar
-
-                </button>
-
-
-
-            </form>
+            </FormCard>
 
 
 

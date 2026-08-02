@@ -1,0 +1,13 @@
+export const STATUS = {
+
+    ATIVO: "ATIVO",
+
+    INATIVO: "INATIVO",
+
+    FINALIZADA: "FINALIZADA",
+
+    CANCELADA: "CANCELADA",
+
+    ABERTA: "ABERTA"
+
+};

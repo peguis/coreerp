@@ -1,254 +1,160 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Navigate
+} from "react-router-dom";
 
+import PrivateRoute from "./PrivateRoute";
+
+import MainLayout from "../components/layout/MainLayout";
 
 import Login from "../pages/Login";
 
 import Dashboard from "../pages/Dashboard";
 
-
-import Produtos from "../pages/Produtos";
 import Clientes from "../pages/Clientes";
-import Vendas from "../pages/Vendas";
-import Estoque from "../pages/Estoque";
-
-
-import NovoProduto from "../pages/NovoProduto";
-import EditarProduto from "../pages/EditarProduto";
-
-
 import NovoCliente from "../pages/NovoCliente";
 import EditarCliente from "../pages/EditarCliente";
 
+import Produtos from "../pages/Produtos";
+import NovoProduto from "../pages/NovoProduto";
+import EditarProduto from "../pages/EditarProduto";
 
+import Estoque from "../pages/Estoque";
+import NovoMovimento from "../pages/NovoMovimento";
+import Movimentos from "../pages/Movimentos";
+
+import Vendas from "../pages/Vendas";
 import NovaVenda from "../pages/NovaVenda";
 import DetalhesVenda from "../pages/DetalhesVenda";
 
+import Financeiro from "../pages/Financeiro";
+import NovoLancamento from "../pages/NovoLancamento";
+import EditarLancamento from "../pages/EditarLancamento";
 
-import NovoMovimento from "../pages/NovoMovimento";
+import Configuracoes from "../pages/Configuracoes";
 
-
-import PrivateRoute from "./PrivateRoute";
-
-import Layout from "../components/Layout";
-
-
-
-
-
-function AppRoutes() {
-
+export default function AppRoutes() {
 
     return (
 
-
         <BrowserRouter>
-
 
             <Routes>
 
-
-
-                {/* Rota pública */}
-
-
                 <Route
-
                     path="/"
-
-                    element={<Login />}
-
+                    element={<Navigate to="/dashboard" replace />}
                 />
 
-
-
-
-
-                {/* Rotas protegidas */}
-
-
                 <Route
+                    path="/login"
+                    element={<Login />}
+                />
 
-                    element={<PrivateRoute />}
+                <Route element={<PrivateRoute />}>
 
-                >
-
-
-
-                    <Route
-
-                        element={<Layout />}
-
-                    >
-
-
-
+                    <Route element={<MainLayout />}>
 
                         <Route
-
                             path="/dashboard"
-
                             element={<Dashboard />}
-
                         />
 
-
-
-
-
-                        {/* PRODUTOS */}
-
-
                         <Route
-
-                            path="/produtos"
-
-                            element={<Produtos />}
-
-                        />
-
-
-                        <Route
-
-                            path="/produtos/novo"
-
-                            element={<NovoProduto />}
-
-                        />
-
-
-                        <Route
-
-                            path="/produtos/:id"
-
-                            element={<EditarProduto />}
-
-                        />
-
-
-
-
-
-                        {/* CLIENTES */}
-
-
-                        <Route
-
                             path="/clientes"
-
                             element={<Clientes />}
-
                         />
 
-
                         <Route
-
                             path="/clientes/novo"
-
                             element={<NovoCliente />}
-
                         />
 
-
                         <Route
-
-                            path="/clientes/:id"
-
+                            path="/clientes/:id/editar"
                             element={<EditarCliente />}
-
                         />
 
-
-
-
-
-                        {/* VENDAS */}
-
-
                         <Route
-
-                            path="/vendas"
-
-                            element={<Vendas />}
-
+                            path="/produtos"
+                            element={<Produtos />}
                         />
 
-
                         <Route
-
-                            path="/vendas/nova"
-
-                            element={<NovaVenda />}
-
+                            path="/produtos/novo"
+                            element={<NovoProduto />}
                         />
 
-
                         <Route
-
-                            path="/vendas/:id"
-
-                            element={<DetalhesVenda />}
-
+                            path="/produtos/:id/editar"
+                            element={<EditarProduto />}
                         />
 
-
-
-
-
-                        {/* ESTOQUE */}
-
-
                         <Route
-
                             path="/estoque"
-
                             element={<Estoque />}
-
                         />
-
 
                         <Route
-
-                            path="/estoque/novo"
-
-                            element={<NovoMovimento />}
-
+                            path="/estoque/movimentos"
+                            element={<Movimentos />}
                         />
 
+                        <Route
+                            path="/estoque/novo"
+                            element={<NovoMovimento />}
+                        />
 
+                        <Route
+                            path="/vendas"
+                            element={<Vendas />}
+                        />
+
+                        <Route
+                            path="/vendas/nova"
+                            element={<NovaVenda />}
+                        />
+
+                        <Route
+                            path="/vendas/:id"
+                            element={<DetalhesVenda />}
+                        />
+
+                        <Route
+                            path="/financeiro"
+                            element={<Financeiro />}
+                        />
+
+                        <Route
+                            path="/financeiro/novo"
+                            element={<NovoLancamento />}
+                        />
+
+                        <Route
+                            path="/financeiro/:id/editar"
+                            element={<EditarLancamento />}
+                        />
+
+                        <Route
+                            path="/configuracoes"
+                            element={<Configuracoes />}
+                        />
 
                     </Route>
 
-
                 </Route>
 
-
-
-
-
-                {/* Qualquer rota inexistente */}
-
-
                 <Route
-
                     path="*"
-
-                    element={<Login />}
-
+                    element={<Navigate to="/dashboard" replace />}
                 />
-
-
 
             </Routes>
 
-
         </BrowserRouter>
-
 
     );
 
-
 }
-
-
-
-export default AppRoutes;

@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from typing import TYPE_CHECKING
+
 from sqlalchemy import (
     String,
     Boolean,
@@ -13,6 +15,18 @@ from sqlalchemy.orm import (
 )
 
 from app.database.database import Base
+
+
+if TYPE_CHECKING:
+
+    from app.models.usuario import Usuario
+    from app.models.venda import Venda
+    from app.models.produto import Produto
+    from app.models.cliente import Cliente
+    from app.models.movimento_estoque import MovimentoEstoque
+    from app.models.produto_imagem import ProdutoImagem
+    from app.models.financeiro import LancamentoFinanceiro
+    from app.models.categoria_financeira import CategoriaFinanceira
 
 
 
@@ -102,6 +116,20 @@ class Empresa(Base):
 
     imagens_produto: Mapped[list["ProdutoImagem"]] = relationship(
         "ProdutoImagem",
+        back_populates="empresa",
+        cascade="all, delete-orphan"
+    )
+
+
+    lancamentos_financeiros: Mapped[list["LancamentoFinanceiro"]] = relationship(
+        "LancamentoFinanceiro",
+        back_populates="empresa",
+        cascade="all, delete-orphan"
+    )
+
+
+    categorias_financeiras: Mapped[list["CategoriaFinanceira"]] = relationship(
+        "CategoriaFinanceira",
         back_populates="empresa",
         cascade="all, delete-orphan"
     )

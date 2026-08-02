@@ -1,14 +1,22 @@
-# Environment
-.env
-*.env
-
-# Logs
-logs/
-*.log
-
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# Docker
-postgres_data/git add .
+# Ambiente
+.venv/
+.env
+
+# Node
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# Uploads
+uploads/
+
+# IDE
+.vscode/

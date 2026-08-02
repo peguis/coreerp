@@ -19,6 +19,8 @@ from app.auth.dependencies import (
     require_perfil
 )
 
+from app.auth.tenant import get_empresa_id
+
 
 router = APIRouter(
     prefix="/movimentos-estoque",
@@ -33,14 +35,21 @@ router = APIRouter(
 def criar_movimento_endpoint(
     movimento: MovimentoEstoqueCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin", "gerente", "estoquista"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(require_perfil(
+        "admin",
+        "gerente",
+        "operador"
+    ))
 ):
 
     novo_movimento = criar_movimento_service(
         db,
         movimento,
-        usuario
+        empresa_id,
+        usuario.id
     )
+
 
     if not novo_movimento:
 
@@ -49,7 +58,9 @@ def criar_movimento_endpoint(
             detail="Produto não encontrado"
         )
 
+
     return novo_movimento
+
 
 
 
@@ -59,13 +70,15 @@ def criar_movimento_endpoint(
 )
 def listar_movimentos_endpoint(
     db: Session = Depends(get_db),
+    empresa_id: int = Depends(get_empresa_id),
     usuario=Depends(get_current_user)
 ):
 
     return listar_movimentos_service(
         db,
-        usuario
+        empresa_id
     )
+
 
 
 
@@ -76,14 +89,16 @@ def listar_movimentos_endpoint(
 def buscar_movimento(
     movimento_id: int,
     db: Session = Depends(get_db),
+    empresa_id: int = Depends(get_empresa_id),
     usuario=Depends(get_current_user)
 ):
 
     movimento = buscar_movimento_service(
         db,
         movimento_id,
-        usuario
+        empresa_id
     )
+
 
     if not movimento:
 
@@ -91,5 +106,6 @@ def buscar_movimento(
             status_code=404,
             detail="Movimento não encontrado"
         )
+
 
     return movimento

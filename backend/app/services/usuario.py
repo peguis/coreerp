@@ -17,58 +17,94 @@ from app.auth.jwt import criar_token
 from app.core.validators.usuario import validar_usuario
 
 
+
 def criar_usuario_service(
     db: Session,
-    usuario: UsuarioCreate
+    usuario: UsuarioCreate,
+    empresa_id: int
 ):
 
     validar_usuario(usuario)
 
+
     return criar_usuario(
         db,
-        usuario
+        usuario,
+        empresa_id
     )
 
 
+
+
+
 def listar_usuarios_service(
-    db
+    db: Session,
+    empresa_id: int
 ):
 
-    return listar_usuarios(db)
+    return listar_usuarios(
+        db,
+        empresa_id
+    )
+
+
+
 
 
 def buscar_usuario_service(
-    db,
-    usuario_id
+    db: Session,
+    usuario_id: int,
+    empresa_id: int
 ):
 
     return buscar_usuario_por_id(
         db,
-        usuario_id
+        usuario_id,
+        empresa_id
     )
 
 
+
+
+
 def atualizar_usuario_service(
-    db,
-    usuario_id,
-    dados
+    db: Session,
+    usuario_id: int,
+    empresa_id: int,
+    dados: dict
 ):
 
     usuario = buscar_usuario_por_id(
         db,
-        usuario_id
+        usuario_id,
+        empresa_id
     )
+
 
     if not usuario:
         return None
 
+
+
     if "nome" in dados:
-        if len(dados["nome"].strip()) < 3:
+
+        if len(
+            dados["nome"].strip()
+        ) < 3:
+
             return None
 
+
+
     if "senha" in dados:
-        if len(dados["senha"]) < 6:
+
+        if len(
+            dados["senha"]
+        ) < 6:
+
             return None
+
+
 
     return atualizar_usuario(
         db,
@@ -77,25 +113,38 @@ def atualizar_usuario_service(
     )
 
 
+
+
+
 def deletar_usuario_service(
-    db,
-    usuario_id
+    db: Session,
+    usuario_id: int,
+    empresa_id: int
 ):
 
     usuario = buscar_usuario_por_id(
         db,
-        usuario_id
+        usuario_id,
+        empresa_id
     )
 
+
     if not usuario:
+
         return False
+
+
 
     deletar_usuario(
         db,
         usuario
     )
 
+
     return True
+
+
+
 
 
 def login_service(
@@ -108,14 +157,21 @@ def login_service(
         dados.username
     )
 
+
     if not usuario:
+
         return None
+
+
 
     if not verificar_senha(
         dados.password,
         usuario.senha
     ):
+
         return None
+
+
 
     token = criar_token(
         {
@@ -125,7 +181,11 @@ def login_service(
         }
     )
 
+
     return {
+
         "access_token": token,
+
         "token_type": "bearer"
+
     }

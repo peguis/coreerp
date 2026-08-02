@@ -1,3 +1,6 @@
+from fastapi import HTTPException
+from sqlalchemy.orm import Session, joinedload
+
 from app.repositories.movimento_estoque import (
     criar_movimento,
     listar_movimentos,
@@ -12,14 +15,16 @@ from app.core.validators.movimento_estoque import (
     validar_movimento
 )
 
-from fastapi import HTTPException
+from app.models.movimento_estoque import MovimentoEstoque
+
 
 
 
 def criar_movimento_service(
-    db,
+    db: Session,
     movimento,
-    usuario
+    empresa_id: int,
+    usuario_id: int
 ):
 
     validar_movimento(
@@ -35,9 +40,8 @@ def criar_movimento_service(
     produto = buscar_produto_por_id(
         db,
         movimento.produto_id,
-        usuario.empresa_id
+        empresa_id
     )
-
 
 
     if not produto:
@@ -48,7 +52,6 @@ def criar_movimento_service(
     try:
 
         if movimento.tipo == "ENTRADA":
-
 
             produto.estoque += movimento.quantidade
 
@@ -71,28 +74,28 @@ def criar_movimento_service(
 
         elif movimento.tipo == "AJUSTE":
 
-
             produto.estoque = movimento.quantidade
 
 
 
-        movimento.empresa_id = usuario.empresa_id
 
-        movimento.usuario_id = usuario.id
+        novo_movimento = criar_movimento(
+            db=db,
+            movimento=movimento,
+            empresa_id=empresa_id,
+            usuario_id=usuario_id
+        )
 
 
-
-        db.add(produto)
-
-        db.add(movimento)
 
         db.commit()
 
-        db.refresh(movimento)
+        db.refresh(
+            novo_movimento
+        )
 
 
-
-        return movimento
+        return novo_movimento
 
 
 
@@ -106,28 +109,47 @@ def criar_movimento_service(
 
 
 
+
 def listar_movimentos_service(
-    db,
-    usuario
+    db: Session,
+    empresa_id: int
 ):
 
-    return listar_movimentos(
-        db,
-        usuario.empresa_id
+
+    movimentos = (
+
+        db.query(MovimentoEstoque)
+
+        .options(
+            joinedload(
+                MovimentoEstoque.produto
+            )
+        )
+
+        .filter(
+            MovimentoEstoque.empresa_id == empresa_id
+        )
+
+        .all()
+
     )
+
+
+    return movimentos
+
 
 
 
 
 
 def buscar_movimento_service(
-    db,
-    movimento_id,
-    usuario
+    db: Session,
+    movimento_id: int,
+    empresa_id: int
 ):
 
     return buscar_movimento_por_id(
         db,
         movimento_id,
-        usuario.empresa_id
+        empresa_id
     )

@@ -1,0 +1,55 @@
+.alertas-container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+}
+
+
+
+.alerta-item {
+
+    padding: 16px;
+
+    background: var(--background-secondary);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 12px;
+
+}
+
+
+
+.alerta-item p {
+
+    margin: 10px 0 0;
+
+    color: var(--text-secondary);
+
+}
+
+
+
+.alerta-success {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    background: var(--bg-subtle);
+
+    border-radius: 12px;
+
+    color: var(--text-primary);
+
+    font-weight: 600;
+
+}

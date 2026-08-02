@@ -2,6 +2,15 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
+class ProdutoResumo(BaseModel):
+
+    id: int
+    nome: str
+
+    class Config:
+        from_attributes = True
+
+
 
 class MovimentoEstoqueCreate(BaseModel):
 
@@ -34,6 +43,8 @@ class MovimentoEstoqueResponse(BaseModel):
     observacao: str | None = None
 
     created_at: datetime
+
+    produto: ProdutoResumo | None = None
 
 
 

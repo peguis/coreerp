@@ -1,296 +1,145 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { Mail, Lock, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../auth/AuthContext";
 import { loginRequest } from "../api/auth";
 
+import "./Login.css";
 
-function Login() {
-
+export default function Login() {
 
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState("");
 
-    const [username, setUsername] = useState("");
+    const [senha, setSenha] = useState("");
 
-    const [password, setPassword] = useState("");
-
-    const [erro, setErro] = useState("");
-
-
-
-    const { login } = useContext(AuthContext);
-
-
-
-
+    const [loading, setLoading] = useState(false);
 
     async function entrar(e) {
 
-
         e.preventDefault();
-
-
-        setErro("");
-
-
-        console.log(
-            "ENVIANDO LOGIN:",
-            username,
-            password
-        );
-
-
 
         try {
 
+            setLoading(true);
 
-            const data = await loginRequest(
+            await loginRequest(email, senha);
 
-                username,
+            navigate("/dashboard");
 
-                password
+        } catch {
 
-            );
+            alert("E-mail ou senha inválidos.");
 
+        } finally {
 
-
-            console.log(
-                "RESPOSTA LOGIN:",
-                data
-            );
-
-
-
-            login(
-
-                data.access_token
-
-            );
-
-
-
-            navigate(
-                "/dashboard"
-            );
-
-
-
-        } catch (erro) {
-
-
-
-            console.log(
-                "ERRO LOGIN:",
-                erro
-            );
-
-
-
-            setErro(
-
-                erro.response?.data?.detail ||
-
-                "Usuário ou senha inválidos"
-
-            );
-
+            setLoading(false);
 
         }
 
-
     }
-
-
-
-
-
-
-
 
     return (
 
+        <main className="login-page">
 
-        <main
+            <div className="login-card">
 
-            style={{
+                <div className="login-header">
 
-                padding: 40,
+                    <h1>
 
-                maxWidth: 400,
+                        CoreERP
 
-                margin: "auto"
+                    </h1>
 
-            }}
+                    <p>
 
-        >
+                        Sistema ERP SaaS
 
+                    </p>
 
+                </div>
 
-            <h1>
-
-                CoreERP
-
-            </h1>
-
-
-
-            <h2>
-
-                Login
-
-            </h2>
-
-
-
-
-
-            {
-
-                erro &&
-
-                <p
-
-                    style={{
-
-                        color: "red"
-
-                    }}
-
+                <form
+                    onSubmit={entrar}
+                    className="login-form"
                 >
 
-                    {erro}
+                    <div className="input-group">
 
-                </p>
+                        <Mail size={20} />
 
-            }
+                        <input
 
+                            type="email"
 
+                            placeholder="E-mail"
 
+                            value={email}
 
+                            onChange={(e) =>
 
-            <form onSubmit={entrar}>
+                                setEmail(e.target.value)
 
+                            }
 
-                <input
+                            required
 
+                        />
 
-                    placeholder="Email"
+                    </div>
 
+                    <div className="input-group">
 
-                    type="email"
+                        <Lock size={20} />
 
+                        <input
 
-                    value={username}
+                            type="password"
 
+                            placeholder="Senha"
 
-                    onChange={
+                            value={senha}
 
-                        e => setUsername(
+                            onChange={(e) =>
 
-                            e.target.value
+                                setSenha(e.target.value)
 
-                        )
+                            }
 
-                    }
+                            required
 
+                        />
 
-                    style={{
+                    </div>
 
-                        width: "100%",
+                    <button
+                        type="submit"
+                        disabled={loading}
+                    >
 
-                        padding: 10
+                        <LogIn size={20} />
 
-                    }}
+                        {
 
+                            loading
 
-                />
+                                ? "Entrando..."
 
+                                : "Entrar"
 
+                        }
 
+                    </button>
 
-                <br />
+                </form>
 
-                <br />
-
-
-
-
-
-
-
-                <input
-
-
-                    placeholder="Senha"
-
-
-                    type="password"
-
-
-                    value={password}
-
-
-                    onChange={
-
-                        e => setPassword(
-
-                            e.target.value
-
-                        )
-
-                    }
-
-
-                    style={{
-
-                        width: "100%",
-
-                        padding: 10
-
-                    }}
-
-
-                />
-
-
-
-
-                <br />
-
-                <br />
-
-
-
-
-
-
-
-                <button
-
-                    type="submit"
-
-                >
-
-                    Entrar
-
-                </button>
-
-
-
-
-            </form>
-
-
-
+            </div>
 
         </main>
 
-
     );
 
-
 }
-
-
-export default Login;

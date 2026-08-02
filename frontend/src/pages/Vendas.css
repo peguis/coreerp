@@ -1,0 +1,171 @@
+.vendas-page {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+
+    padding: 30px;
+
+}
+
+
+
+/* HEADER */
+
+.vendas-header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+
+
+
+/* FILTROS */
+
+.vendas-filtros {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.vendas-filtros input {
+
+    flex: 1;
+
+    min-width: 220px;
+
+    padding: 12px 16px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .2s ease;
+
+}
+
+
+
+.vendas-filtros input:focus {
+
+    border-color: var(--primary);
+
+}
+
+
+
+
+
+/* AÇÕES DA TABELA */
+
+.venda-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+
+
+
+/* INFORMAÇÃO EXTRA */
+
+.vendas-resumo {
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+}
+
+
+
+
+
+/* RESPONSIVO */
+
+@media(max-width:768px) {
+
+
+    .vendas-page {
+
+        padding: 20px;
+
+    }
+
+
+
+    .vendas-header-actions {
+
+        width: 100%;
+
+    }
+
+
+
+    .vendas-header-actions a {
+
+        width: 100%;
+
+    }
+
+
+
+    .vendas-header-actions button {
+
+        width: 100%;
+
+        justify-content: center;
+
+    }
+
+
+
+    .vendas-filtros {
+
+        flex-direction: column;
+
+    }
+
+
+
+    .vendas-filtros input {
+
+        width: 100%;
+
+    }
+
+
+
+    .venda-actions {
+
+        justify-content: flex-start;
+
+    }
+
+
+}

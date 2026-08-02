@@ -21,6 +21,9 @@ from app.auth.dependencies import (
     require_perfil
 )
 
+from app.auth.tenant import get_empresa_id
+
+
 
 router = APIRouter(
     prefix="/vendas",
@@ -36,14 +39,21 @@ router = APIRouter(
 def criar_venda_endpoint(
     venda: VendaCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin", "gerente", "vendedor"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(require_perfil(
+        "admin",
+        "gerente",
+        "operador"
+    ))
 ):
 
     resultado = criar_venda_service(
         db,
         venda,
-        usuario
+        empresa_id,
+        usuario.id
     )
+
 
     if not resultado:
 
@@ -52,7 +62,10 @@ def criar_venda_endpoint(
             detail="Erro ao criar venda. Produto inexistente ou estoque insuficiente"
         )
 
+
     return resultado
+
+
 
 
 
@@ -62,13 +75,16 @@ def criar_venda_endpoint(
 )
 def listar_vendas_endpoint(
     db: Session = Depends(get_db),
+    empresa_id: int = Depends(get_empresa_id),
     usuario=Depends(get_current_user)
 ):
 
     return listar_vendas_service(
         db,
-        usuario
+        empresa_id
     )
+
+
 
 
 
@@ -79,14 +95,16 @@ def listar_vendas_endpoint(
 def buscar_venda(
     venda_id: int,
     db: Session = Depends(get_db),
+    empresa_id: int = Depends(get_empresa_id),
     usuario=Depends(get_current_user)
 ):
 
     venda = buscar_venda_service(
         db,
         venda_id,
-        usuario
+        empresa_id
     )
+
 
     if not venda:
 
@@ -95,7 +113,10 @@ def buscar_venda(
             detail="Venda não encontrada"
         )
 
+
     return venda
+
+
 
 
 
@@ -106,15 +127,20 @@ def editar_venda(
     venda_id: int,
     dados: dict,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin", "gerente"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(require_perfil(
+        "admin",
+        "gerente"
+    ))
 ):
 
     venda = atualizar_venda_service(
         db,
         venda_id,
         dados,
-        usuario
+        empresa_id
     )
+
 
     if not venda:
 
@@ -123,7 +149,10 @@ def editar_venda(
             detail="Venda não encontrada"
         )
 
+
     return venda
+
+
 
 
 
@@ -133,14 +162,16 @@ def editar_venda(
 def remover_venda(
     venda_id: int,
     db: Session = Depends(get_db),
+    empresa_id: int = Depends(get_empresa_id),
     usuario=Depends(require_perfil("admin"))
 ):
 
     sucesso = deletar_venda_service(
         db,
         venda_id,
-        usuario
+        empresa_id
     )
+
 
     if not sucesso:
 
@@ -148,6 +179,7 @@ def remover_venda(
             status_code=404,
             detail="Venda não encontrada"
         )
+
 
     return {
         "mensagem": "Venda removida"

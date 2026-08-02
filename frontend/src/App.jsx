@@ -1,10 +1,13 @@
 import AppRoutes from "./routes/AppRoutes";
 
 
-function App(){
+function App() {
+
 
     return (
+
         <AppRoutes />
+
     );
 
 }

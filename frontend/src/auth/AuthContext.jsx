@@ -11,6 +11,9 @@ export function AuthProvider({ children }) {
 
     const [token, setToken] = useState(null);
 
+    const [carregando, setCarregando] = useState(true);
+
+
 
 
     useEffect(() => {
@@ -20,6 +23,7 @@ export function AuthProvider({ children }) {
             localStorage.getItem("token");
 
 
+
         if (tokenSalvo) {
 
             setToken(tokenSalvo);
@@ -27,7 +31,13 @@ export function AuthProvider({ children }) {
         }
 
 
+
+        setCarregando(false);
+
+
+
     }, []);
+
 
 
 
@@ -75,8 +85,11 @@ export function AuthProvider({ children }) {
 
 
 
+
     const autenticado =
         Boolean(token);
+
+
 
 
 
@@ -89,13 +102,17 @@ export function AuthProvider({ children }) {
 
             value={{
 
+
                 token,
 
                 autenticado,
 
+                carregando,
+
                 login,
 
                 logout
+
 
             }}
 
@@ -109,6 +126,5 @@ export function AuthProvider({ children }) {
 
 
     );
-
 
 }

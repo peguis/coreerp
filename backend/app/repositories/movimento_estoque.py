@@ -32,10 +32,6 @@ def criar_movimento(
 
     db.add(novo_movimento)
 
-    db.commit()
-
-    db.refresh(novo_movimento)
-
 
     return novo_movimento
 

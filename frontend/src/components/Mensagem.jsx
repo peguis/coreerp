@@ -1,24 +1,26 @@
-function Mensagem({ tipo, texto }) {
+import "./Mensagem.css";
+
+
+export default function Mensagem({
+
+    tipo = "sucesso",
+
+    texto
+
+}) {
 
 
     if (!texto) {
+
         return null;
+
     }
+
 
 
     return (
 
-        <div
-            style={{
-                padding: 10,
-                margin: 10,
-                borderRadius: 5,
-                background:
-                    tipo === "erro"
-                        ? "#ffdddd"
-                        : "#ddffdd"
-            }}
-        >
+        <div className={`mensagem mensagem-${tipo}`}>
 
             {texto}
 
@@ -27,6 +29,3 @@ function Mensagem({ tipo, texto }) {
     );
 
 }
-
-
-export default Mensagem;

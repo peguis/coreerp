@@ -1,0 +1,161 @@
+.btn {
+
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+
+    border: none;
+
+    border-radius:
+
+        var(--radius-sm);
+
+
+    padding:
+
+        10px 18px;
+
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+
+    transition: .2s;
+
+
+    cursor: pointer;
+
+
+}
+
+
+
+.btn:disabled {
+
+
+    opacity: .6;
+
+    cursor: not-allowed;
+
+
+}
+
+
+
+.btn-icon {
+
+
+    display: flex;
+
+    align-items: center;
+
+
+}
+
+
+
+/* PRINCIPAL */
+
+.btn-primary {
+
+
+    background:
+
+        var(--color-primary);
+
+
+    color: white;
+
+
+}
+
+
+.btn-primary:hover {
+
+
+    filter: brightness(.9);
+
+
+}
+
+
+
+
+
+/* SUCESSO */
+
+.btn-success {
+
+
+    background:
+
+        var(--color-success);
+
+
+    color: white;
+
+
+}
+
+
+
+
+
+/* PERIGO */
+
+.btn-danger {
+
+
+    background:
+
+        var(--color-danger);
+
+
+    color: white;
+
+
+}
+
+
+
+
+
+/* PADRÃO */
+
+.btn-default {
+
+
+    background:
+
+        var(--bg-muted);
+
+
+    color:
+
+        var(--text-primary);
+
+
+    border:
+
+        1px solid var(--border-color);
+
+
+}
+
+
+.btn-default:hover {
+
+
+    background:
+
+        #e2e8f0;
+
+
+}

@@ -3,6 +3,7 @@ from sqlalchemy import desc
 
 from app.models.venda import Venda
 from app.models.item_venda import ItemVenda
+from sqlalchemy.orm import joinedload
 
 
 
@@ -29,19 +30,25 @@ def criar_venda(
 
 
 def listar_vendas(
-    db: Session,
-    empresa_id: int
+    db,
+    empresa_id
 ):
 
     return (
+
         db.query(Venda)
+
+        .options(
+            joinedload(Venda.cliente),
+            joinedload(Venda.itens)
+        )
+
         .filter(
             Venda.empresa_id == empresa_id
         )
-        .order_by(
-            desc(Venda.created_at)
-        )
+
         .all()
+
     )
 
 
@@ -49,18 +56,32 @@ def listar_vendas(
 
 
 def buscar_venda_por_id(
-    db: Session,
-    venda_id: int,
-    empresa_id: int
+    db,
+    venda_id,
+    empresa_id
 ):
 
     return (
+
         db.query(Venda)
-        .filter(
-            Venda.id == venda_id,
-            Venda.empresa_id == empresa_id
+
+        .options(
+
+            joinedload(Venda.cliente),
+            joinedload(Venda.itens)
+
         )
+
+        .filter(
+
+            Venda.id == venda_id,
+
+            Venda.empresa_id == empresa_id
+
+        )
+
         .first()
+
     )
 
 

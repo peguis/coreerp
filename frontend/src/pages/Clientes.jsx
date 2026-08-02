@@ -2,15 +2,43 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
+    Edit,
+    Trash2,
+    Plus
+} from "lucide-react";
+
+import {
+    confirmDelete
+} from "../utils/dialog";
+
+import {
     listarClientes,
     excluirCliente
 } from "../services/clienteService";
+
+import PageHeader from "../components/ui/PageHeader";
+import EmptyState from "../components/ui/EmptyState";
+import DataTable from "../components/ui/DataTable";
+import SearchInput from "../components/forms/SearchInput";
+
+import Loading from "../components/Loading";
+import Mensagem from "../components/Mensagem";
+import Button from "../components/forms/Button";
+
+import "./Clientes.css";
 
 
 function Clientes() {
 
 
     const [clientes, setClientes] = useState([]);
+
+    const [busca, setBusca] = useState("");
+
+    const [carregando, setCarregando] = useState(true);
+
+    const [erro, setErro] = useState("");
+
 
 
 
@@ -22,181 +50,361 @@ function Clientes() {
 
 
 
+
+
     async function carregarClientes() {
 
-        const dados = await listarClientes();
+        try {
 
-        setClientes(dados);
+            setCarregando(true);
+            setErro("");
+
+            const dados = await listarClientes();
+
+
+            setClientes(
+
+                Array.isArray(dados)
+
+                    ? dados
+
+                    : []
+
+            );
+
+
+        } catch {
+
+            setErro(
+                "Não foi possível carregar clientes."
+            );
+
+
+        } finally {
+
+            setCarregando(false);
+
+        }
 
     }
+
+
 
 
 
     async function remover(id) {
 
 
-        const confirmar = window.confirm(
-            "Deseja realmente excluir?"
+        const confirmar = confirmDelete(
+            "Deseja excluir?"
         );
 
 
-        if (!confirmar)
-            return;
+        if (!confirmar) return;
 
 
 
-        await excluirCliente(id);
+        try {
 
 
-        carregarClientes();
+            await excluirCliente(id);
+
+            carregarClientes();
+
+
+        } catch {
+
+            setErro(
+                "Erro ao excluir cliente."
+            );
+
+        }
+
 
     }
+
+
+
+
+
+
+    const clientesFiltrados = clientes.filter((cliente) => {
+
+
+        const texto = busca
+            .toLowerCase()
+            .trim();
+
+
+
+        return (
+
+            cliente.nome
+                ?.toLowerCase()
+                .includes(texto)
+
+            ||
+
+            cliente.email
+                ?.toLowerCase()
+                .includes(texto)
+
+            ||
+
+            cliente.telefone
+                ?.includes(texto)
+
+        );
+
+
+    });
+
+
+
+
+
+
+
+    const columns = [
+
+
+        {
+
+            key: "nome",
+
+            title: "Nome"
+
+        },
+
+
+        {
+
+            key: "email",
+
+            title: "Email"
+
+        },
+
+
+        {
+
+            key: "telefone",
+
+            title: "Telefone"
+
+        },
+
+
+        {
+
+            key: "acoes",
+
+            title: "Ações",
+
+
+            render: (_, cliente) => (
+
+
+                <div className="table-actions">
+
+
+                    <Link
+                        to={`/clientes/${cliente.id}/editar`}
+                    >
+
+                        <Button
+                            variant="secondary"
+                        >
+
+                            <Edit size={16} />
+
+                            Editar
+
+                        </Button>
+
+                    </Link>
+
+
+
+                    <Button
+
+                        variant="danger"
+
+                        onClick={() =>
+                            remover(cliente.id)
+                        }
+
+                    >
+
+                        <Trash2 size={16} />
+
+                        Excluir
+
+                    </Button>
+
+
+                </div>
+
+
+            )
+
+        }
+
+
+    ];
+
+
+
 
 
 
     return (
 
 
-        <main style={{ padding: 30 }}>
+        <main className="clientes-page">
 
 
-            <h1>
-                Clientes
-            </h1>
+            <PageHeader
+
+                titulo="Clientes"
+
+                subtitulo="Gerencie os clientes cadastrados da empresa"
 
 
-
-            <Link to="/clientes/novo">
-
-                <button>
-                    Novo Cliente
-                </button>
-
-            </Link>
+            >
 
 
+                <Link to="/clientes/novo">
 
-            <br />
-            <br />
+
+                    <Button variant="primary">
+
+
+                        <Plus size={18} />
+
+                        Novo Cliente
+
+
+                    </Button>
+
+
+                </Link>
+
+
+            </PageHeader>
+
+
 
 
 
             {
-                clientes.length === 0 ? (
 
-                    <p>
-                        Nenhum cliente cadastrado.
-                    </p>
+                erro && (
 
-                ) : (
+                    <Mensagem
 
+                        tipo="erro"
 
-                    <table
-                        border="1"
-                        cellPadding="10"
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse"
-                        }}
-                    >
+                        texto={erro}
 
-
-                        <thead>
-
-                            <tr>
-
-                                <th>ID</th>
-
-                                <th>Nome</th>
-
-                                <th>Email</th>
-
-                                <th>Telefone</th>
-
-                                <th>Ações</th>
-
-                            </tr>
-
-                        </thead>
-
-
-
-                        <tbody>
-
-
-                            {
-                                clientes.map((cliente) => (
-
-
-                                    <tr key={cliente.id}>
-
-
-                                        <td>
-                                            {cliente.id}
-                                        </td>
-
-
-
-                                        <td>
-                                            {cliente.nome}
-                                        </td>
-
-
-
-                                        <td>
-                                            {cliente.email}
-                                        </td>
-
-
-
-                                        <td>
-                                            {cliente.telefone}
-                                        </td>
-
-
-
-                                        <td>
-
-
-                                            <Link
-                                                to={`/clientes/${cliente.id}`}
-                                            >
-
-                                                <button>
-                                                    Editar
-                                                </button>
-
-                                            </Link>
-
-
-
-                                            <button
-                                                onClick={() => remover(cliente.id)}
-                                            >
-
-                                                Excluir
-
-                                            </button>
-
-
-                                        </td>
-
-
-                                    </tr>
-
-
-                                ))
-                            }
-
-
-                        </tbody>
-
-
-                    </table>
-
+                    />
 
                 )
+
             }
+
+
+
+
+
+            <section className="clientes-toolbar">
+
+
+                <SearchInput
+
+                    value={busca}
+
+                    onChange={(e) =>
+                        setBusca(e.target.value)
+                    }
+
+                    placeholder="Buscar cliente..."
+
+                />
+
+
+            </section>
+
+
+
+
+
+
+            <section className="clientes-card">
+
+
+
+                {
+
+                    carregando ? (
+
+
+                        <Loading
+
+                            texto="Carregando clientes..."
+
+                        />
+
+
+                    )
+
+
+                        :
+
+
+                        clientesFiltrados.length === 0 ? (
+
+
+                            <EmptyState
+
+                                titulo="Nenhum cliente encontrado"
+
+                                descricao="Cadastre seu primeiro cliente."
+
+                                icone="👥"
+
+                            />
+
+
+                        )
+
+
+                            :
+
+
+                            (
+
+
+                                <DataTable
+
+                                    columns={columns}
+
+                                    data={clientesFiltrados}
+
+                                    emptyMessage="Nenhum cliente encontrado."
+
+                                />
+
+
+                            )
+
+
+                }
+
+
+
+            </section>
+
 
 
         </main>

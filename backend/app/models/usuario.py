@@ -90,3 +90,8 @@ class Usuario(Base):
         "Venda",
         back_populates="usuario"
     )
+
+    lancamentos_financeiros = relationship(
+        "LancamentoFinanceiro",
+        back_populates="usuario"
+    )

@@ -1,0 +1,116 @@
+.estoque-page {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+
+    padding: 30px;
+
+}
+
+
+
+
+.estoque-filtros {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 24px;
+
+    flex-wrap: wrap;
+
+}
+
+
+
+
+
+.estoque-search {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    padding: 0 14px;
+
+    flex: 1;
+
+    max-width: 400px;
+
+}
+
+
+
+.estoque-search input {
+
+    border: none;
+
+    outline: none;
+
+    padding: 12px 0;
+
+    width: 100%;
+
+}
+
+
+
+
+.estoque-filtros select {
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: white;
+
+}
+
+
+
+
+@media(max-width:768px) {
+
+
+    .estoque-page {
+
+        padding: 20px;
+
+    }
+
+
+
+    .estoque-filtros {
+
+        flex-direction: column;
+
+    }
+
+
+
+    .estoque-search,
+
+    .estoque-filtros select {
+
+        max-width: none;
+
+        width: 100%;
+
+    }
+
+
+}

@@ -21,12 +21,11 @@ from app.core.validators.venda import (
 
 
 
-
-
 def criar_venda_service(
     db,
     dados,
-    usuario
+    empresa_id,
+    usuario_id
 ):
 
     total = 0
@@ -39,18 +38,14 @@ def criar_venda_service(
         db.query(Cliente)
         .filter(
             Cliente.id == dados.cliente_id,
-            Cliente.empresa_id == usuario.empresa_id
+            Cliente.empresa_id == empresa_id
         )
         .first()
     )
 
 
-
     if not cliente:
-
         return None
-
-
 
 
 
@@ -63,16 +58,12 @@ def criar_venda_service(
             if isinstance(item, dict):
 
                 produto_id = item["produto_id"]
-
                 quantidade = item["quantidade"]
-
 
             else:
 
                 produto_id = item.produto_id
-
                 quantidade = item.quantidade
-
 
 
 
@@ -81,48 +72,34 @@ def criar_venda_service(
                 db.query(Produto)
                 .filter(
                     Produto.id == produto_id,
-                    Produto.empresa_id == usuario.empresa_id
+                    Produto.empresa_id == empresa_id
                 )
                 .first()
             )
 
 
-
             if not produto:
-
                 return None
-
-
 
 
 
             if produto.estoque < quantidade:
-
                 return None
 
 
 
-
-
-            subtotal = (
-                produto.preco *
-                quantidade
-            )
-
+            subtotal = produto.preco * quantidade
 
             total += subtotal
-
 
 
             produto.estoque -= quantidade
 
 
 
-
-
             novo_item = ItemVenda(
 
-                empresa_id=usuario.empresa_id,
+                empresa_id=empresa_id,
 
                 produto_id=produto_id,
 
@@ -140,40 +117,28 @@ def criar_venda_service(
 
 
 
-
-
-
         validar_venda(
-
             itens=itens,
-
             valor_total=total,
-
             cliente_id=dados.cliente_id
-
         )
-
-
-
 
 
 
 
         venda = Venda(
 
-            empresa_id=usuario.empresa_id,
+            empresa_id=empresa_id,
 
             cliente_id=dados.cliente_id,
 
-            usuario_id=usuario.id,
+            usuario_id=usuario_id,
 
             total=total,
 
             status="ABERTA"
 
         )
-
-
 
 
 
@@ -184,12 +149,10 @@ def criar_venda_service(
 
 
 
-
         for item in itens:
 
 
             item.venda_id = venda.id
-
 
             db.add(item)
 
@@ -197,11 +160,11 @@ def criar_venda_service(
 
             movimento = MovimentoEstoque(
 
-                empresa_id=usuario.empresa_id,
+                empresa_id=empresa_id,
 
                 produto_id=item.produto_id,
 
-                usuario_id=usuario.id,
+                usuario_id=usuario_id,
 
                 tipo="SAIDA",
 
@@ -217,14 +180,9 @@ def criar_venda_service(
 
 
 
-
-
-
         db.commit()
 
-
         db.refresh(venda)
-
 
 
         return venda
@@ -232,10 +190,7 @@ def criar_venda_service(
 
 
 
-
-
     except Exception:
-
 
         db.rollback()
 
@@ -246,21 +201,15 @@ def criar_venda_service(
 
 
 
-
 def listar_vendas_service(
     db,
-    usuario
+    empresa_id
 ):
 
     return listar_vendas(
-
         db,
-
-        usuario.empresa_id
-
+        empresa_id
     )
-
-
 
 
 
@@ -270,19 +219,14 @@ def listar_vendas_service(
 def buscar_venda_service(
     db,
     venda_id,
-    usuario
+    empresa_id
 ):
 
     return buscar_venda_por_id(
-
         db,
-
         venda_id,
-
-        usuario.empresa_id
-
+        empresa_id
     )
-
 
 
 
@@ -294,54 +238,34 @@ def atualizar_venda_service(
     db,
     venda_id,
     dados,
-    usuario
+    empresa_id
 ):
 
-
     venda = buscar_venda_por_id(
-
         db,
-
         venda_id,
-
-        usuario.empresa_id
-
+        empresa_id
     )
 
 
-
     if not venda:
-
         return None
-
-
 
 
 
     if "status" in dados:
 
-
         dados["status"] = validar_status_venda(
-
             dados["status"]
-
         )
 
 
 
-
-
     return atualizar_venda(
-
         db,
-
         venda,
-
         dados
-
     )
-
-
 
 
 
@@ -352,26 +276,19 @@ def atualizar_venda_service(
 def deletar_venda_service(
     db,
     venda_id,
-    usuario
+    empresa_id
 ):
 
 
     venda = buscar_venda_por_id(
-
         db,
-
         venda_id,
-
-        usuario.empresa_id
-
+        empresa_id
     )
 
 
-
     if not venda:
-
         return False
-
 
 
 
@@ -379,16 +296,14 @@ def deletar_venda_service(
     for item in venda.itens:
 
 
-
         produto = (
             db.query(Produto)
             .filter(
                 Produto.id == item.produto_id,
-                Produto.empresa_id == usuario.empresa_id
+                Produto.empresa_id == empresa_id
             )
             .first()
         )
-
 
 
         if produto:
@@ -398,15 +313,10 @@ def deletar_venda_service(
 
 
 
-
     deletar_venda(
-
         db,
-
         venda
-
     )
-
 
 
     return True

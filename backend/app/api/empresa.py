@@ -10,7 +10,6 @@ from app.schemas.empresa import (
 
 from app.services.empresa import (
     criar_empresa_service,
-    listar_empresas_service,
     buscar_empresa_por_id_service,
     atualizar_empresa_service,
     deletar_empresa_service
@@ -33,10 +32,12 @@ router = APIRouter(
     "/",
     response_model=EmpresaResponse
 )
-def criar_empresa_api(
+def criar_empresa(
     empresa: EmpresaCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin"))
+    usuario=Depends(
+        require_perfil("admin")
+    )
 ):
 
     return criar_empresa_service(
@@ -47,17 +48,29 @@ def criar_empresa_api(
 
 
 @router.get(
-    "/",
-    response_model=list[EmpresaResponse]
+    "/me",
+    response_model=EmpresaResponse
 )
-def listar_empresas_api(
+def minha_empresa(
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user)
 ):
 
-    return listar_empresas_service(
-        db
+    empresa = buscar_empresa_por_id_service(
+        db,
+        usuario.empresa_id
     )
+
+
+    if not empresa:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Empresa não encontrada"
+        )
+
+
+    return empresa
 
 
 
@@ -71,10 +84,19 @@ def buscar_empresa(
     usuario=Depends(get_current_user)
 ):
 
+    if empresa_id != usuario.empresa_id:
+
+        raise HTTPException(
+            status_code=403,
+            detail="Acesso negado"
+        )
+
+
     empresa = buscar_empresa_por_id_service(
         db,
         empresa_id
     )
+
 
     if not empresa:
 
@@ -82,6 +104,7 @@ def buscar_empresa(
             status_code=404,
             detail="Empresa não encontrada"
         )
+
 
     return empresa
 
@@ -93,27 +116,39 @@ def buscar_empresa(
 )
 def atualizar_empresa(
     empresa_id: int,
-    empresa: EmpresaCreate,
+    dados: EmpresaCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin"))
+    usuario=Depends(
+        require_perfil("admin")
+    )
 ):
 
-    empresa_db = buscar_empresa_por_id_service(
+    if empresa_id != usuario.empresa_id:
+
+        raise HTTPException(
+            status_code=403,
+            detail="Acesso negado"
+        )
+
+
+    empresa = buscar_empresa_por_id_service(
         db,
         empresa_id
     )
 
-    if not empresa_db:
+
+    if not empresa:
 
         raise HTTPException(
             status_code=404,
             detail="Empresa não encontrada"
         )
 
+
     return atualizar_empresa_service(
         db,
-        empresa_db,
-        empresa
+        empresa,
+        dados
     )
 
 
@@ -124,15 +159,26 @@ def atualizar_empresa(
 def deletar_empresa(
     empresa_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin"))
+    usuario=Depends(
+        require_perfil("admin")
+    )
 ):
 
-    empresa_db = buscar_empresa_por_id_service(
+    if empresa_id != usuario.empresa_id:
+
+        raise HTTPException(
+            status_code=403,
+            detail="Acesso negado"
+        )
+
+
+    empresa = buscar_empresa_por_id_service(
         db,
         empresa_id
     )
 
-    if not empresa_db:
+
+    if not empresa:
 
         raise HTTPException(
             status_code=404,
@@ -142,10 +188,10 @@ def deletar_empresa(
 
     deletar_empresa_service(
         db,
-        empresa_db
+        empresa
     )
 
 
     return {
-        "mensagem": "Empresa removida com sucesso"
+        "mensagem": "Empresa removida"
     }

@@ -1,99 +1,241 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
+import {
+    Pencil,
+    Trash2,
+    PackagePlus,
+    LayoutGrid,
+    List
+} from "lucide-react";
+
+import {
+
+    confirmDelete
+
+} from "../utils/dialog";
+
 
 import {
     listarProdutos,
     excluirProduto
 } from "../services/produtoService";
 
-import ProdutoModal from "../components/ProdutoModal";
+import {
+    formatarMoeda
+} from "../utils/formatters";
+
+
+import Checkbox from "../components/forms/Checkbox";
+
+
+import PageHeader from "../components/ui/PageHeader";
+import SectionCard from "../components/ui/SectionCard";
+import DataTable from "../components/ui/DataTable";
+import EmptyState from "../components/ui/EmptyState";
+
+
+import Badge from "../components/Badge";
+import Button from "../components/forms/Button";
+import Loading from "../components/Loading";
+import Mensagem from "../components/Mensagem";
+
+
+import "./Produtos.css";
+
+
+
+const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "http://localhost:8000";
+
+
+
 
 
 function Produtos() {
 
 
+    const location = useLocation();
+
+
+
     const [produtos, setProdutos] = useState([]);
+
+
+    const [carregando, setCarregando] = useState(true);
+
+
+    const [erro, setErro] = useState("");
+
+
 
     const [pesquisa, setPesquisa] = useState("");
 
-    const [ordenacao, setOrdenacao] = useState("nome");
-
-    const [estoqueBaixo, setEstoqueBaixo] = useState(false);
-
-    const [pagina, setPagina] = useState(1);
-
-    const [visualizacao, setVisualizacao] = useState("tabela");
-
-    const [produtoSelecionado, setProdutoSelecionado] = useState(null);
 
 
-    const produtosPorPagina = 10;
+    const [categoriaFiltro, setCategoriaFiltro] =
+        useState("");
+
+
+
+    const [marcaFiltro, setMarcaFiltro] =
+        useState("");
+
+
+
+    const [statusFiltro, setStatusFiltro] =
+        useState("todos");
+
+
+
+    const [estoqueBaixo, setEstoqueBaixo] =
+        useState(false);
+
+
+
+    const [ordenacao, setOrdenacao] =
+        useState("nome");
+
+
+
+    const [modoVisualizacao, setModoVisualizacao] =
+        useState("lista");
+
+
+
+
+
+
 
 
 
     useEffect(() => {
 
+
         carregarProdutos();
 
-    }, []);
+
+    }, [location.pathname]);
+
+
+
+
+
+
 
 
 
     async function carregarProdutos() {
 
-        const dados = await listarProdutos();
 
-        setProdutos(dados);
+        try {
+
+
+            setCarregando(true);
+
+            setErro("");
+
+
+
+            const dados = await listarProdutos();
+
+            console.log(dados);
+
+            setProdutos(
+                Array.isArray(dados)
+                    ? dados
+                    : []
+            );
+
+
+
+        } catch {
+
+
+            setErro(
+
+                "Não foi possível carregar produtos."
+
+            );
+
+
+
+        } finally {
+
+
+            setCarregando(false);
+
+
+        }
+
 
     }
+
+
+
+
+
+
+
 
 
 
 
     async function remover(id) {
 
-        const confirmar = window.confirm(
-            "Deseja realmente excluir?"
+
+
+        const confirmar =
+
+            confirmDelete(
+
+                "Deseja excluir?"
+
         );
 
 
-        if (!confirmar)
+
+        if (!confirmar) {
+
             return;
-
-
-        await excluirProduto(id);
-
-        carregarProdutos();
-
-    }
-
-
-
-
-
-    function imagemProduto(produto) {
-
-
-        if (
-            produto.imagens &&
-            produto.imagens.length > 0
-        ) {
-
-
-            const principal =
-                produto.imagens.find(
-                    imagem => imagem.principal
-                )
-                ||
-                produto.imagens[0];
-
-
-            return `http://127.0.0.1:8000/${principal.caminho}`;
 
         }
 
 
-        return null;
+
+
+
+
+        try {
+
+
+
+            await excluirProduto(id);
+
+
+
+            carregarProdutos();
+
+
+
+
+        } catch (error) {
+
+            setErro(
+
+                getErrorMessage(
+
+                    error,
+
+                    "Erro ao excluir."
+
+                )
+
+            );
+
+        }
+
 
     }
 
@@ -101,203 +243,609 @@ function Produtos() {
 
 
 
-    let produtosFiltrados = produtos.filter(produto => {
 
 
-        const texto =
-            pesquisa.toLowerCase();
 
 
+    const categorias = [
 
-        const busca =
+        ...new Set(
 
-            produto.nome
-                .toLowerCase()
-                .includes(texto)
+            produtos
 
-            ||
+                .map(produto => produto.categoria)
 
-            (produto.categoria || "")
-                .toLowerCase()
-                .includes(texto)
+                .filter(Boolean)
 
-            ||
+        )
 
-            (produto.marca || "")
-                .toLowerCase()
-                .includes(texto);
+    ];
 
 
 
-        const estoque =
 
-            estoqueBaixo
 
-                ?
 
-                produto.estoque <= produto.estoque_minimo
 
-                :
+    const marcas = [
 
-                true;
+        ...new Set(
 
+            produtos
 
+                .map(produto => produto.marca)
 
-        return busca && estoque;
+                .filter(Boolean)
 
+        )
 
-    });
+    ];
 
 
 
 
 
-    produtosFiltrados.sort((a, b) => {
 
 
-        if (ordenacao === "nome")
-            return a.nome.localeCompare(b.nome);
 
 
-        if (ordenacao === "preco")
-            return a.preco - b.preco;
 
 
-        if (ordenacao === "estoque")
-            return a.estoque - b.estoque;
+    const columns = [
 
 
-        return 0;
 
-    });
+        {
 
+            key: "nome",
 
+            title: "Produto",
 
 
 
-    const totalPaginas = Math.ceil(
-        produtosFiltrados.length /
-        produtosPorPagina
-    );
+            render: (_, produto) => (
 
 
+                <div className="produto-info">
 
-    const produtosPagina =
-        produtosFiltrados.slice(
-            (pagina - 1) * produtosPorPagina,
-            pagina * produtosPorPagina
-        );
 
+                    {
 
+                        produto.imagens?.length > 0 ? (
 
 
 
+                            <img
+                                className="produto-miniatura"
+                                src={
+                                    produto.imagens[0].caminho.startsWith("http")
+                                        ? produto.imagens[0].caminho
+                                        : `${API_URL}${produto.imagens[0].caminho.startsWith("/") ? "" : "/"}${produto.imagens[0].caminho}`
+                                }
+                                alt={produto.nome}
+                                onError={(e) => {
+                                    e.currentTarget.src = "/placeholder.png";
+                                }}
+                            />
 
 
-    function CardProduto({ produto }) {
 
+                        ) : (
 
-        return (
 
-            <div
 
-                onClick={() =>
-                    setProdutoSelecionado(produto)
-                }
+                            <div className="produto-miniatura-vazia">
 
-                style={{
-                    border: "1px solid #ccc",
-                    borderRadius: 10,
-                    padding: 20,
-                    width: 250,
-                    cursor: "pointer"
-                }}
+                                📦
 
-            >
+                            </div>
 
 
-                {
-                    imagemProduto(produto)
 
-                        ?
+                        )
 
-                        <img
 
-                            src={imagemProduto(produto)}
+                    }
 
-                            width="180"
 
-                            height="180"
 
-                            style={{
-                                objectFit: "cover",
-                                borderRadius: 10
-                            }}
+                    <span>
 
-                        />
+                        {produto.nome}
 
-                        :
+                    </span>
 
-                        <div>
-                            Sem imagem
-                        </div>
 
-                }
 
+                </div>
 
 
-                <h3>
-                    {produto.nome}
-                </h3>
+            )
 
 
-                <p>
-                    R$ {Number(produto.preco).toFixed(2)}
-                </p>
+        },
 
 
-                <p>
-                    Estoque: {produto.estoque}
-                </p>
 
 
+        {
 
-                {
-                    produto.estoque <= produto.estoque_minimo
+            key: "codigo_interno",
 
-                    &&
+            title: "Código",
 
-                    <strong>
-                        ⚠ Estoque baixo
-                    </strong>
 
-                }
+            render: (valor) =>
 
+                valor || "-"
 
 
-                <br /><br />
+        },
 
 
-                <button
-                    onClick={(e) => {
 
-                        e.stopPropagation();
 
-                        remover(produto.id);
+        {
 
-                    }}
+            key: "categoria",
+
+            title: "Categoria",
+
+
+            render: (valor) =>
+
+                valor || "-"
+
+
+        },
+
+
+
+
+        {
+
+            key: "localizacao",
+
+            title: "Localização",
+
+
+            render: (valor) =>
+
+                valor || "-"
+
+
+        },
+
+
+
+
+        {
+
+            key: "estoque",
+
+            title: "Estoque",
+
+
+            render: (valor, produto) => (
+
+
+
+                <span>
+
+
+                    {valor ?? 0}
+
+
+
+                    {
+
+
+                        Number(valor) <=
+
+                        Number(produto.estoque_minimo)
+
+                        &&
+
+                        " ⚠️"
+
+
+                    }
+
+
+                </span>
+
+
+            )
+
+
+        },
+        {
+
+            key: "preco",
+
+            title: "Preço",
+
+
+            render: (valor) =>
+
+                formatarMoeda(valor)
+
+
+        },
+
+
+
+
+
+        {
+
+            key: "ativo",
+
+            title: "Status",
+
+
+            render: (valor) => (
+
+
+
+                <Badge
+
+                    tipo={
+
+                        valor
+
+                            ?
+
+                            "success"
+
+                            :
+
+                            "danger"
+
+                    }
+
                 >
 
-                    Excluir
-
-                </button>
 
 
-            </div>
+                    {
 
-        );
+                        valor
 
-    }
+                            ?
+
+                            "Ativo"
+
+                            :
+
+                            "Inativo"
+
+                    }
+
+
+
+                </Badge>
+
+
+            )
+
+
+        },
+
+
+
+
+
+        {
+
+            key: "acoes",
+
+            title: "Ações",
+
+
+            render: (_, produto) => (
+
+
+                <div className="table-actions">
+
+
+
+                    <Link
+
+                        to={`/produtos/${produto.id}/editar`}
+
+                    >
+
+
+
+                        <Button
+
+                            variant="secondary"
+
+                        >
+
+                            <Pencil size={16} />
+
+                        </Button>
+
+
+
+                    </Link>
+
+
+
+
+
+                    <Button
+
+                        variant="danger"
+
+                        onClick={() =>
+
+                            remover(produto.id)
+
+                        }
+
+                    >
+
+
+                        <Trash2 size={16} />
+
+
+                    </Button>
+
+
+
+                </div>
+
+
+            )
+
+
+        }
+
+
+    ];
+
+
+
+
+
+
+
+
+
+    const produtosFiltrados = produtos
+
+
+        .filter(produto => {
+
+
+
+            const texto =
+
+                pesquisa.toLowerCase();
+
+
+
+
+            const busca =
+
+
+
+                produto.nome
+
+                    ?.toLowerCase()
+
+                    .includes(texto)
+
+
+
+                ||
+
+
+
+                produto.categoria
+
+                    ?.toLowerCase()
+
+                    .includes(texto)
+
+
+
+                ||
+
+
+
+                produto.marca
+
+                    ?.toLowerCase()
+
+                    .includes(texto)
+
+
+
+                ||
+
+
+
+                produto.codigo_interno
+
+                    ?.toLowerCase()
+
+                    .includes(texto);
+
+
+
+            return busca;
+
+
+
+        })
+
+
+
+        .filter(produto => {
+
+
+
+            if (!categoriaFiltro)
+
+                return true;
+
+
+
+            return (
+
+                produto.categoria ===
+
+                categoriaFiltro
+
+            );
+
+
+        })
+
+
+
+        .filter(produto => {
+
+
+
+            if (!marcaFiltro)
+
+                return true;
+
+
+
+            return (
+
+                produto.marca ===
+
+                marcaFiltro
+
+            );
+
+
+        })
+
+
+
+        .filter(produto => {
+
+
+
+            if (statusFiltro === "todos")
+
+                return true;
+
+
+
+            if (statusFiltro === "ativo")
+
+                return produto.ativo;
+
+
+
+            return !produto.ativo;
+
+
+
+        })
+
+
+
+        .filter(produto => {
+
+
+
+            if (!estoqueBaixo)
+
+                return true;
+
+
+
+            return (
+
+                produto.estoque <=
+
+                produto.estoque_minimo
+
+            );
+
+
+        })
+
+
+
+        .sort((a, b) => {
+
+
+
+            if (ordenacao === "nome") {
+
+
+                return (
+
+                    a.nome || ""
+
+                ).localeCompare(
+
+                    b.nome || ""
+
+                );
+
+
+            }
+
+
+
+
+            if (ordenacao === "preco") {
+
+
+                return (
+
+                    Number(a.preco || 0)
+
+                    -
+
+                    Number(b.preco || 0)
+
+                );
+
+
+            }
+
+
+
+
+            if (ordenacao === "estoque") {
+
+
+                return (
+
+                    Number(a.estoque || 0)
+
+                    -
+
+                    Number(b.estoque || 0)
+
+                );
+
+
+            }
+
+
+
+            return 0;
+
+
+
+        });
+
+
+
 
 
 
@@ -306,258 +854,148 @@ function Produtos() {
 
     return (
 
-        <main style={{ padding: 30 }}>
 
 
-            <h1>
-                Produtos
-            </h1>
+        <main className="produtos-page">
 
 
 
-            <input
+            <PageHeader
 
-                placeholder="Pesquisar produto..."
+                titulo="Produtos"
 
-                value={pesquisa}
-
-                onChange={e => {
-
-                    setPesquisa(e.target.value);
-
-                    setPagina(1);
-
-                }}
-
-            />
-
-
-
-            <br /><br />
-
-
-
-
-            <select
-
-                value={ordenacao}
-
-                onChange={
-                    e => setOrdenacao(e.target.value)
-                }
+                subtitulo="Gerencie os produtos cadastrados"
 
             >
 
-                <option value="nome">
-                    Nome
-                </option>
-
-                <option value="preco">
-                    Preço
-                </option>
-
-                <option value="estoque">
-                    Estoque
-                </option>
 
 
-            </select>
+                <div className="produtos-header-actions">
 
 
 
+                    <Button
 
-            <label style={{ marginLeft: 20 }}>
+                        variant={
 
+                            modoVisualizacao === "lista"
 
-                <input
+                                ?
 
-                    type="checkbox"
+                                "primary"
 
-                    checked={estoqueBaixo}
+                                :
 
-                    onChange={
-                        e => setEstoqueBaixo(e.target.checked)
-                    }
+                                "secondary"
 
-                />
-
-
-                Estoque baixo
+                        }
 
 
-            </label>
+                        onClick={() =>
+
+                            setModoVisualizacao("lista")
+
+                        }
+
+                    >
+
+                        <List size={18} />
+
+                    </Button>
 
 
 
 
 
-            <br /><br />
+                    <Button
+
+                        variant={
+
+                            modoVisualizacao === "cards"
+
+                                ?
+
+                                "primary"
+
+                                :
+
+                                "secondary"
+
+                        }
+
+
+                        onClick={() =>
+
+                            setModoVisualizacao("cards")
+
+                        }
+
+                    >
+
+                        <LayoutGrid size={18} />
+
+                    </Button>
 
 
 
 
-            <button
-                onClick={() => setVisualizacao("tabela")}
-            >
-                📋 Tabela
-            </button>
+
+                    <Link
+
+                        to="/produtos/novo"
+
+                    >
+
+
+                        <Button
+
+                            variant="primary"
+
+                        >
+
+                            <PackagePlus size={18} />
+
+
+                            Novo Produto
+
+
+                        </Button>
+
+
+                    </Link>
 
 
 
-            <button
-                onClick={() => setVisualizacao("cards")}
-            >
-                🟦 Cards
-            </button>
+                </div>
 
 
 
-            <br /><br />
-
-
-
-            <Link to="/produtos/novo">
-
-                <button>
-                    Novo Produto
-                </button>
-
-            </Link>
+            </PageHeader>
 
 
 
 
-            <br /><br />
 
 
 
 
 
             {
-                visualizacao === "cards"
 
-                    ?
-
-                    <div
-
-                        style={{
-                            display: "flex",
-                            gap: 20,
-                            flexWrap: "wrap"
-                        }}
-
-                    >
-
-                        {
-                            produtosPagina.map(produto =>
-
-                                <CardProduto
-
-                                    key={produto.id}
-
-                                    produto={produto}
-
-                                />
-
-                            )
-                        }
-
-                    </div>
+                erro && (
 
 
-                    :
+                    <Mensagem
+
+                        tipo="erro"
+
+                        texto={erro}
+
+                    />
 
 
-                    <table border="1" cellPadding="10">
+                )
 
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Nome
-                                </th>
-
-                                <th>
-                                    Preço
-                                </th>
-
-                                <th>
-                                    Estoque
-                                </th>
-
-                                <th>
-                                    Ações
-                                </th>
-
-
-                            </tr>
-
-
-                        </thead>
-
-
-                        <tbody>
-
-
-                            {
-                                produtosPagina.map(produto => (
-
-
-                                    <tr key={produto.id}>
-
-
-                                        <td>
-                                            {produto.nome}
-                                        </td>
-
-
-                                        <td>
-                                            R$ {Number(produto.preco).toFixed(2)}
-                                        </td>
-
-
-                                        <td>
-                                            {produto.estoque}
-                                        </td>
-
-
-
-                                        <td>
-
-                                            <Link
-                                                to={`/produtos/${produto.id}`}
-                                            >
-
-                                                <button>
-                                                    Editar
-                                                </button>
-
-                                            </Link>
-
-
-                                            <button
-                                                onClick={() => remover(produto.id)}
-                                            >
-                                                Excluir
-                                            </button>
-
-
-                                        </td>
-
-
-                                    </tr>
-
-
-                                ))
-                            }
-
-
-                        </tbody>
-
-
-                    </table>
 
             }
 
@@ -565,57 +1003,426 @@ function Produtos() {
 
 
 
-            <br />
-
-
-            <button
-
-                disabled={pagina === 1}
-
-                onClick={() => setPagina(pagina - 1)}
-
-            >
-
-                Anterior
-
-            </button>
 
 
 
-            Página {pagina} de {totalPaginas || 1}
-
-
-
-            <button
-
-                disabled={pagina >= totalPaginas}
-
-                onClick={() => setPagina(pagina + 1)}
-
-            >
-
-                Próxima
-
-            </button>
+            <SectionCard>
 
 
 
 
 
-            <ProdutoModal
+                <div className="produtos-filtros">
 
-                produto={produtoSelecionado}
 
-                fechar={() =>
-                    setProdutoSelecionado(null)
+
+                    <input
+
+
+                        placeholder="Buscar produto..."
+
+
+                        value={pesquisa}
+
+
+                        onChange={(e) =>
+
+                            setPesquisa(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+
+                    />
+
+
+
+
+
+                    <select
+
+                        value={categoriaFiltro}
+
+                        onChange={(e) =>
+
+                            setCategoriaFiltro(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+                    >
+
+
+                        <option value="">
+
+                            Todas categorias
+
+                        </option>
+
+
+                        {
+
+                            categorias.map(categoria => (
+
+
+                                <option
+
+                                    key={categoria}
+
+                                    value={categoria}
+
+                                >
+
+                                    {categoria}
+
+
+                                </option>
+
+
+                            ))
+
+                        }
+
+
+                    </select>
+
+
+
+
+
+
+
+
+                    <select
+
+                        value={marcaFiltro}
+
+                        onChange={(e) =>
+
+                            setMarcaFiltro(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+                    >
+
+
+                        <option value="">
+
+
+                            Todas marcas
+
+
+                        </option>
+
+
+                        {
+
+
+                            marcas.map(marca => (
+
+
+                                <option
+
+                                    key={marca}
+
+                                    value={marca}
+
+                                >
+
+
+                                    {marca}
+
+
+                                </option>
+
+
+                            ))
+
+                        }
+
+
+                    </select>
+
+
+
+
+
+
+
+
+                    <select
+
+                        value={statusFiltro}
+
+                        onChange={(e) =>
+
+                            setStatusFiltro(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+                    >
+
+
+                        <option value="todos">
+
+                            Todos
+
+                        </option>
+
+
+                        <option value="ativo">
+
+                            Ativos
+
+                        </option>
+
+
+                        <option value="inativo">
+
+                            Inativos
+
+                        </option>
+
+
+                    </select>
+
+
+
+
+
+
+
+
+                    <select
+
+                        value={ordenacao}
+
+                        onChange={(e) =>
+
+                            setOrdenacao(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+                    >
+
+
+                        <option value="nome">
+
+                            Nome
+
+                        </option>
+
+
+                        <option value="preco">
+
+                            Preço
+
+                        </option>
+
+
+                        <option value="estoque">
+
+                            Estoque
+
+                        </option>
+
+
+                    </select>
+
+
+
+
+
+
+
+                    <Checkbox
+
+                        label="Estoque baixo"
+
+                        checked={estoqueBaixo}
+
+                        onChange={(e) =>
+
+                            setEstoqueBaixo(e.target.checked)
+
+                        }
+
+                    />
+
+
+
+
+
+                    <Button
+
+                        variant="secondary"
+
+                        onClick={() => {
+
+
+                            setPesquisa("");
+
+                            setCategoriaFiltro("");
+
+                            setMarcaFiltro("");
+
+                            setStatusFiltro("todos");
+
+                            setEstoqueBaixo(false);
+
+
+                        }}
+
+                    >
+
+
+                        Limpar filtros
+
+
+                    </Button>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                {
+
+                    carregando ? (
+
+                        <Loading
+                            texto="Carregando produtos..."
+                        />
+
+                    ) : produtosFiltrados.length === 0 ? (
+
+                        <EmptyState
+                            titulo="Nenhum produto encontrado"
+                            descricao="Cadastre um produto ou altere os filtros."
+                            icone="📦"
+                        />
+
+                    ) : (
+
+                        modoVisualizacao === "lista" ? (
+
+                            <DataTable
+                                columns={columns}
+                                data={produtosFiltrados}
+                            />
+
+                        ) : (
+
+                            <div className="produtos-grid">
+
+                                {produtosFiltrados.map(produto => (
+
+                                    <div
+                                        key={produto.id}
+                                        className="produto-card"
+                                    >
+
+                                        {
+                                            produto.imagens?.length > 0 ? (
+
+                                                <img
+                                                    className="produto-card-imagem"
+                                                    src={
+                                                        produto.imagens[0].caminho.startsWith("http")
+                                                            ? produto.imagens[0].caminho
+                                                            :
+                                                            `${API_URL}${produto.imagens[0].caminho.startsWith("/") ? "" : "/"}${produto.imagens[0].caminho}`
+                                                    }
+                                                    alt={produto.nome}
+                                                />
+
+                                            ) : (
+
+                                                <div className="produto-card-imagem-vazia">
+                                                    📦
+                                                </div>
+
+                                            )
+                                        }
+
+
+                                        <h3>
+                                            {produto.nome}
+                                        </h3>
+
+
+                                        <p>
+                                            Estoque: {produto.estoque}
+                                        </p>
+
+
+                                        <p>
+                                            Preço: {formatarMoeda(produto.preco)}
+                                        </p>
+
+
+                                        <Link
+                                            to={`/produtos/${produto.id}/editar`}
+                                        >
+
+                                            <Button
+                                                variant="secondary"
+                                            >
+                                                <Pencil size={16} />
+
+                                                Editar
+
+                                            </Button>
+
+                                        </Link>
+
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        )
+
+                    )
+
                 }
 
-            />
+
+            </SectionCard>
 
 
         </main>
 
+
     );
+
 
 }
 

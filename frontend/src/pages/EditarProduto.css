@@ -1,0 +1,15 @@
+.editar-produto-page {
+
+    padding: 30px;
+
+}
+
+@media(max-width:768px) {
+
+    .editar-produto-page {
+
+        padding: 20px;
+
+    }
+
+}

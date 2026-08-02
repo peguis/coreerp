@@ -1,0 +1,56 @@
+.configuracoes-page {
+
+    padding: 24px;
+
+}
+
+
+
+.configuracoes-card {
+
+    margin-top: 30px;
+
+    background: white;
+
+    padding: 24px;
+
+    border-radius: 18px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .05);
+
+}
+
+
+
+.configuracoes-card h2 {
+
+    margin-top: 0;
+
+    color: #0f172a;
+
+}
+
+
+
+.configuracoes-card p {
+
+    color: #64748b;
+
+}
+
+
+
+@media(max-width:768px) {
+
+
+    .configuracoes-page {
+
+        padding: 16px;
+
+    }
+
+
+}

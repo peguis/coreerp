@@ -1,25 +1,80 @@
-function Card({ titulo, valor }) {
+import "./Card.css";
+
+
+export default function Card({
+
+    titulo,
+
+    valor,
+
+    icone,
+
+    children,
+
+    className = ""
+
+}) {
+
 
     return (
 
-        <div
-            style={{
-                border: "1px solid #ddd",
-                borderRadius: 10,
-                padding: 20,
-                width: 220,
-                boxShadow: "0 2px 8px rgba(0,0,0,.1)"
-            }}
-        >
+        <div className={`card ${className}`}>
 
-            <h3>{titulo}</h3>
 
-            <h1>{valor}</h1>
+            {
+                icone && (
+
+                    <div className="card-icon">
+
+                        {icone}
+
+                    </div>
+
+                )
+            }
+
+
+
+            <div className="card-content">
+
+
+                {
+                    titulo && (
+
+                        <p className="card-title">
+
+                            {titulo}
+
+                        </p>
+
+                    )
+                }
+
+
+
+                {
+                    valor && (
+
+                        <strong className="card-value">
+
+                            {valor}
+
+                        </strong>
+
+                    )
+                }
+
+
+
+                {children}
+
+
+            </div>
+
+
 
         </div>
 
     );
 
 }
-
-export default Card;

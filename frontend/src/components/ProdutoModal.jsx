@@ -154,7 +154,7 @@ function ProdutoModal({ produto, fechar }) {
                     Preço:
 
                     {" "}
-                    R$ {Number(produto.preco).toFixed(2)}
+                    formatarMoeda(valor)
 
                 </p>
 

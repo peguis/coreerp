@@ -5,6 +5,12 @@ import App from './App.jsx'
 
 import { AuthProvider } from './auth/AuthContext.jsx'
 
+import "./styles/global.css"
+
+import "./styles/variables.css";
+
+
+
 
 createRoot(document.getElementById('root')).render(
 

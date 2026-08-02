@@ -1,0 +1,73 @@
+.card-dashboard {
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .06);
+
+    transition: .25s;
+
+}
+
+
+.card-dashboard:hover {
+
+    transform: translateY(-4px);
+
+}
+
+
+.card-dashboard-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+
+.card-dashboard strong {
+
+    display: block;
+
+    margin-top: 15px;
+
+    font-size: 32px;
+
+    color: #0f172a;
+
+}
+
+
+
+@media(max-width:768px) {
+
+
+    .card-dashboard {
+
+        padding: 20px;
+
+    }
+
+
+    .card-dashboard strong {
+
+        font-size: 26px;
+
+    }
+
+
+}

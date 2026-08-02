@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../api/axios";
+import api from "../services/api";
 
 
 function UploadImagemProduto({ produtoId, atualizar }) {

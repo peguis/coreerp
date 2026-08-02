@@ -1,10 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    UploadFile,
+    File,
+    Query
+)
+
 from sqlalchemy.orm import Session
 
 import os
 import shutil
 import uuid
-
 
 from app.database import get_db
 
@@ -21,13 +28,13 @@ from app.services.produto import (
     deletar_produto_service
 )
 
-from app.auth.dependencies import (
-    get_current_user,
-    require_perfil
-)
+from app.auth.dependencies import require_perfil
+
+from app.middleware.tenant import get_empresa_id
 
 from app.models.produto import Produto
 from app.models.produto_imagem import ProdutoImagem
+
 
 
 router = APIRouter(
@@ -36,44 +43,61 @@ router = APIRouter(
 )
 
 
+
 @router.post(
     "/",
     response_model=ProdutoResponse
 )
-def criar_produto_endpoint(
+def criar_produto(
     produto: ProdutoCreate,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin", "gerente"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente"
+        )
+    )
 ):
 
     return criar_produto_service(
         db,
         produto,
-        usuario
+        empresa_id
     )
+
 
 
 @router.get(
     "/",
     response_model=list[ProdutoResponse]
 )
-def listar_produtos_endpoint(
+def listar_produtos(
     busca: str | None = Query(None),
     categoria: str | None = Query(None),
     pagina: int = Query(1),
     limite: int = Query(10),
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente",
+            "operador",
+            "consulta"
+        )
+    )
 ):
 
     return listar_produtos_service(
         db,
-        usuario,
+        empresa_id,
         busca,
         categoria,
         pagina,
         limite
     )
+
 
 
 @router.get(
@@ -83,14 +107,23 @@ def listar_produtos_endpoint(
 def buscar_produto(
     produto_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente",
+            "operador",
+            "consulta"
+        )
+    )
 ):
 
     produto = buscar_produto_service(
         db,
         produto_id,
-        usuario
+        empresa_id
     )
+
 
     if not produto:
         raise HTTPException(
@@ -98,23 +131,34 @@ def buscar_produto(
             detail="Produto não encontrado"
         )
 
+
     return produto
 
 
-@router.put("/{produto_id}")
+
+@router.put(
+    "/{produto_id}"
+)
 def editar_produto(
     produto_id: int,
     dados: dict,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin", "gerente"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente"
+        )
+    )
 ):
 
     produto = atualizar_produto_service(
         db,
         produto_id,
         dados,
-        usuario
+        empresa_id
     )
+
 
     if not produto:
         raise HTTPException(
@@ -122,21 +166,31 @@ def editar_produto(
             detail="Produto não encontrado"
         )
 
+
     return produto
 
 
-@router.delete("/{produto_id}")
+
+@router.delete(
+    "/{produto_id}"
+)
 def remover_produto(
     produto_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin"
+        )
+    )
 ):
 
     sucesso = deletar_produto_service(
         db,
         produto_id,
-        usuario
+        empresa_id
     )
+
 
     if not sucesso:
         raise HTTPException(
@@ -144,29 +198,41 @@ def remover_produto(
             detail="Produto não encontrado"
         )
 
+
     return {
         "mensagem": "Produto removido"
     }
 
 
-@router.post("/{produto_id}/imagem")
+
+@router.post(
+    "/{produto_id}/imagem"
+)
 def upload_imagem_produto(
     produto_id: int,
     arquivo: UploadFile = File(...),
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin", "gerente"))
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente"
+        )
+    )
 ):
 
     produto = db.query(Produto).filter(
         Produto.id == produto_id,
-        Produto.empresa_id == usuario.empresa_id
+        Produto.empresa_id == empresa_id
     ).first()
+
 
     if not produto:
         raise HTTPException(
             status_code=404,
             detail="Produto não encontrado"
         )
+
 
     pasta = "uploads/produtos"
 
@@ -175,31 +241,44 @@ def upload_imagem_produto(
         exist_ok=True
     )
 
+
     nome_arquivo = f"{uuid.uuid4()}.jpg"
+
 
     caminho = f"{pasta}/{nome_arquivo}"
 
-    with open(caminho, "wb") as buffer:
+
+    with open(
+        caminho,
+        "wb"
+    ) as buffer:
+
         shutil.copyfileobj(
             arquivo.file,
             buffer
         )
 
-    imagens_existentes = db.query(ProdutoImagem).filter(
+
+
+    imagens = db.query(ProdutoImagem).filter(
         ProdutoImagem.produto_id == produto_id,
-        ProdutoImagem.empresa_id == usuario.empresa_id
+        ProdutoImagem.empresa_id == empresa_id
     ).all()
 
-    for imagem in imagens_existentes:
+
+    for imagem in imagens:
         imagem.principal = False
 
+
+
     nova_imagem = ProdutoImagem(
-        empresa_id=usuario.empresa_id,
+        empresa_id=empresa_id,
         produto_id=produto_id,
         nome_arquivo=nome_arquivo,
         caminho=caminho,
         principal=True
     )
+
 
     db.add(nova_imagem)
 
@@ -207,19 +286,29 @@ def upload_imagem_produto(
 
     db.refresh(nova_imagem)
 
+
     return nova_imagem
 
 
-@router.get("/{produto_id}/imagens")
-def listar_imagens_produto(
+
+@router.get(
+    "/{produto_id}/imagens"
+)
+def listar_imagens(
     produto_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(
+        require_perfil(
+            "admin",
+            "gerente",
+            "operador",
+            "consulta"
+        )
+    )
 ):
 
-    imagens = db.query(ProdutoImagem).filter(
+    return db.query(ProdutoImagem).filter(
         ProdutoImagem.produto_id == produto_id,
-        ProdutoImagem.empresa_id == usuario.empresa_id
+        ProdutoImagem.empresa_id == empresa_id
     ).all()
-
-    return imagens

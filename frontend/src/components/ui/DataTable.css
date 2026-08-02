@@ -1,0 +1,128 @@
+.table-container {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .06);
+
+}
+
+
+
+.dashboard-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+
+}
+
+
+
+.dashboard-table thead {
+
+    background: #f8fafc;
+
+}
+
+
+
+.dashboard-table th {
+
+    text-align: left;
+
+    padding: 14px 18px;
+
+    font-size: 13px;
+
+    color: #475569;
+
+    font-weight: 700;
+
+    border-bottom: 1px solid #e2e8f0;
+
+}
+
+
+
+.dashboard-table td {
+
+    padding: 14px 18px;
+
+    font-size: 14px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #f1f5f9;
+
+}
+
+
+
+.dashboard-table tbody tr {
+
+    transition: .2s ease;
+
+}
+
+
+
+.dashboard-table tbody tr:hover {
+
+    background: #f8fafc;
+
+}
+
+
+
+.table-empty {
+
+    text-align: center;
+
+    padding: 40px;
+
+    color: #64748b;
+
+    font-weight: 600;
+
+}
+
+
+
+.table-loading {
+
+    padding: 40px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-weight: 600;
+
+}
+
+
+
+@media(max-width:768px) {
+
+
+    .dashboard-table th,
+
+    .dashboard-table td {
+
+        padding: 12px;
+
+        font-size: 13px;
+
+    }
+
+
+}

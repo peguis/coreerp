@@ -1,32 +1,47 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { listarClientes } from "../services/clienteService";
-import { listarProdutos } from "../services/produtoService";
-import { criarVenda } from "../services/vendaService";
+import {
+    ArrowLeft,
+    Save
+} from "lucide-react";
+
+import {
+    listarClientes
+} from "../services/clienteService";
+
+import {
+    listarProdutos
+} from "../services/produtoService";
+
+import {
+    criarVenda
+} from "../services/vendaService";
+
+import PageHeader from "../components/ui/PageHeader";
+
+import FormCard from "../components/forms/FormCard";
+import Button from "../components/forms/Button";
+import Select from "../components/forms/Select";
+import Input from "../components/forms/Input";
 
 import Mensagem from "../components/Mensagem";
 
+import "./NovaVenda.css";
 
 function NovaVenda() {
 
-
     const navigate = useNavigate();
-
 
     const [clientes, setClientes] = useState([]);
     const [produtos, setProdutos] = useState([]);
 
-
     const [clienteId, setClienteId] = useState("");
     const [produtoId, setProdutoId] = useState("");
-    const [quantidade, setQuantidade] = useState(1);
-
+    const [quantidade, setQuantidade] = useState("");
 
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
-
-
 
     useEffect(() => {
 
@@ -34,81 +49,57 @@ function NovaVenda() {
 
     }, []);
 
-
-
     async function carregarDados() {
 
-
         const clientesDados = await listarClientes();
-
         const produtosDados = await listarProdutos();
 
+        setClientes(
+            Array.isArray(clientesDados)
+                ? clientesDados
+                : []
+        );
 
-        setClientes(clientesDados);
-
-        setProdutos(produtosDados);
-
+        setProdutos(
+            Array.isArray(produtosDados)
+                ? produtosDados
+                : []
+        );
 
     }
 
-
-
     async function salvar(e) {
-
 
         e.preventDefault();
 
-
-
         if (!clienteId || !produtoId) {
 
-
             setTipo("erro");
-
-            setMensagem(
-                "Selecione cliente e produto"
-            );
+            setMensagem("Selecione cliente e produto");
 
             return;
 
         }
 
-
-
         try {
-
-
 
             await criarVenda({
 
-
                 cliente_id: Number(clienteId),
-
 
                 itens: [
 
                     {
-
                         produto_id: Number(produtoId),
-
                         quantidade: Number(quantidade)
-
                     }
 
                 ]
 
-
             });
 
-
-
             setTipo("sucesso");
-
-            setMensagem(
-                "Venda criada com sucesso"
-            );
-
-
+            setMensagem("Venda criada com sucesso");
 
             setTimeout(() => {
 
@@ -116,208 +107,176 @@ function NovaVenda() {
 
             }, 1000);
 
-
-
         } catch (erro) {
-
 
             setTipo("erro");
 
             setMensagem(
-                erro.response?.data?.detail ||
-                "Erro ao criar venda"
-            );
 
+                erro.response?.data?.detail ||
+
+                "Erro ao criar venda"
+
+            );
 
         }
 
-
     }
-
-
 
     return (
 
+        <main className="nova-venda-page">
 
-        <main style={{ padding: 30 }}>
+            <PageHeader
 
+                titulo="Nova Venda"
 
-            <h1>
-                Nova Venda
-            </h1>
+                subtitulo="Registre uma nova venda"
 
+            >
 
+                <Button
 
-            <Mensagem
-                tipo={tipo}
-                texto={mensagem}
-            />
+                    variant="secondary"
 
-
-
-            <form onSubmit={salvar}>
-
-
-                <label>
-                    Cliente:
-                </label>
-
-
-                <br />
-
-
-                <select
-
-                    value={clienteId}
-
-                    onChange={
-                        e => setClienteId(e.target.value)
-                    }
+                    onClick={() => navigate("/vendas")}
 
                 >
 
+                    <ArrowLeft size={18} />
 
-                    <option value="">
-                        Selecione
-                    </option>
+                    Voltar
 
+                </Button>
 
+            </PageHeader>
 
-                    {
-                        clientes.map(cliente => (
+            <FormCard
 
+                titulo="Dados da Venda"
 
-                            <option
+                subtitulo="Selecione o cliente, produto e quantidade"
 
-                                key={cliente.id}
+            >
 
-                                value={cliente.id}
+                <Mensagem
 
-                            >
+                    tipo={tipo}
 
-                                {cliente.nome}
-
-                            </option>
-
-
-                        ))
-                    }
-
-
-                </select>
-
-
-
-                <br />
-                <br />
-
-
-
-                <label>
-                    Produto:
-                </label>
-
-
-                <br />
-
-
-
-                <select
-
-                    value={produtoId}
-
-                    onChange={
-                        e => setProdutoId(e.target.value)
-                    }
-
-                >
-
-
-                    <option value="">
-                        Selecione
-                    </option>
-
-
-
-                    {
-                        produtos.map(produto => (
-
-
-                            <option
-
-                                key={produto.id}
-
-                                value={produto.id}
-
-                            >
-
-                                {produto.nome}
-
-                            </option>
-
-
-                        ))
-                    }
-
-
-                </select>
-
-
-
-                <br />
-                <br />
-
-
-
-                <label>
-                    Quantidade:
-                </label>
-
-
-                <br />
-
-
-
-                <input
-
-                    type="number"
-
-                    min="1"
-
-                    value={quantidade}
-
-                    onChange={
-                        e => setQuantidade(e.target.value)
-                    }
+                    texto={mensagem}
 
                 />
 
+                <form
 
+                    className="venda-form"
 
-                <br />
-                <br />
+                    onSubmit={salvar}
 
+                >
 
+                    <Select
 
-                <button type="submit">
+                        label="Cliente"
 
-                    Salvar Venda
+                        value={clienteId}
 
-                </button>
+                        onChange={(e) => setClienteId(e.target.value)}
 
+                        options={[
 
+                            {
+                                value: "",
+                                label: "Selecione"
+                            },
 
-            </form>
+                            ...clientes.map(cliente => ({
 
+                                value: cliente.id,
 
+                                label: cliente.nome
+
+                            }))
+
+                        ]}
+
+                    />
+
+                    <Select
+
+                        label="Produto"
+
+                        value={produtoId}
+
+                        onChange={(e) => setProdutoId(e.target.value)}
+
+                        options={[
+
+                            {
+                                value: "",
+                                label: "Selecione"
+                            },
+
+                            ...produtos.map(produto => ({
+
+                                value: produto.id,
+
+                                label: produto.nome
+
+                            }))
+
+                        ]}
+
+                    />
+
+                    <Input
+
+                        label="Quantidade"
+
+                        type="number"
+
+                        min="1"
+
+                        value={quantidade}
+
+                        onChange={(e) => setQuantidade(e.target.value)}
+
+                    />
+
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => navigate("/vendas")}
+                    >
+                        Cancelar
+                    </Button>
+
+                    <div className="venda-footer-actions">
+
+                        <Button
+
+                            type="submit"
+
+                            variant="primary"
+
+                        >
+
+                            <Save size={18} />
+
+                            Salvar Venda
+
+                        </Button>
+
+                    </div>
+
+                </form>
+
+            </FormCard>
 
         </main>
 
-
     );
 
-
 }
-
 
 export default NovaVenda;

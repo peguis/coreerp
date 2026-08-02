@@ -1,0 +1,49 @@
+.table-actions {
+
+
+    display: flex;
+
+    gap: 8px;
+
+
+}
+
+
+
+.table-actions button {
+
+
+    width: 36px;
+
+    height: 36px;
+
+    padding: 0;
+
+
+}
+
+
+
+.table-actions svg {
+
+
+    pointer-events: none;
+
+
+}
+
+
+
+@media(max-width:768px) {
+
+
+    .table-actions {
+
+
+        justify-content: center;
+
+
+    }
+
+
+}

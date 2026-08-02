@@ -1,0 +1,175 @@
+.novo-financeiro-page {
+
+    padding: 30px;
+
+}
+
+
+
+.financeiro-form-header {
+
+    margin-bottom: 25px;
+
+}
+
+
+
+.financeiro-form-header h2 {
+
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 20px;
+
+}
+
+
+
+.financeiro-form-header p {
+
+    margin-top: 5px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+
+
+
+.financeiro-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+}
+
+
+
+.campo {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+
+.campo label {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+
+
+.campo input,
+
+.campo select,
+
+.campo textarea,
+
+textarea {
+
+    padding: 11px 14px;
+
+    border-radius: 8px;
+
+    border: 1px solid #cbd5e1;
+
+    font-size: 14px;
+
+    outline: none;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+}
+
+
+
+.campo input:focus,
+
+.campo select:focus,
+
+.campo textarea:focus,
+
+textarea:focus {
+
+    border-color: #2563eb;
+
+}
+
+
+
+.campo-full {
+
+    margin-top: 20px;
+
+}
+
+
+
+textarea {
+
+    resize: vertical;
+
+    min-height: 120px;
+
+}
+
+
+
+.financeiro-footer-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 15px;
+
+    margin-top: 30px;
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    .novo-financeiro-page {
+
+        padding: 20px;
+
+    }
+
+    .financeiro-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .financeiro-footer-actions {
+
+        flex-direction: column;
+
+    }
+
+    .financeiro-footer-actions button {
+
+        width: 100%;
+
+    }
+
+}

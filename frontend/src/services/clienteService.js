@@ -1,4 +1,4 @@
-import api from "../api/axios";
+import api from "../services/api";
 
 export async function listarClientes() {
     const response = await api.get("/clientes/");

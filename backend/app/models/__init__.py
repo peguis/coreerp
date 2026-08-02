@@ -6,3 +6,5 @@ from app.models.movimento_estoque import MovimentoEstoque
 from app.models.venda import Venda
 from app.models.item_venda import ItemVenda
 from app.models.produto_imagem import ProdutoImagem
+from app.models.financeiro import LancamentoFinanceiro
+from app.models.categoria_financeira import CategoriaFinanceira

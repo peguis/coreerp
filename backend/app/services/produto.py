@@ -15,7 +15,7 @@ from app.core.validators.produto import validar_produto
 def criar_produto_service(
     db,
     produto,
-    usuario
+    empresa_id
 ):
 
     validar_produto(
@@ -26,7 +26,7 @@ def criar_produto_service(
     return criar_produto(
         db,
         produto,
-        usuario.empresa_id
+        empresa_id
     )
 
 
@@ -37,7 +37,7 @@ def criar_produto_service(
 
 def listar_produtos_service(
     db,
-    usuario,
+    empresa_id,
     busca=None,
     categoria=None,
     pagina=1,
@@ -46,7 +46,7 @@ def listar_produtos_service(
 
     return listar_produtos(
         db,
-        usuario.empresa_id,
+        empresa_id,
         busca,
         categoria,
         pagina,
@@ -62,13 +62,13 @@ def listar_produtos_service(
 def buscar_produto_service(
     db,
     produto_id,
-    usuario
+    empresa_id
 ):
 
     return buscar_produto_por_id(
         db,
         produto_id,
-        usuario.empresa_id
+        empresa_id
     )
 
 
@@ -81,13 +81,13 @@ def atualizar_produto_service(
     db,
     produto_id,
     dados,
-    usuario
+    empresa_id
 ):
 
     produto = buscar_produto_por_id(
         db,
         produto_id,
-        usuario.empresa_id
+        empresa_id
     )
 
 
@@ -111,7 +111,6 @@ def atualizar_produto_service(
 
 
 
-
     if "preco" in dados:
 
         if dados["preco"] < 0:
@@ -122,13 +121,11 @@ def atualizar_produto_service(
 
 
 
-
     if "estoque" in dados:
 
         if dados["estoque"] < 0:
 
             return None
-
 
 
 
@@ -146,18 +143,16 @@ def atualizar_produto_service(
 
 
 
-
-
 def deletar_produto_service(
     db,
     produto_id,
-    usuario
+    empresa_id
 ):
 
     produto = buscar_produto_por_id(
         db,
         produto_id,
-        usuario.empresa_id
+        empresa_id
     )
 
 
