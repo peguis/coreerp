@@ -11,7 +11,8 @@ from app.models.venda import Venda
 from app.models.item_venda import ItemVenda
 from app.models.produto import Produto
 from app.models.cliente import Cliente
-from app.models.movimento_estoque import MovimentoEstoque
+
+from app.services.movimento_estoque import movimentar_estoque
 
 
 from app.core.validators.venda import (
@@ -51,6 +52,25 @@ def criar_venda_service(
 
     try:
 
+        venda = Venda(
+
+            empresa_id=empresa_id,
+
+            cliente_id=dados.cliente_id,
+
+            usuario_id=usuario_id,
+
+            total=0,
+
+            status="ABERTA"
+
+        )
+
+
+        db.add(venda)
+
+        db.flush()
+
 
         for item in dados.itens:
 
@@ -79,11 +99,7 @@ def criar_venda_service(
 
 
             if not produto:
-                return None
-
-
-
-            if produto.estoque < quantidade:
+                db.rollback()
                 return None
 
 
@@ -93,7 +109,23 @@ def criar_venda_service(
             total += subtotal
 
 
-            produto.estoque -= quantidade
+            movimento = movimentar_estoque(
+                db=db,
+                empresa_id=empresa_id,
+                produto_id=produto_id,
+                tipo="SAIDA",
+                quantidade=quantidade,
+                usuario_id=usuario_id,
+                observacao=f"Venda #{venda.id}",
+                produto=produto
+            )
+
+
+            if not movimento:
+
+                db.rollback()
+
+                return None
 
 
 
@@ -126,29 +158,6 @@ def criar_venda_service(
 
 
 
-        venda = Venda(
-
-            empresa_id=empresa_id,
-
-            cliente_id=dados.cliente_id,
-
-            usuario_id=usuario_id,
-
-            total=total,
-
-            status="ABERTA"
-
-        )
-
-
-
-        db.add(venda)
-
-        db.flush()
-
-
-
-
         for item in itens:
 
 
@@ -158,27 +167,11 @@ def criar_venda_service(
 
 
 
-            movimento = MovimentoEstoque(
-
-                empresa_id=empresa_id,
-
-                produto_id=item.produto_id,
-
-                usuario_id=usuario_id,
-
-                tipo="SAIDA",
-
-                quantidade=item.quantidade,
-
-                observacao=f"Venda #{venda.id}"
-
-            )
-
-
-            db.add(movimento)
 
 
 
+
+        venda.total = total
 
         db.commit()
 
@@ -276,7 +269,8 @@ def atualizar_venda_service(
 def deletar_venda_service(
     db,
     venda_id,
-    empresa_id
+    empresa_id,
+    usuario_id=None
 ):
 
 
@@ -289,6 +283,13 @@ def deletar_venda_service(
 
     if not venda:
         return False
+
+
+    usuario_movimento = (
+        usuario_id
+        if usuario_id is not None
+        else venda.usuario_id
+    )
 
 
 
@@ -308,7 +309,38 @@ def deletar_venda_service(
 
         if produto:
 
-            produto.estoque += item.quantidade
+            try:
+
+                movimento = movimentar_estoque(
+                    db=db,
+                    empresa_id=empresa_id,
+                    produto_id=item.produto_id,
+                    tipo="ENTRADA",
+                    quantidade=item.quantidade,
+                    usuario_id=usuario_movimento,
+                    observacao=f"Estorno da venda #{venda.id}",
+                    produto=produto
+                )
+
+
+                if not movimento:
+
+                    db.rollback()
+
+                    return False
+
+            except Exception:
+
+                db.rollback()
+
+                raise
+
+
+        else:
+
+            db.rollback()
+
+            return False
 
 
 
@@ -317,6 +349,17 @@ def deletar_venda_service(
         db,
         venda
     )
+
+
+    try:
+
+        db.commit()
+
+    except Exception:
+
+        db.rollback()
+
+        raise
 
 
     return True

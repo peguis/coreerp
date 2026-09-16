@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictInt, model_validator
 from datetime import datetime
 
 
@@ -18,9 +18,29 @@ class MovimentoEstoqueCreate(BaseModel):
 
     tipo: str
 
-    quantidade: float
+    quantidade: StrictInt
 
     observacao: str | None = None
+
+
+    @model_validator(mode="after")
+    def validar_quantidade_por_tipo(self):
+
+        tipo = self.tipo.upper()
+
+        if tipo == "AJUSTE" and self.quantidade < 0:
+
+            raise ValueError(
+                "Saldo de ajuste n\u00e3o pode ser negativo."
+            )
+
+        if tipo != "AJUSTE" and self.quantidade <= 0:
+
+            raise ValueError(
+                "Quantidade deve ser maior que zero."
+            )
+
+        return self
 
 
 
@@ -38,7 +58,11 @@ class MovimentoEstoqueResponse(BaseModel):
 
     tipo: str
 
-    quantidade: float
+    quantidade: StrictInt
+
+    estoque_anterior: StrictInt | None = None
+
+    estoque_posterior: StrictInt | None = None
 
     observacao: str | None = None
 

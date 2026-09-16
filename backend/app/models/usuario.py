@@ -95,3 +95,14 @@ class Usuario(Base):
         "LancamentoFinanceiro",
         back_populates="usuario"
     )
+
+    profissional = relationship(
+        "Profissional",
+        back_populates="usuario",
+        uselist=False
+    )
+
+    repasses_criados = relationship(
+        "Repasse",
+        back_populates="created_by_usuario"
+    )

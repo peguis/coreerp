@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from decimal import Decimal
 
 from typing import Optional
 
@@ -10,7 +11,7 @@ class LancamentoCreate(BaseModel):
 
     descricao: str
 
-    valor: float
+    valor: Decimal
 
     tipo: str
 
@@ -30,7 +31,7 @@ class LancamentoUpdate(BaseModel):
 
     descricao: Optional[str] = None
 
-    valor: Optional[float] = None
+    valor: Optional[Decimal] = None
 
     tipo: Optional[str] = None
 
@@ -67,7 +68,7 @@ class LancamentoResponse(BaseModel):
 
     descricao: str
 
-    valor: float
+    valor: Decimal
 
     tipo: str
 

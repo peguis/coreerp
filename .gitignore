@@ -1,22 +1,39 @@
 # Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
 
-# Ambiente
+# Ambientes
 .venv/
-.env
+venv/
 
-# Node
+# Secrets e ambiente
+.env
+.env.*
+!.env.example
+
+# Node/frontend
 node_modules/
 dist/
+frontend/.env*
+!frontend/.env.example
 
-# Logs
+# Logs e artefatos locais
+logs/
 *.log
+*.tmp
+*.temp
+*.bak
+*.swp
 
-# Uploads
+# Arquivos gerados
 uploads/
 
-# IDE
+# Bancos PostgreSQL descartáveis de testes
+.tmp-p5-postgres/
+.tmp-p6-postgres/
+
+# IDE e sistema operacional
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db

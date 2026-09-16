@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictInt
 
 
 
@@ -27,12 +27,12 @@ class ProdutoCreate(BaseModel):
 
     preco: float
 
-    estoque: float = 0
+    estoque: StrictInt = Field(0, ge=0)
 
 
-    estoque_minimo: float = 0
+    estoque_minimo: StrictInt = Field(0, ge=0)
 
-    estoque_maximo: float = 0
+    estoque_maximo: StrictInt = Field(0, ge=0)
 
 
 
@@ -49,7 +49,6 @@ class ProdutoCreate(BaseModel):
     localizacao: Optional[str] = None
 
 
-    custo_medio: float = 0
 
 
 
@@ -102,13 +101,13 @@ class ProdutoResponse(BaseModel):
 
     preco: float
 
-    estoque: float
+    estoque: StrictInt
 
 
 
-    estoque_minimo: float
+    estoque_minimo: StrictInt
 
-    estoque_maximo: float
+    estoque_maximo: StrictInt
 
 
 

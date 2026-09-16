@@ -27,6 +27,10 @@ if TYPE_CHECKING:
     from app.models.produto_imagem import ProdutoImagem
     from app.models.financeiro import LancamentoFinanceiro
     from app.models.categoria_financeira import CategoriaFinanceira
+    from app.models.servico import Servico
+    from app.models.profissional import Profissional
+    from app.models.atendimento import Atendimento
+    from app.models.repasse import Repasse, RepasseItem
 
 
 
@@ -132,4 +136,34 @@ class Empresa(Base):
         "CategoriaFinanceira",
         back_populates="empresa",
         cascade="all, delete-orphan"
+    )
+
+
+    servicos: Mapped[list["Servico"]] = relationship(
+        "Servico",
+        back_populates="empresa",
+        cascade="all, delete-orphan"
+    )
+
+
+    profissionais: Mapped[list["Profissional"]] = relationship(
+        "Profissional",
+        back_populates="empresa",
+        cascade="all, delete-orphan"
+    )
+
+
+    atendimentos: Mapped[list["Atendimento"]] = relationship(
+        "Atendimento",
+        back_populates="empresa"
+    )
+
+    repasses: Mapped[list["Repasse"]] = relationship(
+        "Repasse",
+        back_populates="empresa"
+    )
+
+    repasse_itens: Mapped[list["RepasseItem"]] = relationship(
+        "RepasseItem",
+        back_populates="empresa"
     )

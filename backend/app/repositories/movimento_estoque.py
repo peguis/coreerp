@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
@@ -10,7 +12,10 @@ def criar_movimento(
     db: Session,
     movimento: MovimentoEstoqueCreate,
     empresa_id: int,
-    usuario_id: int
+    usuario_id: int,
+    estoque_anterior: int | None = None,
+    estoque_posterior: int | None = None,
+    created_at: datetime | None = None
 ):
 
     novo_movimento = MovimentoEstoque(
@@ -24,6 +29,12 @@ def criar_movimento(
         tipo=movimento.tipo,
 
         quantidade=movimento.quantidade,
+
+        estoque_anterior=estoque_anterior,
+
+        estoque_posterior=estoque_posterior,
+
+        created_at=created_at,
 
         observacao=movimento.observacao
 

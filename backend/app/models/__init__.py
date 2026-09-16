@@ -8,3 +8,7 @@ from app.models.item_venda import ItemVenda
 from app.models.produto_imagem import ProdutoImagem
 from app.models.financeiro import LancamentoFinanceiro
 from app.models.categoria_financeira import CategoriaFinanceira
+from app.models.servico import Servico
+from app.models.profissional import Profissional
+from app.models.atendimento import Atendimento
+from app.models.repasse import Repasse, RepasseItem

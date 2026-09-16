@@ -1,4 +1,4 @@
-from sqlalchemy import func, desc, extract
+from sqlalchemy import func, desc, extract, and_
 
 from app.models.produto import Produto
 from app.models.cliente import Cliente
@@ -160,6 +160,13 @@ def buscar_dashboard_service(db, usuario):
 
     ultimas_vendas = (
         db.query(Venda)
+        .join(
+            Cliente,
+            and_(
+                Venda.cliente_id == Cliente.id,
+                Cliente.empresa_id == empresa_id
+            )
+        )
         .filter(
             Venda.empresa_id == empresa_id
         )
@@ -202,7 +209,10 @@ def buscar_dashboard_service(db, usuario):
         db.query(Produto)
         .outerjoin(
             ItemVenda,
-            Produto.id == ItemVenda.produto_id
+            and_(
+                Produto.id == ItemVenda.produto_id,
+                ItemVenda.empresa_id == empresa_id
+            )
         )
         .filter(
             Produto.empresa_id == empresa_id
@@ -230,7 +240,10 @@ def buscar_dashboard_service(db, usuario):
         db.query(Produto)
         .outerjoin(
             ItemVenda,
-            Produto.id == ItemVenda.produto_id
+            and_(
+                Produto.id == ItemVenda.produto_id,
+                ItemVenda.empresa_id == empresa_id
+            )
         )
         .filter(
             Produto.empresa_id == empresa_id,
@@ -333,7 +346,10 @@ def buscar_dashboard_service(db, usuario):
         )
         .join(
             ItemVenda,
-            Produto.id == ItemVenda.produto_id
+            and_(
+                Produto.id == ItemVenda.produto_id,
+                ItemVenda.empresa_id == empresa_id
+            )
         )
         .filter(
             Produto.empresa_id == empresa_id
@@ -366,7 +382,10 @@ def buscar_dashboard_service(db, usuario):
         )
         .join(
             Venda,
-            Cliente.id == Venda.cliente_id
+            and_(
+                Cliente.id == Venda.cliente_id,
+                Venda.empresa_id == empresa_id
+            )
         )
         .filter(
             Cliente.empresa_id == empresa_id

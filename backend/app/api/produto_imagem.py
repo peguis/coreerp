@@ -96,7 +96,8 @@ def upload_imagem(
 
 
     existe_imagem = db.query(ProdutoImagem).filter(
-        ProdutoImagem.produto_id == produto_id
+        ProdutoImagem.produto_id == produto_id,
+        ProdutoImagem.empresa_id == usuario.empresa_id
     ).count()
 
 

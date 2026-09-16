@@ -6,10 +6,10 @@ def validar_movimento(
     tipo
 ):
 
-    if quantidade <= 0:
+    if isinstance(quantidade, bool) or not isinstance(quantidade, int):
         raise HTTPException(
             status_code=400,
-            detail="Quantidade deve ser maior que zero."
+            detail="Quantidade deve ser um inteiro."
         )
 
 
@@ -20,10 +20,29 @@ def validar_movimento(
     ]
 
 
-    if tipo.upper() not in tipos_validos:
+    if not isinstance(tipo, str) or tipo.upper() not in tipos_validos:
         raise HTTPException(
             status_code=400,
             detail="Tipo de movimento inválido."
+        )
+
+
+    tipo_normalizado = tipo.upper()
+
+
+    if tipo_normalizado == "AJUSTE":
+
+        if quantidade < 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Saldo de ajuste n\u00e3o pode ser negativo."
+            )
+
+    elif quantidade <= 0:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Quantidade deve ser maior que zero."
         )
 
 

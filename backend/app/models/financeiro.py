@@ -4,11 +4,14 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
-    Float,
+    Numeric,
     Date,
     DateTime,
     ForeignKey,
     Text,
+    CheckConstraint,
+    Index,
+    text,
 )
 
 from sqlalchemy.orm import relationship
@@ -20,6 +23,22 @@ from app.database import Base
 class LancamentoFinanceiro(Base):
 
     __tablename__ = "lancamentos_financeiros"
+    __table_args__ = (
+        CheckConstraint(
+            "(origem_tipo IS NULL AND origem_id IS NULL) OR "
+            "(origem_tipo IN ('ATENDIMENTO', 'REPASSE') AND origem_id IS NOT NULL)",
+            name="ck_lancamentos_financeiros_origem",
+        ),
+        Index(
+            "uq_lancamentos_financeiros_origem_automatica",
+            "empresa_id",
+            "origem_tipo",
+            "origem_id",
+            unique=True,
+            postgresql_where=text("origem_tipo IS NOT NULL AND origem_id IS NOT NULL"),
+            sqlite_where=text("origem_tipo IS NOT NULL AND origem_id IS NOT NULL"),
+        ),
+    )
 
 
     id = Column(
@@ -59,8 +78,26 @@ class LancamentoFinanceiro(Base):
 
 
     valor = Column(
-        Float,
+        Numeric(12, 2),
         nullable=False
+    )
+
+
+    origem_tipo = Column(
+        String(20),
+        nullable=True
+    )
+
+
+    origem_id = Column(
+        Integer,
+        nullable=True
+    )
+
+
+    forma_pagamento = Column(
+        String(20),
+        nullable=True
     )
 
 

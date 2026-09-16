@@ -235,6 +235,8 @@ function NovaVenda() {
 
                         type="number"
 
+                        step="1"
+
                         min="1"
 
                         value={quantidade}

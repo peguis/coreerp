@@ -12,6 +12,7 @@ from app.auth.dependencies import require_perfil
 
 from app.schemas.lancamento_financeiro import (
     LancamentoFinanceiroCreate,
+    LancamentoFinanceiroResponse,
     LancamentoFinanceiroUpdate
 )
 
@@ -32,7 +33,8 @@ router = APIRouter(
 
 
 @router.get(
-    "/lancamentos"
+    "/lancamentos",
+    response_model=list[LancamentoFinanceiroResponse]
 )
 def listar_lancamentos(
     db: Session = Depends(get_db),
@@ -55,7 +57,8 @@ def listar_lancamentos(
 
 @router.post(
     "/lancamentos",
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
+    response_model=LancamentoFinanceiroResponse
 )
 def criar_lancamento(
     dados: LancamentoFinanceiroCreate,
@@ -78,7 +81,8 @@ def criar_lancamento(
 
 
 @router.get(
-    "/lancamentos/{lancamento_id}"
+    "/lancamentos/{lancamento_id}",
+    response_model=LancamentoFinanceiroResponse
 )
 def buscar_lancamento(
     lancamento_id: int,
@@ -102,7 +106,8 @@ def buscar_lancamento(
 
 
 @router.put(
-    "/lancamentos/{lancamento_id}"
+    "/lancamentos/{lancamento_id}",
+    response_model=LancamentoFinanceiroResponse
 )
 def atualizar_lancamento(
     lancamento_id: int,

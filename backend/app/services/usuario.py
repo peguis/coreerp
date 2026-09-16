@@ -71,7 +71,7 @@ def atualizar_usuario_service(
     db: Session,
     usuario_id: int,
     empresa_id: int,
-    dados: dict
+    dados
 ):
 
     usuario = buscar_usuario_por_id(
@@ -86,30 +86,45 @@ def atualizar_usuario_service(
 
 
 
-    if "nome" in dados:
+    if hasattr(dados, "model_dump"):
+        dados_dict = dados.model_dump(exclude_unset=True)
+    else:
+        dados_dict = dict(dados)
+
+
+    if "nome" in dados_dict:
 
         if len(
-            dados["nome"].strip()
+            dados_dict["nome"].strip()
         ) < 3:
 
             return None
 
 
 
-    if "senha" in dados:
+    if "senha" in dados_dict:
 
         if len(
-            dados["senha"]
+            dados_dict["senha"]
         ) < 6:
 
             return None
+
+
+    if "perfil" in dados_dict:
+
+        perfil = dados_dict["perfil"]
+
+        if hasattr(perfil, "value"):
+
+            dados_dict["perfil"] = perfil.value
 
 
 
     return atualizar_usuario(
         db,
         usuario,
-        dados
+        dados_dict
     )
 
 

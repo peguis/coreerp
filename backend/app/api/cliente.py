@@ -18,7 +18,7 @@ from app.services.cliente import (
 
 from app.auth.dependencies import require_perfil
 
-from app.middleware.tenant import get_empresa_id
+from app.auth.tenant import get_empresa_id
 
 
 router = APIRouter(

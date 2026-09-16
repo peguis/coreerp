@@ -169,7 +169,8 @@ def remover_venda(
     sucesso = deletar_venda_service(
         db,
         venda_id,
-        empresa_id
+        empresa_id,
+        usuario.id
     )
 
 

@@ -41,22 +41,6 @@ export async function loginRequest(
 
 
 
-    if (response.data.access_token) {
-
-
-        localStorage.setItem(
-
-            "token",
-
-            response.data.access_token
-
-        );
-
-
-    }
-
-
-
     return response.data;
 
 

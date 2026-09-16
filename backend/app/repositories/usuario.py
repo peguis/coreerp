@@ -101,6 +101,10 @@ def atualizar_usuario(
 
         if campo in campos_permitidos:
 
+            if campo == "senha":
+
+                valor = gerar_hash(valor)
+
             setattr(
                 usuario_db,
                 campo,

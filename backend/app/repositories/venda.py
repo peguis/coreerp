@@ -19,9 +19,7 @@ def criar_venda(
         db.add(item)
 
 
-    db.commit()
-
-    db.refresh(venda)
+    db.flush()
 
     return venda
 
@@ -126,5 +124,3 @@ def deletar_venda(
 ):
 
     db.delete(venda_db)
-
-    db.commit()

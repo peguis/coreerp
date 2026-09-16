@@ -4,7 +4,9 @@ from sqlalchemy import (
     String,
     Boolean,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    Index,
+    text,
 )
 
 from sqlalchemy.orm import (
@@ -20,6 +22,16 @@ from app.database.database import Base
 class CategoriaFinanceira(Base):
 
     __tablename__ = "categorias_financeiras"
+    __table_args__ = (
+        Index(
+            "uq_categorias_financeiras_chave_sistema",
+            "empresa_id",
+            "chave_sistema",
+            unique=True,
+            postgresql_where=text("chave_sistema IS NOT NULL"),
+            sqlite_where=text("chave_sistema IS NOT NULL"),
+        ),
+    )
 
 
     id: Mapped[int] = mapped_column(
@@ -68,4 +80,10 @@ class CategoriaFinanceira(Base):
     lancamentos = relationship(
         "LancamentoFinanceiro",
         back_populates="categoria"
+    )
+
+
+    chave_sistema: Mapped[str | None] = mapped_column(
+        String(50),
+        nullable=True
     )

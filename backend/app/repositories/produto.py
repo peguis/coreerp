@@ -54,16 +54,13 @@ def criar_produto(
         localizacao=produto.localizacao,
 
 
-        custo_medio=produto.custo_medio
 
     )
 
 
     db.add(novo_produto)
 
-    db.commit()
-
-    db.refresh(novo_produto)
+    db.flush()
 
 
     return novo_produto
@@ -152,6 +149,27 @@ def buscar_produto_por_id(
 
 
 
+def buscar_produto_para_movimento(
+    db: Session,
+    produto_id: int | None,
+    empresa_id: int
+):
+
+    return (
+        db.query(Produto)
+        .filter(
+            Produto.id == produto_id,
+            Produto.empresa_id == empresa_id
+        )
+        .populate_existing()
+        .with_for_update()
+        .first()
+    )
+
+
+
+
+
 def atualizar_produto(
     db: Session,
     produto_db,
@@ -168,7 +186,6 @@ def atualizar_produto(
         "unidade",
         "descricao",
         "preco",
-        "estoque",
         "estoque_minimo",
         "estoque_maximo",
         "peso",
@@ -176,7 +193,6 @@ def atualizar_produto(
         "largura",
         "comprimento",
         "localizacao",
-        "custo_medio",
         "ativo"
 
     ]

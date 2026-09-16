@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictInt
 from datetime import datetime
 
 from app.schemas.item_venda import ItemVendaResponse
@@ -21,7 +21,7 @@ class VendaItemCreate(BaseModel):
 
     produto_id: int
 
-    quantidade: int
+    quantidade: StrictInt = Field(gt=0)
 
 
 

@@ -129,7 +129,15 @@ function NovoMovimento() {
 
 
 
-        if (!produtoId || !quantidade) {
+        const quantidadeInformada = Number(quantidade);
+        const quantidadeMinima = tipo === "AJUSTE" ? 0 : 1;
+
+        if (
+            !produtoId
+            || quantidade.trim() === ""
+            || !Number.isInteger(quantidadeInformada)
+            || quantidadeInformada < quantidadeMinima
+        ) {
 
 
 
@@ -155,6 +163,18 @@ function NovoMovimento() {
 
 
 
+        if (tipo === "AJUSTE" && !observacao.trim()) {
+
+            setTipoMensagem("erro");
+
+            setMensagem(
+                "Informe o motivo do ajuste."
+            );
+
+            return;
+        }
+
+
         try {
 
 
@@ -172,7 +192,7 @@ function NovoMovimento() {
 
 
 
-                quantidade: Number(quantidade),
+                quantidade: quantidadeInformada,
 
 
 
@@ -512,10 +532,10 @@ function NovoMovimento() {
                         type="number"
 
 
-                        step="0.01"
+                        step="1"
 
 
-                        min="0.01"
+                        min={tipo === "AJUSTE" ? "0" : "1"}
 
 
                         value={quantidade}
@@ -563,7 +583,11 @@ function NovoMovimento() {
                         }
 
 
-                        placeholder="Ex: Compra fornecedor"
+                        placeholder={
+                            tipo === "AJUSTE"
+                                ? "Informe o motivo do ajuste"
+                                : "Ex: Compra fornecedor"
+                        }
 
 
                         rows={3}

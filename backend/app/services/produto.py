@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from app.repositories.produto import (
     criar_produto,
     listar_produtos,
@@ -8,6 +10,8 @@ from app.repositories.produto import (
 
 from app.core.validators.produto import validar_produto
 
+from app.services.movimento_estoque import movimentar_estoque
+
 
 
 
@@ -15,7 +19,8 @@ from app.core.validators.produto import validar_produto
 def criar_produto_service(
     db,
     produto,
-    empresa_id
+    empresa_id,
+    usuario_id
 ):
 
     validar_produto(
@@ -23,11 +28,56 @@ def criar_produto_service(
     )
 
 
-    return criar_produto(
-        db,
-        produto,
-        empresa_id
+    estoque_inicial = produto.estoque
+    produto_para_criacao = produto.model_copy(
+        update={"estoque": 0}
     )
+
+
+    try:
+
+        novo_produto = criar_produto(
+            db,
+            produto_para_criacao,
+            empresa_id
+        )
+
+
+        if estoque_inicial > 0:
+
+            movimento_inicial = movimentar_estoque(
+                db=db,
+                empresa_id=empresa_id,
+                produto_id=novo_produto.id,
+                tipo="ENTRADA",
+                quantidade=estoque_inicial,
+                usuario_id=usuario_id,
+                observacao="Estoque inicial",
+                produto=novo_produto
+            )
+
+
+            if not movimento_inicial:
+
+                raise HTTPException(
+                    status_code=400,
+                    detail="N\u00e3o foi poss\u00edvel registrar o estoque inicial."
+                )
+
+
+        db.commit()
+
+        db.refresh(novo_produto)
+
+
+        return novo_produto
+
+
+    except Exception:
+
+        db.rollback()
+
+        raise
 
 
 
@@ -99,6 +149,41 @@ def atualizar_produto_service(
 
 
 
+    if "estoque" in dados:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Estoque nÃ£o pode ser alterado diretamente. "
+                "Utilize uma movimentaÃ§Ã£o de estoque."
+            )
+        )
+
+
+    if (
+        "ultima_entrada" in dados
+        or "ultima_saida" in dados
+    ):
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "ultima_entrada e ultima_saida são controlados pelo sistema."
+            )
+        )
+
+
+    if "custo_medio" in dados:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "custo_medio não é calculado automaticamente "
+                "e é controlado pelo sistema."
+            )
+        )
+
+
     if "nome" in dados:
 
         if not dados["nome"] or len(
@@ -121,11 +206,22 @@ def atualizar_produto_service(
 
 
 
-    if "estoque" in dados:
+    for campo in (
+        "estoque_minimo",
+        "estoque_maximo"
+    ):
 
-        if dados["estoque"] < 0:
+        if campo in dados:
 
-            return None
+            valor = dados[campo]
+
+            if (
+                isinstance(valor, bool)
+                or not isinstance(valor, int)
+                or valor < 0
+            ):
+
+                return None
 
 
 

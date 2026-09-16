@@ -90,7 +90,6 @@ function EditarProduto() {
 
 
 
-    const [custoMedio, setCustoMedio] = useState("");
 
 
 
@@ -196,9 +195,6 @@ function EditarProduto() {
 
 
 
-            setCustoMedio(
-                produto.custo_medio || ""
-            );
 
 
 
@@ -546,11 +542,6 @@ function EditarProduto() {
 
 
 
-                    estoque:
-                        Number(estoque),
-
-
-
                     estoque_minimo:
                         Number(estoqueMinimo),
 
@@ -578,11 +569,6 @@ function EditarProduto() {
 
                     comprimento:
                         Number(comprimento || 0),
-
-
-
-                    custo_medio:
-                        Number(custoMedio || 0),
 
 
 
@@ -859,13 +845,13 @@ function EditarProduto() {
 
                     <Input
 
-                        label="Estoque atual"
+                        label="Estoque atual (use MovimentaÃ§Ã£o de Estoque)"
 
                         type="number"
 
                         value={estoque}
 
-                        onChange={(e) => setEstoque(e.target.value)}
+                        disabled
 
                     />
 
@@ -906,24 +892,6 @@ function EditarProduto() {
 
 
 
-
-                    <Input
-
-                        label="Custo médio"
-
-                        type="number"
-
-                        step="0.01"
-
-                        value={custoMedio}
-
-                        onChange={(e) => setCustoMedio(e.target.value)}
-
-                    />
-
-
-
-                    
 
 
                 </FormCard>

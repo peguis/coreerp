@@ -10,7 +10,10 @@ from app.api.dashboard import router as dashboard_router
 from app.api.produto_imagem import router as produto_imagem_router
 from app.api.financeiro import router as financeiro_router
 from app.api.categoria_financeira import router as categoria_financeira_router
-from app.api.lancamento_financeiro import router as lancamento_financeiro_router
+from app.api.servico import router as servico_router
+from app.api.profissional import router as profissional_router
+from app.api.atendimento import router as atendimento_router
+from app.api.repasse import router as repasse_router
 
 router = APIRouter()
 
@@ -56,5 +59,17 @@ router.include_router(
 )
 
 router.include_router(
-    lancamento_financeiro_router
+    servico_router
+)
+
+router.include_router(
+    profissional_router
+)
+
+router.include_router(
+    atendimento_router
+)
+
+router.include_router(
+    repasse_router
 )

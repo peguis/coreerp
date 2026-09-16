@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, StrictInt
 
 
 class ProdutoResumo(BaseModel):
@@ -23,7 +23,7 @@ class ItemVendaResponse(BaseModel):
 
     produto_id: int
 
-    quantidade: int
+    quantidade: StrictInt = Field(gt=0)
 
     preco_unitario: float
 

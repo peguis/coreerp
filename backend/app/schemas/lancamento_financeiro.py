@@ -1,6 +1,7 @@
 from datetime import datetime, date
+from decimal import Decimal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 from app.schemas.categoria_financeira import (
     CategoriaFinanceiraResumo
@@ -10,9 +11,11 @@ from app.schemas.categoria_financeira import (
 
 class LancamentoFinanceiroBase(BaseModel):
 
+    model_config = ConfigDict(extra="forbid")
+
     descricao: str
 
-    valor: float
+    valor: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
 
     tipo: str
 
@@ -38,9 +41,16 @@ class LancamentoFinanceiroCreate(
 
 class LancamentoFinanceiroUpdate(BaseModel):
 
+    model_config = ConfigDict(extra="forbid")
+
     descricao: str | None = None
 
-    valor: float | None = None
+    valor: Decimal | None = Field(
+        default=None,
+        gt=0,
+        max_digits=12,
+        decimal_places=2,
+    )
 
     tipo: str | None = None
 
@@ -76,6 +86,15 @@ class LancamentoFinanceiroResponse(
 
     categoria: CategoriaFinanceiraResumo | None = None
 
+    origem_tipo: str | None = None
 
-    class Config:
-        from_attributes = True
+    origem_id: int | None = None
+
+    forma_pagamento: str | None = None
+
+
+    model_config = ConfigDict(from_attributes=True)
+
+    @field_serializer("valor")
+    def serializar_valor(self, value: Decimal) -> str:
+        return format(value, ".2f")

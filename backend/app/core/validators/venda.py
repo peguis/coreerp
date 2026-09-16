@@ -22,6 +22,21 @@ def validar_venda(
             detail="A venda deve possuir ao menos um item."
         )
 
+    for item in itens:
+        quantidade = item.quantidade
+
+        if isinstance(quantidade, bool) or not isinstance(quantidade, int):
+            raise HTTPException(
+                status_code=400,
+                detail="Quantidade deve ser um inteiro."
+            )
+
+        if quantidade <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Quantidade deve ser maior que zero."
+            )
+
     if valor_total <= 0:
         raise HTTPException(
             status_code=400,

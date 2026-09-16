@@ -30,7 +30,7 @@ from app.services.produto import (
 
 from app.auth.dependencies import require_perfil
 
-from app.middleware.tenant import get_empresa_id
+from app.auth.tenant import get_empresa_id
 
 from app.models.produto import Produto
 from app.models.produto_imagem import ProdutoImagem
@@ -63,7 +63,8 @@ def criar_produto(
     return criar_produto_service(
         db,
         produto,
-        empresa_id
+        empresa_id,
+        usuario.id
     )
 
 

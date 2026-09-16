@@ -69,7 +69,6 @@ function NovoProduto() {
         comprimento: "",
 
 
-        custo_medio: "",
 
         localizacao: ""
 
@@ -242,14 +241,6 @@ function NovoProduto() {
                         null,
 
 
-
-
-                custo_medio:
-                    form.custo_medio
-                        ?
-                        Number(form.custo_medio)
-                        :
-                        0,
 
 
                 localizacao:
@@ -643,19 +634,6 @@ function NovoProduto() {
 
 
 
-
-                    <Input
-                        label="Custo médio"
-                        type="number"
-                        step="0.01"
-                        name="custo_medio"
-                        value={form.custo_medio}
-                        onChange={alterar}
-                    />
-
-
-
-                
 
                 </FormCard>
 

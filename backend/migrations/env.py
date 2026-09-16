@@ -14,6 +14,10 @@ from app.models.cliente import Cliente
 from app.models.movimento_estoque import MovimentoEstoque
 from app.models.venda import Venda
 from app.models.item_venda import ItemVenda
+from app.models.servico import Servico
+from app.models.profissional import Profissional
+from app.models.atendimento import Atendimento
+from app.models.repasse import Repasse, RepasseItem
 
 from app.core.config import settings
 

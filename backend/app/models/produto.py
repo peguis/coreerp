@@ -85,21 +85,21 @@ class Produto(Base):
 
 
     estoque = Column(
-        Float,
+        Integer,
         nullable=False,
         default=0
     )
 
 
     estoque_minimo = Column(
-        Float,
+        Integer,
         nullable=False,
         default=0
     )
 
 
     estoque_maximo = Column(
-        Float,
+        Integer,
         nullable=False,
         default=0
     )

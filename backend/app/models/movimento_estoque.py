@@ -61,6 +61,18 @@ class MovimentoEstoque(Base):
     )
 
 
+    estoque_anterior = Column(
+        Integer,
+        nullable=True
+    )
+
+
+    estoque_posterior = Column(
+        Integer,
+        nullable=True
+    )
+
+
     observacao = Column(
         String,
         nullable=True

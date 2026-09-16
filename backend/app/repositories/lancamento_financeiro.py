@@ -59,23 +59,9 @@ def criar_lancamento(
     )
 
 
-    try:
-
-        db.add(novo_lancamento)
-
-        db.commit()
-
-        db.refresh(novo_lancamento)
-
-
-        return novo_lancamento
-
-
-    except Exception:
-
-        db.rollback()
-
-        raise
+    db.add(novo_lancamento)
+    db.flush()
+    return novo_lancamento
 
 
 
@@ -181,50 +167,16 @@ def atualizar_lancamento(
 
 
 
-    try:
+    for campo, valor in dados.items():
+        if campo in campos_permitidos:
+            if campo == "tipo":
+                valor = valor.upper()
+            if campo == "status":
+                valor = valor.upper()
+            setattr(lancamento_db, campo, valor)
 
-
-        for campo, valor in dados.items():
-
-
-            if campo in campos_permitidos:
-
-
-                if campo == "tipo":
-
-                    valor = valor.upper()
-
-
-
-                if campo == "status":
-
-                    valor = valor.upper()
-
-
-
-                setattr(
-                    lancamento_db,
-                    campo,
-                    valor
-                )
-
-
-
-        db.commit()
-
-        db.refresh(lancamento_db)
-
-
-
-        return lancamento_db
-
-
-
-    except Exception:
-
-        db.rollback()
-
-        raise
+    db.flush()
+    return lancamento_db
 
 
 
@@ -237,18 +189,6 @@ def deletar_lancamento(
     lancamento_db
 ):
 
-    try:
-
-        db.delete(lancamento_db)
-
-        db.commit()
-
-
-        return lancamento_db
-
-
-    except Exception:
-
-        db.rollback()
-
-        raise
+    db.delete(lancamento_db)
+    db.flush()
+    return lancamento_db
