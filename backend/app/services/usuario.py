@@ -178,6 +178,11 @@ def login_service(
         return None
 
 
+    if not usuario.ativo or not usuario.empresa.ativo:
+
+        return None
+
+
 
     if not verificar_senha(
         dados.password,

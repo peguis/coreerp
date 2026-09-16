@@ -17,7 +17,7 @@ from app.services.categoria_financeira import (
     deletar_categoria_service
 )
 
-from app.auth.dependencies import get_current_user, require_perfil
+from app.auth.dependencies import require_perfil
 
 
 router = APIRouter(
@@ -51,7 +51,7 @@ def criar_categoria(
 )
 def listar_categorias(
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     return listar_categorias_service(
@@ -68,7 +68,7 @@ def listar_categorias(
 def buscar_categoria(
     categoria_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     categoria = buscar_categoria_service(

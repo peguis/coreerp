@@ -1,9 +1,18 @@
+import os
+
 from app.database import SessionLocal
 
 from app.models.empresa import Empresa
 from app.models.usuario import Usuario
 
 from app.auth.hash import gerar_hash
+
+
+senha_demo = os.getenv("COREERP_DEMO_PASSWORD")
+if not senha_demo:
+    raise RuntimeError(
+        "COREERP_DEMO_PASSWORD deve ser definida para executar o seed manual."
+    )
 
 
 db = SessionLocal()
@@ -41,7 +50,7 @@ if not usuario:
         empresa_id=empresa.id,
         nome="Administrador Demo",
         email="admin@demo.com",
-        senha=gerar_hash("demo123"),
+        senha=gerar_hash(senha_demo),
         ativo=True
     )
 
@@ -51,7 +60,6 @@ if not usuario:
 
 print("Seed concluído")
 print("Login: admin@demo.com")
-print("Senha: demo123")
 
 
 db.close()

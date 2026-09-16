@@ -51,3 +51,13 @@ export function formatDate(valor) {
     return formatarData(valor);
 
 }
+
+
+export function formatarPercentual(valor) {
+
+    return `${Number(valor ?? 0).toLocaleString("pt-BR", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    })}%`;
+
+}

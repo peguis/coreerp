@@ -32,11 +32,14 @@ api.interceptors.response.use(
         }
 
         // Extrai a mensagem de erro retornada pela FastAPI (detail) ou aplica uma mensagem padrão
-        const mensagemErro =
-            error.response?.data?.detail ||
-            'Ocorreu um erro ao processar sua requisição. Tente novamente.';
+        const detalhe = error.response?.data?.detail;
+        const mensagemErro = Array.isArray(detalhe)
+            ? detalhe.map((item) => item.msg || item.message || String(item)).join(" ")
+            : detalhe || 'Ocorreu um erro ao processar sua requisição. Tente novamente.';
+        const erroNormalizado = new Error(mensagemErro);
+        erroNormalizado.response = error.response;
 
-        return Promise.reject(new Error(mensagemErro));
+        return Promise.reject(erroNormalizado);
     }
 );
 

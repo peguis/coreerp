@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../api/auth";
+import { AuthContext } from "../auth/AuthContext";
 
 import "./Login.css";
 
 export default function Login() {
 
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const [email, setEmail] = useState("");
 
@@ -24,9 +26,10 @@ export default function Login() {
 
             setLoading(true);
 
-            await loginRequest(email, senha);
+            const dados = await loginRequest(email, senha);
+            login(dados.access_token);
 
-            navigate("/dashboard");
+            navigate("/");
 
         } catch {
 

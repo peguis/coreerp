@@ -299,6 +299,40 @@ def test_profissional_lista_e_consulta_somente_os_proprios(atendimento_client):
     assert bypass.status_code == 403
 
 
+def test_resposta_profissional_nao_expoe_valor_casa(atendimento_client):
+    ctx = atendimento_client
+    criado_profissional = post(
+        ctx,
+        "prof1",
+        profissional_id=None,
+        valor="100.00",
+    )
+    criado_admin = post(ctx, valor="100.00")
+
+    assert criado_profissional.status_code == 200
+    assert "valor_casa" not in criado_profissional.json()
+    assert criado_admin.status_code == 200
+    assert criado_admin.json()["valor_casa"] == 60.0
+
+    atendimento_id = criado_profissional.json()["id"]
+    detalhe_profissional = ctx["client"].get(
+        f"/atendimentos/{atendimento_id}",
+        headers=ctx["headers"]("prof1"),
+    )
+    lista_profissional = ctx["client"].get(
+        "/atendimentos/",
+        headers=ctx["headers"]("prof1"),
+    )
+    detalhe_admin = ctx["client"].get(
+        f"/atendimentos/{atendimento_id}",
+        headers=ctx["headers"]("admin"),
+    )
+
+    assert "valor_casa" not in detalhe_profissional.json()
+    assert all("valor_casa" not in item for item in lista_profissional.json())
+    assert detalhe_admin.json()["valor_casa"] == 60.0
+
+
 def test_admin_e_gerente_listam_empresa_e_cross_tenant_retorna_404(
     atendimento_client,
 ):

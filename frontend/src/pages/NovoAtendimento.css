@@ -1,0 +1,99 @@
+.novo-atendimento-page {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+}
+
+
+.atendimento-header-actions {
+
+    display: flex;
+
+    justify-content: flex-start;
+
+}
+
+
+.atendimento-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+
+.comissao-excepcional {
+
+    padding: 14px 16px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+}
+
+
+.comissao-excepcional .form-group {
+
+    margin-bottom: 8px;
+
+}
+
+
+.comissao-excepcional p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+.atendimento-status {
+
+    color: #64748b;
+
+}
+
+
+.atendimento-footer-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 4px;
+
+}
+
+
+@media(max-width:768px) {
+
+    .atendimento-footer-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+    .atendimento-footer-actions button {
+
+        width: 100%;
+
+    }
+
+}

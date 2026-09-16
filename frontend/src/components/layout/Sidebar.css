@@ -269,6 +269,12 @@
 
         left: 0;
 
+        width: 270px;
+
+        overflow-y: auto;
+
+        box-shadow: 12px 0 28px rgba(15, 23, 42, .2);
+
         transform: translateX(-100%);
 
 
@@ -282,6 +288,30 @@
 
         transform: translateX(0);
 
+
+    }
+
+
+    .sidebar.collapsed {
+
+        width: 270px;
+
+    }
+
+
+    .sidebar.collapsed .sidebar-logo span,
+    .sidebar.collapsed .sidebar-logo h2,
+    .sidebar.collapsed .menu-item span,
+    .sidebar.collapsed .sidebar-logout span {
+
+        display: block;
+
+    }
+
+
+    .sidebar.collapsed .menu-item {
+
+        justify-content: flex-start;
 
     }
 

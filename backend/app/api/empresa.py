@@ -15,10 +15,7 @@ from app.services.empresa import (
     deletar_empresa_service
 )
 
-from app.auth.dependencies import (
-    get_current_user,
-    require_perfil
-)
+from app.auth.dependencies import require_perfil
 
 
 router = APIRouter(
@@ -53,7 +50,7 @@ def criar_empresa(
 )
 def minha_empresa(
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     empresa = buscar_empresa_por_id_service(
@@ -81,7 +78,7 @@ def minha_empresa(
 def buscar_empresa(
     empresa_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     if empresa_id != usuario.empresa_id:

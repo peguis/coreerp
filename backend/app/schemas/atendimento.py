@@ -39,7 +39,7 @@ class AtendimentoCreate(BaseModel):
         return value
 
 
-class AtendimentoResponse(BaseModel):
+class AtendimentoProfissionalResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -50,7 +50,6 @@ class AtendimentoResponse(BaseModel):
     valor: Decimal
     percentual_profissional: Decimal
     valor_profissional: Decimal
-    valor_casa: Decimal
     forma_pagamento: FormaPagamento
     observacao: str | None
     realizado_em: datetime
@@ -61,7 +60,14 @@ class AtendimentoResponse(BaseModel):
         "valor",
         "percentual_profissional",
         "valor_profissional",
-        "valor_casa",
     )
     def serializar_valor(self, value: Decimal) -> float:
+        return float(value)
+
+
+class AtendimentoResponse(AtendimentoProfissionalResponse):
+    valor_casa: Decimal
+
+    @field_serializer("valor_casa")
+    def serializar_valor_casa(self, value: Decimal) -> float:
         return float(value)

@@ -1,9 +1,16 @@
 .configuracoes-page {
 
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+    min-width: 0;
+
     padding: 24px;
 
 }
-
 
 
 .configuracoes-card {
@@ -24,7 +31,6 @@
 }
 
 
-
 .configuracoes-card h2 {
 
     margin-top: 0;
@@ -34,7 +40,6 @@
 }
 
 
-
 .configuracoes-card p {
 
     color: #64748b;
@@ -42,9 +47,187 @@
 }
 
 
+.configuracoes-form {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+}
+
+
+.configuracoes-form-actions {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+}
+
+
+.configuracoes-table-wrap {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+}
+
+
+.configuracoes-table {
+
+    width: 100%;
+
+    min-width: 720px;
+
+    border-collapse: collapse;
+
+    font-size: 13px;
+
+}
+
+
+.configuracoes-table th,
+.configuracoes-table td {
+
+    padding: 12px 10px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #e2e8f0;
+
+}
+
+
+.configuracoes-table th {
+
+    color: #475569;
+
+    font-weight: 700;
+
+    background: #f8fafc;
+
+}
+
+
+.configuracoes-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+}
+
+
+.configuracoes-empty {
+
+    color: #64748b;
+
+}
+
+
+.configuracoes-mobile-cards {
+
+    display: none;
+
+}
+
+
+.configuracoes-user-card {
+
+    padding: 15px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+}
+
+
+.configuracoes-user-card + .configuracoes-user-card {
+
+    margin-top: 10px;
+
+}
+
+
+.configuracoes-user-card header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.configuracoes-user-card header strong {
+
+    color: #0f172a;
+
+}
+
+
+.configuracoes-user-card header span {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+}
+
+
+.configuracoes-user-card dl {
+
+    display: grid;
+
+    gap: 10px;
+
+    margin: 0 0 12px;
+
+}
+
+
+.configuracoes-user-card dt {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+}
+
+
+.configuracoes-user-card dd {
+
+    margin: 2px 0 0;
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+
+}
+
 
 @media(max-width:768px) {
-
 
     .configuracoes-page {
 
@@ -52,5 +235,38 @@
 
     }
 
+    .configuracoes-form {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .configuracoes-form-actions {
+
+        grid-column: auto;
+
+        flex-direction: column-reverse;
+
+    }
+
+    .configuracoes-form-actions .form-button {
+
+        width: 100%;
+
+        min-height: 46px;
+
+    }
+
+    .configuracoes-table-wrap {
+
+        display: none;
+
+    }
+
+    .configuracoes-mobile-cards {
+
+        display: block;
+
+    }
 
 }

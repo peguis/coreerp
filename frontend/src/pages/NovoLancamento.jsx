@@ -96,13 +96,9 @@ function NovoLancamento() {
 
 
 
-        } catch (erro) {
+        } catch {
 
 
-            console.error(
-                "Erro ao carregar categorias:",
-                erro
-            );
 
 
             setCategorias([]);
@@ -240,10 +236,6 @@ function NovoLancamento() {
 
 
 
-            console.error(
-                "Erro ao criar lançamento:",
-                erro
-            );
 
 
 

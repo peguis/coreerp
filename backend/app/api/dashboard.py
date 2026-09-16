@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.auth.dependencies import get_current_user, require_perfil
+from app.auth.dependencies import require_perfil
 
 from app.schemas.dashboard_piloto import (
     DashboardPilotoResponse,
@@ -29,7 +29,7 @@ router = APIRouter(
 @router.get("/")
 def dashboard(
     db: Session = Depends(get_db),
-    usuario = Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente")),
 ):
 
     return buscar_dashboard_service(

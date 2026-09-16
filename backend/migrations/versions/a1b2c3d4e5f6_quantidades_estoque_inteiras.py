@@ -7,7 +7,7 @@ Create Date: 2026-09-15
 """
 from typing import Sequence, Union
 
-from alembic import op
+from alembic import context, op
 import sqlalchemy as sa
 
 
@@ -19,6 +19,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def _ensure_no_fractional_stock() -> None:
+    if context.is_offline_mode():
+        return
+
     connection = op.get_bind()
 
     has_fractional_stock = connection.execute(

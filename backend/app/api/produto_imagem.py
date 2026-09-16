@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.produto import Produto
 from app.models.produto_imagem import ProdutoImagem
-from app.auth.dependencies import get_current_user
+from app.auth.dependencies import require_perfil
 
 
 router = APIRouter(
@@ -42,7 +42,7 @@ def upload_imagem(
     produto_id: int,
     arquivo: UploadFile = File(...),
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente"))
 ):
 
     produto = db.query(Produto).filter(
@@ -126,7 +126,7 @@ def upload_imagem(
 def listar_imagens(
     produto_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     imagens = db.query(ProdutoImagem).filter(
@@ -145,7 +145,7 @@ def excluir_imagem_produto(
     produto_id: int,
     imagem_id: int,
     db: Session = Depends(get_db),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente"))
 ):
 
     imagem = db.query(ProdutoImagem).filter(

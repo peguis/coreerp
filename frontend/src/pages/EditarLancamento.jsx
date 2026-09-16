@@ -155,10 +155,6 @@ function EditarLancamento() {
         } catch (erro) {
 
 
-            console.log(
-                "ERRO ATUALIZAR:",
-                erro
-            );
 
 
             setMensagem({
@@ -279,10 +275,6 @@ function EditarLancamento() {
         } catch (erro) {
 
 
-            console.log(
-                "ERRO ATUALIZAR:",
-                erro
-            );
 
 
             setMensagem({

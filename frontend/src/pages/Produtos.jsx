@@ -140,8 +140,6 @@ function Produtos() {
 
             const dados = await listarProdutos();
 
-            console.log(dados);
-
             setProdutos(
                 Array.isArray(dados)
                     ? dados

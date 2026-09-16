@@ -7,3 +7,19 @@ export async function obterDashboard() {
     return response.data;
 
 }
+
+
+export async function obterDashboardPiloto(params = {}) {
+
+    const response = await api.get("/dashboard/piloto", { params });
+    return response.data;
+
+}
+
+
+export async function obterDashboardProfissional(params = {}) {
+
+    const response = await api.get("/dashboard/profissional/me", { params });
+    return response.data;
+
+}

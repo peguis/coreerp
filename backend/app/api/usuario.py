@@ -95,7 +95,7 @@ def usuario_logado(
 def buscar_usuario(
     usuario_id: int,
     db: Session = Depends(get_db),
-    usuario_logado=Depends(get_current_user)
+    usuario_logado=Depends(require_perfil("admin", "gerente"))
 ):
 
     usuario_encontrado = buscar_usuario_service(

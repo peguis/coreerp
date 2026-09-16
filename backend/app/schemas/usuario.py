@@ -27,6 +27,13 @@ class UsuarioUpdate(BaseModel):
             raise ValueError("O campo informado nao pode ser nulo.")
         return value
 
+    @field_validator("senha")
+    @classmethod
+    def validar_senha(cls, value):
+        if value is not None and len(value) < 6:
+            raise ValueError("A nova senha deve possuir no minimo 6 caracteres.")
+        return value
+
 
 class UsuarioResponse(BaseModel):
 

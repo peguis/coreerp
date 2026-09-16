@@ -65,14 +65,9 @@ function DetalhesVenda() {
 
 
 
-        } catch (erro) {
+        } catch {
 
-
-            console.error(
-                "Erro ao carregar venda:",
-                erro
-            );
-
+            // A falha permanece tratada pelo estado local legado.
 
         }
 

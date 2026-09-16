@@ -14,10 +14,7 @@ from app.services.movimento_estoque import (
     buscar_movimento_service
 )
 
-from app.auth.dependencies import (
-    get_current_user,
-    require_perfil
-)
+from app.auth.dependencies import require_perfil
 
 from app.auth.tenant import get_empresa_id
 
@@ -71,7 +68,7 @@ def criar_movimento_endpoint(
 def listar_movimentos_endpoint(
     db: Session = Depends(get_db),
     empresa_id: int = Depends(get_empresa_id),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     return listar_movimentos_service(
@@ -90,7 +87,7 @@ def buscar_movimento(
     movimento_id: int,
     db: Session = Depends(get_db),
     empresa_id: int = Depends(get_empresa_id),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     movimento = buscar_movimento_service(

@@ -48,7 +48,11 @@ export default function Topbar({
             <button
 
 
+                type="button"
+
                 className="mobile-menu"
+
+                aria-label="Abrir menu"
 
 
                 onClick={abrirMenu}

@@ -12,6 +12,16 @@ class ClienteCreate(BaseModel):
     cpf_cnpj: str | None = None
 
 
+class ClienteProfissionalResponse(BaseModel):
+
+    id: int
+
+    nome: str
+
+    class Config:
+        from_attributes = True
+
+
 
 class ClienteResponse(BaseModel):
 

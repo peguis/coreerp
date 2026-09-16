@@ -4,10 +4,12 @@ import {
     Package,
     Boxes,
     ShoppingCart,
+    Scissors,
     Wallet,
     Settings,
     LogOut,
-    Menu
+    Menu,
+    X
 } from "lucide-react";
 
 
@@ -17,16 +19,22 @@ import {
 } from "react-router-dom";
 
 
+import { useCallback, useEffect, useState } from "react";
+
+
+import { buscarUsuarioLogado } from "../../services/usuarioService";
+
+
 import "./Sidebar.css";
 
 
 
-const menus = [
+const menusAdministrativos = [
 
 
     {
-        nome: "Dashboard",
-        rota: "/dashboard",
+        nome: "Dashboard piloto",
+        rota: "/dashboard/piloto",
         icone: LayoutDashboard
     },
 
@@ -60,6 +68,41 @@ const menus = [
 
 
     {
+        nome: "Novo atendimento",
+        rota: "/atendimentos/novo",
+        icone: Scissors
+    },
+
+
+    {
+        nome: "Atendimentos",
+        rota: "/atendimentos",
+        icone: Scissors
+    },
+
+
+    {
+        nome: "Serviços",
+        rota: "/servicos",
+        icone: Scissors
+    },
+
+
+    {
+        nome: "Profissionais",
+        rota: "/profissionais",
+        icone: Users
+    },
+
+
+    {
+        nome: "Repasses",
+        rota: "/repasses",
+        icone: Wallet
+    },
+
+
+    {
         nome: "Financeiro",
         rota: "/financeiro",
         icone: Wallet
@@ -72,6 +115,35 @@ const menus = [
         icone: Settings
     }
 
+
+];
+
+
+const menusProfissional = [
+
+    {
+        nome: "Início",
+        rota: "/inicio",
+        icone: LayoutDashboard
+    },
+
+    {
+        nome: "Novo atendimento",
+        rota: "/atendimentos/novo",
+        icone: Scissors
+    },
+
+    {
+        nome: "Meus atendimentos",
+        rota: "/atendimentos",
+        icone: Scissors
+    },
+
+    {
+        nome: "Minha produção",
+        rota: "/minha-producao",
+        icone: Wallet
+    }
 
 ];
 
@@ -96,6 +168,33 @@ export default function Sidebar({
 
 
     const navigate = useNavigate();
+
+    const [perfil, setPerfil] = useState(null);
+
+    const carregarPerfil = useCallback(async () => {
+
+        try {
+
+            const usuario = await buscarUsuarioLogado();
+            setPerfil(usuario.perfil);
+
+        } catch {
+
+            setPerfil(null);
+
+        }
+
+    }, []);
+
+    useEffect(() => {
+
+        void Promise.resolve().then(carregarPerfil);
+
+    }, [carregarPerfil]);
+
+    const menus = perfil === "profissional"
+        ? menusProfissional
+        : menusAdministrativos;
 
 
 
@@ -203,15 +302,29 @@ export default function Sidebar({
 
                 <button
 
+                    type="button"
+
                     className="sidebar-toggle"
 
-                    onClick={() =>
-                        setAberto(!aberto)
-                    }
+                    aria-label={mobileAberto ? "Fechar menu" : "Alternar sidebar"}
+
+                    onClick={() => {
+
+                        if (window.innerWidth <= 900) {
+
+                            fecharMobile?.();
+
+                            return;
+
+                        }
+
+                        setAberto(!aberto);
+
+                    }}
 
                 >
 
-                    <Menu size={20} />
+                    {mobileAberto ? <X size={20} /> : <Menu size={20} />}
 
                 </button>
 
@@ -236,7 +349,7 @@ export default function Sidebar({
                 {
 
 
-                    menus.map(item => {
+                    perfil && menus.map(item => {
 
 
                         const Icon = item.icone;
@@ -257,6 +370,8 @@ export default function Sidebar({
 
 
                                 to={item.rota}
+
+                                end
 
 
 

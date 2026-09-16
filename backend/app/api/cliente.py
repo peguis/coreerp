@@ -5,6 +5,7 @@ from app.database import get_db
 
 from app.schemas.cliente import (
     ClienteCreate,
+    ClienteProfissionalResponse,
     ClienteResponse
 )
 
@@ -16,7 +17,7 @@ from app.services.cliente import (
     deletar_cliente_service
 )
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import get_current_user, require_perfil
 
 from app.auth.tenant import get_empresa_id
 
@@ -25,6 +26,16 @@ router = APIRouter(
     prefix="/clientes",
     tags=["Clientes"]
 )
+RespostaCliente = ClienteResponse | ClienteProfissionalResponse
+
+
+def _resposta_por_perfil(cliente, usuario):
+    schema = (
+        ClienteProfissionalResponse
+        if usuario.perfil == "profissional"
+        else ClienteResponse
+    )
+    return schema.model_validate(cliente)
 
 
 @router.post(
@@ -48,28 +59,31 @@ def criar_cliente_endpoint(
 
 @router.get(
     "/",
-    response_model=list[ClienteResponse]
+    response_model=list[RespostaCliente]
 )
 def listar_clientes_endpoint(
     db: Session = Depends(get_db),
-    empresa_id: int = Depends(get_empresa_id)
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(get_current_user),
 ):
 
-    return listar_clientes_service(
+    clientes = listar_clientes_service(
         db,
         empresa_id
     )
+    return [_resposta_por_perfil(cliente, usuario) for cliente in clientes]
 
 
 
 @router.get(
     "/{cliente_id}",
-    response_model=ClienteResponse
+    response_model=RespostaCliente
 )
 def buscar_cliente(
     cliente_id: int,
     db: Session = Depends(get_db),
-    empresa_id: int = Depends(get_empresa_id)
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(get_current_user),
 ):
 
     cliente = buscar_cliente_service(
@@ -87,7 +101,7 @@ def buscar_cliente(
         )
 
 
-    return cliente
+    return _resposta_por_perfil(cliente, usuario)
 
 
 

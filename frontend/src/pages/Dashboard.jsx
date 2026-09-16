@@ -62,17 +62,9 @@ function Dashboard() {
             setDados(resposta);
 
 
-        } catch (erro) {
+        } catch {
 
-
-            console.error(
-
-                "Erro dashboard:",
-
-                erro.response?.data || erro
-
-            );
-
+            // A tela legada mantém o estado inicial quando a API falha.
 
         }
 

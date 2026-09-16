@@ -1,3 +1,5 @@
+import os
+
 from app.database import SessionLocal
 
 from app.models.usuario import Usuario
@@ -7,6 +9,12 @@ from app.auth.hash import gerar_hash
 
 
 def criar_admin():
+
+    senha_admin = os.getenv("COREERP_ADMIN_PASSWORD")
+    if not senha_admin:
+        raise RuntimeError(
+            "COREERP_ADMIN_PASSWORD deve ser definida para criar o admin."
+        )
 
     db = SessionLocal()
 
@@ -46,7 +54,7 @@ def criar_admin():
             empresa_id=empresa.id,
             nome="Administrador",
             email="admin@coreerp.com",
-            senha=gerar_hash("admin123"),
+            senha=gerar_hash(senha_admin),
             ativo=True
         )
 
@@ -58,7 +66,6 @@ def criar_admin():
 
         print("Admin criado com sucesso")
         print("Email: admin@coreerp.com")
-        print("Senha: admin123")
 
 
     finally:

@@ -4,8 +4,12 @@ import {
 
 
 import {
+    useEffect,
     useState
 } from "react";
+
+
+import { useLocation } from "react-router-dom";
 
 
 import Sidebar from "./Sidebar";
@@ -20,6 +24,7 @@ import "./MainLayout.css";
 export default function MainLayout() {
 
 
+    const location = useLocation();
 
     const [sidebarAberta, setSidebarAberta] =
 
@@ -32,6 +37,13 @@ export default function MainLayout() {
         useState(false);
 
 
+    useEffect(() => {
+
+        void Promise.resolve().then(() => setMobileAberto(false));
+
+    }, [location.pathname]);
+
+
 
 
 
@@ -40,21 +52,7 @@ export default function MainLayout() {
 
 
 
-        <div
-
-            className="layout"
-
-            onClick={() => {
-
-                if (window.innerWidth <= 900) {
-
-                    setMobileAberto(false);
-
-                }
-
-            }}
-
-        >
+        <div className="layout">
 
 
 
@@ -76,6 +74,23 @@ export default function MainLayout() {
 
 
             />
+
+
+            {mobileAberto && (
+
+                <button
+
+                    type="button"
+
+                    className="mobile-sidebar-overlay"
+
+                    aria-label="Fechar menu"
+
+                    onClick={() => setMobileAberto(false)}
+
+                />
+
+            )}
 
 
 

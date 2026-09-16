@@ -1,0 +1,451 @@
+.piloto-page {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+    min-width: 0;
+
+}
+
+
+.piloto-toolbar {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: flex-end;
+
+    gap: 12px;
+
+    padding: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+}
+
+
+.piloto-toolbar .form-group {
+
+    min-width: 160px;
+
+    flex: 1 1 180px;
+
+}
+
+
+.piloto-toolbar .form-button {
+
+    min-height: 42px;
+
+}
+
+
+.piloto-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+    gap: 16px;
+
+}
+
+
+.piloto-metric {
+
+    min-width: 0;
+
+    padding: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+
+}
+
+
+.piloto-metric span {
+
+    display: block;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+.piloto-metric strong {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #0f172a;
+
+    font-size: 24px;
+
+}
+
+
+.piloto-section-title {
+
+    margin: 0 0 14px;
+
+    color: #1e293b;
+
+    font-size: 18px;
+
+}
+
+
+.piloto-subsection {
+
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    min-width: 0;
+
+}
+
+
+.piloto-table-wrap {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+}
+
+
+.piloto-table {
+
+    width: 100%;
+
+    min-width: 720px;
+
+    table-layout: auto;
+
+    border-collapse: collapse;
+
+    font-size: 13px;
+
+}
+
+
+.piloto-table th,
+.piloto-table td {
+
+    padding: 12px 10px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+
+}
+
+
+.piloto-table th {
+
+    color: #475569;
+
+    font-weight: 700;
+
+    background: #f8fafc;
+
+}
+
+
+.piloto-table th.monetario,
+.piloto-table td.monetario,
+.piloto-table th.numerico,
+.piloto-table td.numerico {
+
+    text-align: right;
+
+}
+
+
+.piloto-table td > .form-group {
+
+    min-width: 120px;
+
+    margin: 0;
+
+}
+
+
+.piloto-table td > .form-group input {
+
+    min-width: 120px;
+
+}
+
+
+.piloto-table td > .form-group .field-error {
+
+    white-space: normal;
+
+}
+
+
+.piloto-inline-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+}
+
+
+.piloto-empty,
+.piloto-periodo {
+
+    color: #64748b;
+
+}
+
+
+.piloto-mobile-cards {
+
+    display: none;
+
+}
+
+
+.piloto-item-card {
+
+    padding: 15px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+}
+
+
+.piloto-item-card + .piloto-item-card {
+
+    margin-top: 10px;
+
+}
+
+
+.piloto-item-card header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.piloto-item-card header strong {
+
+    color: #0f172a;
+
+}
+
+
+.piloto-item-card header span {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+}
+
+
+.piloto-item-card dl {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin: 0;
+
+}
+
+
+.piloto-item-card dt {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+}
+
+
+.piloto-item-card dd {
+
+    margin: 2px 0 0;
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.piloto-form-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+}
+
+
+.piloto-form-full {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.piloto-form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 16px;
+
+}
+
+
+.piloto-link-card {
+
+    display: block;
+
+    padding: 20px;
+
+    color: #1e293b;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    transition: border-color .2s, transform .2s;
+
+}
+
+
+.piloto-link-card:hover {
+
+    border-color: #2563eb;
+
+    transform: translateY(-2px);
+
+}
+
+
+.piloto-link-card strong,
+.piloto-link-card span {
+
+    display: block;
+
+}
+
+
+.piloto-link-card span {
+
+    margin-top: 6px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+.access-denied {
+
+    align-items: flex-start;
+
+}
+
+
+@media(max-width:768px) {
+
+    .piloto-grid,
+    .piloto-form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .piloto-form-full {
+
+        grid-column: auto;
+
+    }
+
+    .piloto-table-wrap {
+
+        display: none;
+
+    }
+
+    .piloto-mobile-cards {
+
+        display: block;
+
+    }
+
+    .piloto-form-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+    .piloto-form-actions .form-button {
+
+        width: 100%;
+
+        min-height: 46px;
+
+    }
+
+}

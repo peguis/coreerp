@@ -16,10 +16,7 @@ from app.services.venda import (
     deletar_venda_service
 )
 
-from app.auth.dependencies import (
-    get_current_user,
-    require_perfil
-)
+from app.auth.dependencies import require_perfil
 
 from app.auth.tenant import get_empresa_id
 
@@ -76,7 +73,7 @@ def criar_venda_endpoint(
 def listar_vendas_endpoint(
     db: Session = Depends(get_db),
     empresa_id: int = Depends(get_empresa_id),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     return listar_vendas_service(
@@ -96,7 +93,7 @@ def buscar_venda(
     venda_id: int,
     db: Session = Depends(get_db),
     empresa_id: int = Depends(get_empresa_id),
-    usuario=Depends(get_current_user)
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta"))
 ):
 
     venda = buscar_venda_service(

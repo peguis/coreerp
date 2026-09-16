@@ -77,13 +77,9 @@ function EditarCliente() {
 
 
 
-        } catch (erro) {
+        } catch {
 
 
-            console.error(
-                "Erro ao carregar cliente:",
-                erro
-            );
 
 
             setTipo("erro");
@@ -155,10 +151,6 @@ function EditarCliente() {
         } catch (erro) {
 
 
-            console.error(
-                "Erro ao atualizar cliente:",
-                erro
-            );
 
 
             setTipo("erro");

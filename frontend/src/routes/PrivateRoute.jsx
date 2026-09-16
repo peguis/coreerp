@@ -24,17 +24,6 @@ function PrivateRoute() {
 
 
 
-    console.log(
-        "PRIVATE ROUTE:",
-        autenticado,
-        token
-    );
-
-
-
-
-
-
     if (carregando) {
 
         return null;
