@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Instância base do Axios apontando para a sua API FastAPI
 const api = axios.create({
-    baseURL: "http://localhost:8000"
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000"
 });
 
 // Request Interceptor: Injeta automaticamente o token JWT salvo no localStorage em todas as requisições

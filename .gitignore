@@ -27,6 +27,7 @@ logs/
 
 # Arquivos gerados
 uploads/
+backups/
 
 # Bancos PostgreSQL descartáveis de testes
 .tmp-p5-postgres/

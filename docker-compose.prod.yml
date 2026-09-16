@@ -1,50 +1,76 @@
-services:
+name: coreerp-p10-prod
 
+services:
   postgres:
     image: postgres:17
-    container_name: coreerp_postgres
-
-    restart: always
-
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: senha
-      POSTGRES_DB: coreerp
-
-    ports:
-      - "5432:5432"
-
+      POSTGRES_USER: ${COREERP_PROD_DB_USER:?COREERP_PROD_DB_USER is required}
+      POSTGRES_PASSWORD: ${COREERP_PROD_DB_PASSWORD:?COREERP_PROD_DB_PASSWORD is required}
+      POSTGRES_DB: ${COREERP_PROD_DB_NAME:?COREERP_PROD_DB_NAME is required}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - coreerp_prod_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  migrate:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    restart: "no"
+    environment:
+      DATABASE_URL: ${COREERP_PROD_DATABASE_URL:?COREERP_PROD_DATABASE_URL is required}
+      SECRET_KEY: ${COREERP_PROD_SECRET_KEY:?COREERP_PROD_SECRET_KEY is required}
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   backend:
-    build: ./backend
-
-    container_name: coreerp_backend
-
-    restart: always
-
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${COREERP_PROD_DATABASE_URL:?COREERP_PROD_DATABASE_URL is required}
+      SECRET_KEY: ${COREERP_PROD_SECRET_KEY:?COREERP_PROD_SECRET_KEY is required}
+      ALGORITHM: ${COREERP_PROD_ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${COREERP_PROD_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      CORS_ORIGINS: ${COREERP_PROD_CORS_ORIGINS:?COREERP_PROD_CORS_ORIGINS is required}
+      LOGIN_RATE_LIMIT_MAX_ATTEMPTS: ${COREERP_PROD_LOGIN_RATE_LIMIT_MAX_ATTEMPTS:-10}
+      LOGIN_RATE_LIMIT_WINDOW_SECONDS: ${COREERP_PROD_LOGIN_RATE_LIMIT_WINDOW_SECONDS:-60}
+    volumes:
+      - coreerp_prod_uploads:/app/uploads
+      - coreerp_prod_logs:/app/logs
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 10s
+      timeout: 5s
+      start_period: 15s
+      retries: 12
     depends_on:
-      - postgres
-
-    env_file:
-      - ./backend/.env
-
-    ports:
-      - "8000:8000"
+      migrate:
+        condition: service_completed_successfully
 
   frontend:
-    build: ./frontend
-
-    container_name: coreerp_frontend
-
-    restart: always
-
-    depends_on:
-      - backend
-
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_URL: /api
+    restart: unless-stopped
     ports:
-      - "5173:5173"
+      - "127.0.0.1:${COREERP_PROD_HTTP_PORT:-18080}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
-  postgres_data:
+  coreerp_prod_postgres_data:
+  coreerp_prod_uploads:
+  coreerp_prod_logs:

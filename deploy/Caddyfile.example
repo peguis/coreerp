@@ -1,0 +1,4 @@
+# Bind this file only after a real domain, DNS and TLS policy are approved.
+app.example.com {
+    reverse_proxy frontend:80
+}

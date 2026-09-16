@@ -17,6 +17,10 @@ class Settings(BaseSettings):
 
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:5174"
 
+    LOGIN_RATE_LIMIT_MAX_ATTEMPTS: int = 10
+
+    LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = 60
+
     @field_validator("SECRET_KEY")
     @classmethod
     def validar_secret_key(cls, value: str) -> str:
