@@ -1,11 +1,11 @@
 .topbar {
 
 
-    height: 74px;
+    height: 64px;
 
-    background: white;
+    background: var(--hype-surface);
 
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--hype-border);
 
     display: flex;
 
@@ -47,9 +47,9 @@
 
     gap: 12px;
 
-    background: #f8fafc;
+    background: var(--hype-surface-raised);
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--hype-border);
 
     padding: 12px 16px;
 
@@ -108,7 +108,7 @@
 
     border-radius: 12px;
 
-    background: #f1f5f9;
+    background: var(--hype-surface-raised);
 
     cursor: pointer;
 
@@ -140,7 +140,7 @@
 
     display: block;
 
-    color: #64748b;
+    color: var(--hype-text-secondary);
 
     font-size: 13px;
 
@@ -217,4 +217,38 @@
     }
 
 
+}
+
+.mobile-menu {
+    color: var(--hype-text);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.mobile-menu:hover {
+    background: var(--hype-surface-raised);
+}
+
+.topbar-brand {
+    margin-right: auto;
+    margin-left: 18px;
+    color: var(--hype-gold);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .18em;
+}
+
+.topbar-user {
+    color: var(--hype-text);
+}
+
+.topbar-user svg {
+    color: var(--hype-gold);
+}
+
+@media(max-width:600px) {
+    .topbar-brand {
+        margin-left: 4px;
+        font-size: 11px;
+    }
 }

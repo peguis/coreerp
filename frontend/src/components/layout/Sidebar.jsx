@@ -276,17 +276,13 @@ export default function Sidebar({
                 <div className="sidebar-logo">
 
 
-                    <h2>
-
-                        CoreERP
-
-                    </h2>
+                    <h2>HYPE STUDIO</h2>
 
 
 
                     <span>
 
-                        SaaS ERP
+                        BARBEARIA &amp; TATTOO
 
                     </span>
 
@@ -441,6 +437,8 @@ export default function Sidebar({
 
 
 
+
+            <small className="sidebar-powered">Powered by Pegs</small>
 
             <button
 

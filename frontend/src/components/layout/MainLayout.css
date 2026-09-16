@@ -8,7 +8,7 @@
 
     overflow-x: hidden;
 
-    background: #f8fafc;
+    background: var(--hype-bg);
 
 }
 
@@ -36,7 +36,7 @@
 
     min-width: 0;
 
-    padding: 28px;
+    padding: 22px 26px 30px;
 
     overflow: auto;
 
@@ -81,7 +81,7 @@
 
         border: 0;
 
-        background: rgba(15, 23, 42, .48);
+        background: rgba(0, 0, 0, .62);
 
         cursor: pointer;
 

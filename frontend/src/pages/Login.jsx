@@ -53,13 +53,13 @@ export default function Login() {
 
                     <h1>
 
-                        CoreERP
+                        HYPE STUDIO
 
                     </h1>
 
                     <p>
 
-                        Sistema ERP SaaS
+                        BARBEARIA &amp; TATTOO
 
                     </p>
 
@@ -138,6 +138,8 @@ export default function Login() {
                     </button>
 
                 </form>
+
+                <p className="login-powered">Powered by Pegs</p>
 
             </div>
 

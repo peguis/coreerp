@@ -1,14 +1,7 @@
-import {
+import { Menu, UserCircle } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-    Bell,
-
-    Search,
-
-    UserCircle,
-
-    Menu
-
-} from "lucide-react";
+import { buscarUsuarioLogado } from "../../services/usuarioService";
 
 
 import "./Topbar.css";
@@ -23,13 +16,25 @@ export default function Topbar({
 
 
 
-    const usuario =
+    const [usuario, setUsuario] = useState(null);
 
-        JSON.parse(
+    const carregarUsuario = useCallback(async () => {
+        try {
+            setUsuario(await buscarUsuarioLogado());
+        } catch {
+            setUsuario(null);
+        }
+    }, []);
 
-            localStorage.getItem("usuario")
+    useEffect(() => {
+        void Promise.resolve().then(carregarUsuario);
+    }, [carregarUsuario]);
 
-        );
+    const nomesPerfil = {
+        admin: "Administrador",
+        gerente: "Gerente",
+        profissional: "Profissional"
+    };
 
 
 
@@ -71,20 +76,9 @@ export default function Topbar({
 
 
 
-            <div className="topbar-search">
+            <div className="topbar-brand">HYPE STUDIO</div>
 
 
-                <Search size={18} />
-
-
-                <input
-
-                    placeholder="Pesquisar..."
-
-                />
-
-
-            </div>
 
 
 
@@ -97,13 +91,6 @@ export default function Topbar({
 
 
 
-                <button className="topbar-icon">
-
-
-                    <Bell size={20} />
-
-
-                </button>
 
 
 
@@ -129,7 +116,7 @@ export default function Topbar({
 
                                 usuario?.nome ||
 
-                                "Administrador"
+                                "Usuário autenticado"
 
                             }
 
@@ -140,7 +127,7 @@ export default function Topbar({
 
                         <span>
 
-                            Empresa
+                            {nomesPerfil[usuario?.perfil] || "Conta ativa"}
 
                         </span>
 

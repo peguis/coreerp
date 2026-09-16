@@ -18,6 +18,7 @@ import Topbar from "./Topbar";
 
 
 import "./MainLayout.css";
+import "../../styles/hype.css";
 
 
 
@@ -52,7 +53,7 @@ export default function MainLayout() {
 
 
 
-        <div className="layout">
+        <div className="layout hype-theme">
 
 
 

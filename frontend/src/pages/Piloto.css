@@ -449,3 +449,103 @@
     }
 
 }
+
+/* HYPE visual layer; data, hierarchy and backend contracts stay unchanged. */
+.hype-theme .piloto-toolbar,
+.hype-theme .piloto-metric,
+.hype-theme .piloto-subsection,
+.hype-theme .piloto-link-card,
+.hype-theme .piloto-item-card {
+    background: var(--hype-surface);
+    border-color: var(--hype-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme .piloto-page > .form-card {
+    margin-bottom: 0;
+    padding: 14px 18px;
+}
+
+.hype-theme .piloto-page > .form-card .form-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.hype-theme .piloto-page > .form-card .form-card-header h2 {
+    font-size: 15px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.hype-theme .piloto-page > .form-card .form-card-header p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.hype-theme .piloto-page > .form-card .form-card-body {
+    gap: 0;
+}
+
+.hype-theme .piloto-toolbar {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    align-items: flex-end;
+}
+
+.hype-theme .piloto-toolbar .form-group {
+    margin-bottom: 0;
+}
+
+.hype-theme .piloto-toolbar .form-button {
+    min-height: 40px;
+    margin-bottom: 0;
+}
+
+.hype-theme .piloto-metric {
+    min-height: 112px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--hype-gold);
+}
+
+.hype-theme .piloto-metric strong {
+    font-size: 25px;
+    letter-spacing: -.02em;
+}
+
+.hype-theme .piloto-metric span,
+.hype-theme .piloto-empty,
+.hype-theme .piloto-periodo,
+.hype-theme .piloto-item-card header span,
+.hype-theme .piloto-item-card dt {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .piloto-metric strong,
+.hype-theme .piloto-section-title,
+.hype-theme .piloto-item-card header strong,
+.hype-theme .piloto-item-card dd {
+    color: var(--hype-text);
+}
+
+.hype-theme .piloto-table th {
+    color: var(--hype-text-secondary);
+    background: var(--hype-surface-raised);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .piloto-table td {
+    color: var(--hype-text);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .piloto-link-card {
+    color: var(--hype-text);
+}
+
+.hype-theme .piloto-link-card:hover {
+    border-color: var(--hype-gold);
+}

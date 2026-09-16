@@ -1,0 +1,339 @@
+.hype-theme {
+    color: var(--hype-text);
+    background: var(--hype-bg);
+}
+
+.hype-theme .layout-main {
+    background: var(--hype-bg);
+}
+
+.hype-theme h1,
+.hype-theme h2,
+.hype-theme h3,
+.hype-theme strong {
+    color: var(--hype-text);
+}
+
+.hype-theme p,
+.hype-theme label,
+.hype-theme dt,
+.hype-theme th {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme [class$="-card"],
+.hype-theme .card {
+    background: var(--hype-surface);
+    border-color: var(--hype-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme input,
+.hype-theme select,
+.hype-theme textarea {
+    color: var(--hype-text);
+    background: var(--hype-surface-raised);
+    border-color: var(--hype-border);
+}
+
+.hype-theme input::placeholder,
+.hype-theme textarea::placeholder {
+    color: var(--hype-text-muted);
+}
+
+.hype-theme input:focus,
+.hype-theme select:focus,
+.hype-theme textarea:focus {
+    border-color: var(--hype-gold);
+    box-shadow: 0 0 0 3px rgba(217, 171, 63, .16);
+}
+
+.hype-theme table {
+    color: var(--hype-text);
+}
+
+.hype-theme thead {
+    background: var(--hype-surface-raised);
+}
+
+.hype-theme th,
+.hype-theme td {
+    border-color: var(--hype-border);
+}
+
+.hype-theme .page-header-info h1,
+.hype-theme .section-header h2,
+.hype-theme .form-card-header h2,
+.hype-theme .piloto-section-title,
+.hype-theme .metric-card-value,
+.hype-theme .card-dashboard strong,
+.hype-theme .section-card h2 {
+    color: var(--hype-text);
+}
+
+.hype-theme .page-header-info p,
+.hype-theme .section-header p,
+.hype-theme .form-card-header p,
+.hype-theme .piloto-periodo,
+.hype-theme .metric-card-title,
+.hype-theme .table-empty,
+.hype-theme .table-loading {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .form-card,
+.hype-theme .section-card,
+.hype-theme .card-dashboard,
+.hype-theme .table-container,
+.hype-theme .metric-card,
+.hype-theme .financeiro-card,
+.hype-theme .dashboard-card {
+    background: var(--hype-surface);
+    border: 1px solid var(--hype-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme .form-card,
+.hype-theme .section-card,
+.hype-theme .card-dashboard {
+    border-radius: var(--radius-lg);
+}
+
+.hype-theme .form-group label {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .form-group input,
+.hype-theme .form-group select,
+.hype-theme .form-group textarea {
+    color: var(--hype-text);
+    background: var(--hype-surface-raised);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .form-group input::placeholder,
+.hype-theme .form-group textarea::placeholder {
+    color: var(--hype-text-muted);
+}
+
+.hype-theme .form-group input:focus,
+.hype-theme .form-group select:focus,
+.hype-theme .form-group textarea:focus {
+    border-color: var(--hype-gold);
+    box-shadow: 0 0 0 3px rgba(217, 171, 63, .16);
+}
+
+.hype-theme .form-group input:disabled,
+.hype-theme .form-group select:disabled,
+.hype-theme .form-group textarea:disabled {
+    background: #111113;
+    color: var(--hype-text-muted);
+}
+
+.hype-theme .form-button.primary,
+.hype-theme .form-button.outline:hover {
+    background: var(--hype-gold);
+    color: #17130b;
+}
+
+.hype-theme .form-button.primary:hover {
+    background: var(--hype-gold-hover);
+}
+
+.hype-theme .form-button.secondary {
+    background: var(--hype-surface-raised);
+    color: var(--hype-text);
+}
+
+.hype-theme .form-button.secondary:hover {
+    background: #29292d;
+}
+
+.hype-theme .form-button.outline {
+    border-color: var(--hype-gold);
+    color: var(--hype-gold);
+}
+
+.hype-theme .form-button.outline:hover {
+    color: #17130b;
+}
+
+.hype-theme .btn-primary {
+    background: var(--hype-gold);
+    color: #17130b;
+}
+
+.hype-theme .btn-primary:hover {
+    background: var(--hype-gold-hover);
+    filter: none;
+}
+
+.hype-theme .btn-default {
+    background: var(--hype-surface-raised);
+    color: var(--hype-text);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .btn-default:hover {
+    background: #29292d;
+}
+
+.hype-theme .table-container,
+.hype-theme .dashboard-table,
+.hype-theme .dashboard-table thead,
+.hype-theme .dashboard-table tbody tr:hover {
+    background: var(--hype-surface);
+}
+
+.hype-theme .dashboard-table th,
+.hype-theme .piloto-table th {
+    color: var(--hype-text-secondary);
+    background: var(--hype-surface-raised);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .dashboard-table td,
+.hype-theme .piloto-table td {
+    color: var(--hype-text);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .badge-default {
+    background: var(--hype-surface-raised);
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .badge-success {
+    background: rgba(67, 197, 139, .14);
+    color: #7be0ae;
+}
+
+.hype-theme .badge-warning {
+    background: rgba(225, 174, 74, .14);
+    color: #f0c96d;
+}
+
+.hype-theme .badge-danger {
+    background: rgba(226, 107, 114, .14);
+    color: #f18b91;
+}
+
+.hype-theme .mensagem-sucesso,
+.hype-theme .mensagem-erro,
+.hype-theme .mensagem-aviso,
+.hype-theme .mensagem-info {
+    border-color: var(--hype-border);
+}
+
+.hype-theme .dashboard-page,
+.hype-theme .piloto-page {
+    color: var(--hype-text);
+}
+
+.hype-theme .metric-card-icon {
+    background: rgba(217, 171, 63, .12);
+    color: var(--hype-gold);
+}
+
+.hype-theme .skeleton-line,
+.hype-theme .skeleton-card,
+.hype-theme .skeleton-box {
+    background: var(--hype-surface-raised);
+}
+
+.hype-theme .loading-container {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .loading-spinner {
+    border-color: var(--hype-border);
+    border-top-color: var(--hype-gold);
+}
+
+/* Legacy page controls kept inside the shared HYPE surface system. */
+.hype-theme .clientes-toolbar,
+.hype-theme .clientes-card,
+.hype-theme .configuracoes-card,
+.hype-theme .estoque-search,
+.hype-theme .table-card {
+    background: var(--hype-surface);
+    border-color: var(--hype-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme .clientes-search,
+.hype-theme .produtos-filtros input,
+.hype-theme .produtos-filtros select,
+.hype-theme .estoque-search input,
+.hype-theme .estoque-filtros select,
+.hype-theme .vendas-filtros input,
+.hype-theme .financeiro-filtros input,
+.hype-theme .financeiro-filtros select,
+.hype-theme .campo input,
+.hype-theme .campo select,
+.hype-theme .campo textarea {
+    color: var(--hype-text);
+    background: var(--hype-surface-raised);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .clientes-search::placeholder,
+.hype-theme .produtos-filtros input::placeholder,
+.hype-theme .estoque-search input::placeholder,
+.hype-theme .vendas-filtros input::placeholder,
+.hype-theme .campo input::placeholder,
+.hype-theme .campo textarea::placeholder {
+    color: var(--hype-text-muted);
+}
+
+.hype-theme .clientes-search:focus,
+.hype-theme .produtos-filtros input:focus,
+.hype-theme .produtos-filtros select:focus,
+.hype-theme .estoque-filtros select:focus,
+.hype-theme .vendas-filtros input:focus,
+.hype-theme .financeiro-filtros input:focus,
+.hype-theme .financeiro-filtros select:focus,
+.hype-theme .campo input:focus,
+.hype-theme .campo select:focus,
+.hype-theme .campo textarea:focus {
+    border-color: var(--hype-gold);
+    box-shadow: 0 0 0 3px rgba(217, 171, 63, .16);
+    outline: none;
+}
+
+.hype-theme option {
+    color: var(--hype-text);
+    background: var(--hype-surface-raised);
+}
+
+.hype-theme .configuracoes-table th,
+.hype-theme .configuracoes-table td {
+    color: var(--hype-text);
+    border-color: var(--hype-border);
+}
+
+.hype-theme .configuracoes-table th {
+    color: var(--hype-text-secondary);
+    background: var(--hype-surface-raised);
+}
+
+.hype-theme .configuracoes-user-card {
+    border-color: var(--hype-border);
+    background: var(--hype-surface);
+}
+
+.hype-theme .comissao-excepcional {
+    background: var(--hype-surface-raised);
+    border-color: rgba(217, 171, 63, .42);
+    box-shadow: inset 3px 0 0 var(--hype-gold);
+}
+
+.hype-theme .comissao-excepcional p {
+    color: var(--hype-text-secondary);
+}
+
+@media(max-width:768px) {
+    .hype-theme .layout-main {
+        padding: 16px;
+    }
+}

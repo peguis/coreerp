@@ -72,3 +72,12 @@
 
 
 }
+
+.hype-theme .dashboard-page {
+    padding-top: 8px;
+}
+
+.hype-theme .dashboard-cards,
+.hype-theme .dashboard-grid {
+    gap: 16px;
+}
