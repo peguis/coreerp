@@ -1,79 +1,138 @@
 import os
+from dataclasses import dataclass
+from typing import Mapping
 
-from app.database import SessionLocal
-
-from app.models.usuario import Usuario
-from app.models.empresa import Empresa
+from sqlalchemy import func
 
 from app.auth.hash import gerar_hash
+from app.core.enums import PerfilUsuario
+from app.database import SessionLocal
+from app.models.empresa import Empresa
+from app.models.usuario import Usuario
 
 
-def criar_admin():
+class BootstrapConfigurationError(ValueError):
+    """Raised when the bootstrap configuration is incomplete."""
 
-    senha_admin = os.getenv("COREERP_ADMIN_PASSWORD")
-    if not senha_admin:
-        raise RuntimeError(
-            "COREERP_ADMIN_PASSWORD deve ser definida para criar o admin."
+
+@dataclass(frozen=True)
+class BootstrapConfig:
+    empresa_nome: str
+    empresa_cnpj: str
+    empresa_email: str
+    empresa_telefone: str | None
+    admin_nome: str
+    admin_email: str
+    admin_password: str
+
+
+def _required(env: Mapping[str, str], name: str) -> str:
+    value = env.get(name)
+    if value is None or not value.strip():
+        raise BootstrapConfigurationError(
+            f"Variável obrigatória ausente ou vazia: {name}"
+        )
+    return value.strip()
+
+
+def _optional(env: Mapping[str, str], name: str) -> str | None:
+    value = env.get(name)
+    return value.strip() if value and value.strip() else None
+
+
+def _read_config(env: Mapping[str, str] | None = None) -> BootstrapConfig:
+    source = os.environ if env is None else env
+    password = source.get("COREERP_ADMIN_PASSWORD")
+    if password is None or not password.strip():
+        raise BootstrapConfigurationError(
+            "Variável obrigatória ausente ou vazia: COREERP_ADMIN_PASSWORD"
         )
 
-    db = SessionLocal()
+    return BootstrapConfig(
+        empresa_nome=_required(source, "COREERP_BOOTSTRAP_EMPRESA_NOME"),
+        empresa_cnpj=_required(source, "COREERP_BOOTSTRAP_EMPRESA_CNPJ"),
+        empresa_email=_required(source, "COREERP_BOOTSTRAP_EMPRESA_EMAIL").lower(),
+        empresa_telefone=_optional(source, "COREERP_BOOTSTRAP_EMPRESA_TELEFONE"),
+        admin_nome=_required(source, "COREERP_BOOTSTRAP_ADMIN_NOME"),
+        admin_email=_required(source, "COREERP_BOOTSTRAP_ADMIN_EMAIL").lower(),
+        admin_password=password,
+    )
+
+
+def _find_conflicts(db, config: BootstrapConfig) -> list[str]:
+    conflicts = []
+    if db.query(Empresa).filter(Empresa.cnpj == config.empresa_cnpj).first():
+        conflicts.append("CNPJ da empresa")
+    if (
+        db.query(Empresa)
+        .filter(func.lower(Empresa.email) == config.empresa_email)
+        .first()
+    ):
+        conflicts.append("e-mail da empresa")
+    if (
+        db.query(Usuario)
+        .filter(func.lower(Usuario.email) == config.admin_email)
+        .first()
+    ):
+        conflicts.append("e-mail do usuário ADMIN")
+    return conflicts
+
+
+def criar_admin(session_factory=SessionLocal, env: Mapping[str, str] | None = None) -> bool:
+    """Create the first production tenant and its ADMIN in one transaction.
+
+    Returns False on a pre-existing conflict and never mutates that record.
+    """
+    config = _read_config(env)
+    db = session_factory()
 
     try:
-
-        usuario_existente = (
-            db.query(Usuario)
-            .filter(
-                Usuario.email == "admin@coreerp.com"
+        conflicts = _find_conflicts(db, config)
+        if conflicts:
+            db.rollback()
+            print(
+                "Bootstrap não executado: conflito detectado em "
+                + ", ".join(conflicts)
+                + ". Nenhum registro foi alterado."
             )
-            .first()
-        )
-
-
-        if usuario_existente:
-
-            print("Admin já existe")
-
-            return
-
+            return False
 
         empresa = Empresa(
-            nome="CoreERP Empresa Demo",
-            cnpj="00.000.000/0001-00",
-            email="admin@coreerp.com",
-            telefone="000000000",
-            ativo=True
+            nome=config.empresa_nome,
+            cnpj=config.empresa_cnpj,
+            email=config.empresa_email,
+            telefone=config.empresa_telefone,
+            ativo=True,
         )
-
-
         db.add(empresa)
-
         db.flush()
-
 
         usuario = Usuario(
             empresa_id=empresa.id,
-            nome="Administrador",
-            email="admin@coreerp.com",
-            senha=gerar_hash(senha_admin),
-            ativo=True
+            nome=config.admin_nome,
+            email=config.admin_email,
+            senha=gerar_hash(config.admin_password),
+            perfil=PerfilUsuario.ADMIN.value,
+            ativo=True,
         )
-
-
         db.add(usuario)
-
         db.commit()
-
-
-        print("Admin criado com sucesso")
-        print("Email: admin@coreerp.com")
-
-
+        print("Bootstrap concluído: empresa e usuário ADMIN criados.")
+        return True
+    except BaseException:
+        db.rollback()
+        raise
     finally:
-
         db.close()
 
 
-
 if __name__ == "__main__":
-
-    criar_admin()
+    try:
+        if not criar_admin():
+            raise SystemExit(2)
+    except BootstrapConfigurationError as exc:
+        print(f"Bootstrap abortado: {exc}")
+        raise SystemExit(1) from None
+    except Exception:
+        print("Bootstrap abortado: nenhuma alteração foi aplicada.")
+        raise SystemExit(1) from None
