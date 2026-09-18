@@ -445,7 +445,73 @@
 .hype-theme .sidebar.collapsed .sidebar-logo-image { width: 42px; height: 42px; object-position: center; }
 .hype-theme .sidebar.collapsed .sidebar-studio-card { justify-content: center; padding: 7px; }
 
+/* Grupos refletem a sequência de uso diário da operação. */
+.sidebar-menu {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(217, 171, 63, .26) transparent;
+}
+
+.sidebar-menu-section + .sidebar-menu-section {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, .055);
+}
+
+.sidebar-menu-group-title {
+    margin: 0 10px 7px;
+    color: var(--hype-text-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.sidebar-menu-group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.sidebar.collapsed .sidebar-menu-group-title {
+    position: relative;
+    height: 7px;
+    margin: 0 10px 7px;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+}
+
+.sidebar.collapsed .sidebar-menu-group-title::after {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, .12);
+    content: "";
+}
+
 @media (max-width: 900px) {
     .hype-theme .sidebar { width: 248px; }
     .hype-theme .sidebar.collapsed { width: 248px; }
+
+    .hype-theme .sidebar-menu-group-title {
+        font-size: 9px;
+    }
+
+    .hype-theme .sidebar.collapsed .sidebar-menu-group-title {
+        position: static;
+        height: auto;
+        margin: 0 10px 7px;
+        overflow: visible;
+        color: var(--hype-text-muted);
+        font-size: 9px;
+    }
+
+    .hype-theme .sidebar.collapsed .sidebar-menu-group-title::after {
+        display: none;
+    }
 }
