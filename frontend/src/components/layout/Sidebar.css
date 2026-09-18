@@ -1,11 +1,13 @@
 .sidebar {
 
 
-    width: 244px;
+    width: var(--sidebar-width);
 
     height: 100vh;
 
-    background: var(--hype-surface);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .025), transparent 30%),
+        var(--hype-surface);
 
     color: var(--hype-text);
 
@@ -13,7 +15,7 @@
 
     flex-direction: column;
 
-    padding: 20px 14px;
+    padding: 22px 14px 16px;
 
     position: sticky;
 
@@ -22,6 +24,7 @@
     transition: .3s ease;
 
     z-index: 100;
+    border-right: 1px solid var(--hype-border);
 
 
 
@@ -62,7 +65,8 @@
 
     margin: 0;
 
-    font-size: 22px;
+    font-size: 20px;
+    font-weight: 800;
 
     letter-spacing: .08em;
 
@@ -76,7 +80,8 @@
 
     color: var(--hype-text-muted);
 
-    font-size: 13px;
+    font-size: 10px;
+    font-weight: 700;
 
     letter-spacing: .08em;
 
@@ -109,13 +114,13 @@
 .sidebar-menu {
 
 
-    margin-top: 35px;
+    margin-top: 30px;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 8px;
+    gap: 4px;
 
     flex: 1;
 
@@ -134,17 +139,21 @@
 
     align-items: center;
 
-    gap: 14px;
+    gap: 12px;
 
-    padding: 13px 15px;
+    min-height: 44px;
+    padding: 10px 12px;
 
     color: var(--hype-text-secondary);
 
     text-decoration: none;
 
-    border-radius: 12px;
+    border: 1px solid transparent;
+    border-radius: 10px;
 
-    transition: .25s;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 
 
 }
@@ -156,11 +165,10 @@
 .menu-item:hover {
 
 
-    background: rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .06);
 
-    color: white;
-
-    transform: translateX(4px);
+    border-color: rgba(255, 255, 255, .04);
+    color: var(--hype-text);
 
 
 }
@@ -172,7 +180,8 @@
 .menu-item.active {
 
 
-    background: rgba(217, 171, 63, .16);
+    background: var(--hype-gold-soft);
+    border-color: rgba(217, 171, 63, .18);
 
     color: var(--hype-gold-hover);
     box-shadow: inset 3px 0 0 var(--hype-gold);
@@ -208,6 +217,7 @@
     border: 1px solid var(--hype-border);
 
     cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 
 
 }
@@ -221,6 +231,7 @@
 
     background: rgba(226, 107, 114, .12);
     color: #f18b91;
+    border-color: rgba(226, 107, 114, .36);
 
 
 }
@@ -361,6 +372,10 @@
 
     background: rgba(255, 255, 255, .15);
 
+}
+
+.sidebar.collapsed .sidebar-logout {
+    justify-content: center;
 }
 
 .sidebar.collapsed .sidebar-powered {

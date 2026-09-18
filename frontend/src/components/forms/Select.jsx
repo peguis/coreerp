@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import "./Select.css";
 
 
@@ -27,6 +29,9 @@ export default function Select({
 
 }) {
 
+    const generatedId = useId();
+    const selectId = id || name || generatedId;
+
 
     return (
 
@@ -36,7 +41,7 @@ export default function Select({
             {
                 label && (
 
-                    <label htmlFor={id || name}>
+                    <label htmlFor={selectId}>
 
                         {label}
 
@@ -65,7 +70,7 @@ export default function Select({
 
             <select
 
-                id={id || name}
+                id={selectId}
 
                 name={name}
 

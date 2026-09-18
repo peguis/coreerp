@@ -8,13 +8,20 @@
 
     align-items: center;
 
-    background: var(--hype-bg);
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 18%, rgba(217, 171, 63, .11), transparent 30%),
+        var(--hype-bg);
 
     padding: 24px;
 
 }
 
 .login-card {
+
+    position: relative;
+    z-index: 1;
 
     width: 100%;
 
@@ -153,6 +160,16 @@
 
     cursor: not-allowed;
 
+}
+
+.login-card::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 3px;
+    margin: -8px auto 26px;
+    border-radius: 999px;
+    background: var(--hype-gold);
 }
 
 .input-group svg {

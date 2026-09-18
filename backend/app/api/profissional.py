@@ -90,8 +90,16 @@ def atualizar_profissional_endpoint(
     profissional_id: int,
     dados: ProfissionalUpdate,
     db: Session = Depends(get_db),
-    usuario=Depends(require_perfil("admin")),
+    usuario=Depends(require_perfil("admin", "gerente")),
 ):
+    if usuario.perfil == "gerente":
+        campos_informados = set(dados.model_dump(exclude_unset=True))
+        if campos_informados != {"area_atuacao"}:
+            raise HTTPException(
+                status_code=403,
+                detail="Gerente pode alterar apenas a area de atuacao do profissional.",
+            )
+
     return atualizar_profissional_service(
         db,
         profissional_id,

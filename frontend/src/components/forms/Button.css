@@ -25,6 +25,7 @@
     text-decoration: none;
 
     user-select: none;
+    min-height: 40px;
 
 }
 
@@ -82,6 +83,11 @@
 
 }
 
+
+.form-button:focus-visible {
+    outline: 2px solid var(--hype-gold);
+    outline-offset: 2px;
+}
 
 .form-button:disabled {
 

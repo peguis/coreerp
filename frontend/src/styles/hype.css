@@ -99,6 +99,16 @@
     border-radius: var(--radius-lg);
 }
 
+.hype-theme .form-card,
+.hype-theme .section-card {
+    margin-bottom: 0;
+}
+
+.hype-theme .section-header h2,
+.hype-theme .form-card-header h2 {
+    letter-spacing: -.015em;
+}
+
 .hype-theme .form-group label {
     color: var(--hype-text-secondary);
 }
@@ -225,14 +235,182 @@
     border-color: var(--hype-border);
 }
 
+.hype-theme .mensagem-sucesso {
+    color: #7be0ae;
+    background: rgba(67, 197, 139, .1);
+}
+
+.hype-theme .mensagem-erro {
+    color: #f18b91;
+    background: rgba(226, 107, 114, .1);
+}
+
+.hype-theme .mensagem-aviso {
+    color: #f0c96d;
+    background: rgba(225, 174, 74, .1);
+}
+
+.hype-theme .mensagem-info {
+    color: #9dc7ff;
+    background: rgba(95, 154, 230, .1);
+}
+
+.hype-theme .alerta-success {
+    color: var(--hype-text);
+    background: var(--hype-gold-soft);
+}
+
 .hype-theme .dashboard-page,
 .hype-theme .piloto-page {
     color: var(--hype-text);
 }
 
+.hype-theme .dashboard-page {
+    padding: 0;
+    gap: 20px;
+}
+
+.hype-theme .dashboard-page .dashboard-cards,
+.hype-theme .dashboard-page .dashboard-grid,
+.hype-theme .dashboard-page .financeiro-cards-grid {
+    gap: 16px;
+}
+
+.hype-theme .dashboard-page .financeiro-cards-grid {
+    margin-top: 0;
+}
+
+.hype-theme .dashboard-page .section-card {
+    height: 100%;
+}
+
 .hype-theme .metric-card-icon {
     background: rgba(217, 171, 63, .12);
     color: var(--hype-gold);
+}
+
+.hype-theme .metric-card-title,
+.hype-theme .financeiro-card-title {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .metric-card-value,
+.hype-theme .financeiro-card-value {
+    color: var(--hype-text);
+    letter-spacing: -.025em;
+}
+
+.hype-theme .financeiro-card-icon {
+    background: rgba(217, 171, 63, .1);
+    color: var(--hype-gold);
+}
+
+.hype-theme .table-container {
+    border: 1px solid var(--hype-border);
+    box-shadow: none;
+}
+
+.hype-theme .clientes-page,
+.hype-theme .financeiro-page {
+    padding: 0;
+    gap: 20px;
+}
+
+.hype-theme .clientes-toolbar {
+    padding: 14px 16px;
+}
+
+.hype-theme .clientes-card {
+    overflow: hidden;
+}
+
+.hype-theme .search-input {
+    max-width: 100%;
+}
+
+.hype-theme .financeiro-resumo {
+    gap: 16px;
+}
+
+.hype-theme .financeiro-resumo > .section-card {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.hype-theme .financeiro-card {
+    min-height: 104px;
+    padding: 18px;
+    border: 1px solid var(--hype-border);
+    border-radius: var(--radius-lg);
+    background: var(--hype-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme .financeiro-card:hover {
+    border-color: var(--hype-border-strong);
+    background: var(--hype-surface-elevated);
+    transform: translateY(-2px);
+}
+
+.hype-theme .financeiro-card svg {
+    background: var(--hype-gold-soft);
+    color: var(--hype-gold);
+}
+
+.hype-theme .financeiro-card span {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .financeiro-card strong {
+    color: var(--hype-text);
+}
+
+.hype-theme .piloto-table tbody tr,
+.hype-theme .dashboard-table tbody tr {
+    transition: background var(--transition-fast);
+}
+
+.hype-theme .piloto-table tbody tr:hover,
+.hype-theme .dashboard-table tbody tr:hover {
+    background: rgba(255, 255, 255, .025);
+}
+
+.hype-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .07);
+    color: var(--hype-text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.hype-status-ativo,
+.hype-status-pago {
+    background: rgba(67, 197, 139, .14);
+    color: #7be0ae;
+}
+
+.hype-status-inativo,
+.hype-status-pendente {
+    background: rgba(255, 255, 255, .07);
+    color: var(--hype-text-muted);
+}
+
+.hype-theme .empty-state h3 {
+    color: var(--hype-text);
+}
+
+.hype-theme .empty-state p,
+.hype-theme .table-empty,
+.hype-theme .table-loading {
+    color: var(--hype-text-secondary);
 }
 
 .hype-theme .skeleton-line,

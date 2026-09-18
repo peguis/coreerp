@@ -58,6 +58,13 @@ def profissional_client():
             perfil="admin",
             empresa_id=empresa_b.id,
         ),
+        "gerente_a": Usuario(
+            nome="Gerente A",
+            email="prof-gerente-a@example.com",
+            senha="nao usada",
+            perfil="gerente",
+            empresa_id=empresa_a.id,
+        ),
         "a1": Usuario(
             nome="Ana Barbeira",
             email="ana@example.com",
@@ -108,6 +115,7 @@ def profissional_client():
         "usuarios": usuarios,
         "headers_a": headers(usuarios["admin_a"]),
         "headers_b": headers(usuarios["admin_b"]),
+        "headers_gerente_a": headers(usuarios["gerente_a"]),
     }
 
     try:
@@ -343,6 +351,35 @@ def test_admin_pode_editar_usuario_para_perfil_profissional(
     assert atualizado.status_code == 200
     assert atualizado.json()["perfil"] == "profissional"
     assert invalido.status_code == 422
+
+
+def test_gerente_pode_alterar_area_do_profissional_sem_alterar_percentual(
+    profissional_client,
+):
+    ctx = profissional_client
+    profissional = criar_profissional(
+        ctx["client"],
+        ctx["headers_a"],
+        ctx["usuarios"]["a1"].id,
+        area="BARBEARIA",
+        percentual=40,
+    ).json()
+
+    alterado = ctx["client"].put(
+        f"/profissionais/{profissional['id']}",
+        json={"area_atuacao": "TATTOO"},
+        headers=ctx["headers_gerente_a"],
+    )
+    percentual_bloqueado = ctx["client"].put(
+        f"/profissionais/{profissional['id']}",
+        json={"percentual_padrao": 80},
+        headers=ctx["headers_gerente_a"],
+    )
+
+    assert alterado.status_code == 200
+    assert alterado.json()["area_atuacao"] == "TATTOO"
+    assert alterado.json()["percentual_padrao"] == 40
+    assert percentual_bloqueado.status_code == 403
 
 
 def test_listagem_filtros_e_isolamento(profissional_client):

@@ -65,11 +65,11 @@ export default function FluxoCaixaChart({
 
     const cores = [
 
-        "#16a34a",
+        "#43c58b",
 
-        "#dc2626",
+        "#e26b72",
 
-        "#2563eb"
+        "#d9ab3f"
 
     ];
 
@@ -126,7 +126,7 @@ export default function FluxoCaixaChart({
 
                                     outerRadius={100}
 
-                                    label
+                                    labelLine={false}
 
                                 >
 
@@ -154,6 +154,7 @@ export default function FluxoCaixaChart({
 
 
                                 <Tooltip
+                                    contentStyle={{ background: "var(--hype-surface-elevated)", border: "1px solid var(--hype-border)", borderRadius: "10px", color: "var(--hype-text)" }}
 
                                     formatter={(valor) =>
 
@@ -164,7 +165,7 @@ export default function FluxoCaixaChart({
                                 />
 
 
-                                <Legend />
+                                <Legend wrapperStyle={{ color: "var(--hype-text-secondary)" }} />
 
 
                             </PieChart>

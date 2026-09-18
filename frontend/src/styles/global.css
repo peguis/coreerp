@@ -8,7 +8,10 @@
 
 }
 
-
+html {
+    min-width: 320px;
+    background: var(--bg-page);
+}
 
 body {
 
@@ -31,7 +34,22 @@ body {
 
         var(--text-primary);
 
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+}
 
+#root {
+    min-height: 100vh;
+}
+
+::selection {
+    color: #17130b;
+    background: var(--hype-gold);
+}
+
+:focus-visible {
+    outline: 2px solid var(--hype-gold);
+    outline-offset: 2px;
 }
 
 
@@ -52,6 +70,7 @@ button {
 
 
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 
 
 }

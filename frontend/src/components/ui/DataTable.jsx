@@ -24,7 +24,7 @@ export default function DataTable({
             <div className="table-container">
 
 
-                <div className="table-loading">
+                <div className="table-loading" role="status" aria-live="polite">
 
                     Carregando dados...
 

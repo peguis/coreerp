@@ -20,7 +20,7 @@ export default function Mensagem({
 
     return (
 
-        <div className={`mensagem mensagem-${tipo}`}>
+        <div className={`mensagem mensagem-${tipo}`} role={tipo === "erro" ? "alert" : "status"} aria-live={tipo === "erro" ? "assertive" : "polite"}>
 
             {texto}
 

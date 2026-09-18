@@ -1,7 +1,10 @@
 .topbar {
 
 
-    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 72px;
 
     background: var(--hype-surface);
 
@@ -13,7 +16,8 @@
 
     justify-content: space-between;
 
-    padding: 0 28px;
+    padding: 0 clamp(18px, 3vw, 42px);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .02);
 
 
 }
@@ -143,6 +147,10 @@
     color: var(--hype-text-secondary);
 
     font-size: 13px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
 
 }
@@ -190,7 +198,7 @@
     .topbar {
 
 
-        padding: 0 15px;
+        padding: 0 16px;
 
 
     }
@@ -233,9 +241,10 @@
     margin-right: auto;
     margin-left: 18px;
     color: var(--hype-gold);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: .18em;
+    white-space: nowrap;
 }
 
 .topbar-user {
@@ -249,6 +258,6 @@
 @media(max-width:600px) {
     .topbar-brand {
         margin-left: 4px;
-        font-size: 11px;
+        font-size: 10px;
     }
 }

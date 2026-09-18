@@ -26,6 +26,8 @@ export default function SearchInput({
 
                 placeholder={placeholder}
 
+                aria-label={placeholder}
+
             />
 
         </div>

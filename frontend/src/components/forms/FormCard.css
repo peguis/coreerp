@@ -1,14 +1,15 @@
 .form-card {
 
-    background: #ffffff;
+    background: var(--hype-surface);
 
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--hype-border);
 
     padding: 24px;
 
     margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
 
 }
 
@@ -30,7 +31,7 @@
 
     font-weight: 700;
 
-    color: #1e293b;
+    color: var(--hype-text);
 
 }
 
@@ -42,7 +43,7 @@
 
     font-size: 14px;
 
-    color: #64748b;
+    color: var(--hype-text-secondary);
 
 }
 

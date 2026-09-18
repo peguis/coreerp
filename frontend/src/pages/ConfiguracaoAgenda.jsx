@@ -302,7 +302,7 @@ export default function ConfiguracaoAgenda() {
                                     <article className={`configuracao-agenda-item recurso-status-${status.toLowerCase()}`} key={recurso.id}>
                                         <div>
                                             <strong>{recurso.nome}</strong>
-                                            <span>{recurso.tipo} · {rotuloStatusRecurso(status)}</span>
+                                            <span>{recurso.tipo} · <span className={`configuracao-status configuracao-status-${status.toLowerCase()}`}>{rotuloStatusRecurso(status)}</span></span>
                                         </div>
                                         <div className="configuracao-agenda-actions">
                                             <Button size="small" variant="secondary" onClick={() => editarRecurso(recurso)}>Editar</Button>
@@ -350,7 +350,7 @@ export default function ConfiguracaoAgenda() {
                                 <td>{formatarMoeda(servico.preco_padrao)}</td>
                                 <td>{servico.duracao_minutos} min</td>
                                 <td>{servico.requer_recurso ? `${servico.tipo_recurso} · ${servico.modo_selecao_recurso === "MANUAL" ? "manual" : "automático"}` : "Não exige"}</td>
-                                <td>{servico.ativo ? "Ativo" : "Inativo"}</td>
+                                <td><span className={`configuracao-status configuracao-status-${servico.ativo ? "ativo" : "inativo"}`}>{servico.ativo ? "Ativo" : "Inativo"}</span></td>
                                 <td><div className="configuracao-agenda-actions"><Button size="small" variant="secondary" onClick={() => editarServico(servico)}>Editar</Button><Button size="small" variant={servico.ativo ? "danger" : "success"} onClick={() => alternarServico(servico)}>{servico.ativo ? "Desativar" : "Ativar"}</Button><Button size="small" variant="danger" onClick={() => excluirServicoCadastrado(servico)}>Excluir</Button></div></td>
                             </tr>)}</tbody>
                         </table>

@@ -77,6 +77,8 @@ export default function Login() {
                         <input
 
                             type="email"
+                            aria-label="E-mail"
+                            autoComplete="username"
 
                             placeholder="E-mail"
 
@@ -101,6 +103,8 @@ export default function Login() {
                         <input
 
                             type="password"
+                            aria-label="Senha"
+                            autoComplete="current-password"
 
                             placeholder="Senha"
 

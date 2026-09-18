@@ -1,14 +1,15 @@
 .section-card {
 
-    background: #ffffff;
+    background: var(--hype-surface);
 
-    border-radius: 18px;
+    border: 1px solid var(--hype-border);
+    border-radius: var(--radius-lg);
 
-    padding: 24px;
+    padding: 22px;
 
     box-shadow:
 
-        0 8px 25px rgba(0, 0, 0, .06);
+        var(--shadow-sm);
 
 }
 
@@ -16,7 +17,7 @@
 
 .section-header {
 
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 
 }
 
@@ -26,7 +27,7 @@
 
     margin: 0;
 
-    color: #0f172a;
+    color: var(--hype-text);
 
     font-size: 20px;
 
@@ -40,7 +41,7 @@
 
     margin: 8px 0 0;
 
-    color: #64748b;
+    color: var(--hype-text-secondary);
 
     font-size: 14px;
 

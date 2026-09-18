@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { CalendarPlus } from "lucide-react";
 
 import { atualizarAgendamento, criarAgendamento, listarAgendamentos, listarRecursosAgenda } from "../services/agendaService";
 import { buscarUsuarioLogado, listarUsuarios } from "../services/usuarioService";
@@ -125,6 +127,7 @@ export default function Agenda() {
     const [salvando, setSalvando] = useState(false);
     const [erro, setErro] = useState("");
     const [mensagem, setMensagem] = useState("");
+    const formularioRef = useRef(null);
 
     const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
     const profissionalSelecionado = profissionais.find((item) => String(item.id) === String(form.profissional_id));
@@ -232,6 +235,7 @@ export default function Agenda() {
             inicio_em: `${data}T10:00`,
             profissional_id: administrativo ? "" : undefined
         });
+        requestAnimationFrame(() => formularioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
     }
 
     function editarAgendamento(item) {
@@ -251,6 +255,7 @@ export default function Agenda() {
             duracao_minutos: String(item.duracao_minutos || ""),
             observacao: item.observacao || ""
         });
+        requestAnimationFrame(() => formularioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
     }
 
     function podeAlterar(item) {
@@ -336,7 +341,7 @@ export default function Agenda() {
     return (
         <main className="agenda-page">
             <PageHeader titulo="Agenda" subtitulo="Organize atendimentos, profissionais e recursos do HYPE.">
-                <Button variant="primary" onClick={novoAgendamento}>Novo agendamento</Button>
+                <Button variant="primary" onClick={novoAgendamento}><CalendarPlus size={17} />Novo agendamento</Button>
             </PageHeader>
 
             {(erro || mensagem) && <Mensagem tipo={erro ? "erro" : "sucesso"} texto={erro || mensagem} />}
@@ -351,7 +356,7 @@ export default function Agenda() {
             </section>
 
             <FormCard titulo={editarId ? "Editar agendamento" : "Novo agendamento"} subtitulo="A duração vem do serviço e pode ser ajustada para este horário.">
-                <form className="agenda-form" onSubmit={salvar}>
+                <form ref={formularioRef} className="agenda-form" onSubmit={salvar}>
                     {administrativo && (
                         <Select
                             label="Profissional"

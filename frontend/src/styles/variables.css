@@ -62,9 +62,12 @@
     --hype-bg: #0b0b0c;
     --hype-surface: #151517;
     --hype-surface-raised: #1d1d20;
+    --hype-surface-elevated: #232326;
     --hype-border: #2d2d31;
+    --hype-border-strong: #414148;
     --hype-gold: #d9ab3f;
     --hype-gold-hover: #edc45c;
+    --hype-gold-soft: rgba(217, 171, 63, .12);
     --hype-text: #f5f2ea;
     --hype-text-secondary: #aaa69c;
     --hype-text-muted: #77736b;
@@ -76,6 +79,9 @@
     --background: #0b0b0c;
     --background-secondary: #1d1d20;
     --border: #2d2d31;
+    --focus-ring: 0 0 0 3px rgba(217, 171, 63, .18);
+    --transition-fast: 160ms ease;
+    --transition-base: 220ms ease;
 
 
 
@@ -88,6 +94,7 @@
     --space-3: 24px;
 
     --space-4: 32px;
+    --sidebar-width: 252px;
 
 
 }

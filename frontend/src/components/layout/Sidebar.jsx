@@ -383,6 +383,10 @@ export default function Sidebar({
 
                                 end
 
+                                aria-label={item.nome}
+
+                                title={item.nome}
+
 
 
                                 onClick={clicarMenu}

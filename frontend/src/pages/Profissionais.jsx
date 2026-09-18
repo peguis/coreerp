@@ -93,7 +93,7 @@ function Profissionais() {
         setErro("");
         setMensagem("");
 
-        if (!form.area_atuacao || form.percentual_padrao === "" || (!editarId && !form.usuario_id)) {
+        if (!form.area_atuacao || (ehAdmin && form.percentual_padrao === "") || (!editarId && !form.usuario_id)) {
 
             setErro("Informe usuário, área e percentual padrão.");
             return;
@@ -104,10 +104,9 @@ function Profissionais() {
 
             setSalvando(true);
             if (editarId) {
-                await atualizarProfissional(editarId, {
-                    area_atuacao: form.area_atuacao,
-                    percentual_padrao: Number(form.percentual_padrao)
-                });
+                const dados = { area_atuacao: form.area_atuacao };
+                if (ehAdmin) dados.percentual_padrao = Number(form.percentual_padrao);
+                await atualizarProfissional(editarId, dados);
                 setMensagem("Profissional atualizado com sucesso.");
 
             } else {
@@ -162,6 +161,7 @@ function Profissionais() {
         usuario.ativo && !profissionais.some((item) => item.usuario_id === usuario.id)
     );
     const ehAdmin = usuario?.perfil === "admin";
+    const ehGerente = usuario?.perfil === "gerente";
 
     return (
 
@@ -175,9 +175,14 @@ function Profissionais() {
                     <Input label="Percentual padrão" type="number" min="0" max="100" step="0.01" value={form.percentual_padrao} onChange={(evento) => setForm((atual) => ({ ...atual, percentual_padrao: evento.target.value }))} required />
                     <div className="piloto-form-actions piloto-form-full"><Button type="button" variant="secondary" onClick={limparForm}>Limpar</Button><Button type="submit" variant="primary" disabled={salvando}>{salvando ? "Salvando..." : editarId ? "Salvar alterações" : "Cadastrar profissional"}</Button></div>
                 </form>
-            </FormCard> : <Mensagem tipo="sucesso" texto="GERENTE possui acesso à consulta. Alterações de profissionais são exclusivas do ADMIN." />}
+            </FormCard> : ehGerente && editarId ? <FormCard titulo="Alterar função do profissional" subtitulo="O gerente pode transferir o profissional entre Barbearia e Tattoo.">
+                <form className="piloto-form-grid" onSubmit={salvar}>
+                    <Select label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} options={AREAS} required />
+                    <div className="piloto-form-actions piloto-form-full"><Button type="button" variant="secondary" onClick={limparForm}>Cancelar</Button><Button type="submit" variant="primary" disabled={salvando}>{salvando ? "Salvando..." : "Salvar função"}</Button></div>
+                </form>
+            </FormCard> : !ehGerente && <Mensagem tipo="sucesso" texto="GERENTE possui acesso à consulta. Alterações de profissionais são exclusivas do ADMIN." />}
             <SectionCard>
-                {carregando ? <Loading texto="Carregando profissionais..." /> : profissionais.length === 0 ? <div className="piloto-empty">Nenhum profissional cadastrado.</div> : <><div className="piloto-table-wrap"><table className="piloto-table"><thead><tr><th>Usuário</th><th>Área</th><th>Percentual padrão</th><th>Status</th>{ehAdmin && <th>Ações</th>}</tr></thead><tbody>{profissionais.map((item) => <tr key={item.id}><td>{nomeUsuario(item.usuario_id)}</td><td>{item.area_atuacao}</td><td>{formatarPercentual(item.percentual_padrao)}</td><td>{item.ativo ? "Ativo" : "Inativo"}</td>{ehAdmin && <td><div className="piloto-inline-actions"><Button size="small" variant="secondary" onClick={() => editar(item)}>Editar</Button><Button size="small" variant={item.ativo ? "danger" : "success"} onClick={() => alternarAtivo(item)}>{item.ativo ? "Desativar" : "Ativar"}</Button></div></td>}</tr>)}</tbody></table></div><div className="piloto-mobile-cards">{profissionais.map((item) => <article className="piloto-item-card" key={item.id}><header><strong>{nomeUsuario(item.usuario_id)}</strong><span>{item.ativo ? "Ativo" : "Inativo"}</span></header><dl><div><dt>Área</dt><dd>{item.area_atuacao}</dd></div><div><dt>Percentual padrão</dt><dd>{formatarPercentual(item.percentual_padrao)}</dd></div></dl>{ehAdmin && <div className="piloto-inline-actions"><Button size="small" variant="secondary" onClick={() => editar(item)}>Editar</Button><Button size="small" variant={item.ativo ? "danger" : "success"} onClick={() => alternarAtivo(item)}>{item.ativo ? "Desativar" : "Ativar"}</Button></div>}</article>)}</div></>}
+                {carregando ? <Loading texto="Carregando profissionais..." /> : profissionais.length === 0 ? <div className="piloto-empty">Nenhum profissional cadastrado.</div> : <><div className="piloto-table-wrap"><table className="piloto-table"><thead><tr><th>Usuário</th><th>Área</th><th>Percentual padrão</th><th>Status</th>{(ehAdmin || ehGerente) && <th>Ações</th>}</tr></thead><tbody>{profissionais.map((item) => <tr key={item.id}><td>{nomeUsuario(item.usuario_id)}</td><td>{item.area_atuacao}</td><td>{formatarPercentual(item.percentual_padrao)}</td><td>{item.ativo ? "Ativo" : "Inativo"}</td>{(ehAdmin || ehGerente) && <td><div className="piloto-inline-actions">{ehAdmin && <Button size="small" variant="secondary" onClick={() => editar(item)}>Editar</Button>}{ehGerente && <Button size="small" variant="secondary" onClick={() => editar(item)}>Alterar função</Button>}{ehAdmin && <Button size="small" variant={item.ativo ? "danger" : "success"} onClick={() => alternarAtivo(item)}>{item.ativo ? "Desativar" : "Ativar"}</Button>}</div></td>}</tr>)}</tbody></table></div><div className="piloto-mobile-cards">{profissionais.map((item) => <article className="piloto-item-card" key={item.id}><header><strong>{nomeUsuario(item.usuario_id)}</strong><span>{item.ativo ? "Ativo" : "Inativo"}</span></header><dl><div><dt>Área</dt><dd>{item.area_atuacao}</dd></div><div><dt>Percentual padrão</dt><dd>{formatarPercentual(item.percentual_padrao)}</dd></div></dl>{(ehAdmin || ehGerente) && <div className="piloto-inline-actions">{ehAdmin && <Button size="small" variant="secondary" onClick={() => editar(item)}>Editar</Button>}{ehGerente && <Button size="small" variant="secondary" onClick={() => editar(item)}>Alterar função</Button>}{ehAdmin && <Button size="small" variant={item.ativo ? "danger" : "success"} onClick={() => alternarAtivo(item)}>{item.ativo ? "Desativar" : "Ativar"}</Button>}</div>}</article>)}</div></>}
             </SectionCard>
         </main>
 

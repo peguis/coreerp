@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import "./Textarea.css";
 
 
@@ -27,6 +29,9 @@ export default function Textarea({
 
 }) {
 
+    const generatedId = useId();
+    const textareaId = id || name || generatedId;
+
 
     return (
 
@@ -36,7 +41,7 @@ export default function Textarea({
             {
                 label && (
 
-                    <label htmlFor={id || name}>
+                    <label htmlFor={textareaId}>
 
                         {label}
 
@@ -63,7 +68,7 @@ export default function Textarea({
 
             <textarea
 
-                id={id || name}
+                id={textareaId}
 
                 name={name}
 

@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import "./Input.css";
 
 
@@ -33,6 +35,9 @@ export default function Input({
 
 }) {
 
+    const generatedId = useId();
+    const inputId = id || name || generatedId;
+
 
     return (
 
@@ -42,7 +47,7 @@ export default function Input({
             {
                 label && (
 
-                    <label htmlFor={id || name}>
+                    <label htmlFor={inputId}>
 
                         {label}
 
@@ -67,7 +72,7 @@ export default function Input({
 
             <input
 
-                id={id || name}
+                id={inputId}
 
                 name={name}
 
