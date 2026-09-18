@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Crown, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../api/auth";
@@ -53,12 +53,7 @@ export default function Login() {
                 <div className="login-showcase-overlay" />
                 <div className="login-showcase-content">
                     <div className="login-brand-lockup" aria-label="HYPE STUDIO — Barbearia e Tattoo">
-                        <div className="login-logo-emblem">
-                            <span className="login-logo-crown" aria-hidden="true"><Crown size={28} strokeWidth={1.7} /></span>
-                            <span className="login-logo-est">EST. 2024 · STUDIO</span>
-                            <strong>HYPE STUDIO</strong>
-                            <span className="login-logo-tag">BARBEARIA &amp; TATTOO</span>
-                        </div>
+                        <img className="login-logo-image" src="/images/hype-logo-official.png" alt="HYPE STUDIO — Barbearia & Tattoo" />
                     </div>
                     <div className="login-showcase-divider" aria-hidden="true" />
                     <div className="login-showcase-slogan">
