@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { CalendarPlus } from "lucide-react";
+import { CalendarDays, CalendarPlus, Clock3, RefreshCw, Scissors, UserRound, Wrench } from "lucide-react";
 
 import { atualizarAgendamento, criarAgendamento, listarAgendamentos, listarRecursosAgenda } from "../services/agendaService";
 import { buscarUsuarioLogado, listarUsuarios } from "../services/usuarioService";
@@ -107,6 +107,14 @@ function servicoEhTattoo(servico) {
 function servicoCompativelComArea(servico, area) {
     if (!area) return true;
     return area === "TATTOO" ? servicoEhTattoo(servico) : !servicoEhTattoo(servico);
+}
+
+
+function classeDaArea(area) {
+    const areaNormalizada = String(area || "").toUpperCase();
+    if (areaNormalizada === "TATTOO") return "agenda-area-tattoo";
+    if (areaNormalizada === "BARBEARIA") return "agenda-area-barbearia";
+    return "agenda-area-neutral";
 }
 
 
@@ -356,6 +364,11 @@ export default function Agenda() {
         servicoSelecionado.modo_selecao_recurso === "MANUAL" || form.usar_recurso_manual
     );
 
+    function areaDoAgendamento(item) {
+        if (!administrativo) return usuario?.area_atuacao || "";
+        return profissionais.find((profissional) => String(profissional.id) === String(item.profissional_id))?.area_atuacao || "";
+    }
+
     return (
         <main className="agenda-page">
             <PageHeader titulo="Agenda" subtitulo="Organize atendimentos, profissionais e recursos do HYPE.">
@@ -367,14 +380,21 @@ export default function Agenda() {
             <section className="agenda-toolbar">
                 <Input label="Dia da agenda" type="date" value={data} onChange={(evento) => setData(evento.target.value)} />
                 <div className="agenda-toolbar-summary">
-                    <span>Compromissos do dia</span>
-                    <strong>{ativos.length}</strong>
+                    <CalendarDays size={20} aria-hidden="true" />
+                    <div>
+                        <span>Compromissos do dia</span>
+                        <strong>{ativos.length}</strong>
+                    </div>
                 </div>
-                <Button variant="secondary" onClick={() => { void Promise.all([carregarAgenda(), carregarProximosAgendamentos()]); }}>Atualizar</Button>
+                <Button variant="secondary" loading={carregando || carregandoProximos} onClick={() => { void Promise.all([carregarAgenda(), carregarProximosAgendamentos()]); }}><RefreshCw size={16} />Atualizar</Button>
             </section>
 
-            <FormCard titulo={editarId ? "Editar agendamento" : "Novo agendamento"} subtitulo="A duração vem do serviço e pode ser ajustada para este horário.">
+            <FormCard className="agenda-form-card" titulo={editarId ? "Editar agendamento" : "Novo agendamento"} subtitulo="A duração vem do serviço e pode ser ajustada para este horário.">
                 <form ref={formularioRef} className="agenda-form" onSubmit={salvar}>
+                    <div className="agenda-form-heading agenda-form-full">
+                        <Clock3 size={18} aria-hidden="true" />
+                        <div><strong>Serviço e horário</strong><span>Defina o responsável, o serviço e quando o atendimento acontecerá.</span></div>
+                    </div>
                     {administrativo && (
                         <Select
                             label="Profissional"
@@ -394,6 +414,10 @@ export default function Agenda() {
                     <Input label="Data e horário" type="datetime-local" value={form.inicio_em} onChange={(evento) => alterar("inicio_em", evento.target.value)} required />
                     <Input label="Duração (minutos)" type="number" min="1" max="1440" value={form.duracao_minutos} onChange={(evento) => alterar("duracao_minutos", evento.target.value)} required />
                     {podeEditarValor && <Input label="Valor desta tattoo" type="number" min="0" step="0.01" value={form.preco_aplicado} onChange={(evento) => alterar("preco_aplicado", evento.target.value)} placeholder="Valor combinado com o cliente" />}
+                    <div className="agenda-form-heading agenda-form-full">
+                        <UserRound size={18} aria-hidden="true" />
+                        <div><strong>Cliente</strong><span>Vincule um cadastro existente ou informe um cliente avulso.</span></div>
+                    </div>
                     <Select
                         label="Cliente cadastrado"
                         value={form.cliente_id}
@@ -403,15 +427,21 @@ export default function Agenda() {
                     />
                     {!form.cliente_id && <Input label="Nome do cliente avulso" value={form.cliente_avulso_nome} onChange={(evento) => alterar("cliente_avulso_nome", evento.target.value)} placeholder="Opcional" />}
                     {servicoSelecionado?.requer_recurso && (
-                        <div className="agenda-resource-choice">
-                            <Checkbox
-                                label={servicoSelecionado.modo_selecao_recurso === "MANUAL" ? "Selecionar recurso manualmente (obrigatório)" : "Escolher maca ou recurso manualmente"}
-                                checked={Boolean(form.usar_recurso_manual || servicoSelecionado.modo_selecao_recurso === "MANUAL")}
-                                disabled={servicoSelecionado.modo_selecao_recurso === "MANUAL"}
-                                onChange={(evento) => alterar("usar_recurso_manual", evento.target.checked)}
-                            />
-                            {servicoSelecionado.modo_selecao_recurso !== "MANUAL" && <span>Se desmarcado, o sistema escolherá automaticamente um recurso livre.</span>}
-                        </div>
+                        <>
+                            <div className="agenda-form-heading agenda-form-full">
+                                <Wrench size={18} aria-hidden="true" />
+                                <div><strong>Recurso</strong><span>Escolha uma maca ou deixe o sistema reservar uma opção livre.</span></div>
+                            </div>
+                            <div className="agenda-resource-choice">
+                                <Checkbox
+                                    label={servicoSelecionado.modo_selecao_recurso === "MANUAL" ? "Selecionar recurso manualmente (obrigatório)" : "Escolher maca ou recurso manualmente"}
+                                    checked={Boolean(form.usar_recurso_manual || servicoSelecionado.modo_selecao_recurso === "MANUAL")}
+                                    disabled={servicoSelecionado.modo_selecao_recurso === "MANUAL"}
+                                    onChange={(evento) => alterar("usar_recurso_manual", evento.target.checked)}
+                                />
+                                {servicoSelecionado.modo_selecao_recurso !== "MANUAL" && <span>Se desmarcado, o sistema escolherá automaticamente um recurso livre.</span>}
+                            </div>
+                        </>
                     )}
                     {selecionadoManual && (
                         <Select
@@ -426,6 +456,10 @@ export default function Agenda() {
                     {servicoSelecionado?.requer_recurso && !selecionadoManual && (
                         <div className="agenda-auto-note"><strong>Reserva automática</strong><span>O sistema escolherá uma maca livre para este horário.</span></div>
                     )}
+                    <div className="agenda-form-heading agenda-form-full">
+                        <Scissors size={18} aria-hidden="true" />
+                        <div><strong>Detalhes finais</strong><span>Inclua observações úteis para a equipe.</span></div>
+                    </div>
                     <Textarea className="agenda-form-full" label="Observação (opcional)" value={form.observacao} onChange={(evento) => alterar("observacao", evento.target.value)} rows={3} />
                     <div className="agenda-form-actions agenda-form-full">
                         {editarId && <Button type="button" variant="secondary" onClick={() => { setEditarId(null); setForm(FORM_INICIAL); }}>Cancelar edição</Button>}
@@ -441,6 +475,7 @@ export default function Agenda() {
                     <div className="agenda-list">
                         {proximosAgendamentos.map((item) => {
                             const restrito = item.detalhes_restritos;
+                            const area = areaDoAgendamento(item);
                             return (
                                 <article className={`agenda-item agenda-overview-item ${restrito ? "agenda-item-restrito" : ""}`} key={`proximo-${item.id}`}>
                                     <div className="agenda-item-time">
@@ -456,6 +491,7 @@ export default function Agenda() {
                                     </div>
                                     <div className="agenda-item-meta">
                                         <span className={`agenda-status agenda-status-${item.status.toLowerCase()}`}>{rotuloStatus(item.status)}</span>
+                                        {!restrito && area && <span className={`agenda-area-badge ${classeDaArea(area)}`}>{area}</span>}
                                         {!restrito && item.recurso_nome && <small>{item.recurso_nome}</small>}
                                         <Button size="small" variant="secondary" onClick={() => setData(dataLocalDoAgendamento(item.inicio_em))}>Ver dia</Button>
                                     </div>
@@ -469,7 +505,11 @@ export default function Agenda() {
             <section className="agenda-calendar-card">
                 <div className="agenda-calendar-toolbar">
                     <div><span className="agenda-calendar-overline">VISÃO DO DIA</span><strong>{new Date(`${data}T12:00:00`).toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long" })}</strong></div>
-                    <div className="agenda-calendar-modes"><span className="active">Dia</span><span>Semana</span><span>Mês</span></div>
+                    <div className="agenda-calendar-legend" aria-label="Legenda dos status da agenda">
+                        <span><i className="agenda-legend-dot agenda-legend-scheduled" />Agendado</span>
+                        <span><i className="agenda-legend-dot agenda-legend-confirmed" />Confirmado</span>
+                        <span><i className="agenda-legend-dot agenda-legend-cancelled" />Cancelado</span>
+                    </div>
                 </div>
                 {carregando ? <Loading texto="Carregando agenda visual..." /> : (
                     <div className="agenda-calendar-shell" style={{ "--agenda-column-count": agendaTotalColunas }}>
@@ -481,7 +521,8 @@ export default function Agenda() {
                                 {ordenados.map((item) => {
                                     const restrito = item.detalhes_restritos;
                                     const servico = servicos.find((servicoAtual) => servicoAtual.id === item.servico_id);
-                                    return <article className={`agenda-calendar-block ${restrito ? "restricted" : ""} ${item.status === "CANCELADO" ? "cancelled" : ""}`} key={`visual-${item.id}`} style={posicaoBloco(item)}><strong>{restrito ? "Recurso reservado" : servico?.nome || "Atendimento"}</strong><span>{restrito ? item.recurso_nome || "Recurso ocupado" : item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span><small>{item.duracao_minutos} min{item.recurso_nome ? ` · ${item.recurso_nome}` : ""}</small></article>;
+                                    const status = String(item.status || "AGENDADO").toLowerCase();
+                                    return <article className={`agenda-calendar-block status-${status} ${restrito ? "restricted" : ""}`} key={`visual-${item.id}`} style={posicaoBloco(item)}><strong>{restrito ? "Recurso reservado" : servico?.nome || "Atendimento"}</strong><span>{restrito ? item.recurso_nome || "Recurso ocupado" : item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span><small>{item.duracao_minutos} min{item.recurso_nome ? ` · ${item.recurso_nome}` : ""}</small></article>;
                                 })}
                             </div>
                         </div>
@@ -496,6 +537,7 @@ export default function Agenda() {
                     <div className="agenda-list">
                         {ordenados.map((item) => {
                             const restrito = item.detalhes_restritos;
+                            const area = areaDoAgendamento(item);
                             return (
                                 <article className={`agenda-item ${restrito ? "agenda-item-restrito" : ""}`} key={item.id}>
                                     <div className="agenda-item-time">
@@ -511,6 +553,7 @@ export default function Agenda() {
                                     </div>
                                     <div className="agenda-item-meta">
                                         <span className={`agenda-status agenda-status-${item.status.toLowerCase()}`}>{rotuloStatus(item.status)}</span>
+                                        {!restrito && area && <span className={`agenda-area-badge ${classeDaArea(area)}`}>{area}</span>}
                                         {!restrito && item.recurso_nome && <small>{item.recurso_nome}</small>}
                                         {!restrito && podeAlterar(item) && item.status !== "CANCELADO" && <div className="agenda-item-actions"><Button size="small" variant="secondary" onClick={() => editarAgendamento(item)}>Editar</Button><Button size="small" variant="danger" onClick={() => cancelar(item)}>Cancelar</Button></div>}
                                     </div>
