@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { CalendarDays, CalendarPlus, Clock3, RefreshCw, Scissors, UserRound, Wrench } from "lucide-react";
+import { CalendarDays, CalendarPlus, ChevronLeft, ChevronRight, Clock3, RefreshCw, Scissors, UserRound, Wrench } from "lucide-react";
 
 import { atualizarAgendamento, criarAgendamento, listarAgendamentos, listarRecursosAgenda } from "../services/agendaService";
 import { buscarUsuarioLogado, listarUsuarios } from "../services/usuarioService";
@@ -35,6 +35,13 @@ const FORM_INICIAL = {
     duracao_minutos: "",
     observacao: ""
 };
+
+const TONS_DO_CALENDARIO = [
+    "agenda-calendar-tone-blue",
+    "agenda-calendar-tone-gold",
+    "agenda-calendar-tone-green",
+    "agenda-calendar-tone-violet"
+];
 
 
 function dataLocalInput(data) {
@@ -115,6 +122,13 @@ function classeDaArea(area) {
     if (areaNormalizada === "TATTOO") return "agenda-area-tattoo";
     if (areaNormalizada === "BARBEARIA") return "agenda-area-barbearia";
     return "agenda-area-neutral";
+}
+
+
+function tomDoCalendario(item) {
+    const identificador = String(item.profissional_id || item.servico_id || item.id || "");
+    const codigo = Array.from(identificador).reduce((total, caractere) => total + caractere.charCodeAt(0), 0);
+    return TONS_DO_CALENDARIO[codigo % TONS_DO_CALENDARIO.length];
 }
 
 
@@ -354,8 +368,8 @@ export default function Agenda() {
         const coluna = administrativo ? agendaColunas.findIndex((pessoa) => String(pessoa.id) === String(item.profissional_id)) : 0;
         const largura = 100 / agendaTotalColunas;
         return {
-            top: `${minutos * 0.72}px`,
-            height: `${Math.max(Number(item.duracao_minutos || 40) * 0.72, 38)}px`,
+            top: `${minutos * 0.8}px`,
+            height: `${Math.max(Number(item.duracao_minutos || 40) * 0.8, 40)}px`,
             left: `${Math.max(coluna, 0) * largura}%`,
             width: `calc(${largura}% - 8px)`
         };
@@ -367,6 +381,16 @@ export default function Agenda() {
     function areaDoAgendamento(item) {
         if (!administrativo) return usuario?.area_atuacao || "";
         return profissionais.find((profissional) => String(profissional.id) === String(item.profissional_id))?.area_atuacao || "";
+    }
+
+    function moverData(quantidadeDeDias) {
+        const proximaData = new Date(`${data}T12:00:00`);
+        proximaData.setDate(proximaData.getDate() + quantidadeDeDias);
+        setData(proximaData.toISOString().slice(0, 10));
+    }
+
+    function irParaHoje() {
+        setData(dataSelecionadaInicial());
     }
 
     return (
@@ -504,7 +528,12 @@ export default function Agenda() {
 
             <section className="agenda-calendar-card">
                 <div className="agenda-calendar-toolbar">
-                    <div><span className="agenda-calendar-overline">VISÃO DO DIA</span><strong>{new Date(`${data}T12:00:00`).toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long" })}</strong></div>
+                    <div className="agenda-calendar-date-navigation">
+                        <button type="button" className="agenda-calendar-nav-button" onClick={() => moverData(-1)} aria-label="Ver dia anterior"><ChevronLeft size={18} /></button>
+                        <div className="agenda-calendar-date-copy"><span className="agenda-calendar-overline">VISÃO DO DIA</span><strong>{new Date(`${data}T12:00:00`).toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" })}</strong></div>
+                        <button type="button" className="agenda-calendar-nav-button" onClick={() => moverData(1)} aria-label="Ver próximo dia"><ChevronRight size={18} /></button>
+                        <button type="button" className="agenda-calendar-today" onClick={irParaHoje}>Hoje</button>
+                    </div>
                     <div className="agenda-calendar-legend" aria-label="Legenda dos status da agenda">
                         <span><i className="agenda-legend-dot agenda-legend-scheduled" />Agendado</span>
                         <span><i className="agenda-legend-dot agenda-legend-confirmed" />Confirmado</span>
@@ -517,12 +546,14 @@ export default function Agenda() {
                         <div className="agenda-calendar-body">
                             <div className="agenda-calendar-hours">{horasAgenda.map((hora) => <span key={hora}>{String(hora).padStart(2, "0")}:00</span>)}</div>
                             <div className="agenda-calendar-grid">
-                                {horasAgenda.map((hora) => <span className="agenda-calendar-line" key={hora} style={{ top: `${(hora - 8) * 43.2}px` }} />)}
+                                {horasAgenda.map((hora) => <span className="agenda-calendar-line" key={hora} style={{ top: `${(hora - 8) * 48}px` }} />)}
                                 {ordenados.map((item) => {
                                     const restrito = item.detalhes_restritos;
                                     const servico = servicos.find((servicoAtual) => servicoAtual.id === item.servico_id);
                                     const status = String(item.status || "AGENDADO").toLowerCase();
-                                    return <article className={`agenda-calendar-block status-${status} ${restrito ? "restricted" : ""}`} key={`visual-${item.id}`} style={posicaoBloco(item)}><strong>{restrito ? "Recurso reservado" : servico?.nome || "Atendimento"}</strong><span>{restrito ? item.recurso_nome || "Recurso ocupado" : item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span><small>{item.duracao_minutos} min{item.recurso_nome ? ` · ${item.recurso_nome}` : ""}</small></article>;
+                                    const titulo = restrito ? "Recurso reservado" : servico?.nome || "Atendimento";
+                                    const detalhe = restrito ? item.recurso_nome || "Recurso ocupado" : item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso";
+                                    return <article className={`agenda-calendar-block ${tomDoCalendario(item)} status-${status} ${restrito ? "restricted" : ""}`} key={`visual-${item.id}`} style={posicaoBloco(item)} aria-label={`${titulo}: ${detalhe}. ${rotuloStatus(item.status)}.`}><strong>{titulo}</strong><span>{detalhe}</span><small>{item.duracao_minutos} min{item.recurso_nome ? ` · ${item.recurso_nome}` : ""}</small></article>;
                                 })}
                             </div>
                         </div>
