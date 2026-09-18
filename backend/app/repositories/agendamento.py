@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import or_
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
 from app.models.agendamento import Agendamento
@@ -91,11 +91,16 @@ def listar_recursos_livres(
     inicio_em: datetime,
     fim_em: datetime,
 ) -> list[RecursoAgenda]:
+    tipo_normalizado = " ".join(tipo.strip().upper().split())
     recursos = (
         db.query(RecursoAgenda)
         .filter(
             RecursoAgenda.empresa_id == empresa_id,
-            RecursoAgenda.tipo == tipo,
+            or_(
+                func.upper(RecursoAgenda.tipo) == tipo_normalizado,
+                func.upper(RecursoAgenda.tipo).like(f"{tipo_normalizado} %"),
+                func.upper(RecursoAgenda.tipo).like(f"% {tipo_normalizado}"),
+            ),
             RecursoAgenda.ativo.is_(True),
             RecursoAgenda.status == "ATIVO",
         )

@@ -20,6 +20,7 @@ from app.repositories.profissional import (
 )
 from app.repositories.recurso_agenda import buscar_recurso_por_id
 from app.repositories.servico import buscar_servico_por_id
+from app.utils.recurso import tipos_recurso_compativeis
 
 
 PERFIS_AGENDA = {
@@ -167,7 +168,7 @@ def _validar_recurso(db, servico, dados, usuario, inicio_em, fim_em, atual=None)
                 status_code=409,
                 detail="O recurso esta inativo ou em manutencao.",
             )
-        if recurso.tipo != servico.tipo_recurso:
+        if not tipos_recurso_compativeis(recurso.tipo, servico.tipo_recurso):
             raise HTTPException(
                 status_code=400,
                 detail="O recurso escolhido nao atende ao tipo do servico.",
@@ -193,7 +194,7 @@ def _validar_recurso(db, servico, dados, usuario, inicio_em, fim_em, atual=None)
         if (
             atual_recurso
             and atual_recurso.disponivel
-            and atual_recurso.tipo == servico.tipo_recurso
+            and tipos_recurso_compativeis(atual_recurso.tipo, servico.tipo_recurso)
             and all(recurso.id != atual_recurso.id for recurso in livres)
         ):
             conflitos = buscar_conflitos(

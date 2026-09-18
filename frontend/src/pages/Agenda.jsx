@@ -76,6 +76,14 @@ function nomeProfissional(profissional, usuarios) {
 }
 
 
+function tiposRecursoCompativeis(tipoRecurso, tipoServico) {
+    const normalizar = (valor) => String(valor || "").trim().toUpperCase().replace(/\s+/g, " ");
+    const recurso = normalizar(tipoRecurso);
+    const servico = normalizar(tipoServico);
+    return recurso === servico || recurso.startsWith(`${servico} `) || servico.startsWith(`${recurso} `);
+}
+
+
 export default function Agenda() {
     const [usuario, setUsuario] = useState(null);
     const [usuarios, setUsuarios] = useState(new Map());
@@ -95,7 +103,7 @@ export default function Agenda() {
     const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
     const servicoSelecionado = servicos.find((item) => String(item.id) === String(form.servico_id));
     const recursosDoServico = recursos.filter((item) => (
-        item.ativo && (item.status || "ATIVO") === "ATIVO" && servicoSelecionado?.requer_recurso && item.tipo === servicoSelecionado.tipo_recurso
+        item.ativo && (item.status || "ATIVO") === "ATIVO" && servicoSelecionado?.requer_recurso && tiposRecursoCompativeis(item.tipo, servicoSelecionado.tipo_recurso)
     ));
     const nomesUsuarios = usuarios;
 
