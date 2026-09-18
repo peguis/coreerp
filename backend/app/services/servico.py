@@ -3,6 +3,7 @@ from decimal import Decimal, InvalidOperation
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.enums import ModoReservaRecurso
 from app.repositories.servico import (
     atualizar_servico,
     buscar_servico_por_id,
@@ -42,6 +43,17 @@ def _validar_preco(preco) -> None:
         )
 
 
+def _normalizar_tipo_recurso(tipo):
+    if tipo is None:
+        return None
+    if not isinstance(tipo, str) or not tipo.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="O tipo_recurso deve ser informado quando necessario.",
+        )
+    return tipo.strip().upper()
+
+
 def criar_servico_service(
     db: Session,
     servico,
@@ -49,6 +61,20 @@ def criar_servico_service(
 ):
     servico.nome = _validar_nome(servico.nome)
     _validar_preco(servico.preco_padrao)
+    servico.tipo_recurso = _normalizar_tipo_recurso(servico.tipo_recurso)
+    servico.modo_selecao_recurso = ModoReservaRecurso(
+        servico.modo_selecao_recurso
+    ).value
+    if servico.requer_recurso and not servico.tipo_recurso:
+        raise HTTPException(
+            status_code=400,
+            detail="O tipo_recurso e obrigatorio quando o servico exige recurso.",
+        )
+    if servico.requer_recurso and not servico.modo_selecao_recurso:
+        raise HTTPException(
+            status_code=400,
+            detail="O modo de selecao do recurso e obrigatorio.",
+        )
 
     try:
         novo_servico = criar_servico(db, servico, empresa_id)
@@ -115,6 +141,33 @@ def atualizar_servico_service(
 
     if "preco_padrao" in dados_dict:
         _validar_preco(dados_dict["preco_padrao"])
+
+    if "tipo_recurso" in dados_dict:
+        dados_dict["tipo_recurso"] = _normalizar_tipo_recurso(
+            dados_dict["tipo_recurso"]
+        )
+    if "modo_selecao_recurso" in dados_dict:
+        dados_dict["modo_selecao_recurso"] = ModoReservaRecurso(
+            dados_dict["modo_selecao_recurso"]
+        ).value
+
+    requer_recurso = dados_dict.get(
+        "requer_recurso", servico_db.requer_recurso
+    )
+    tipo_recurso = dados_dict.get("tipo_recurso", servico_db.tipo_recurso)
+    if requer_recurso and not tipo_recurso:
+        raise HTTPException(
+            status_code=400,
+            detail="O tipo_recurso e obrigatorio quando o servico exige recurso.",
+        )
+    modo_selecao = dados_dict.get(
+        "modo_selecao_recurso", servico_db.modo_selecao_recurso
+    )
+    if requer_recurso and not modo_selecao:
+        raise HTTPException(
+            status_code=400,
+            detail="O modo de selecao do recurso e obrigatorio.",
+        )
 
     try:
         servico_atualizado = atualizar_servico(

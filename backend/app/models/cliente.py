@@ -87,3 +87,9 @@ class Cliente(Base):
         "Atendimento",
         back_populates="cliente"
     )
+
+
+    agendamentos = relationship(
+        "Agendamento",
+        back_populates="cliente"
+    )

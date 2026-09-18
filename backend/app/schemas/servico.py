@@ -9,6 +9,8 @@ from pydantic import (
     field_validator,
 )
 
+from app.core.enums import ModoReservaRecurso
+
 
 class ServicoCreate(BaseModel):
     nome: str
@@ -19,6 +21,10 @@ class ServicoCreate(BaseModel):
         max_digits=12,
         decimal_places=2,
     )
+    duracao_minutos: int = Field(default=60, gt=0, le=1440)
+    requer_recurso: bool = False
+    tipo_recurso: str | None = None
+    modo_selecao_recurso: ModoReservaRecurso = ModoReservaRecurso.AUTOMATICO
 
     @field_validator("nome")
     @classmethod
@@ -38,6 +44,10 @@ class ServicoUpdate(BaseModel):
         max_digits=12,
         decimal_places=2,
     )
+    duracao_minutos: int | None = Field(default=None, gt=0, le=1440)
+    requer_recurso: bool | None = None
+    tipo_recurso: str | None = None
+    modo_selecao_recurso: ModoReservaRecurso | None = None
     ativo: bool | None = None
 
     @field_validator("nome")
@@ -73,6 +83,10 @@ class ServicoResponse(BaseModel):
     nome: str
     descricao: str | None = None
     preco_padrao: Decimal
+    duracao_minutos: int
+    requer_recurso: bool
+    tipo_recurso: str | None
+    modo_selecao_recurso: ModoReservaRecurso | None
     ativo: bool
     created_at: datetime
     updated_at: datetime

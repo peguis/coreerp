@@ -7,6 +7,7 @@ from sqlalchemy import (
     CheckConstraint,
     DateTime,
     ForeignKey,
+    Integer,
     Numeric,
     String,
     Text,
@@ -20,6 +21,7 @@ from app.database.database import Base
 
 if TYPE_CHECKING:
     from app.models.atendimento import Atendimento
+    from app.models.agendamento import Agendamento
     from app.models.empresa import Empresa
 
 
@@ -33,6 +35,10 @@ class Servico(Base):
         CheckConstraint(
             "preco_padrao >= 0",
             name="ck_servicos_preco_padrao_nao_negativo",
+        ),
+        CheckConstraint(
+            "duracao_minutos > 0 AND duracao_minutos <= 1440",
+            name="ck_servicos_duracao_valida",
         ),
     )
 
@@ -59,6 +65,31 @@ class Servico(Base):
         nullable=False,
         default=Decimal("0.00"),
         server_default=text("0.00"),
+    )
+
+    duracao_minutos: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=60,
+        server_default=text("60"),
+    )
+
+    requer_recurso: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+        server_default=text("false"),
+    )
+
+    tipo_recurso: Mapped[str | None] = mapped_column(
+        String(30), nullable=True
+    )
+
+    modo_selecao_recurso: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True,
+        default="AUTOMATICO",
+        server_default=text("'AUTOMATICO'"),
     )
 
     ativo: Mapped[bool] = mapped_column(
@@ -88,5 +119,10 @@ class Servico(Base):
 
     atendimentos: Mapped[list["Atendimento"]] = relationship(
         "Atendimento",
+        back_populates="servico",
+    )
+
+    agendamentos: Mapped[list["Agendamento"]] = relationship(
+        "Agendamento",
         back_populates="servico",
     )

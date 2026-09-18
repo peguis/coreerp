@@ -12,3 +12,5 @@ from app.models.servico import Servico
 from app.models.profissional import Profissional
 from app.models.atendimento import Atendimento
 from app.models.repasse import Repasse, RepasseItem
+from app.models.recurso_agenda import RecursoAgenda
+from app.models.agendamento import Agendamento

@@ -7,6 +7,7 @@ import {
     Scissors,
     Wallet,
     Settings,
+    CalendarDays,
     LogOut,
     Menu,
     X
@@ -36,6 +37,13 @@ const menusAdministrativos = [
         nome: "Dashboard piloto",
         rota: "/dashboard/piloto",
         icone: LayoutDashboard
+    },
+
+
+    {
+        nome: "Agenda",
+        rota: "/agenda",
+        icone: CalendarDays
     },
 
 
@@ -125,6 +133,12 @@ const menusProfissional = [
         nome: "Início",
         rota: "/inicio",
         icone: LayoutDashboard
+    },
+
+    {
+        nome: "Minha agenda",
+        rota: "/agenda",
+        icone: CalendarDays
     },
 
     {

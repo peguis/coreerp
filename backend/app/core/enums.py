@@ -31,3 +31,16 @@ class FormaPagamentoRepasse(str, Enum):
 class OrigemLancamento(str, Enum):
     ATENDIMENTO = "ATENDIMENTO"
     REPASSE = "REPASSE"
+
+
+class StatusAgendamento(str, Enum):
+    AGENDADO = "AGENDADO"
+    CONFIRMADO = "CONFIRMADO"
+    CONCLUIDO = "CONCLUIDO"
+    CANCELADO = "CANCELADO"
+    NAO_COMPARECEU = "NAO_COMPARECEU"
+
+
+class ModoReservaRecurso(str, Enum):
+    AUTOMATICO = "AUTOMATICO"
+    MANUAL = "MANUAL"

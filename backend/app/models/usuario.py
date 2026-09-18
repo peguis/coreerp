@@ -106,3 +106,15 @@ class Usuario(Base):
         "Repasse",
         back_populates="created_by_usuario"
     )
+
+    agendamentos_criados = relationship(
+        "Agendamento",
+        foreign_keys="Agendamento.criado_por_usuario_id",
+        back_populates="criado_por",
+    )
+
+    agendamentos_cancelados = relationship(
+        "Agendamento",
+        foreign_keys="Agendamento.cancelado_por_usuario_id",
+        back_populates="cancelado_por",
+    )

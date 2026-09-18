@@ -20,6 +20,7 @@ from app.database.database import Base
 
 if TYPE_CHECKING:
     from app.models.atendimento import Atendimento
+    from app.models.agendamento import Agendamento
     from app.models.empresa import Empresa
     from app.models.usuario import Usuario
     from app.models.repasse import Repasse
@@ -106,5 +107,10 @@ class Profissional(Base):
 
     repasses: Mapped[list["Repasse"]] = relationship(
         "Repasse",
+        back_populates="profissional",
+    )
+
+    agendamentos: Mapped[list["Agendamento"]] = relationship(
+        "Agendamento",
         back_populates="profissional",
     )

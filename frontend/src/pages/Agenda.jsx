@@ -1,0 +1,414 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+import { atualizarAgendamento, atualizarRecursoAgenda, criarAgendamento, criarRecursoAgenda, listarAgendamentos, listarRecursosAgenda } from "../services/agendaService";
+import { buscarUsuarioLogado, listarUsuarios } from "../services/usuarioService";
+import { listarClientes } from "../services/clienteService";
+import { listarProfissionais } from "../services/profissionalService";
+import { listarServicos } from "../services/servicoService";
+import { getErrorMessage } from "../utils/errors";
+
+import PageHeader from "../components/ui/PageHeader";
+import SectionCard from "../components/ui/SectionCard";
+import FormCard from "../components/forms/FormCard";
+import Input from "../components/forms/Input";
+import Select from "../components/forms/Select";
+import Textarea from "../components/forms/Textarea";
+import Button from "../components/forms/Button";
+import Loading from "../components/Loading";
+import Mensagem from "../components/Mensagem";
+
+import "./Agenda.css";
+
+
+const FORM_INICIAL = {
+    profissional_id: "",
+    servico_id: "",
+    cliente_id: "",
+    cliente_avulso_nome: "",
+    recurso_id: "",
+    inicio_em: "",
+    duracao_minutos: "",
+    observacao: ""
+};
+
+
+function dataLocalInput(data) {
+    const valor = new Date(data);
+    const ajuste = valor.getTime() - valor.getTimezoneOffset() * 60000;
+    return new Date(ajuste).toISOString().slice(0, 16);
+}
+
+
+function isoLocal(valor) {
+    return new Date(valor).toISOString();
+}
+
+
+function dataSelecionadaInicial() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+
+function intervaloDoDia(data) {
+    const inicio = new Date(`${data}T00:00:00`);
+    const fim = new Date(inicio);
+    fim.setDate(fim.getDate() + 1);
+    return {
+        inicio_de: inicio.toISOString(),
+        inicio_ate: fim.toISOString()
+    };
+}
+
+
+function rotuloStatus(status) {
+    return {
+        AGENDADO: "Agendado",
+        CONFIRMADO: "Confirmado",
+        CONCLUIDO: "Concluído",
+        CANCELADO: "Cancelado",
+        NAO_COMPARECEU: "Não compareceu"
+    }[status] || status;
+}
+
+
+function nomeProfissional(profissional, usuarios) {
+    return usuarios.get(profissional.usuario_id) || `Profissional #${profissional.id}`;
+}
+
+
+export default function Agenda() {
+    const [usuario, setUsuario] = useState(null);
+    const [usuarios, setUsuarios] = useState(new Map());
+    const [clientes, setClientes] = useState([]);
+    const [profissionais, setProfissionais] = useState([]);
+    const [servicos, setServicos] = useState([]);
+    const [recursos, setRecursos] = useState([]);
+    const [agendamentos, setAgendamentos] = useState([]);
+    const [data, setData] = useState(dataSelecionadaInicial);
+    const [form, setForm] = useState(FORM_INICIAL);
+    const [recursoForm, setRecursoForm] = useState({ nome: "", tipo: "MACA" });
+    const [editarId, setEditarId] = useState(null);
+    const [carregando, setCarregando] = useState(true);
+    const [salvando, setSalvando] = useState(false);
+    const [salvandoRecurso, setSalvandoRecurso] = useState(false);
+    const [erro, setErro] = useState("");
+    const [mensagem, setMensagem] = useState("");
+
+    const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
+    const servicoSelecionado = servicos.find((item) => String(item.id) === String(form.servico_id));
+    const recursosDoServico = recursos.filter((item) => (
+        item.ativo && servicoSelecionado?.requer_recurso && item.tipo === servicoSelecionado.tipo_recurso
+    ));
+    const nomesUsuarios = usuarios;
+
+    const carregarBase = useCallback(async () => {
+        try {
+            const usuarioDados = await buscarUsuarioLogado();
+            const [clientesDados, servicosDados, recursosDados] = await Promise.all([
+                listarClientes(),
+                listarServicos({ ativo: true, pagina: 1, limite: 100 }),
+                listarRecursosAgenda({ ativo: true })
+            ]);
+
+            setUsuario(usuarioDados);
+            setClientes(Array.isArray(clientesDados) ? clientesDados : []);
+            setServicos(Array.isArray(servicosDados) ? servicosDados : []);
+            setRecursos(Array.isArray(recursosDados) ? recursosDados : []);
+
+            if (["admin", "gerente"].includes(usuarioDados.perfil)) {
+                const [profissionaisDados, usuariosDados] = await Promise.all([
+                    listarProfissionais({ ativo: true, pagina: 1, limite: 100 }),
+                    listarUsuarios()
+                ]);
+                setProfissionais(Array.isArray(profissionaisDados) ? profissionaisDados : []);
+                setUsuarios(new Map((Array.isArray(usuariosDados) ? usuariosDados : []).map((item) => [item.id, item.nome])));
+            }
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível carregar os dados da agenda."));
+        }
+    }, []);
+
+    const carregarAgenda = useCallback(async () => {
+        try {
+            setCarregando(true);
+            setErro("");
+            const dados = await listarAgendamentos(intervaloDoDia(data));
+            setAgendamentos(Array.isArray(dados) ? dados : []);
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível carregar a agenda."));
+        } finally {
+            setCarregando(false);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregarBase());
+    }, [carregarBase]);
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregarAgenda());
+    }, [carregarAgenda]);
+
+    function alterar(campo, valor) {
+        setForm((atual) => ({ ...atual, [campo]: valor }));
+        if (campo === "servico_id") {
+            const servico = servicos.find((item) => String(item.id) === String(valor));
+            setForm((atual) => ({
+                ...atual,
+                servico_id: valor,
+                duracao_minutos: servico?.duracao_minutos ? String(servico.duracao_minutos) : "",
+                recurso_id: ""
+            }));
+        }
+    }
+
+    function novoAgendamento() {
+        setEditarId(null);
+        setMensagem("");
+        setErro("");
+        setForm({
+            ...FORM_INICIAL,
+            inicio_em: `${data}T10:00`,
+            profissional_id: administrativo ? "" : undefined
+        });
+    }
+
+    function editarAgendamento(item) {
+        setEditarId(item.id);
+        setMensagem("");
+        setErro("");
+        setForm({
+            profissional_id: item.profissional_id ? String(item.profissional_id) : "",
+            servico_id: item.servico_id ? String(item.servico_id) : "",
+            cliente_id: item.cliente_id ? String(item.cliente_id) : "",
+            cliente_avulso_nome: item.cliente_avulso_nome || "",
+            recurso_id: item.recurso_id ? String(item.recurso_id) : "",
+            inicio_em: dataLocalInput(item.inicio_em),
+            duracao_minutos: String(item.duracao_minutos || ""),
+            observacao: item.observacao || ""
+        });
+    }
+
+    function podeAlterar(item) {
+        return administrativo || item.criado_por_usuario_id === usuario?.id;
+    }
+
+    async function salvar(evento) {
+        evento.preventDefault();
+        if (salvando) return;
+        setErro("");
+        setMensagem("");
+        if (!form.servico_id || !form.inicio_em || !form.duracao_minutos) {
+            setErro("Informe serviço, data, horário e duração.");
+            return;
+        }
+        if (administrativo && !form.profissional_id) {
+            setErro("Selecione o profissional responsável.");
+            return;
+        }
+        if (servicoSelecionado?.requer_recurso && servicoSelecionado.modo_selecao_recurso === "MANUAL" && !form.recurso_id) {
+            setErro("Escolha a maca ou recurso deste agendamento.");
+            return;
+        }
+
+        const dados = {
+            servico_id: Number(form.servico_id),
+            cliente_id: form.cliente_id ? Number(form.cliente_id) : null,
+            cliente_avulso_nome: form.cliente_id ? null : (form.cliente_avulso_nome.trim() || null),
+            inicio_em: isoLocal(form.inicio_em),
+            duracao_minutos: Number(form.duracao_minutos),
+            observacao: form.observacao.trim() || null
+        };
+        if (administrativo) dados.profissional_id = Number(form.profissional_id);
+        if (servicoSelecionado?.requer_recurso && servicoSelecionado.modo_selecao_recurso === "MANUAL") {
+            dados.recurso_id = Number(form.recurso_id);
+        }
+
+        try {
+            setSalvando(true);
+            if (editarId) {
+                await atualizarAgendamento(editarId, dados);
+                setMensagem("Agendamento atualizado com sucesso.");
+            } else {
+                await criarAgendamento(dados);
+                setMensagem("Agendamento criado com sucesso.");
+            }
+            setEditarId(null);
+            setForm(FORM_INICIAL);
+            await carregarAgenda();
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível salvar o agendamento."));
+        } finally {
+            setSalvando(false);
+        }
+    }
+
+    async function salvarRecurso(evento) {
+        evento.preventDefault();
+        if (!recursoForm.nome.trim() || !recursoForm.tipo.trim()) {
+            setErro("Informe nome e tipo do recurso.");
+            return;
+        }
+        try {
+            setSalvandoRecurso(true);
+            setErro("");
+            const recurso = await criarRecursoAgenda({
+                nome: recursoForm.nome.trim(),
+                tipo: recursoForm.tipo.trim().toUpperCase()
+            });
+            setRecursos((atuais) => [...atuais, recurso].sort((a, b) => a.nome.localeCompare(b.nome)));
+            setRecursoForm({ nome: "", tipo: recursoForm.tipo });
+            setMensagem("Recurso cadastrado com sucesso.");
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível cadastrar o recurso."));
+        } finally {
+            setSalvandoRecurso(false);
+        }
+    }
+
+    async function alternarRecurso(recurso) {
+        try {
+            setErro("");
+            const atualizado = await atualizarRecursoAgenda(recurso.id, { ativo: !recurso.ativo });
+            setRecursos((atuais) => atuais.map((item) => item.id === atualizado.id ? atualizado : item));
+            setMensagem(atualizado.ativo ? "Recurso ativado." : "Recurso desativado.");
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível alterar o recurso."));
+        }
+    }
+
+    async function cancelar(item) {
+        if (!window.confirm("Cancelar este agendamento?")) return;
+        try {
+            setErro("");
+            setMensagem("");
+            await atualizarAgendamento(item.id, { status: "CANCELADO" });
+            setMensagem("Agendamento cancelado. O recurso foi liberado.");
+            await carregarAgenda();
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível cancelar o agendamento."));
+        }
+    }
+
+    const ordenados = useMemo(() => [...agendamentos].sort((a, b) => new Date(a.inicio_em) - new Date(b.inicio_em)), [agendamentos]);
+    const ativos = ordenados.filter((item) => !["CANCELADO", "NAO_COMPARECEU"].includes(item.status));
+    const selecionadoManual = servicoSelecionado?.requer_recurso && servicoSelecionado.modo_selecao_recurso === "MANUAL";
+
+    return (
+        <main className="agenda-page">
+            <PageHeader titulo="Agenda" subtitulo="Organize atendimentos, profissionais e recursos do HYPE.">
+                <Button variant="primary" onClick={novoAgendamento}>Novo agendamento</Button>
+            </PageHeader>
+
+            {(erro || mensagem) && <Mensagem tipo={erro ? "erro" : "sucesso"} texto={erro || mensagem} />}
+
+            <section className="agenda-toolbar">
+                <Input label="Dia da agenda" type="date" value={data} onChange={(evento) => setData(evento.target.value)} />
+                <div className="agenda-toolbar-summary">
+                    <span>Compromissos do dia</span>
+                    <strong>{ativos.length}</strong>
+                </div>
+                <Button variant="secondary" onClick={carregarAgenda}>Atualizar</Button>
+            </section>
+
+            <FormCard titulo={editarId ? "Editar agendamento" : "Novo agendamento"} subtitulo="A duração vem do serviço e pode ser ajustada para este horário.">
+                <form className="agenda-form" onSubmit={salvar}>
+                    {administrativo && (
+                        <Select
+                            label="Profissional"
+                            value={form.profissional_id || ""}
+                            onChange={(evento) => alterar("profissional_id", evento.target.value)}
+                            options={profissionais.map((item) => ({ value: item.id, label: nomeProfissional(item, nomesUsuarios) }))}
+                            required
+                        />
+                    )}
+                    <Select
+                        label="Serviço"
+                        value={form.servico_id}
+                        onChange={(evento) => alterar("servico_id", evento.target.value)}
+                        options={servicos.map((item) => ({ value: item.id, label: item.nome }))}
+                        required
+                    />
+                    <Input label="Data e horário" type="datetime-local" value={form.inicio_em} onChange={(evento) => alterar("inicio_em", evento.target.value)} required />
+                    <Input label="Duração (minutos)" type="number" min="1" max="1440" value={form.duracao_minutos} onChange={(evento) => alterar("duracao_minutos", evento.target.value)} required />
+                    <Select
+                        label="Cliente cadastrado"
+                        value={form.cliente_id}
+                        onChange={(evento) => alterar("cliente_id", evento.target.value)}
+                        options={clientes.map((item) => ({ value: item.id, label: item.nome }))}
+                        placeholder="Cliente avulso"
+                    />
+                    {!form.cliente_id && <Input label="Nome do cliente avulso" value={form.cliente_avulso_nome} onChange={(evento) => alterar("cliente_avulso_nome", evento.target.value)} placeholder="Opcional" />}
+                    {selecionadoManual && (
+                        <Select
+                            label="Maca ou recurso"
+                            value={form.recurso_id}
+                            onChange={(evento) => alterar("recurso_id", evento.target.value)}
+                            options={recursosDoServico.map((item) => ({ value: item.id, label: item.nome }))}
+                            placeholder="Selecione o recurso"
+                            required
+                        />
+                    )}
+                    {servicoSelecionado?.requer_recurso && !selecionadoManual && (
+                        <div className="agenda-auto-note"><strong>Reserva automática</strong><span>O sistema escolherá uma maca livre para este horário.</span></div>
+                    )}
+                    <Textarea className="agenda-form-full" label="Observação (opcional)" value={form.observacao} onChange={(evento) => alterar("observacao", evento.target.value)} rows={3} />
+                    <div className="agenda-form-actions agenda-form-full">
+                        {editarId && <Button type="button" variant="secondary" onClick={() => { setEditarId(null); setForm(FORM_INICIAL); }}>Cancelar edição</Button>}
+                        <Button type="submit" variant="primary" loading={salvando}>{editarId ? "Salvar alterações" : "Criar agendamento"}</Button>
+                    </div>
+                </form>
+            </FormCard>
+
+            <SectionCard titulo="Agenda do dia" subtitulo="Profissionais veem os próprios detalhes e apenas a ocupação dos recursos de terceiros.">
+                {carregando ? <Loading texto="Carregando agenda..." /> : ordenados.length === 0 ? (
+                    <div className="agenda-empty">Nenhum agendamento para este dia.</div>
+                ) : (
+                    <div className="agenda-list">
+                        {ordenados.map((item) => {
+                            const restrito = item.detalhes_restritos;
+                            return (
+                                <article className={`agenda-item ${restrito ? "agenda-item-restrito" : ""}`} key={item.id}>
+                                    <div className="agenda-item-time">
+                                        <strong>{new Date(item.inicio_em).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</strong>
+                                        <span>{item.duracao_minutos} min</span>
+                                    </div>
+                                    <div className="agenda-item-content">
+                                        {restrito ? (
+                                            <><strong>Recurso reservado</strong><span>{item.recurso_nome || "Recurso ocupado"}</span></>
+                                        ) : (
+                                            <><strong>{item.servico_id ? servicos.find((servico) => servico.id === item.servico_id)?.nome || "Serviço" : "Serviço"}</strong><span>{item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span>{administrativo && <small>{item.profissional_id ? nomeProfissional(profissionais.find((profissional) => profissional.id === item.profissional_id) || {}, nomesUsuarios) : "-"}</small>}</>
+                                        )}
+                                    </div>
+                                    <div className="agenda-item-meta">
+                                        <span className={`agenda-status agenda-status-${item.status.toLowerCase()}`}>{rotuloStatus(item.status)}</span>
+                                        {!restrito && item.recurso_nome && <small>{item.recurso_nome}</small>}
+                                        {!restrito && podeAlterar(item) && item.status !== "CANCELADO" && <div className="agenda-item-actions"><Button size="small" variant="secondary" onClick={() => editarAgendamento(item)}>Editar</Button><Button size="small" variant="danger" onClick={() => cancelar(item)}>Cancelar</Button></div>}
+                                    </div>
+                                </article>
+                            );
+                        })}
+                    </div>
+                )}
+            </SectionCard>
+
+            {administrativo && (
+                <SectionCard titulo="Recursos físicos" subtitulo="Cadastre macas, cadeiras ou estações que poderão ser reservadas.">
+                    <form className="agenda-resource-form" onSubmit={salvarRecurso}>
+                        <Input label="Nome" value={recursoForm.nome} onChange={(evento) => setRecursoForm((atual) => ({ ...atual, nome: evento.target.value }))} placeholder="Ex.: Maca 1" required />
+                        <Input label="Tipo" value={recursoForm.tipo} onChange={(evento) => setRecursoForm((atual) => ({ ...atual, tipo: evento.target.value }))} placeholder="Ex.: MACA" required />
+                        <Button type="submit" variant="secondary" loading={salvandoRecurso}>Cadastrar recurso</Button>
+                    </form>
+                    <div className="agenda-resource-list">
+                        {recursos.length === 0 ? <span className="agenda-empty">Nenhum recurso cadastrado.</span> : recursos.map((recurso) => (
+                            <div className={`agenda-resource-chip ${!recurso.ativo ? "agenda-resource-chip-inativo" : ""}`} key={recurso.id}>
+                                <span><strong>{recurso.nome}</strong><small>{recurso.tipo}</small></span>
+                                <Button size="small" variant={recurso.ativo ? "danger" : "success"} onClick={() => alternarRecurso(recurso)}>{recurso.ativo ? "Desativar" : "Ativar"}</Button>
+                            </div>
+                        ))}
+                    </div>
+                </SectionCard>
+            )}
+        </main>
+    );
+}

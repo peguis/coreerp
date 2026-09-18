@@ -14,6 +14,10 @@ def criar_servico(
         nome=servico.nome,
         descricao=servico.descricao,
         preco_padrao=servico.preco_padrao,
+        duracao_minutos=servico.duracao_minutos,
+        requer_recurso=servico.requer_recurso,
+        tipo_recurso=servico.tipo_recurso,
+        modo_selecao_recurso=servico.modo_selecao_recurso,
         ativo=True,
     )
 
@@ -70,6 +74,10 @@ def atualizar_servico(
         "nome",
         "descricao",
         "preco_padrao",
+        "duracao_minutos",
+        "requer_recurso",
+        "tipo_recurso",
+        "modo_selecao_recurso",
         "ativo",
     }
 

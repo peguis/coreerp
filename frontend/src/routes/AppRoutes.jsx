@@ -39,6 +39,7 @@ import Financeiro from "../pages/Financeiro";
 import NovoLancamento from "../pages/NovoLancamento";
 import EditarLancamento from "../pages/EditarLancamento";
 import Configuracoes from "../pages/Configuracoes";
+import Agenda from "../pages/Agenda";
 
 
 const ADMINISTRADORES = ["admin", "gerente"];
@@ -84,6 +85,7 @@ export default function AppRoutes() {
                         </Route>
 
                         <Route element={<PerfilRoute perfis={ATENDIMENTO} />}>
+                            <Route path="/agenda" element={<Agenda />} />
                             <Route path="/atendimentos" element={<Atendimentos />} />
                             <Route path="/atendimentos/novo" element={<NovoAtendimento />} />
                         </Route>

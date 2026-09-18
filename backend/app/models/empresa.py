@@ -30,6 +30,8 @@ if TYPE_CHECKING:
     from app.models.servico import Servico
     from app.models.profissional import Profissional
     from app.models.atendimento import Atendimento
+    from app.models.agendamento import Agendamento
+    from app.models.recurso_agenda import RecursoAgenda
     from app.models.repasse import Repasse, RepasseItem
 
 
@@ -166,4 +168,16 @@ class Empresa(Base):
     repasse_itens: Mapped[list["RepasseItem"]] = relationship(
         "RepasseItem",
         back_populates="empresa"
+    )
+
+    recursos_agenda: Mapped[list["RecursoAgenda"]] = relationship(
+        "RecursoAgenda",
+        back_populates="empresa",
+        cascade="all, delete-orphan",
+    )
+
+    agendamentos: Mapped[list["Agendamento"]] = relationship(
+        "Agendamento",
+        back_populates="empresa",
+        cascade="all, delete-orphan",
     )
