@@ -49,6 +49,18 @@
 .input-group svg { color: #f8f1df; flex-shrink: 0; }
 .input-group input { width: 100%; border: none; outline: none; color: var(--hype-text); font-size: 18px; background: transparent; }
 .input-group input::placeholder { color: var(--hype-text-muted); }
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:focus,
+.input-group input:-webkit-autofill:active {
+    border: none;
+    -webkit-text-fill-color: var(--hype-text);
+    caret-color: var(--hype-text);
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(25, 30, 31, .82) inset;
+    box-shadow: 0 0 0 1000px rgba(25, 30, 31, .82) inset;
+    transition: background-color 9999s ease-out 0s;
+}
 .login-password-toggle { display: grid; place-items: center; padding: 2px; border: 0; color: var(--hype-text-muted); background: transparent; cursor: pointer; }
 .login-password-toggle:hover { color: var(--hype-gold); }
 
