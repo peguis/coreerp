@@ -62,6 +62,15 @@ function intervaloDoDia(data) {
 }
 
 
+function dataLocalDoAgendamento(valor) {
+    const dataAgendamento = new Date(valor);
+    const ano = dataAgendamento.getFullYear();
+    const mes = String(dataAgendamento.getMonth() + 1).padStart(2, "0");
+    const dia = String(dataAgendamento.getDate()).padStart(2, "0");
+    return `${ano}-${mes}-${dia}`;
+}
+
+
 function rotuloStatus(status) {
     return {
         AGENDADO: "Agendado",
@@ -94,10 +103,12 @@ export default function Agenda() {
     const [servicos, setServicos] = useState([]);
     const [recursos, setRecursos] = useState([]);
     const [agendamentos, setAgendamentos] = useState([]);
+    const [proximosAgendamentos, setProximosAgendamentos] = useState([]);
     const [data, setData] = useState(dataSelecionadaInicial);
     const [form, setForm] = useState(FORM_INICIAL);
     const [editarId, setEditarId] = useState(null);
     const [carregando, setCarregando] = useState(true);
+    const [carregandoProximos, setCarregandoProximos] = useState(true);
     const [salvando, setSalvando] = useState(false);
     const [erro, setErro] = useState("");
     const [mensagem, setMensagem] = useState("");
@@ -149,6 +160,18 @@ export default function Agenda() {
         }
     }, [data]);
 
+    const carregarProximosAgendamentos = useCallback(async () => {
+        try {
+            setCarregandoProximos(true);
+            const dados = await listarAgendamentos({ inicio_de: new Date().toISOString() });
+            setProximosAgendamentos(Array.isArray(dados) ? dados : []);
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível carregar a visão geral da agenda."));
+        } finally {
+            setCarregandoProximos(false);
+        }
+    }, []);
+
     useEffect(() => {
         void Promise.resolve().then(() => carregarBase());
     }, [carregarBase]);
@@ -156,6 +179,10 @@ export default function Agenda() {
     useEffect(() => {
         void Promise.resolve().then(() => carregarAgenda());
     }, [carregarAgenda]);
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregarProximosAgendamentos());
+    }, [carregarProximosAgendamentos]);
 
     function alterar(campo, valor) {
         setForm((atual) => ({ ...atual, [campo]: valor }));
@@ -249,7 +276,7 @@ export default function Agenda() {
             }
             setEditarId(null);
             setForm(FORM_INICIAL);
-            await carregarAgenda();
+            await Promise.all([carregarAgenda(), carregarProximosAgendamentos()]);
         } catch (error) {
             setErro(getErrorMessage(error, "Não foi possível salvar o agendamento."));
         } finally {
@@ -264,7 +291,7 @@ export default function Agenda() {
             setMensagem("");
             await atualizarAgendamento(item.id, { status: "CANCELADO" });
             setMensagem("Agendamento cancelado. O recurso foi liberado.");
-            await carregarAgenda();
+            await Promise.all([carregarAgenda(), carregarProximosAgendamentos()]);
         } catch (error) {
             setErro(getErrorMessage(error, "Não foi possível cancelar o agendamento."));
         }
@@ -290,7 +317,7 @@ export default function Agenda() {
                     <span>Compromissos do dia</span>
                     <strong>{ativos.length}</strong>
                 </div>
-                <Button variant="secondary" onClick={carregarAgenda}>Atualizar</Button>
+                <Button variant="secondary" onClick={() => { void Promise.all([carregarAgenda(), carregarProximosAgendamentos()]); }}>Atualizar</Button>
             </section>
 
             <FormCard titulo={editarId ? "Editar agendamento" : "Novo agendamento"} subtitulo="A duração vem do serviço e pode ser ajustada para este horário.">
@@ -352,6 +379,38 @@ export default function Agenda() {
                     </div>
                 </form>
             </FormCard>
+
+            <SectionCard titulo="Visão geral da agenda" subtitulo="Todos os próximos agendamentos aparecem aqui, independentemente do dia selecionado.">
+                {carregandoProximos ? <Loading texto="Carregando próximos agendamentos..." /> : proximosAgendamentos.length === 0 ? (
+                    <div className="agenda-empty">Nenhum próximo agendamento encontrado.</div>
+                ) : (
+                    <div className="agenda-list">
+                        {proximosAgendamentos.map((item) => {
+                            const restrito = item.detalhes_restritos;
+                            return (
+                                <article className={`agenda-item agenda-overview-item ${restrito ? "agenda-item-restrito" : ""}`} key={`proximo-${item.id}`}>
+                                    <div className="agenda-item-time">
+                                        <strong>{new Date(item.inicio_em).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</strong>
+                                        <span>{new Date(item.inicio_em).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} · {item.duracao_minutos} min</span>
+                                    </div>
+                                    <div className="agenda-item-content">
+                                        {restrito ? (
+                                            <><strong>Recurso reservado</strong><span>{item.recurso_nome || "Recurso ocupado"}</span></>
+                                        ) : (
+                                            <><strong>{item.servico_id ? servicos.find((servico) => servico.id === item.servico_id)?.nome || "Serviço" : "Serviço"}</strong><span>{item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span>{administrativo && <small>{item.profissional_id ? nomeProfissional(profissionais.find((profissional) => profissional.id === item.profissional_id) || {}, nomesUsuarios) : "-"}</small>}</>
+                                        )}
+                                    </div>
+                                    <div className="agenda-item-meta">
+                                        <span className={`agenda-status agenda-status-${item.status.toLowerCase()}`}>{rotuloStatus(item.status)}</span>
+                                        {!restrito && item.recurso_nome && <small>{item.recurso_nome}</small>}
+                                        <Button size="small" variant="secondary" onClick={() => setData(dataLocalDoAgendamento(item.inicio_em))}>Ver dia</Button>
+                                    </div>
+                                </article>
+                            );
+                        })}
+                    </div>
+                )}
+            </SectionCard>
 
             <SectionCard titulo="Agenda do dia" subtitulo="Profissionais veem os próprios detalhes e apenas a ocupação dos recursos de terceiros.">
                 {carregando ? <Loading texto="Carregando agenda..." /> : ordenados.length === 0 ? (
