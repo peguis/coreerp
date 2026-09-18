@@ -43,6 +43,7 @@ def agenda_client():
         ("gerente", "gerente"),
         ("prof1", "profissional"),
         ("prof2", "profissional"),
+        ("barber", "profissional"),
     ):
         usuario = Usuario(
             nome=chave.title(),
@@ -67,6 +68,13 @@ def agenda_client():
             empresa_id=empresa.id,
             usuario_id=usuarios["prof2"].id,
             area_atuacao="TATTOO",
+            percentual_padrao=50,
+            ativo=True,
+        ),
+        "barber": Profissional(
+            empresa_id=empresa.id,
+            usuario_id=usuarios["barber"].id,
+            area_atuacao="BARBEARIA",
             percentual_padrao=50,
             ativo=True,
         ),
@@ -187,6 +195,87 @@ def test_servico_automatico_permite_escolha_manual_do_recurso(agenda_client):
 
     assert resposta.status_code == 200
     assert resposta.json()["recurso_id"] == ctx["recursos"]["maca2"].id
+
+
+def test_tatuador_pode_informar_valor_da_tattoo_no_agendamento(agenda_client):
+    ctx = agenda_client
+    resposta = ctx["client"].post(
+        "/agendamentos/",
+        json=payload(ctx, preco_aplicado=275),
+        headers=ctx["headers"]("prof1"),
+    )
+
+    assert resposta.status_code == 200
+    assert resposta.json()["preco_aplicado"] == 275.0
+
+
+def test_tatuador_nao_altera_valor_de_servico_de_barbearia(agenda_client):
+    ctx = agenda_client
+    corte = ctx["db"].query(Servico).filter(Servico.nome == "Corte").first()
+    if not corte:
+        corte = Servico(
+            empresa_id=ctx["usuarios"]["prof1"].empresa_id,
+            nome="Corte",
+            categoria="Barbearia",
+            preco_padrao=50,
+            duracao_minutos=40,
+            ativo=True,
+        )
+        ctx["db"].add(corte)
+        ctx["db"].commit()
+
+    resposta = ctx["client"].post(
+        "/agendamentos/",
+        json={
+            "servico_id": corte.id,
+            "cliente_avulso_nome": "Cliente do corte",
+            "inicio_em": horario(8),
+            "preco_aplicado": 275,
+        },
+        headers=ctx["headers"]("prof1"),
+    )
+
+    assert resposta.status_code == 403
+
+
+def test_profissional_visualiza_apenas_sua_area(agenda_client):
+    ctx = agenda_client
+    corte = Servico(
+        empresa_id=ctx["usuarios"]["prof1"].empresa_id,
+        nome="Corte",
+        categoria="Barbearia",
+        preco_padrao=50,
+        duracao_minutos=40,
+        ativo=True,
+    )
+    ctx["db"].add(corte)
+    ctx["db"].commit()
+
+    tattoo = ctx["client"].post(
+        "/agendamentos/",
+        json=payload(ctx, inicio_em=horario(9)),
+        headers=ctx["headers"]("prof1"),
+    )
+    barber = ctx["client"].post(
+        "/agendamentos/",
+        json={
+            "profissional_id": ctx["profissionais"]["barber"].id,
+            "servico_id": corte.id,
+            "cliente_avulso_nome": "Cliente da barbearia",
+            "inicio_em": horario(10),
+        },
+        headers=ctx["headers"]("gerente"),
+    )
+    agenda = ctx["client"].get(
+        "/agendamentos/",
+        headers=ctx["headers"]("prof1"),
+    )
+
+    ids = {item["id"] for item in agenda.json()}
+    assert tattoo.status_code == 200
+    assert barber.status_code == 200
+    assert tattoo.json()["id"] in ids
+    assert barber.json()["id"] not in ids
 
 
 def test_recurso_com_nome_especifico_atende_tipo_base_do_servico(agenda_client):

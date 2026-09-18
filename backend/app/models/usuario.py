@@ -102,6 +102,10 @@ class Usuario(Base):
         uselist=False
     )
 
+    @property
+    def area_atuacao(self):
+        return self.profissional.area_atuacao if self.profissional else None
+
     repasses_criados = relationship(
         "Repasse",
         back_populates="created_by_usuario"

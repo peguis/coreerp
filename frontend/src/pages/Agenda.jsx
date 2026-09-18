@@ -28,6 +28,7 @@ const FORM_INICIAL = {
     cliente_avulso_nome: "",
     recurso_id: "",
     usar_recurso_manual: false,
+    preco_aplicado: "",
     inicio_em: "",
     duracao_minutos: "",
     observacao: ""
@@ -95,6 +96,18 @@ function tiposRecursoCompativeis(tipoRecurso, tipoServico) {
 }
 
 
+function servicoEhTattoo(servico) {
+    const texto = `${servico?.categoria || ""} ${servico?.nome || ""}`.toUpperCase();
+    return ["TATTOO", "TATOO", "TATUAGEM"].some((marca) => texto.includes(marca));
+}
+
+
+function servicoCompativelComArea(servico, area) {
+    if (!area) return true;
+    return area === "TATTOO" ? servicoEhTattoo(servico) : !servicoEhTattoo(servico);
+}
+
+
 export default function Agenda() {
     const [usuario, setUsuario] = useState(null);
     const [usuarios, setUsuarios] = useState(new Map());
@@ -114,7 +127,11 @@ export default function Agenda() {
     const [mensagem, setMensagem] = useState("");
 
     const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
+    const profissionalSelecionado = profissionais.find((item) => String(item.id) === String(form.profissional_id));
+    const areaDaAgenda = administrativo ? profissionalSelecionado?.area_atuacao : usuario?.area_atuacao;
+    const servicosVisiveis = servicos.filter((item) => servicoCompativelComArea(item, areaDaAgenda));
     const servicoSelecionado = servicos.find((item) => String(item.id) === String(form.servico_id));
+    const podeEditarValor = servicoEhTattoo(servicoSelecionado);
     const recursosDoServico = recursos.filter((item) => (
         item.ativo && (item.status || "ATIVO") === "ATIVO" && servicoSelecionado?.requer_recurso && tiposRecursoCompativeis(item.tipo, servicoSelecionado.tipo_recurso)
     ));
@@ -192,9 +209,17 @@ export default function Agenda() {
                 ...atual,
                 servico_id: valor,
                 duracao_minutos: servico?.duracao_minutos ? String(servico.duracao_minutos) : "",
+                preco_aplicado: servico?.preco_padrao != null ? String(servico.preco_padrao) : "",
                 recurso_id: "",
                 usar_recurso_manual: servico?.modo_selecao_recurso === "MANUAL"
             }));
+        }
+        if (campo === "profissional_id") {
+            const profissional = profissionais.find((item) => String(item.id) === String(valor));
+            const servicoAtual = servicos.find((item) => String(item.id) === String(form.servico_id));
+            if (servicoAtual && !servicoCompativelComArea(servicoAtual, profissional?.area_atuacao)) {
+                setForm((atual) => ({ ...atual, profissional_id: valor, servico_id: "", duracao_minutos: "", preco_aplicado: "", recurso_id: "", usar_recurso_manual: false }));
+            }
         }
     }
 
@@ -210,6 +235,7 @@ export default function Agenda() {
     }
 
     function editarAgendamento(item) {
+        const servico = servicos.find((itemServico) => itemServico.id === item.servico_id);
         setEditarId(item.id);
         setMensagem("");
         setErro("");
@@ -219,7 +245,8 @@ export default function Agenda() {
             cliente_id: item.cliente_id ? String(item.cliente_id) : "",
             cliente_avulso_nome: item.cliente_avulso_nome || "",
             recurso_id: item.recurso_id ? String(item.recurso_id) : "",
-            usar_recurso_manual: servicoSelecionado?.modo_selecao_recurso === "MANUAL",
+            usar_recurso_manual: servico?.modo_selecao_recurso === "MANUAL",
+            preco_aplicado: item.preco_aplicado != null ? String(item.preco_aplicado) : String(servico?.preco_padrao ?? ""),
             inicio_em: dataLocalInput(item.inicio_em),
             duracao_minutos: String(item.duracao_minutos || ""),
             observacao: item.observacao || ""
@@ -260,6 +287,9 @@ export default function Agenda() {
             usar_recurso_manual: Boolean(usarRecursoManual),
             observacao: form.observacao.trim() || null
         };
+        if (podeEditarValor && form.preco_aplicado !== "") {
+            dados.preco_aplicado = Number(form.preco_aplicado);
+        }
         if (administrativo) dados.profissional_id = Number(form.profissional_id);
         if (usarRecursoManual) {
             dados.recurso_id = Number(form.recurso_id);
@@ -335,11 +365,12 @@ export default function Agenda() {
                         label="Serviço"
                         value={form.servico_id}
                         onChange={(evento) => alterar("servico_id", evento.target.value)}
-                        options={servicos.map((item) => ({ value: item.id, label: item.nome }))}
+                        options={servicosVisiveis.map((item) => ({ value: item.id, label: item.nome }))}
                         required
                     />
                     <Input label="Data e horário" type="datetime-local" value={form.inicio_em} onChange={(evento) => alterar("inicio_em", evento.target.value)} required />
                     <Input label="Duração (minutos)" type="number" min="1" max="1440" value={form.duracao_minutos} onChange={(evento) => alterar("duracao_minutos", evento.target.value)} required />
+                    {podeEditarValor && <Input label="Valor desta tattoo" type="number" min="0" step="0.01" value={form.preco_aplicado} onChange={(evento) => alterar("preco_aplicado", evento.target.value)} placeholder="Valor combinado com o cliente" />}
                     <Select
                         label="Cliente cadastrado"
                         value={form.cliente_id}

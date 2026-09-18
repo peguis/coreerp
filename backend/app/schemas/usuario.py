@@ -44,6 +44,7 @@ class UsuarioResponse(BaseModel):
     created_at: datetime | None
     empresa_id: int
     perfil: PerfilUsuario
+    area_atuacao: str | None = None
 
     class Config:
         from_attributes = True

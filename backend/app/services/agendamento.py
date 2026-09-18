@@ -21,6 +21,7 @@ from app.repositories.profissional import (
 from app.repositories.recurso_agenda import buscar_recurso_por_id
 from app.repositories.servico import buscar_servico_por_id
 from app.utils.recurso import tipos_recurso_compativeis
+from app.utils.operacao import servico_compativel_com_area, servico_e_tattoo
 
 
 PERFIS_AGENDA = {
@@ -94,6 +95,37 @@ def _resolver_servico(db: Session, servico_id: int, empresa_id: int):
     if servico.duracao_minutos <= 0:
         raise HTTPException(status_code=400, detail="Servico sem duracao valida.")
     return servico
+
+
+def _validar_servico_para_profissional(servico, profissional, usuario):
+    if usuario.perfil != PerfilUsuario.PROFISSIONAL.value:
+        return
+    if not servico_compativel_com_area(
+        profissional.area_atuacao,
+        servico.categoria,
+        servico.nome,
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Este servico pertence a outra area de atuacao.",
+        )
+
+
+def _resolver_preco(servico, profissional, dados, usuario, atual=None):
+    if "preco_aplicado" not in dados:
+        if atual is not None and "servico_id" not in dados:
+            return atual.preco_aplicado
+        return Decimal(servico.preco_padrao)
+
+    preco = dados.get("preco_aplicado")
+    if preco is None:
+        raise HTTPException(status_code=400, detail="O valor do atendimento nao pode ser vazio.")
+    if usuario.perfil == PerfilUsuario.PROFISSIONAL.value and not servico_e_tattoo(servico.categoria, servico.nome):
+        raise HTTPException(
+            status_code=403,
+            detail="Somente tattoos permitem que o profissional informe um valor no agendamento.",
+        )
+    return Decimal(str(preco))
 
 
 def _normalizar_cliente(db: Session, dados: dict, empresa_id: int, atual=None):
@@ -262,6 +294,7 @@ def criar_agendamento_service(db: Session, dados, usuario):
     servico = _resolver_servico(
         db, dados_dict["servico_id"], usuario.empresa_id
     )
+    _validar_servico_para_profissional(servico, profissional, usuario)
     cliente_id, cliente_avulso_nome = _normalizar_cliente(
         db, dados_dict, usuario.empresa_id
     )
@@ -270,6 +303,7 @@ def criar_agendamento_service(db: Session, dados, usuario):
     recurso = _validar_recurso(
         db, servico, dados_dict, usuario, inicio_em, fim_em
     )
+    preco_aplicado = _resolver_preco(servico, profissional, dados_dict, usuario)
     _validar_conflitos(
         db,
         usuario,
@@ -292,7 +326,7 @@ def criar_agendamento_service(db: Session, dados, usuario):
             inicio_em=inicio_em,
             fim_em=fim_em,
             duracao_minutos=int(duracao),
-            preco_aplicado=Decimal(servico.preco_padrao),
+            preco_aplicado=preco_aplicado,
             status=StatusAgendamento.AGENDADO.value,
             observacao=dados_dict.get("observacao"),
         )
@@ -335,6 +369,7 @@ def atualizar_agendamento_service(db: Session, agendamento_id: int, dados, usuar
     )
     servico_id = dados_dict.get("servico_id", agendamento.servico_id)
     servico = _resolver_servico(db, servico_id, usuario.empresa_id)
+    _validar_servico_para_profissional(servico, profissional, usuario)
     cliente_id, cliente_avulso_nome = _normalizar_cliente(
         db, dados_dict, usuario.empresa_id, atual=agendamento
     )
@@ -355,6 +390,13 @@ def atualizar_agendamento_service(db: Session, agendamento_id: int, dados, usuar
         usuario,
         inicio_em,
         fim_em,
+        atual=agendamento,
+    )
+    preco_aplicado = _resolver_preco(
+        servico,
+        profissional,
+        dados_dict,
+        usuario,
         atual=agendamento,
     )
     status = dados_dict.get("status", agendamento.status)
@@ -390,8 +432,7 @@ def atualizar_agendamento_service(db: Session, agendamento_id: int, dados, usuar
         agendamento.inicio_em = inicio_em
         agendamento.fim_em = fim_em
         agendamento.duracao_minutos = int(duracao)
-        if "servico_id" in dados_dict:
-            agendamento.preco_aplicado = Decimal(servico.preco_padrao)
+        agendamento.preco_aplicado = preco_aplicado
         agendamento.status = status
         agendamento.observacao = dados_dict.get(
             "observacao", agendamento.observacao
@@ -407,7 +448,7 @@ def atualizar_agendamento_service(db: Session, agendamento_id: int, dados, usuar
         raise
 
 
-def _resposta_agendamento(agendamento: Agendamento, usuario):
+def _resposta_agendamento(agendamento: Agendamento, usuario, area_atuacao=None):
     profissional_restrito = usuario.perfil == PerfilUsuario.PROFISSIONAL.value
     e_proprio = (
         not profissional_restrito
@@ -415,6 +456,12 @@ def _resposta_agendamento(agendamento: Agendamento, usuario):
         or agendamento.profissional.usuario_id == usuario.id
     )
     if profissional_restrito and not e_proprio:
+        if not servico_compativel_com_area(
+            area_atuacao,
+            agendamento.servico.categoria if agendamento.servico else None,
+            agendamento.servico.nome if agendamento.servico else None,
+        ):
+            return None
         if agendamento.recurso_id is None or agendamento.status not in STATUS_ATIVOS:
             return None
         return {
@@ -469,8 +516,10 @@ def _resposta_agendamento(agendamento: Agendamento, usuario):
 
 def listar_agendamentos_service(db: Session, usuario, **filtros):
     _validar_perfil(usuario)
+    area_atuacao = None
     if usuario.perfil == PerfilUsuario.PROFISSIONAL.value:
         profissional = _profissional_do_usuario(db, usuario)
+        area_atuacao = profissional.area_atuacao
         solicitado = filtros.get("profissional_id")
         if solicitado is not None and solicitado != profissional.id:
             raise HTTPException(
@@ -480,7 +529,7 @@ def listar_agendamentos_service(db: Session, usuario, **filtros):
     itens = listar_agendamentos(db, usuario.empresa_id, **filtros)
     respostas = []
     for item in itens:
-        resposta = _resposta_agendamento(item, usuario)
+        resposta = _resposta_agendamento(item, usuario, area_atuacao)
         if resposta is not None:
             respostas.append(resposta)
     return respostas
@@ -491,4 +540,7 @@ def buscar_agendamento_service(db: Session, agendamento_id: int, usuario):
     item = buscar_agendamento_por_id(db, agendamento_id, usuario.empresa_id)
     if not item:
         return None
-    return _resposta_agendamento(item, usuario)
+    area_atuacao = None
+    if usuario.perfil == PerfilUsuario.PROFISSIONAL.value:
+        area_atuacao = _profissional_do_usuario(db, usuario).area_atuacao
+    return _resposta_agendamento(item, usuario, area_atuacao)
