@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import {
     ArrowLeft,
-    Save
+    CircleDollarSign,
+    CreditCard,
+    Save,
+    StickyNote,
+    UserRound
 } from "lucide-react";
 
 import {
@@ -21,6 +25,7 @@ import Button from "../components/forms/Button";
 import Input from "../components/forms/Input";
 import Select from "../components/forms/Select";
 import Textarea from "../components/forms/Textarea";
+import Loading from "../components/Loading";
 import Mensagem from "../components/Mensagem";
 
 import "./NovoAtendimento.css";
@@ -242,10 +247,7 @@ function NovoAtendimento() {
             <PageHeader
                 titulo="Novo Atendimento"
                 subtitulo="Registre um serviço realizado na barbearia ou no estúdio de tattoo"
-            />
-
-            <div className="atendimento-header-actions">
-
+            >
                 <Button
                     variant="secondary"
                     disabled={carregandoDados || !usuario}
@@ -254,10 +256,10 @@ function NovoAtendimento() {
                     <ArrowLeft size={18} />
                     Voltar
                 </Button>
-
-            </div>
+            </PageHeader>
 
             <FormCard
+                className="novo-atendimento-card"
                 titulo="Dados do atendimento"
                 subtitulo="A comissão é definida pelo backend e fica registrada no atendimento"
             >
@@ -269,7 +271,7 @@ function NovoAtendimento() {
 
                 {carregandoDados ? (
 
-                    <p className="atendimento-status">Carregando dados...</p>
+                    <Loading texto="Carregando dados do atendimento..." />
 
                 ) : (
 
@@ -277,93 +279,109 @@ function NovoAtendimento() {
                         className="atendimento-form"
                         onSubmit={salvar}
                     >
+                        <section className="atendimento-form-section">
+                            <header className="atendimento-section-heading">
+                                <UserRound size={18} aria-hidden="true" />
+                                <div><strong>Responsável e serviço</strong><span>Identifique quem realizou o atendimento e o serviço concluído.</span></div>
+                            </header>
 
-                        {!ehProfissional && (
+                            <div className="atendimento-form-grid">
+                                {!ehProfissional && (
+                                    <Select
+                                        label="Profissional responsável"
+                                        value={profissionalId}
+                                        onChange={(evento) => setProfissionalId(evento.target.value)}
+                                        options={profissionais.map((profissional) => ({
+                                            value: profissional.id,
+                                            label: `${usuarios.find((item) => item.id === profissional.usuario_id)?.nome || `Profissional #${profissional.id}`} — ${profissional.area_atuacao}`
+                                        }))}
+                                        required
+                                    />
+                                )}
 
-                            <Select
-                                label="Profissional responsável"
-                                value={profissionalId}
-                                onChange={(evento) => setProfissionalId(evento.target.value)}
-                                options={profissionais.map((profissional) => ({
-                                    value: profissional.id,
-                                    label: `${usuarios.find((item) => item.id === profissional.usuario_id)?.nome || `Profissional #${profissional.id}`} — ${profissional.area_atuacao}`
-                                }))}
-                                required
-                            />
-
-                        )}
-
-                        <Select
-                            label="Serviço"
-                            value={servicoId}
-                            onChange={selecionarServico}
-                            options={servicos.map((servico) => ({
-                                value: servico.id,
-                                label: `${servico.nome} — preço padrão ${Number(servico.preco_padrao).toFixed(2)}`
-                            }))}
-                            required
-                        />
-
-                        <Select
-                            label="Cliente (opcional)"
-                            value={clienteId}
-                            onChange={(evento) => setClienteId(evento.target.value)}
-                            options={clientes.map((cliente) => ({
-                                value: cliente.id,
-                                label: cliente.nome
-                            }))}
-                        />
-
-                        <Input
-                            label="Valor do atendimento"
-                            type="number"
-                            min="0.01"
-                            step="0.01"
-                            value={valor}
-                            onChange={(evento) => setValor(evento.target.value)}
-                            placeholder="0,00"
-                            required
-                        />
-
-                        <Select
-                            label="Forma de pagamento"
-                            value={formaPagamento}
-                            onChange={(evento) => setFormaPagamento(evento.target.value)}
-                            options={FORMAS_PAGAMENTO}
-                            required
-                        />
-
-                        {podeUsarOverride && (
-
-                            <div className="comissao-excepcional">
-
-                                <Input
-                                    label="Comissão excepcional (opcional)"
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="0.01"
-                                    value={percentualOverride}
-                                    onChange={(evento) => setPercentualOverride(evento.target.value)}
-                                    placeholder="Ex.: 80,00"
+                                <Select
+                                    label="Serviço"
+                                    value={servicoId}
+                                    onChange={selecionarServico}
+                                    options={servicos.map((servico) => ({
+                                        value: servico.id,
+                                        label: `${servico.nome} — preço padrão ${Number(servico.preco_padrao).toFixed(2)}`
+                                    }))}
+                                    required
                                 />
 
-                                <p>
-                                    Se ficar vazio, será usada a comissão padrão do profissional.
-                                    Este percentual vale somente para este atendimento e não altera o cadastro.
-                                </p>
-
+                                <Select
+                                    className="atendimento-field-full"
+                                    label="Cliente (opcional)"
+                                    value={clienteId}
+                                    onChange={(evento) => setClienteId(evento.target.value)}
+                                    options={clientes.map((cliente) => ({
+                                        value: cliente.id,
+                                        label: cliente.nome
+                                    }))}
+                                />
                             </div>
+                        </section>
 
-                        )}
+                        <section className="atendimento-form-section">
+                            <header className="atendimento-section-heading">
+                                <CreditCard size={18} aria-hidden="true" />
+                                <div><strong>Pagamento e comissão</strong><span>O valor informado entra no caixa com a forma de pagamento selecionada.</span></div>
+                            </header>
 
-                        <Textarea
-                            label="Observação (opcional)"
-                            value={observacao}
-                            onChange={(evento) => setObservacao(evento.target.value)}
-                            placeholder="Detalhes adicionais do atendimento"
-                            rows={4}
-                        />
+                            <div className="atendimento-form-grid">
+                                <Input
+                                    label="Valor do atendimento"
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    value={valor}
+                                    onChange={(evento) => setValor(evento.target.value)}
+                                    placeholder="0,00"
+                                    required
+                                />
+
+                                <Select
+                                    label="Forma de pagamento"
+                                    value={formaPagamento}
+                                    onChange={(evento) => setFormaPagamento(evento.target.value)}
+                                    options={FORMAS_PAGAMENTO}
+                                    required
+                                />
+
+                                {podeUsarOverride && (
+                                    <div className="comissao-excepcional atendimento-field-full">
+                                        <div className="comissao-excepcional-heading"><CircleDollarSign size={18} aria-hidden="true" /><strong>Comissão excepcional</strong></div>
+                                        <Input
+                                            label="Percentual opcional"
+                                            type="number"
+                                            min="0"
+                                            max="100"
+                                            step="0.01"
+                                            value={percentualOverride}
+                                            onChange={(evento) => setPercentualOverride(evento.target.value)}
+                                            placeholder="Ex.: 80,00"
+                                        />
+                                        <p>Se ficar vazio, será usada a comissão padrão do profissional. Este percentual vale somente para este atendimento e não altera o cadastro.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+
+                        <section className="atendimento-form-section">
+                            <header className="atendimento-section-heading">
+                                <StickyNote size={18} aria-hidden="true" />
+                                <div><strong>Observações</strong><span>Registre apenas informações úteis para a operação.</span></div>
+                            </header>
+
+                            <Textarea
+                                label="Observação (opcional)"
+                                value={observacao}
+                                onChange={(evento) => setObservacao(evento.target.value)}
+                                placeholder="Detalhes adicionais do atendimento"
+                                rows={4}
+                            />
+                        </section>
 
                         <div className="atendimento-footer-actions">
 

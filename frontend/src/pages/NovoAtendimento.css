@@ -1,99 +1,166 @@
 .novo-atendimento-page {
-
     display: flex;
-
     flex-direction: column;
-
-    gap: 20px;
-
+    gap: 18px;
+    min-width: 0;
 }
 
-
-.atendimento-header-actions {
-
-    display: flex;
-
-    justify-content: flex-start;
-
+.novo-atendimento-page > .page-header {
+    margin-bottom: 2px;
 }
 
+.novo-atendimento-card {
+    padding: 20px;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #171a1b, #111314);
+}
+
+.novo-atendimento-card .form-card-header {
+    margin: -1px 0 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hype-border);
+}
+
+.novo-atendimento-card .form-card-header h2 {
+    font-size: 17px;
+}
+
+.novo-atendimento-card .form-card-header p {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.novo-atendimento-card .mensagem {
+    margin-bottom: 0;
+}
 
 .atendimento-form {
-
     display: flex;
-
     flex-direction: column;
-
-    gap: 18px;
-
+    gap: 14px;
 }
 
+.atendimento-form-section {
+    padding: 16px;
+    border: 1px solid var(--hype-border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .018);
+}
+
+.atendimento-section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, .055);
+}
+
+.atendimento-section-heading > svg {
+    flex: 0 0 auto;
+    color: var(--hype-gold);
+}
+
+.atendimento-section-heading > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.atendimento-section-heading strong {
+    font-size: 13px;
+}
+
+.atendimento-section-heading span {
+    color: var(--hype-text-muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.atendimento-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+.atendimento-field-full {
+    grid-column: 1 / -1;
+}
 
 .comissao-excepcional {
-
+    display: grid;
+    grid-template-columns: minmax(0, .62fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 12px 16px;
     padding: 14px 16px;
-
-    border: 1px solid #e2e8f0;
-
-    border-radius: 10px;
-
-    background: #f8fafc;
-
+    border: 1px solid rgba(217, 171, 63, .34);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(217, 171, 63, .11), rgba(217, 171, 63, .035));
+    box-shadow: inset 3px 0 0 var(--hype-gold);
 }
 
+.comissao-excepcional-heading {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: 8px;
+    color: var(--hype-gold-hover);
+    font-size: 13px;
+}
+
+.comissao-excepcional-heading svg {
+    color: var(--hype-gold);
+}
 
 .comissao-excepcional .form-group {
-
-    margin-bottom: 8px;
-
+    margin: 0;
 }
-
 
 .comissao-excepcional p {
-
-    margin: 0;
-
-    color: #64748b;
-
+    margin: 0 0 2px;
+    color: var(--hype-text-secondary);
     font-size: 12px;
-
-    line-height: 1.5;
-
+    line-height: 1.55;
 }
-
-
-.atendimento-status {
-
-    color: #64748b;
-
-}
-
 
 .atendimento-footer-actions {
-
     display: flex;
-
     justify-content: flex-end;
-
-    gap: 12px;
-
+    gap: 10px;
     margin-top: 4px;
-
+    padding-top: 4px;
 }
 
+.atendimento-footer-actions .form-button {
+    min-width: 150px;
+}
 
-@media(max-width:768px) {
+@media (max-width: 768px) {
+    .novo-atendimento-card {
+        padding: 16px;
+    }
+
+    .atendimento-form-section {
+        padding: 14px;
+    }
+
+    .atendimento-form-grid,
+    .comissao-excepcional {
+        grid-template-columns: 1fr;
+    }
+
+    .atendimento-field-full,
+    .comissao-excepcional-heading {
+        grid-column: auto;
+    }
 
     .atendimento-footer-actions {
-
         flex-direction: column-reverse;
-
     }
 
-    .atendimento-footer-actions button {
-
+    .atendimento-footer-actions .form-button {
         width: 100%;
-
+        min-width: 0;
     }
-
 }
