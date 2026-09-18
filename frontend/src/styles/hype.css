@@ -515,3 +515,250 @@
         padding: 16px;
     }
 }
+
+/* Shared visual migration for the remaining operational screens. These rules
+   only restyle existing surfaces and controls; page data and actions remain
+   owned by each screen. */
+.hype-theme .clientes-page,
+.hype-theme .financeiro-page,
+.hype-theme .produtos-page,
+.hype-theme .estoque-page,
+.hype-theme .vendas-page,
+.hype-theme .configuracoes-page,
+.hype-theme .configuracao-agenda-page,
+.hype-theme .piloto-page:not(.dashboard-piloto-page) {
+    padding: 0;
+    gap: 18px;
+}
+
+.hype-theme .clientes-page > .page-header,
+.hype-theme .financeiro-page > .page-header,
+.hype-theme .produtos-page > .page-header,
+.hype-theme .estoque-page > .page-header,
+.hype-theme .vendas-page > .page-header,
+.hype-theme .configuracoes-page > .page-header,
+.hype-theme .configuracao-agenda-page > .page-header,
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .page-header {
+    margin-bottom: 2px;
+}
+
+.hype-theme .clientes-toolbar,
+.hype-theme .vendas-filtros,
+.hype-theme .produtos-filtros,
+.hype-theme .estoque-filtros,
+.hype-theme .financeiro-filtros {
+    margin-bottom: 0;
+    padding: 14px 16px;
+    border: 1px solid var(--hype-border);
+    border-radius: 8px;
+    background: linear-gradient(145deg, #171a1b, #111314);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme .clientes-card,
+.hype-theme .configuracoes-card,
+.hype-theme .produto-card,
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card,
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .section-card {
+    border-radius: 8px;
+    background: linear-gradient(145deg, #171a1b, #111314);
+    box-shadow: var(--shadow-sm);
+}
+
+.hype-theme .clientes-card,
+.hype-theme .configuracoes-card {
+    overflow: hidden;
+}
+
+.hype-theme .clientes-search,
+.hype-theme .estoque-search,
+.hype-theme .produtos-filtros input,
+.hype-theme .produtos-filtros select,
+.hype-theme .financeiro-filtros input,
+.hype-theme .financeiro-filtros select,
+.hype-theme .vendas-filtros input,
+.hype-theme .estoque-filtros select {
+    min-height: 40px;
+    border-radius: 7px;
+    background: var(--hype-surface-raised);
+}
+
+.hype-theme .estoque-search {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: var(--hype-border);
+    background: var(--hype-surface-raised);
+    box-shadow: none;
+}
+
+.hype-theme .estoque-search input {
+    min-height: 40px;
+    padding: 9px 0;
+    color: var(--hype-text);
+    background: transparent;
+}
+
+.hype-theme .checkbox-filtro {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .checkbox-filtro input {
+    accent-color: var(--hype-gold);
+}
+
+.hype-theme .produto-card {
+    padding: 16px;
+    border-color: var(--hype-border);
+}
+
+.hype-theme .produto-card:hover {
+    border-color: var(--hype-border-strong);
+    background: var(--hype-surface-elevated);
+    transform: translateY(-2px);
+}
+
+.hype-theme .produto-imagem,
+.hype-theme .produto-sem-imagem,
+.hype-theme .produto-miniatura-vazia {
+    background: #111415;
+    border-color: var(--hype-border);
+}
+
+.hype-theme .produto-card h3,
+.hype-theme .produto-card strong {
+    color: var(--hype-text);
+}
+
+.hype-theme .produto-card p,
+.hype-theme .vendas-resumo {
+    color: var(--hype-text-secondary);
+}
+
+.hype-theme .produto-card-actions,
+.hype-theme .produto-card .table-actions,
+.hype-theme .venda-actions,
+.hype-theme .configuracoes-actions {
+    gap: 7px;
+}
+
+.hype-theme .configuracao-agenda-page > .configuracao-agenda-intro {
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(217, 171, 63, .13), rgba(217, 171, 63, .04));
+}
+
+.hype-theme .configuracao-agenda-grid {
+    gap: 16px;
+}
+
+.hype-theme .configuracao-agenda-grid > .form-card,
+.hype-theme .configuracao-agenda-grid > .section-card,
+.hype-theme .configuracao-agenda-page > .form-card,
+.hype-theme .configuracao-agenda-page > .section-card {
+    border-radius: 8px;
+    background: linear-gradient(145deg, #171a1b, #111314);
+}
+
+.hype-theme .configuracao-agenda-item,
+.hype-theme .configuracoes-user-card {
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .018);
+}
+
+.hype-theme .configuracao-agenda-tabela,
+.hype-theme .configuracoes-table {
+    overflow: hidden;
+    border-color: var(--hype-border);
+    border-radius: 8px;
+}
+
+.hype-theme .configuracao-agenda-tabela tbody tr:hover,
+.hype-theme .configuracoes-table tbody tr:hover {
+    background: rgba(255, 255, 255, .035);
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card {
+    padding: 20px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card .form-card-header {
+    display: block;
+    margin-bottom: 18px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card .form-card-header h2 {
+    font-size: 17px;
+    letter-spacing: -.015em;
+    text-transform: none;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card .form-card-header p {
+    margin-top: 5px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card .form-card-body {
+    gap: 18px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) > .section-card {
+    padding: 20px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) .piloto-table-wrap,
+.hype-theme .piloto-page:not(.dashboard-piloto-page) .piloto-mobile-cards {
+    border-radius: 8px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) .piloto-item-card {
+    background: rgba(255, 255, 255, .018);
+    border-radius: 8px;
+}
+
+.hype-theme .piloto-page:not(.dashboard-piloto-page) .piloto-form-actions {
+    margin-top: 2px;
+}
+
+.hype-theme .financeiro-page .financeiro-resumo {
+    gap: 12px;
+}
+
+.hype-theme .financeiro-page .financeiro-card {
+    border-radius: 8px;
+    background: linear-gradient(145deg, #171a1b, #111314);
+}
+
+.hype-theme .financeiro-page .financeiro-card:hover {
+    transform: translateY(-2px);
+}
+
+.hype-theme .financeiro-page .section-card,
+.hype-theme .vendas-page .section-card,
+.hype-theme .produtos-page .section-card,
+.hype-theme .estoque-page .section-card {
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .hype-theme .clientes-page,
+    .hype-theme .financeiro-page,
+    .hype-theme .produtos-page,
+    .hype-theme .estoque-page,
+    .hype-theme .vendas-page,
+    .hype-theme .configuracoes-page,
+    .hype-theme .configuracao-agenda-page,
+    .hype-theme .piloto-page:not(.dashboard-piloto-page) {
+        gap: 16px;
+    }
+
+    .hype-theme .clientes-toolbar,
+    .hype-theme .vendas-filtros,
+    .hype-theme .produtos-filtros,
+    .hype-theme .estoque-filtros,
+    .hype-theme .financeiro-filtros {
+        padding: 12px;
+    }
+
+    .hype-theme .piloto-page:not(.dashboard-piloto-page) > .form-card,
+    .hype-theme .piloto-page:not(.dashboard-piloto-page) > .section-card {
+        padding: 16px;
+    }
+}

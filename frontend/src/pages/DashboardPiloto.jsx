@@ -88,7 +88,7 @@ function DashboardPiloto() {
     const ultimosAtendimentos = dados?.ultimos_atendimentos || [];
 
     return (
-        <main className="piloto-page">
+        <main className="piloto-page dashboard-piloto-page">
             <PageHeader
                 titulo="Dashboard"
                 subtitulo="Aqui está o resumo da operação da HYPE STUDIO de hoje."
