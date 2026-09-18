@@ -327,6 +327,21 @@ def test_dashboard_admin_totais_e_agregacoes_deterministicas(
         "DINHEIRO",
         "CARTAO_CREDITO",
     }
+    assert dados["faturamento_por_dia_semana"] == [
+        {"dia_semana": 0, "quantidade_atendimentos": 2, "faturamento_bruto": "300.00"},
+        {"dia_semana": 1, "quantidade_atendimentos": 1, "faturamento_bruto": "50.00"},
+        {"dia_semana": 2, "quantidade_atendimentos": 0, "faturamento_bruto": "0.00"},
+        {"dia_semana": 3, "quantidade_atendimentos": 0, "faturamento_bruto": "0.00"},
+        {"dia_semana": 4, "quantidade_atendimentos": 0, "faturamento_bruto": "0.00"},
+        {"dia_semana": 5, "quantidade_atendimentos": 0, "faturamento_bruto": "0.00"},
+        {"dia_semana": 6, "quantidade_atendimentos": 0, "faturamento_bruto": "0.00"},
+    ]
+    assert [item["servico_nome"] for item in dados["ultimos_atendimentos"]] == [
+        "Corte",
+        "Tattoo",
+        "Corte",
+    ]
+    assert all(item["status"] == "CONCLUIDO" for item in dados["ultimos_atendimentos"])
 
 
 def test_dashboard_profissional_me_minimo_e_sem_dados_globais(

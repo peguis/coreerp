@@ -4,6 +4,7 @@ from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
 from app.models.atendimento import Atendimento
+from app.models.cliente import Cliente
 from app.models.financeiro import LancamentoFinanceiro
 from app.models.profissional import Profissional
 from app.models.repasse import Repasse, RepasseItem
@@ -271,5 +272,64 @@ def listar_desempenho_formas_pagamento(
         )
         .group_by(Atendimento.forma_pagamento)
         .order_by(func.sum(Atendimento.valor).desc(), Atendimento.forma_pagamento)
+        .all()
+    )
+
+
+def listar_atendimentos_para_grafico(
+    db: Session, empresa_id: int, inicio: datetime, fim_exclusivo: datetime
+):
+    return (
+        db.query(Atendimento.realizado_em, Atendimento.valor)
+        .filter(
+            Atendimento.empresa_id == empresa_id,
+            *_filtro_periodo(Atendimento.realizado_em, inicio, fim_exclusivo),
+        )
+        .order_by(Atendimento.realizado_em.asc(), Atendimento.id.asc())
+        .all()
+    )
+
+
+def listar_ultimos_atendimentos(
+    db: Session,
+    empresa_id: int,
+    inicio: datetime,
+    fim_exclusivo: datetime,
+    limite: int = 5,
+):
+    return (
+        db.query(
+            Atendimento.id.label("atendimento_id"),
+            Cliente.nome.label("cliente_nome"),
+            Servico.nome.label("servico_nome"),
+            Usuario.nome.label("profissional_nome"),
+            Atendimento.realizado_em,
+        )
+        .join(
+            Profissional,
+            (Profissional.id == Atendimento.profissional_id)
+            & (Profissional.empresa_id == Atendimento.empresa_id),
+        )
+        .join(
+            Usuario,
+            (Usuario.id == Profissional.usuario_id)
+            & (Usuario.empresa_id == Profissional.empresa_id),
+        )
+        .join(
+            Servico,
+            (Servico.id == Atendimento.servico_id)
+            & (Servico.empresa_id == Atendimento.empresa_id),
+        )
+        .outerjoin(
+            Cliente,
+            (Cliente.id == Atendimento.cliente_id)
+            & (Cliente.empresa_id == Atendimento.empresa_id),
+        )
+        .filter(
+            Atendimento.empresa_id == empresa_id,
+            *_filtro_periodo(Atendimento.realizado_em, inicio, fim_exclusivo),
+        )
+        .order_by(Atendimento.realizado_em.desc(), Atendimento.id.desc())
+        .limit(limite)
         .all()
     )

@@ -79,7 +79,7 @@ export default function Topbar({
 
 
             <div className="topbar-brand">
-                <span className="topbar-brand-mark" aria-hidden="true">H</span>
+                <img className="topbar-brand-image" src="/images/hype-logo-sidebar.png" alt="" aria-hidden="true" />
                 <span>HYPE STUDIO</span>
             </div>
 

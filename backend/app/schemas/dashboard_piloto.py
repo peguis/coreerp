@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 
 from pydantic import BaseModel, field_serializer
@@ -39,6 +39,21 @@ class DesempenhoFormaPagamentoResponse(_ValoresDecimais):
     valor_total: Decimal
 
 
+class FaturamentoDiaSemanaResponse(_ValoresDecimais):
+    dia_semana: int
+    quantidade_atendimentos: int
+    faturamento_bruto: Decimal
+
+
+class UltimoAtendimentoResponse(BaseModel):
+    atendimento_id: int
+    cliente_nome: str | None
+    servico_nome: str
+    profissional_nome: str
+    realizado_em: datetime
+    status: str
+
+
 class DashboardPilotoResponse(_ValoresDecimais):
     data_inicio: date
     data_fim: date
@@ -54,6 +69,8 @@ class DashboardPilotoResponse(_ValoresDecimais):
     por_profissional: list[DesempenhoProfissionalResponse]
     por_servico: list[DesempenhoServicoResponse]
     por_forma_pagamento: list[DesempenhoFormaPagamentoResponse]
+    faturamento_por_dia_semana: list[FaturamentoDiaSemanaResponse]
+    ultimos_atendimentos: list[UltimoAtendimentoResponse]
 
 
 class DashboardProfissionalResponse(_ValoresDecimais):

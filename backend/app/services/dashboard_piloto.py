@@ -6,9 +6,11 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.repositories.dashboard_piloto import (
+    listar_atendimentos_para_grafico,
     listar_desempenho_formas_pagamento,
     listar_desempenho_profissionais,
     listar_desempenho_servicos,
+    listar_ultimos_atendimentos,
     obter_caixa_piloto,
     obter_total_pendente,
     obter_total_repassado,
@@ -104,6 +106,36 @@ def buscar_dashboard_piloto_service(
             db, empresa_id, inicio, fim_exclusivo
         )
     ]
+    faturamento_por_dia_semana = [
+        {
+            "dia_semana": dia_semana,
+            "quantidade_atendimentos": 0,
+            "faturamento_bruto": Decimal("0.00"),
+        }
+        for dia_semana in range(7)
+    ]
+    for row in listar_atendimentos_para_grafico(
+        db, empresa_id, inicio, fim_exclusivo
+    ):
+        dia_semana = row.realizado_em.weekday()
+        faturamento_por_dia_semana[dia_semana]["quantidade_atendimentos"] += 1
+        faturamento_por_dia_semana[dia_semana]["faturamento_bruto"] += _decimal(
+            row.valor
+        )
+
+    ultimos_atendimentos = [
+        {
+            "atendimento_id": row.atendimento_id,
+            "cliente_nome": row.cliente_nome,
+            "servico_nome": row.servico_nome,
+            "profissional_nome": row.profissional_nome,
+            "realizado_em": row.realizado_em,
+            "status": "CONCLUIDO",
+        }
+        for row in listar_ultimos_atendimentos(
+            db, empresa_id, inicio, fim_exclusivo
+        )
+    ]
     return {
         "data_inicio": inicio_data,
         "data_fim": fim_data,
@@ -119,6 +151,8 @@ def buscar_dashboard_piloto_service(
         "por_profissional": profissionais,
         "por_servico": servicos,
         "por_forma_pagamento": formas,
+        "faturamento_por_dia_semana": faturamento_por_dia_semana,
+        "ultimos_atendimentos": ultimos_atendimentos,
     }
 
 

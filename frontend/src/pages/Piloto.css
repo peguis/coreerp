@@ -620,3 +620,327 @@
     .hype-theme .piloto-toolbar::before { margin: 0; }
     .hype-theme .piloto-toolbar .form-group { width: 100%; flex-basis: auto; }
 }
+
+/* Dashboard executivo HYPE: a camada visual consome apenas dados reais do endpoint. */
+.hype-theme .piloto-page > .page-header {
+    align-items: flex-end;
+}
+
+.dashboard-period-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.dashboard-period-form .form-group {
+    width: 168px;
+    margin: 0;
+}
+
+.dashboard-period-form .form-group label {
+    margin-bottom: 5px;
+    font-size: 11px;
+}
+
+.dashboard-period-form .form-group input {
+    min-height: 40px;
+    padding: 9px 11px;
+    font-size: 12px;
+}
+
+.dashboard-period-form .form-button {
+    min-height: 40px;
+    padding: 9px 17px;
+}
+
+.hype-theme .piloto-periodo {
+    margin: -6px 0 -2px;
+    font-size: 11px;
+}
+
+.piloto-kpi-card {
+    border-radius: 8px;
+}
+
+.piloto-kpi-card > span {
+    font-size: 12px;
+}
+
+.piloto-kpi-card strong {
+    font-size: clamp(24px, 2.4vw, 32px);
+}
+
+.piloto-kpi-card small {
+    font-size: 11px;
+}
+
+.piloto-kpi-card small svg {
+    color: currentColor;
+}
+
+.piloto-chart-card {
+    min-height: 290px;
+}
+
+.piloto-chart-card h2 {
+    font-size: 20px;
+}
+
+.piloto-chart-card header p {
+    margin: 6px 0 0;
+    color: var(--hype-text-secondary);
+    font-size: 11px;
+}
+
+.piloto-chart-total {
+    margin: 18px 0 8px;
+    color: var(--hype-text);
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -.04em;
+}
+
+.piloto-bar-chart {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 12px;
+    height: 145px;
+    padding: 7px 4px 0;
+    border-bottom: 1px solid var(--hype-border);
+    background: repeating-linear-gradient(to bottom, transparent 0, transparent 35px, rgba(255, 255, 255, .045) 36px);
+}
+
+.piloto-bar-column {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.piloto-bar-track {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.piloto-bar-track > span {
+    display: block;
+    width: min(34px, 72%);
+    min-height: 4px;
+    border-radius: 4px 4px 0 0;
+    background: #465157;
+    transition: height .2s ease, background .2s ease;
+}
+
+.piloto-bar-column.is-highlighted .piloto-bar-track > span {
+    background: linear-gradient(180deg, #f5ca43, #b2862b);
+}
+
+.piloto-bar-column strong {
+    margin-top: 7px;
+    color: var(--hype-text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.piloto-bar-column.is-highlighted strong {
+    color: var(--hype-gold-hover);
+}
+
+.piloto-bar-tooltip {
+    position: absolute;
+    top: -3px;
+    z-index: 1;
+    padding: 5px 7px;
+    border-radius: 5px;
+    color: var(--hype-text);
+    background: #050607;
+    box-shadow: var(--shadow-sm);
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+    transition: opacity .15s ease;
+}
+
+.piloto-bar-column:hover .piloto-bar-tooltip,
+.piloto-bar-column.is-highlighted .piloto-bar-tooltip {
+    opacity: 1;
+}
+
+.piloto-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 12px;
+    color: var(--hype-text-secondary);
+    font-size: 11px;
+}
+
+.piloto-chart-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.piloto-attention-card > header > svg {
+    color: #ef9295;
+}
+
+.piloto-attention-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 11px;
+    color: inherit;
+    text-decoration: none;
+    transition: background .2s ease;
+}
+
+.piloto-attention-item:hover {
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .035);
+}
+
+.piloto-attention-item > svg {
+    color: var(--hype-text-muted);
+}
+
+.piloto-attention-icon.is-danger {
+    color: #f18b91;
+    background: rgba(226, 107, 114, .18);
+}
+
+.piloto-attention-icon.is-success {
+    color: #7be0ae;
+    background: rgba(67, 197, 139, .16);
+}
+
+.piloto-attention-copy {
+    min-width: 0;
+}
+
+.piloto-finance-strip {
+    box-shadow: var(--shadow-sm);
+}
+
+.piloto-strip-item span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.piloto-strip-item:nth-child(1) span svg,
+.piloto-strip-item:nth-child(3) span svg,
+.piloto-strip-item:nth-child(4) span svg {
+    color: #55b9ff;
+}
+
+.piloto-strip-item:nth-child(2) span svg {
+    color: #ef9295;
+}
+
+.piloto-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 15px;
+}
+
+.piloto-section-header .piloto-section-title {
+    margin: 5px 0 0;
+}
+
+.piloto-section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--hype-gold-hover);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.piloto-section-link:hover {
+    color: var(--hype-text);
+}
+
+.piloto-recent-table {
+    min-width: 640px;
+}
+
+.piloto-recent-table th,
+.piloto-recent-table td {
+    padding: 13px 10px;
+}
+
+.piloto-recent-mobile {
+    display: none;
+}
+
+.piloto-recent-mobile .piloto-item-card header {
+    align-items: center;
+}
+
+.piloto-recent-mobile .piloto-item-card header .hype-status {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 1050px) {
+    .hype-theme .piloto-page > .page-header {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 760px) {
+    .dashboard-period-form {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .dashboard-period-form .form-group {
+        flex: 1 1 150px;
+        width: auto;
+    }
+
+    .dashboard-period-form .form-button {
+        flex: 1 1 100%;
+    }
+
+    .piloto-chart-card h2 {
+        font-size: 17px;
+    }
+
+    .piloto-chart-card .piloto-card-period {
+        display: none;
+    }
+
+    .piloto-bar-chart {
+        gap: 5px;
+        height: 130px;
+    }
+
+    .piloto-bar-tooltip {
+        display: none;
+    }
+
+    .piloto-section-header {
+        align-items: flex-start;
+    }
+
+    .piloto-recent-section .piloto-table-wrap {
+        display: none;
+    }
+
+    .piloto-recent-mobile {
+        display: block;
+    }
+}

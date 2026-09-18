@@ -34,7 +34,7 @@ const menusAdministrativos = [
 
 
     {
-        nome: "Dashboard piloto",
+        nome: "Dashboard",
         rota: "/dashboard/piloto",
         icone: LayoutDashboard
     },
@@ -290,11 +290,7 @@ export default function Sidebar({
                 <div className="sidebar-logo">
 
 
-                    <span className="sidebar-brand-mark" aria-hidden="true">H</span>
-                    <span className="sidebar-brand-copy">
-                        <strong>HYPE STUDIO</strong>
-                        <small>BARBEARIA &amp; TATTOO</small>
-                    </span>
+                    <img className="sidebar-logo-image" src="/images/hype-logo-sidebar.png" alt="HYPE STUDIO — Barbearia & Tattoo" />
 
 
                 </div>
@@ -453,7 +449,7 @@ export default function Sidebar({
 
 
             <div className="sidebar-studio-card">
-                <span className="sidebar-studio-avatar">H</span>
+                <img className="sidebar-studio-logo" src="/images/hype-logo-sidebar.png" alt="" aria-hidden="true" />
                 <span><strong>HYPE STUDIO</strong><small>Barbearia &amp; Tattoo</small></span>
             </div>
             <small className="sidebar-powered">Powered by Pegs</small>
