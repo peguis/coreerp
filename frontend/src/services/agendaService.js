@@ -41,3 +41,9 @@ export async function desativarRecursoAgenda(id) {
     const response = await api.delete(`/recursos-agenda/${id}`);
     return response.data;
 }
+
+
+export async function excluirRecursoAgenda(id) {
+    const response = await api.delete(`/recursos-agenda/${id}/permanente`);
+    return response.data;
+}

@@ -4,6 +4,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.enums import ModoReservaRecurso
+from app.models.agendamento import Agendamento
+from app.models.atendimento import Atendimento
 from app.repositories.servico import (
     atualizar_servico,
     buscar_servico_por_id,
@@ -217,3 +219,39 @@ def deletar_servico_service(
     except Exception:
         db.rollback()
         raise
+
+
+def excluir_servico_service(
+    db: Session,
+    servico_id: int,
+    empresa_id: int,
+):
+    servico_db = buscar_servico_por_id(db, servico_id, empresa_id)
+    if not servico_db:
+        raise HTTPException(status_code=404, detail="Servico nao encontrado.")
+
+    agendamento_existente = (
+        db.query(Agendamento.id)
+        .filter(
+            Agendamento.empresa_id == empresa_id,
+            Agendamento.servico_id == servico_id,
+        )
+        .first()
+    )
+    atendimento_existente = (
+        db.query(Atendimento.id)
+        .filter(
+            Atendimento.empresa_id == empresa_id,
+            Atendimento.servico_id == servico_id,
+        )
+        .first()
+    )
+    if agendamento_existente or atendimento_existente:
+        raise HTTPException(
+            status_code=409,
+            detail="Este servico ja foi utilizado e nao pode ser excluido. Desative-o para preservar o historico.",
+        )
+
+    db.delete(servico_db)
+    db.commit()
+    return {"mensagem": "Servico excluido."}

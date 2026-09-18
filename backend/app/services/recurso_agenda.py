@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
 from app.core.enums import StatusRecursoAgenda
+from app.models.agendamento import Agendamento
 from app.repositories.recurso_agenda import (
     atualizar_recurso,
     buscar_recurso_por_id,
@@ -117,3 +118,29 @@ def desativar_recurso_service(
     db.commit()
     db.refresh(recurso)
     return recurso
+
+
+def excluir_recurso_service(
+    db: Session,
+    recurso_id: int,
+    empresa_id: int,
+):
+    recurso = buscar_recurso_por_id(db, recurso_id, empresa_id)
+    if not recurso:
+        raise HTTPException(status_code=404, detail="Recurso nao encontrado.")
+    foi_utilizado = (
+        db.query(Agendamento.id)
+        .filter(
+            Agendamento.empresa_id == empresa_id,
+            Agendamento.recurso_id == recurso_id,
+        )
+        .first()
+    )
+    if foi_utilizado:
+        raise HTTPException(
+            status_code=409,
+            detail="Este recurso ja foi utilizado e nao pode ser excluido. Desative-o para preservar o historico.",
+        )
+    db.delete(recurso)
+    db.commit()
+    return {"mensagem": "Recurso excluido."}

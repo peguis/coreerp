@@ -12,11 +12,13 @@ import Mensagem from "../components/Mensagem";
 import {
     atualizarRecursoAgenda,
     criarRecursoAgenda,
+    excluirRecursoAgenda,
     listarRecursosAgenda
 } from "../services/agendaService";
 import {
     atualizarServico,
     criarServico,
+    excluirServico,
     listarServicos
 } from "../services/servicoService";
 import { getErrorMessage } from "../utils/errors";
@@ -181,6 +183,18 @@ export default function ConfiguracaoAgenda() {
         }
     }
 
+    async function excluirRecurso(recurso) {
+        if (!window.confirm(`Excluir definitivamente o recurso "${recurso.nome}"? Se ele já tiver sido usado, o sistema manterá apenas a opção de desativá-lo.`)) return;
+        try {
+            setErro("");
+            await excluirRecursoAgenda(recurso.id);
+            setMensagem("Recurso excluído definitivamente.");
+            await carregar();
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível excluir o recurso. Se ele já foi usado, desative-o."));
+        }
+    }
+
     async function salvarServico(evento) {
         evento.preventDefault();
         if (salvandoServico) return;
@@ -238,6 +252,18 @@ export default function ConfiguracaoAgenda() {
         }
     }
 
+    async function excluirServicoCadastrado(servico) {
+        if (!window.confirm(`Excluir definitivamente o serviço "${servico.nome}"? Se ele já tiver sido usado, o sistema manterá apenas a opção de desativá-lo.`)) return;
+        try {
+            setErro("");
+            await excluirServico(servico.id);
+            setMensagem("Serviço excluído definitivamente.");
+            await carregar();
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível excluir o serviço. Se ele já foi usado, desative-o."));
+        }
+    }
+
     return (
         <main className="configuracao-agenda-page">
             <PageHeader
@@ -283,6 +309,7 @@ export default function ConfiguracaoAgenda() {
                                             {status !== "ATIVO" && <Button size="small" variant="success" onClick={() => alterarStatusRecurso(recurso, "ATIVO")}>Ativar</Button>}
                                             {status !== "MANUTENCAO" && <Button size="small" variant="secondary" onClick={() => alterarStatusRecurso(recurso, "MANUTENCAO")}>Manutenção</Button>}
                                             {status !== "INATIVO" && <Button size="small" variant="danger" onClick={() => alterarStatusRecurso(recurso, "INATIVO")}>Desativar</Button>}
+                                            <Button size="small" variant="danger" onClick={() => excluirRecurso(recurso)}>Excluir</Button>
                                         </div>
                                     </article>
                                 );
@@ -324,7 +351,7 @@ export default function ConfiguracaoAgenda() {
                                 <td>{servico.duracao_minutos} min</td>
                                 <td>{servico.requer_recurso ? `${servico.tipo_recurso} · ${servico.modo_selecao_recurso === "MANUAL" ? "manual" : "automático"}` : "Não exige"}</td>
                                 <td>{servico.ativo ? "Ativo" : "Inativo"}</td>
-                                <td><div className="configuracao-agenda-actions"><Button size="small" variant="secondary" onClick={() => editarServico(servico)}>Editar</Button><Button size="small" variant={servico.ativo ? "danger" : "success"} onClick={() => alternarServico(servico)}>{servico.ativo ? "Desativar" : "Ativar"}</Button></div></td>
+                                <td><div className="configuracao-agenda-actions"><Button size="small" variant="secondary" onClick={() => editarServico(servico)}>Editar</Button><Button size="small" variant={servico.ativo ? "danger" : "success"} onClick={() => alternarServico(servico)}>{servico.ativo ? "Desativar" : "Ativar"}</Button><Button size="small" variant="danger" onClick={() => excluirServicoCadastrado(servico)}>Excluir</Button></div></td>
                             </tr>)}</tbody>
                         </table>
                     </div>

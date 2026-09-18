@@ -13,6 +13,7 @@ from app.services.servico import (
     buscar_servico_service,
     criar_servico_service,
     deletar_servico_service,
+    excluir_servico_service,
     listar_servicos_service,
 )
 
@@ -111,3 +112,14 @@ def deletar_servico_endpoint(
         usuario.empresa_id,
     )
     return {"mensagem": "Servico desativado."}
+
+
+@router.delete(
+    "/{servico_id}/permanente",
+)
+def excluir_servico_endpoint(
+    servico_id: int,
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("admin", "gerente")),
+):
+    return excluir_servico_service(db, servico_id, usuario.empresa_id)

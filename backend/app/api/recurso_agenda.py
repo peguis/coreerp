@@ -13,6 +13,7 @@ from app.services.recurso_agenda import (
     atualizar_recurso_service,
     criar_recurso_service,
     desativar_recurso_service,
+    excluir_recurso_service,
     listar_recursos_service,
 )
 
@@ -77,3 +78,14 @@ def desativar_recurso_endpoint(
     usuario=Depends(require_perfil("admin", "gerente")),
 ):
     return desativar_recurso_service(db, recurso_id, usuario.empresa_id)
+
+
+@router.delete(
+    "/{recurso_id}/permanente",
+)
+def excluir_recurso_endpoint(
+    recurso_id: int,
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("admin", "gerente")),
+):
+    return excluir_recurso_service(db, recurso_id, usuario.empresa_id)

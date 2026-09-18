@@ -445,3 +445,50 @@ def test_configuracao_nao_apaga_recurso_usado_e_profissional_nao_edita(agenda_cl
         headers=ctx["headers"]("prof1"),
     )
     assert servico.status_code == 403
+
+
+def test_exclui_cadastros_nao_utilizados_e_preserva_os_utilizados(agenda_client):
+    ctx = agenda_client
+    recurso_novo = ctx["client"].post(
+        "/recursos-agenda/",
+        json={"nome": "Cadastro incorreto", "tipo": "TEMPORARIO"},
+        headers=ctx["headers"]("gerente"),
+    ).json()
+    servico_novo = ctx["client"].post(
+        "/servicos/",
+        json={"nome": "Servico incorreto", "categoria": "Teste", "preco_padrao": 10},
+        headers=ctx["headers"]("gerente"),
+    ).json()
+
+    recurso_excluido = ctx["client"].delete(
+        f"/recursos-agenda/{recurso_novo['id']}/permanente",
+        headers=ctx["headers"]("gerente"),
+    )
+    servico_excluido = ctx["client"].delete(
+        f"/servicos/{servico_novo['id']}/permanente",
+        headers=ctx["headers"]("gerente"),
+    )
+
+    assert recurso_excluido.status_code == 200
+    assert servico_excluido.status_code == 200
+    assert ctx["db"].get(RecursoAgenda, recurso_novo["id"]) is None
+    assert ctx["db"].get(Servico, servico_novo["id"]) is None
+
+    usado = ctx["client"].post(
+        "/agendamentos/",
+        json=payload(ctx),
+        headers=ctx["headers"]("prof1"),
+    )
+    assert usado.status_code == 200
+
+    recurso_bloqueado = ctx["client"].delete(
+        f"/recursos-agenda/{ctx['recursos']['maca1'].id}/permanente",
+        headers=ctx["headers"]("gerente"),
+    )
+    servico_bloqueado = ctx["client"].delete(
+        f"/servicos/{ctx['servicos']['tattoo'].id}/permanente",
+        headers=ctx["headers"]("gerente"),
+    )
+
+    assert recurso_bloqueado.status_code == 409
+    assert servico_bloqueado.status_code == 409

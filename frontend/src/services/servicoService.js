@@ -35,3 +35,11 @@ export async function desativarServico(id) {
     return response.data;
 
 }
+
+
+export async function excluirServico(id) {
+
+    const response = await api.delete(`/servicos/${id}/permanente`);
+    return response.data;
+
+}
