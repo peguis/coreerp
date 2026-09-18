@@ -56,13 +56,16 @@
 .login-remember { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; }
 .login-remember input { width: 25px; height: 25px; accent-color: var(--hype-gold-hover); cursor: pointer; }
 .login-forgot { padding: 0; border: 0; color: var(--hype-gold); background: transparent; font: inherit; cursor: pointer; }
+.login-forgot-message { margin: -4px 0 0; padding: 12px 14px; border-left: 2px solid var(--hype-gold); color: #e5e2d8; background: rgba(217, 171, 63, .08); font-size: 13px; line-height: 1.5; }
 
 .login-form > button { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; padding: 19px; border: 0; border-radius: 11px; color: #17130b; background: var(--hype-gold-hover); font-size: 20px; font-weight: 800; cursor: pointer; transition: .2s; }
 .login-form > button:hover { background: var(--hype-gold-hover); }
 .login-form > button:disabled { opacity: .68; cursor: not-allowed; }
 
-.login-powered { margin: 58px 0 0; color: #d2d5d3; font-size: 15px; letter-spacing: .02em; text-align: center; }
-.login-powered strong { color: var(--hype-text-secondary); }
+.login-powered { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 58px 0 0; color: #d2d5d3; font-size: 15px; letter-spacing: .02em; text-align: center; }
+.login-powered-brand { display: inline-flex; align-items: center; gap: 6px; color: #f1f1ed; }
+.login-powered-brand img { width: 22px; height: 22px; object-fit: contain; filter: grayscale(1) brightness(0) invert(1); opacity: .86; }
+.login-powered-brand strong { color: #f1f1ed; font-size: 18px; letter-spacing: -.02em; }
 
 @media (max-width: 820px) {
     .login-page { display: block; }
@@ -90,4 +93,6 @@
     .login-remember input { width: 21px; height: 21px; }
     .login-form > button { padding: 16px; font-size: 18px; }
     .login-powered { margin-top: 38px; font-size: 12px; }
+    .login-powered-brand strong { font-size: 15px; }
+    .login-powered-brand img { width: 18px; height: 18px; }
 }

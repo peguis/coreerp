@@ -22,6 +22,8 @@ export default function Login() {
 
     const [lembrarDeMim, setLembrarDeMim] = useState(false);
 
+    const [mostrarAjudaSenha, setMostrarAjudaSenha] = useState(false);
+
     async function entrar(e) {
 
         e.preventDefault();
@@ -90,14 +92,26 @@ export default function Login() {
                                 <input type="checkbox" checked={lembrarDeMim} onChange={(e) => setLembrarDeMim(e.target.checked)} />
                                 <span>Lembrar de mim</span>
                             </label>
-                            <button type="button" className="login-forgot" onClick={() => undefined}>Esqueceu a senha?</button>
+                            <button type="button" className="login-forgot" onClick={() => setMostrarAjudaSenha((atual) => !atual)}>Esqueceu a senha?</button>
                         </div>
+
+                        {mostrarAjudaSenha && (
+                            <p className="login-forgot-message" role="status" aria-live="polite">
+                                Para trocar a senha, entre em contato com o gerente ou administrador da HYPE STUDIO.
+                            </p>
+                        )}
 
                         <button type="submit" disabled={loading}>
                             {loading ? "Entrando..." : "Entrar"}
                         </button>
                     </form>
-                    <p className="login-powered">Sistema de gestão | Powered by <strong>Pegs</strong></p>
+                    <p className="login-powered">
+                        <span>Sistema de gestão | Powered by</span>
+                        <span className="login-powered-brand">
+                            <img src="/favicon.svg" alt="" aria-hidden="true" />
+                            <strong>Pegs</strong>
+                        </span>
+                    </p>
                 </div>
             </section>
         </main>
