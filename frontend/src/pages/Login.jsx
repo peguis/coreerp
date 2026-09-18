@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Check, Eye, EyeOff, Lock, LogIn, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../api/auth";
@@ -17,6 +17,8 @@ export default function Login() {
     const [senha, setSenha] = useState("");
 
     const [loading, setLoading] = useState(false);
+
+    const [mostrarSenha, setMostrarSenha] = useState(false);
 
     async function entrar(e) {
 
@@ -44,111 +46,68 @@ export default function Login() {
     }
 
     return (
-
         <main className="login-page">
-
-            <div className="login-card">
-
-                <div className="login-header">
-
-                    <h1>
-
-                        HYPE STUDIO
-
-                    </h1>
-
-                    <p>
-
-                        BARBEARIA &amp; TATTOO
-
-                    </p>
-
+            <section className="login-showcase" aria-label="Identidade HYPE STUDIO">
+                <div className="login-showcase-overlay" />
+                <div className="login-showcase-content">
+                    <div className="login-brand-lockup">
+                        <span className="hype-brand-mark" aria-hidden="true">H</span>
+                        <span>
+                            <strong>HYPE STUDIO</strong>
+                            <small>BARBEARIA &amp; TATTOO</small>
+                        </span>
+                    </div>
+                    <div className="login-showcase-slogan">
+                        <strong>ESTILO</strong>
+                        <strong>DISCIPLINA</strong>
+                        <strong>IDENTIDADE</strong>
+                    </div>
+                    <p>“Mais que um corte,<br />uma expressão.”</p>
                 </div>
+            </section>
 
-                <form
-                    onSubmit={entrar}
-                    className="login-form"
-                >
-
-                    <div className="input-group">
-
-                        <Mail size={20} />
-
-                        <input
-
-                            type="email"
-                            aria-label="E-mail"
-                            autoComplete="username"
-
-                            placeholder="E-mail"
-
-                            value={email}
-
-                            onChange={(e) =>
-
-                                setEmail(e.target.value)
-
-                            }
-
-                            required
-
-                        />
-
+            <section className="login-panel">
+                <div className="login-card">
+                    <div className="login-header">
+                        <span className="login-eyebrow">HYPE STUDIO · GESTÃO</span>
+                        <h1>Bem-vindo de volta!</h1>
+                        <p>Acesse o sistema da HYPE STUDIO</p>
                     </div>
 
-                    <div className="input-group">
+                    <form onSubmit={entrar} className="login-form">
+                        <div className="input-group">
+                            <Mail size={20} aria-hidden="true" />
+                            <input type="email" aria-label="E-mail" autoComplete="username" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        </div>
 
-                        <Lock size={20} />
+                        <div className="input-group">
+                            <Lock size={20} aria-hidden="true" />
+                            <input type={mostrarSenha ? "text" : "password"} aria-label="Senha" autoComplete="current-password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} required />
+                            <button type="button" className="login-password-toggle" aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"} onClick={() => setMostrarSenha((atual) => !atual)}>
+                                {mostrarSenha ? <EyeOff size={17} /> : <Eye size={17} />}
+                            </button>
+                        </div>
 
-                        <input
+                        <div className="login-support-row">
+                            <span><Check size={14} /> Acesso seguro</span>
+                            <button type="button" className="login-forgot" onClick={() => undefined}>Esqueceu a senha?</button>
+                        </div>
 
-                            type="password"
-                            aria-label="Senha"
-                            autoComplete="current-password"
+                        <button type="submit" disabled={loading}>
+                            <LogIn size={20} />
+                            {loading ? "Entrando..." : "Entrar"}
+                        </button>
+                    </form>
 
-                            placeholder="Senha"
-
-                            value={senha}
-
-                            onChange={(e) =>
-
-                                setSenha(e.target.value)
-
-                            }
-
-                            required
-
-                        />
-
+                    <div className="login-divider"><span>ou continue com</span></div>
+                    <div className="login-provider-row" aria-label="Provedores de acesso">
+                        <span>Google</span>
+                        <span>Microsoft</span>
                     </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                    >
-
-                        <LogIn size={20} />
-
-                        {
-
-                            loading
-
-                                ? "Entrando..."
-
-                                : "Entrar"
-
-                        }
-
-                    </button>
-
-                </form>
-
-                <p className="login-powered">Powered by Pegs</p>
-
-            </div>
-
+                    <p className="login-powered">Sistema de gestão | Powered by <strong>Pegs</strong></p>
+                </div>
+            </section>
         </main>
-
     );
 
 }

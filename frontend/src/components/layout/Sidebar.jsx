@@ -290,14 +290,10 @@ export default function Sidebar({
                 <div className="sidebar-logo">
 
 
-                    <h2>HYPE STUDIO</h2>
-
-
-
-                    <span>
-
-                        BARBEARIA &amp; TATTOO
-
+                    <span className="sidebar-brand-mark" aria-hidden="true">H</span>
+                    <span className="sidebar-brand-copy">
+                        <strong>HYPE STUDIO</strong>
+                        <small>BARBEARIA &amp; TATTOO</small>
                     </span>
 
 
@@ -456,6 +452,10 @@ export default function Sidebar({
 
 
 
+            <div className="sidebar-studio-card">
+                <span className="sidebar-studio-avatar">H</span>
+                <span><strong>HYPE STUDIO</strong><small>Barbearia &amp; Tattoo</small></span>
+            </div>
             <small className="sidebar-powered">Powered by Pegs</small>
 
             <button

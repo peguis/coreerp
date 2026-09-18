@@ -49,6 +49,14 @@
 
 }
 
+.hype-theme .layout-content {
+    background: radial-gradient(circle at 86% 0%, rgba(217, 171, 63, .045), transparent 28%);
+}
+
+.hype-theme .layout-main {
+    padding: 26px clamp(18px, 2.6vw, 42px) 42px;
+}
+
 
 .mobile-sidebar-overlay {
 

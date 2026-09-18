@@ -1,5 +1,6 @@
-import { Menu, UserCircle } from "lucide-react";
+import { Bell, Menu, Search, UserCircle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import { buscarUsuarioLogado } from "../../services/usuarioService";
 
@@ -17,6 +18,7 @@ export default function Topbar({
 
 
     const [usuario, setUsuario] = useState(null);
+    const location = useLocation();
 
     const carregarUsuario = useCallback(async () => {
         try {
@@ -76,7 +78,14 @@ export default function Topbar({
 
 
 
-            <div className="topbar-brand">HYPE STUDIO</div>
+            <div className="topbar-brand">
+                <span className="topbar-brand-mark" aria-hidden="true">H</span>
+                <span>HYPE STUDIO</span>
+            </div>
+
+            <span className="topbar-context" aria-label="Tela atual">
+                {location.pathname.includes("agenda") ? "Agenda" : location.pathname.includes("profissionais") ? "Profissionais" : location.pathname.includes("configur") ? "Configurações" : "Dashboard"}
+            </span>
 
 
 
@@ -88,6 +97,10 @@ export default function Topbar({
 
 
             <div className="topbar-right">
+                <div className="topbar-tools" aria-hidden="true">
+                    <Search size={16} />
+                    <Bell size={16} />
+                </div>
 
 
 

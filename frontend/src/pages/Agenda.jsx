@@ -334,6 +334,24 @@ export default function Agenda() {
 
     const ordenados = useMemo(() => [...agendamentos].sort((a, b) => new Date(a.inicio_em) - new Date(b.inicio_em)), [agendamentos]);
     const ativos = ordenados.filter((item) => !["CANCELADO", "NAO_COMPARECEU"].includes(item.status));
+    const agendaColunas = administrativo
+        ? profissionais.map((item) => ({ id: item.id, nome: nomeProfissional(item, nomesUsuarios), area: item.area_atuacao }))
+        : [{ id: "proprio", nome: usuario?.nome || "Minha agenda", area: usuario?.area_atuacao || "" }];
+    const horasAgenda = Array.from({ length: 12 }, (_, indice) => 8 + indice);
+    const agendaTotalColunas = Math.max(agendaColunas.length, 1);
+
+    function posicaoBloco(item) {
+        const inicio = new Date(item.inicio_em);
+        const minutos = Math.max(0, ((inicio.getHours() - 8) * 60) + inicio.getMinutes());
+        const coluna = administrativo ? agendaColunas.findIndex((pessoa) => String(pessoa.id) === String(item.profissional_id)) : 0;
+        const largura = 100 / agendaTotalColunas;
+        return {
+            top: `${minutos * 0.72}px`,
+            height: `${Math.max(Number(item.duracao_minutos || 40) * 0.72, 38)}px`,
+            left: `${Math.max(coluna, 0) * largura}%`,
+            width: `calc(${largura}% - 8px)`
+        };
+    }
     const selecionadoManual = servicoSelecionado?.requer_recurso && (
         servicoSelecionado.modo_selecao_recurso === "MANUAL" || form.usar_recurso_manual
     );
@@ -447,6 +465,29 @@ export default function Agenda() {
                     </div>
                 )}
             </SectionCard>
+
+            <section className="agenda-calendar-card">
+                <div className="agenda-calendar-toolbar">
+                    <div><span className="agenda-calendar-overline">VISÃO DO DIA</span><strong>{new Date(`${data}T12:00:00`).toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long" })}</strong></div>
+                    <div className="agenda-calendar-modes"><span className="active">Dia</span><span>Semana</span><span>Mês</span></div>
+                </div>
+                {carregando ? <Loading texto="Carregando agenda visual..." /> : (
+                    <div className="agenda-calendar-shell" style={{ "--agenda-column-count": agendaTotalColunas }}>
+                        <div className="agenda-calendar-head"><span>Horário</span>{agendaColunas.map((pessoa) => <span key={pessoa.id}><strong>{pessoa.nome}</strong><small>{pessoa.area}</small></span>)}</div>
+                        <div className="agenda-calendar-body">
+                            <div className="agenda-calendar-hours">{horasAgenda.map((hora) => <span key={hora}>{String(hora).padStart(2, "0")}:00</span>)}</div>
+                            <div className="agenda-calendar-grid">
+                                {horasAgenda.map((hora) => <span className="agenda-calendar-line" key={hora} style={{ top: `${(hora - 8) * 43.2}px` }} />)}
+                                {ordenados.map((item) => {
+                                    const restrito = item.detalhes_restritos;
+                                    const servico = servicos.find((servicoAtual) => servicoAtual.id === item.servico_id);
+                                    return <article className={`agenda-calendar-block ${restrito ? "restricted" : ""} ${item.status === "CANCELADO" ? "cancelled" : ""}`} key={`visual-${item.id}`} style={posicaoBloco(item)}><strong>{restrito ? "Recurso reservado" : servico?.nome || "Atendimento"}</strong><span>{restrito ? item.recurso_nome || "Recurso ocupado" : item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span><small>{item.duracao_minutos} min{item.recurso_nome ? ` · ${item.recurso_nome}` : ""}</small></article>;
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </section>
 
             <SectionCard titulo="Agenda do dia" subtitulo="Profissionais veem os próprios detalhes e apenas a ocupação dos recursos de terceiros.">
                 {carregando ? <Loading texto="Carregando agenda..." /> : ordenados.length === 0 ? (
