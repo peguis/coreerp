@@ -78,10 +78,11 @@ function DashboardPiloto() {
             };
         });
         const maiorValor = Math.max(...valores.map((item) => item.valor), 0);
+        const totalGrafico = valores.reduce((total, item) => total + item.valor, 0);
         const diaDestaque = maiorValor > 0
             ? valores.find((item) => item.valor === maiorValor)?.diaSemana
             : (new Date().getDay() + 6) % 7;
-        return { valores, maiorValor, diaDestaque };
+        return { valores, maiorValor, totalGrafico, diaDestaque };
     }, [dados]);
 
     const ultimosAtendimentos = dados?.ultimos_atendimentos || [];
@@ -126,12 +127,12 @@ function DashboardPiloto() {
                             <strong>{formatarMoeda(dados.faturamento_bruto)}</strong>
                             <small><TrendingUp size={13} /> Período selecionado</small>
                         </article>
-                        <article className="piloto-kpi-card piloto-kpi-green">
+                        <article className="piloto-kpi-card piloto-kpi-cyan">
                             <span><CalendarCheck size={17} /> Atendimentos</span>
                             <strong>{dados.total_atendimentos}</strong>
                             <small><ArrowUp size={13} /> Registros realizados</small>
                         </article>
-                        <article className="piloto-kpi-card piloto-kpi-blue">
+                        <article className="piloto-kpi-card piloto-kpi-green">
                             <span><Banknote size={17} /> Valor da casa</span>
                             <strong>{formatarMoeda(dados.valor_casa)}</strong>
                             <small>{percentual(dados.valor_casa, dados.faturamento_bruto)}% do faturamento bruto</small>
@@ -153,8 +154,10 @@ function DashboardPiloto() {
                                 </div>
                                 <span className="piloto-card-period">Período selecionado</span>
                             </header>
-                            <div className="piloto-chart-total">{formatarMoeda(dados.faturamento_bruto)}</div>
-                            <div className="piloto-bar-chart" aria-label="Faturamento por dia da semana">
+                            <div className="piloto-chart-total" aria-label={`Total do gráfico: ${formatarMoeda(grafico.totalGrafico)}`}>
+                                {formatarMoeda(grafico.totalGrafico)}
+                            </div>
+                            <div className="piloto-bar-chart" aria-label={`Faturamento por dia da semana. Soma: ${formatarMoeda(grafico.totalGrafico)}`}>
                                 {grafico.valores.map((item) => {
                                     const altura = grafico.maiorValor > 0
                                         ? Math.max((item.valor / grafico.maiorValor) * 100, item.valor > 0 ? 8 : 3)
