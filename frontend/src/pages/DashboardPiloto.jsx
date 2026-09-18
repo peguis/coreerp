@@ -230,11 +230,11 @@ function DashboardPiloto() {
                             <>
                                 <div className="piloto-table-wrap">
                                     <table className="piloto-table piloto-recent-table">
-                                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Profissional</th><th>Horário</th><th>Status</th></tr></thead>
-                                        <tbody>{ultimosAtendimentos.map((item) => <tr key={item.atendimento_id}><td>{item.cliente_nome || "Cliente avulso"}</td><td>{item.servico_nome}</td><td>{item.profissional_nome}</td><td>{formatarDataHora(item.realizado_em)}</td><td><span className="hype-status hype-status-pago">Concluído</span></td></tr>)}</tbody>
+                                        <thead><tr><th>Profissional</th><th>Serviço</th><th>Horário</th><th>Status</th></tr></thead>
+                                        <tbody>{ultimosAtendimentos.map((item) => <tr key={item.atendimento_id}><td>{item.profissional_nome}</td><td>{item.servico_nome}</td><td>{formatarDataHora(item.realizado_em)}</td><td><span className="hype-status hype-status-pago">Concluído</span></td></tr>)}</tbody>
                                     </table>
                                 </div>
-                                <div className="piloto-mobile-cards piloto-recent-mobile">{ultimosAtendimentos.map((item) => <article className="piloto-item-card" key={item.atendimento_id}><header><strong>{item.cliente_nome || "Cliente avulso"}</strong><span className="hype-status hype-status-pago">Concluído</span></header><dl><div><dt>Serviço</dt><dd>{item.servico_nome}</dd></div><div><dt>Profissional</dt><dd>{item.profissional_nome}</dd></div><div><dt>Horário</dt><dd>{formatarDataHora(item.realizado_em)}</dd></div></dl></article>)}</div>
+                                <div className="piloto-mobile-cards piloto-recent-mobile">{ultimosAtendimentos.map((item) => <article className="piloto-item-card" key={item.atendimento_id}><header><strong>{item.profissional_nome}</strong><span className="hype-status hype-status-pago">Concluído</span></header><dl><div><dt>Serviço</dt><dd>{item.servico_nome}</dd></div><div><dt>Horário</dt><dd>{formatarDataHora(item.realizado_em)}</dd></div></dl></article>)}</div>
                             </>
                         )}
                     </section>
