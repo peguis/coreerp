@@ -173,6 +173,22 @@ def test_profissional_cria_para_si_com_duracao_e_maca_automaticas(agenda_client)
     assert corpo["recurso_nome"] == "Maca 1"
 
 
+def test_servico_automatico_permite_escolha_manual_do_recurso(agenda_client):
+    ctx = agenda_client
+    resposta = ctx["client"].post(
+        "/agendamentos/",
+        json=payload(
+            ctx,
+            usar_recurso_manual=True,
+            recurso_id=ctx["recursos"]["maca2"].id,
+        ),
+        headers=ctx["headers"]("prof1"),
+    )
+
+    assert resposta.status_code == 200
+    assert resposta.json()["recurso_id"] == ctx["recursos"]["maca2"].id
+
+
 def test_recurso_com_nome_especifico_atende_tipo_base_do_servico(agenda_client):
     ctx = agenda_client
     ctx["recursos"]["maca1"].tipo = "MACA DE TATOO"

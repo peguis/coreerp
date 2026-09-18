@@ -13,6 +13,7 @@ class AgendamentoCreate(BaseModel):
     cliente_id: int | None = Field(default=None, gt=0)
     cliente_avulso_nome: str | None = None
     recurso_id: int | None = Field(default=None, gt=0)
+    usar_recurso_manual: bool = False
     inicio_em: datetime
     duracao_minutos: int | None = Field(default=None, gt=0, le=1440)
     observacao: str | None = None
@@ -32,6 +33,7 @@ class AgendamentoUpdate(BaseModel):
     cliente_id: int | None = Field(default=None, gt=0)
     cliente_avulso_nome: str | None = None
     recurso_id: int | None = Field(default=None, gt=0)
+    usar_recurso_manual: bool = False
     inicio_em: datetime | None = None
     duracao_minutos: int | None = Field(default=None, gt=0, le=1440)
     status: StatusAgendamento | None = None

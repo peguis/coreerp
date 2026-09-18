@@ -151,7 +151,8 @@ def _validar_recurso(db, servico, dados, usuario, inicio_em, fim_em, atual=None)
         )
 
     modo = servico.modo_selecao_recurso or "AUTOMATICO"
-    if modo == "MANUAL":
+    usar_recurso_manual = bool(dados.get("usar_recurso_manual")) or modo == "MANUAL"
+    if usar_recurso_manual:
         if recurso_id_informado is None:
             if atual is not None and atual.recurso_id is not None:
                 recurso_id_informado = atual.recurso_id

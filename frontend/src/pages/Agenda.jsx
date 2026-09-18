@@ -13,6 +13,7 @@ import FormCard from "../components/forms/FormCard";
 import Input from "../components/forms/Input";
 import Select from "../components/forms/Select";
 import Textarea from "../components/forms/Textarea";
+import Checkbox from "../components/forms/Checkbox";
 import Button from "../components/forms/Button";
 import Loading from "../components/Loading";
 import Mensagem from "../components/Mensagem";
@@ -26,6 +27,7 @@ const FORM_INICIAL = {
     cliente_id: "",
     cliente_avulso_nome: "",
     recurso_id: "",
+    usar_recurso_manual: false,
     inicio_em: "",
     duracao_minutos: "",
     observacao: ""
@@ -163,7 +165,8 @@ export default function Agenda() {
                 ...atual,
                 servico_id: valor,
                 duracao_minutos: servico?.duracao_minutos ? String(servico.duracao_minutos) : "",
-                recurso_id: ""
+                recurso_id: "",
+                usar_recurso_manual: servico?.modo_selecao_recurso === "MANUAL"
             }));
         }
     }
@@ -189,6 +192,7 @@ export default function Agenda() {
             cliente_id: item.cliente_id ? String(item.cliente_id) : "",
             cliente_avulso_nome: item.cliente_avulso_nome || "",
             recurso_id: item.recurso_id ? String(item.recurso_id) : "",
+            usar_recurso_manual: servicoSelecionado?.modo_selecao_recurso === "MANUAL",
             inicio_em: dataLocalInput(item.inicio_em),
             duracao_minutos: String(item.duracao_minutos || ""),
             observacao: item.observacao || ""
@@ -212,7 +216,10 @@ export default function Agenda() {
             setErro("Selecione o profissional responsável.");
             return;
         }
-        if (servicoSelecionado?.requer_recurso && servicoSelecionado.modo_selecao_recurso === "MANUAL" && !form.recurso_id) {
+        const usarRecursoManual = servicoSelecionado?.requer_recurso && (
+            servicoSelecionado.modo_selecao_recurso === "MANUAL" || form.usar_recurso_manual
+        );
+        if (usarRecursoManual && !form.recurso_id) {
             setErro("Escolha a maca ou recurso deste agendamento.");
             return;
         }
@@ -223,10 +230,11 @@ export default function Agenda() {
             cliente_avulso_nome: form.cliente_id ? null : (form.cliente_avulso_nome.trim() || null),
             inicio_em: isoLocal(form.inicio_em),
             duracao_minutos: Number(form.duracao_minutos),
+            usar_recurso_manual: Boolean(usarRecursoManual),
             observacao: form.observacao.trim() || null
         };
         if (administrativo) dados.profissional_id = Number(form.profissional_id);
-        if (servicoSelecionado?.requer_recurso && servicoSelecionado.modo_selecao_recurso === "MANUAL") {
+        if (usarRecursoManual) {
             dados.recurso_id = Number(form.recurso_id);
         }
 
@@ -264,7 +272,9 @@ export default function Agenda() {
 
     const ordenados = useMemo(() => [...agendamentos].sort((a, b) => new Date(a.inicio_em) - new Date(b.inicio_em)), [agendamentos]);
     const ativos = ordenados.filter((item) => !["CANCELADO", "NAO_COMPARECEU"].includes(item.status));
-    const selecionadoManual = servicoSelecionado?.requer_recurso && servicoSelecionado.modo_selecao_recurso === "MANUAL";
+    const selecionadoManual = servicoSelecionado?.requer_recurso && (
+        servicoSelecionado.modo_selecao_recurso === "MANUAL" || form.usar_recurso_manual
+    );
 
     return (
         <main className="agenda-page">
@@ -311,6 +321,17 @@ export default function Agenda() {
                         placeholder="Cliente avulso"
                     />
                     {!form.cliente_id && <Input label="Nome do cliente avulso" value={form.cliente_avulso_nome} onChange={(evento) => alterar("cliente_avulso_nome", evento.target.value)} placeholder="Opcional" />}
+                    {servicoSelecionado?.requer_recurso && (
+                        <div className="agenda-resource-choice">
+                            <Checkbox
+                                label={servicoSelecionado.modo_selecao_recurso === "MANUAL" ? "Selecionar recurso manualmente (obrigatório)" : "Escolher maca ou recurso manualmente"}
+                                checked={Boolean(form.usar_recurso_manual || servicoSelecionado.modo_selecao_recurso === "MANUAL")}
+                                disabled={servicoSelecionado.modo_selecao_recurso === "MANUAL"}
+                                onChange={(evento) => alterar("usar_recurso_manual", evento.target.checked)}
+                            />
+                            {servicoSelecionado.modo_selecao_recurso !== "MANUAL" && <span>Se desmarcado, o sistema escolherá automaticamente um recurso livre.</span>}
+                        </div>
+                    )}
                     {selecionadoManual && (
                         <Select
                             label="Maca ou recurso"
