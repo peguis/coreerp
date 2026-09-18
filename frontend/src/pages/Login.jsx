@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Check, Eye, EyeOff, Lock, LogIn, Mail } from "lucide-react";
+import { Crown, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../api/auth";
@@ -19,6 +19,8 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
+
+    const [lembrarDeMim, setLembrarDeMim] = useState(false);
 
     async function entrar(e) {
 
@@ -50,26 +52,26 @@ export default function Login() {
             <section className="login-showcase" aria-label="Identidade HYPE STUDIO">
                 <div className="login-showcase-overlay" />
                 <div className="login-showcase-content">
-                    <div className="login-brand-lockup">
-                        <span className="hype-brand-mark" aria-hidden="true">H</span>
-                        <span>
+                    <div className="login-brand-lockup" aria-label="HYPE STUDIO — Barbearia e Tattoo">
+                        <div className="login-logo-emblem">
+                            <span className="login-logo-crown" aria-hidden="true"><Crown size={28} strokeWidth={1.7} /></span>
+                            <span className="login-logo-est">EST. 2024 · STUDIO</span>
                             <strong>HYPE STUDIO</strong>
-                            <small>BARBEARIA &amp; TATTOO</small>
-                        </span>
+                            <span className="login-logo-tag">BARBEARIA &amp; TATTOO</span>
+                        </div>
                     </div>
+                    <div className="login-showcase-divider" aria-hidden="true" />
                     <div className="login-showcase-slogan">
                         <strong>ESTILO</strong>
                         <strong>DISCIPLINA</strong>
                         <strong>IDENTIDADE</strong>
                     </div>
-                    <p>“Mais que um corte,<br />uma expressão.”</p>
                 </div>
             </section>
 
             <section className="login-panel">
                 <div className="login-card">
                     <div className="login-header">
-                        <span className="login-eyebrow">HYPE STUDIO · GESTÃO</span>
                         <h1>Bem-vindo de volta!</h1>
                         <p>Acesse o sistema da HYPE STUDIO</p>
                     </div>
@@ -89,21 +91,17 @@ export default function Login() {
                         </div>
 
                         <div className="login-support-row">
-                            <span><Check size={14} /> Acesso seguro</span>
+                            <label className="login-remember">
+                                <input type="checkbox" checked={lembrarDeMim} onChange={(e) => setLembrarDeMim(e.target.checked)} />
+                                <span>Lembrar de mim</span>
+                            </label>
                             <button type="button" className="login-forgot" onClick={() => undefined}>Esqueceu a senha?</button>
                         </div>
 
                         <button type="submit" disabled={loading}>
-                            <LogIn size={20} />
                             {loading ? "Entrando..." : "Entrar"}
                         </button>
                     </form>
-
-                    <div className="login-divider"><span>ou continue com</span></div>
-                    <div className="login-provider-row" aria-label="Provedores de acesso">
-                        <span>Google</span>
-                        <span>Microsoft</span>
-                    </div>
                     <p className="login-powered">Sistema de gestão | Powered by <strong>Pegs</strong></p>
                 </div>
             </section>
