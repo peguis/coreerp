@@ -33,6 +33,10 @@ class Servico(Base):
             name="ck_servicos_nome_nao_vazio",
         ),
         CheckConstraint(
+            "categoria IS NULL OR length(trim(categoria)) > 0",
+            name="ck_servicos_categoria_nao_vazia",
+        ),
+        CheckConstraint(
             "preco_padrao >= 0",
             name="ck_servicos_preco_padrao_nao_negativo",
         ),
@@ -60,6 +64,12 @@ class Servico(Base):
         nullable=True,
     )
 
+    categoria: Mapped[str | None] = mapped_column(
+        String(50),
+        nullable=True,
+        index=True,
+    )
+
     preco_padrao: Mapped[Decimal] = mapped_column(
         Numeric(12, 2),
         nullable=False,
@@ -70,8 +80,8 @@ class Servico(Base):
     duracao_minutos: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
-        default=60,
-        server_default=text("60"),
+        default=40,
+        server_default=text("40"),
     )
 
     requer_recurso: Mapped[bool] = mapped_column(

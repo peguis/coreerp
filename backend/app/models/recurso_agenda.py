@@ -28,6 +28,10 @@ class RecursoAgenda(Base):
             "length(trim(tipo)) > 0",
             name="ck_recursos_agenda_tipo_nao_vazio",
         ),
+        CheckConstraint(
+            "status IN ('ATIVO', 'INATIVO', 'MANUTENCAO')",
+            name="ck_recursos_agenda_status",
+        ),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -41,6 +45,13 @@ class RecursoAgenda(Base):
         nullable=False,
         default=True,
         server_default=text("true"),
+    )
+    status: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="ATIVO",
+        server_default=text("'ATIVO'"),
+        index=True,
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
@@ -58,3 +69,7 @@ class RecursoAgenda(Base):
     agendamentos: Mapped[list["Agendamento"]] = relationship(
         "Agendamento", back_populates="recurso"
     )
+
+    @property
+    def disponivel(self) -> bool:
+        return self.ativo and self.status == "ATIVO"

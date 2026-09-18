@@ -97,6 +97,7 @@ def listar_recursos_livres(
             RecursoAgenda.empresa_id == empresa_id,
             RecursoAgenda.tipo == tipo,
             RecursoAgenda.ativo.is_(True),
+            RecursoAgenda.status == "ATIVO",
         )
         .order_by(RecursoAgenda.nome.asc(), RecursoAgenda.id.asc())
         .all()

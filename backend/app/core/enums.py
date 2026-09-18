@@ -44,3 +44,9 @@ class StatusAgendamento(str, Enum):
 class ModoReservaRecurso(str, Enum):
     AUTOMATICO = "AUTOMATICO"
     MANUAL = "MANUAL"
+
+
+class StatusRecursoAgenda(str, Enum):
+    ATIVO = "ATIVO"
+    INATIVO = "INATIVO"
+    MANUTENCAO = "MANUTENCAO"

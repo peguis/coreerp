@@ -26,9 +26,10 @@ import "./Piloto.css";
 
 const FORM_INICIAL = {
     nome: "",
+    categoria: "",
     descricao: "",
     preco_padrao: "",
-    duracao_minutos: "60",
+    duracao_minutos: "40",
     requer_recurso: "false",
     tipo_recurso: "",
     modo_selecao_recurso: "AUTOMATICO"
@@ -89,9 +90,10 @@ function Servicos() {
         setEditarId(servico.id);
         setForm({
             nome: servico.nome,
+            categoria: servico.categoria || "",
             descricao: servico.descricao || "",
             preco_padrao: String(servico.preco_padrao),
-            duracao_minutos: String(servico.duracao_minutos || 60),
+            duracao_minutos: String(servico.duracao_minutos || 40),
             requer_recurso: String(Boolean(servico.requer_recurso)),
             tipo_recurso: servico.tipo_recurso || "",
             modo_selecao_recurso: servico.modo_selecao_recurso || "AUTOMATICO"
@@ -114,7 +116,7 @@ function Servicos() {
         setErro("");
         setMensagem("");
 
-        if (!form.nome.trim() || form.preco_padrao === "" || !form.duracao_minutos || (form.requer_recurso === "true" && !form.tipo_recurso.trim())) {
+        if (!form.nome.trim() || !form.categoria.trim() || form.preco_padrao === "" || !form.duracao_minutos || (form.requer_recurso === "true" && !form.tipo_recurso.trim())) {
 
             setErro("Informe nome e preço padrão do serviço.");
             return;
@@ -126,6 +128,7 @@ function Servicos() {
             setSalvando(true);
             const dados = {
                 nome: form.nome.trim(),
+                categoria: form.categoria.trim(),
                 descricao: form.descricao.trim() || null,
                 preco_padrao: Number(form.preco_padrao),
                 duracao_minutos: Number(form.duracao_minutos),
@@ -199,6 +202,7 @@ function Servicos() {
             <FormCard titulo={editarId ? "Editar serviço" : "Novo serviço"} subtitulo="O preço padrão é uma referência para o registro do atendimento.">
                 <form className="piloto-form-grid" onSubmit={salvar}>
                     <Input label="Nome" value={form.nome} onChange={(evento) => alterar("nome", evento.target.value)} required />
+                    <Input label="Categoria" value={form.categoria} onChange={(evento) => alterar("categoria", evento.target.value)} placeholder="Ex.: Barbearia ou Tattoo" required />
                     <Input label="Preço padrão" type="number" min="0" step="0.01" value={form.preco_padrao} onChange={(evento) => alterar("preco_padrao", evento.target.value)} required />
                     <Input label="Duração padrão (minutos)" type="number" min="1" max="1440" value={form.duracao_minutos} onChange={(evento) => alterar("duracao_minutos", evento.target.value)} required />
                     <Select label="Exige recurso físico" value={form.requer_recurso} onChange={(evento) => alterar("requer_recurso", evento.target.value)} options={[{ value: "false", label: "Não" }, { value: "true", label: "Sim" }]} />
@@ -217,7 +221,7 @@ function Servicos() {
             <SectionCard>
                 {carregando ? <Loading texto="Carregando serviços..." /> : filtrados.length === 0 ? <div className="piloto-empty">Nenhum serviço encontrado.</div> : (
                     <div className="piloto-table-wrap">
-                        <table className="piloto-table"><thead><tr><th>Nome</th><th>Descrição</th><th>Preço padrão</th><th>Duração</th><th>Recurso</th><th>Status</th><th>Ações</th></tr></thead><tbody>{filtrados.map((servico) => <tr key={servico.id}><td>{servico.nome}</td><td>{servico.descricao || "-"}</td><td className="monetario">{formatarMoeda(servico.preco_padrao)}</td><td>{servico.duracao_minutos} min</td><td>{servico.requer_recurso ? `${servico.tipo_recurso} · ${servico.modo_selecao_recurso === "MANUAL" ? "manual" : "automático"}` : "-"}</td><td>{servico.ativo ? "Ativo" : "Inativo"}</td><td><div className="piloto-inline-actions"><Button size="small" variant="secondary" onClick={() => editar(servico)}>Editar</Button><Button size="small" variant={servico.ativo ? "danger" : "success"} onClick={() => alternarAtivo(servico)}>{servico.ativo ? "Desativar" : "Ativar"}</Button></div></td></tr>)}</tbody></table>
+                        <table className="piloto-table"><thead><tr><th>Nome</th><th>Categoria</th><th>Descrição</th><th>Preço padrão</th><th>Duração</th><th>Recurso</th><th>Status</th><th>Ações</th></tr></thead><tbody>{filtrados.map((servico) => <tr key={servico.id}><td>{servico.nome}</td><td>{servico.categoria || "-"}</td><td>{servico.descricao || "-"}</td><td className="monetario">{formatarMoeda(servico.preco_padrao)}</td><td>{servico.duracao_minutos} min</td><td>{servico.requer_recurso ? `${servico.tipo_recurso} · ${servico.modo_selecao_recurso === "MANUAL" ? "manual" : "automático"}` : "-"}</td><td>{servico.ativo ? "Ativo" : "Inativo"}</td><td><div className="piloto-inline-actions"><Button size="small" variant="secondary" onClick={() => editar(servico)}>Editar</Button><Button size="small" variant={servico.ativo ? "danger" : "success"} onClick={() => alternarAtivo(servico)}>{servico.ativo ? "Desativar" : "Ativar"}</Button></div></td></tr>)}</tbody></table>
                     </div>
                 )}
                 <div className="piloto-mobile-cards">{filtrados.map((servico) => <article className="piloto-item-card" key={servico.id}><header><strong>{servico.nome}</strong><span>{servico.ativo ? "Ativo" : "Inativo"}</span></header><dl><div><dt>Descrição</dt><dd>{servico.descricao || "-"}</dd></div><div><dt>Preço padrão</dt><dd>{formatarMoeda(servico.preco_padrao)}</dd></div><div><dt>Duração</dt><dd>{servico.duracao_minutos} min</dd></div><div><dt>Recurso</dt><dd>{servico.requer_recurso ? `${servico.tipo_recurso} · ${servico.modo_selecao_recurso === "MANUAL" ? "manual" : "automático"}` : "-"}</dd></div></dl><div className="piloto-inline-actions"><Button size="small" variant="secondary" onClick={() => editar(servico)}>Editar</Button><Button size="small" variant={servico.ativo ? "danger" : "success"} onClick={() => alternarAtivo(servico)}>{servico.ativo ? "Desativar" : "Ativar"}</Button></div></article>)}</div>

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { atualizarAgendamento, atualizarRecursoAgenda, criarAgendamento, criarRecursoAgenda, listarAgendamentos, listarRecursosAgenda } from "../services/agendaService";
+import { atualizarAgendamento, criarAgendamento, listarAgendamentos, listarRecursosAgenda } from "../services/agendaService";
 import { buscarUsuarioLogado, listarUsuarios } from "../services/usuarioService";
 import { listarClientes } from "../services/clienteService";
 import { listarProfissionais } from "../services/profissionalService";
@@ -86,18 +86,16 @@ export default function Agenda() {
     const [agendamentos, setAgendamentos] = useState([]);
     const [data, setData] = useState(dataSelecionadaInicial);
     const [form, setForm] = useState(FORM_INICIAL);
-    const [recursoForm, setRecursoForm] = useState({ nome: "", tipo: "MACA" });
     const [editarId, setEditarId] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [salvando, setSalvando] = useState(false);
-    const [salvandoRecurso, setSalvandoRecurso] = useState(false);
     const [erro, setErro] = useState("");
     const [mensagem, setMensagem] = useState("");
 
     const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
     const servicoSelecionado = servicos.find((item) => String(item.id) === String(form.servico_id));
     const recursosDoServico = recursos.filter((item) => (
-        item.ativo && servicoSelecionado?.requer_recurso && item.tipo === servicoSelecionado.tipo_recurso
+        item.ativo && (item.status || "ATIVO") === "ATIVO" && servicoSelecionado?.requer_recurso && item.tipo === servicoSelecionado.tipo_recurso
     ));
     const nomesUsuarios = usuarios;
 
@@ -243,40 +241,6 @@ export default function Agenda() {
         }
     }
 
-    async function salvarRecurso(evento) {
-        evento.preventDefault();
-        if (!recursoForm.nome.trim() || !recursoForm.tipo.trim()) {
-            setErro("Informe nome e tipo do recurso.");
-            return;
-        }
-        try {
-            setSalvandoRecurso(true);
-            setErro("");
-            const recurso = await criarRecursoAgenda({
-                nome: recursoForm.nome.trim(),
-                tipo: recursoForm.tipo.trim().toUpperCase()
-            });
-            setRecursos((atuais) => [...atuais, recurso].sort((a, b) => a.nome.localeCompare(b.nome)));
-            setRecursoForm({ nome: "", tipo: recursoForm.tipo });
-            setMensagem("Recurso cadastrado com sucesso.");
-        } catch (error) {
-            setErro(getErrorMessage(error, "Não foi possível cadastrar o recurso."));
-        } finally {
-            setSalvandoRecurso(false);
-        }
-    }
-
-    async function alternarRecurso(recurso) {
-        try {
-            setErro("");
-            const atualizado = await atualizarRecursoAgenda(recurso.id, { ativo: !recurso.ativo });
-            setRecursos((atuais) => atuais.map((item) => item.id === atualizado.id ? atualizado : item));
-            setMensagem(atualizado.ativo ? "Recurso ativado." : "Recurso desativado.");
-        } catch (error) {
-            setErro(getErrorMessage(error, "Não foi possível alterar o recurso."));
-        }
-    }
-
     async function cancelar(item) {
         if (!window.confirm("Cancelar este agendamento?")) return;
         try {
@@ -377,7 +341,7 @@ export default function Agenda() {
                                         {restrito ? (
                                             <><strong>Recurso reservado</strong><span>{item.recurso_nome || "Recurso ocupado"}</span></>
                                         ) : (
-                                            <><strong>{item.servico_id ? servicos.find((servico) => servico.id === item.servico_id)?.nome || "Serviço" : "Serviço"}</strong><span>{item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span>{administrativo && <small>{item.profissional_id ? nomeProfissional(profissionais.find((profissional) => profissional.id === item.profissional_id) || {}, nomesUsuarios) : "-"}</small>}</>
+                                            <><strong>{item.servico_id ? servicos.find((servico) => servico.id === item.servico_id)?.nome || "Serviço" : "Serviço"}</strong><span>{item.cliente_nome || item.cliente_avulso_nome || "Cliente avulso"}</span><small>{item.preco_aplicado == null ? "Preço não informado" : `Snapshot: ${Number(item.preco_aplicado).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`}</small>{administrativo && <small>{item.profissional_id ? nomeProfissional(profissionais.find((profissional) => profissional.id === item.profissional_id) || {}, nomesUsuarios) : "-"}</small>}</>
                                         )}
                                     </div>
                                     <div className="agenda-item-meta">
@@ -392,23 +356,6 @@ export default function Agenda() {
                 )}
             </SectionCard>
 
-            {administrativo && (
-                <SectionCard titulo="Recursos físicos" subtitulo="Cadastre macas, cadeiras ou estações que poderão ser reservadas.">
-                    <form className="agenda-resource-form" onSubmit={salvarRecurso}>
-                        <Input label="Nome" value={recursoForm.nome} onChange={(evento) => setRecursoForm((atual) => ({ ...atual, nome: evento.target.value }))} placeholder="Ex.: Maca 1" required />
-                        <Input label="Tipo" value={recursoForm.tipo} onChange={(evento) => setRecursoForm((atual) => ({ ...atual, tipo: evento.target.value }))} placeholder="Ex.: MACA" required />
-                        <Button type="submit" variant="secondary" loading={salvandoRecurso}>Cadastrar recurso</Button>
-                    </form>
-                    <div className="agenda-resource-list">
-                        {recursos.length === 0 ? <span className="agenda-empty">Nenhum recurso cadastrado.</span> : recursos.map((recurso) => (
-                            <div className={`agenda-resource-chip ${!recurso.ativo ? "agenda-resource-chip-inativo" : ""}`} key={recurso.id}>
-                                <span><strong>{recurso.nome}</strong><small>{recurso.tipo}</small></span>
-                                <Button size="small" variant={recurso.ativo ? "danger" : "success"} onClick={() => alternarRecurso(recurso)}>{recurso.ativo ? "Desativar" : "Ativar"}</Button>
-                            </div>
-                        ))}
-                    </div>
-                </SectionCard>
-            )}
         </main>
     );
 }

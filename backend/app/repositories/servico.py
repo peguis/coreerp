@@ -13,6 +13,7 @@ def criar_servico(
         empresa_id=empresa_id,
         nome=servico.nome,
         descricao=servico.descricao,
+        categoria=servico.categoria,
         preco_padrao=servico.preco_padrao,
         duracao_minutos=servico.duracao_minutos,
         requer_recurso=servico.requer_recurso,
@@ -73,6 +74,7 @@ def atualizar_servico(
     campos_permitidos = {
         "nome",
         "descricao",
+        "categoria",
         "preco_padrao",
         "duracao_minutos",
         "requer_recurso",

@@ -169,6 +169,7 @@ def test_profissional_cria_para_si_com_duracao_e_maca_automaticas(agenda_client)
     assert corpo["profissional_id"] == ctx["profissionais"]["p1"].id
     assert corpo["cliente_avulso_nome"] == "Cliente avulso"
     assert corpo["duracao_minutos"] == 90
+    assert corpo["preco_aplicado"] == 100.0
     assert corpo["recurso_nome"] == "Maca 1"
 
 
@@ -280,3 +281,135 @@ def test_somente_quem_reservou_ou_gerente_pode_editar_e_cancelar(agenda_client):
     assert cancelamento.status_code == 200
     assert cancelamento.json()["status"] == "CANCELADO"
     assert cancelamento.json()["motivo_cancelamento"] is None
+
+
+def test_configuracao_gerencial_preserva_snapshot_e_bloqueia_manutencao(agenda_client):
+    ctx = agenda_client
+    recurso = ctx["client"].post(
+        "/recursos-agenda/",
+        json={"nome": "Cadeira 1", "tipo": "CADEIRA"},
+        headers=ctx["headers"]("gerente"),
+    )
+    servico = ctx["client"].post(
+        "/servicos/",
+        json={
+            "nome": "Corte",
+            "categoria": "Barbearia",
+            "preco_padrao": 45,
+            "duracao_minutos": 40,
+            "requer_recurso": True,
+            "tipo_recurso": "CADEIRA",
+            "modo_selecao_recurso": "AUTOMATICO",
+        },
+        headers=ctx["headers"]("gerente"),
+    )
+    assert recurso.status_code == 200
+    assert recurso.json()["status"] == "ATIVO"
+    assert servico.status_code == 200
+
+    agendamento = ctx["client"].post(
+        "/agendamentos/",
+        json={
+            "profissional_id": ctx["profissionais"]["p1"].id,
+            "servico_id": servico.json()["id"],
+            "cliente_avulso_nome": "Cliente do corte",
+            "inicio_em": horario(4),
+        },
+        headers=ctx["headers"]("gerente"),
+    )
+    assert agendamento.status_code == 200
+    criado = agendamento.json()
+    assert criado["duracao_minutos"] == 40
+    assert criado["preco_aplicado"] == 45.0
+
+    atualizado_servico = ctx["client"].put(
+        f"/servicos/{servico.json()['id']}",
+        json={"preco_padrao": 55, "duracao_minutos": 50},
+        headers=ctx["headers"]("gerente"),
+    )
+    assert atualizado_servico.status_code == 200
+
+    historico = ctx["client"].get(
+        f"/agendamentos/{criado['id']}",
+        headers=ctx["headers"]("gerente"),
+    )
+    assert historico.status_code == 200
+    assert historico.json()["duracao_minutos"] == 40
+    assert historico.json()["preco_aplicado"] == 45.0
+
+    manutencao = ctx["client"].put(
+        f"/recursos-agenda/{recurso.json()['id']}",
+        json={"status": "MANUTENCAO"},
+        headers=ctx["headers"]("gerente"),
+    )
+    assert manutencao.status_code == 200
+    assert manutencao.json()["ativo"] is False
+    assert manutencao.json()["disponivel"] is False
+
+    bloqueado = ctx["client"].post(
+        "/agendamentos/",
+        json={
+            "profissional_id": ctx["profissionais"]["p2"].id,
+            "servico_id": servico.json()["id"],
+            "cliente_avulso_nome": "Outro corte",
+            "inicio_em": horario(5),
+        },
+        headers=ctx["headers"]("gerente"),
+    )
+    assert bloqueado.status_code == 409
+
+    reativado = ctx["client"].put(
+        f"/recursos-agenda/{recurso.json()['id']}",
+        json={"status": "ATIVO"},
+        headers=ctx["headers"]("gerente"),
+    )
+    assert reativado.status_code == 200
+    novo = ctx["client"].post(
+        "/agendamentos/",
+        json={
+            "profissional_id": ctx["profissionais"]["p2"].id,
+            "servico_id": servico.json()["id"],
+            "cliente_avulso_nome": "Novo corte",
+            "inicio_em": horario(5),
+        },
+        headers=ctx["headers"]("gerente"),
+    )
+    assert novo.status_code == 200
+    assert novo.json()["duracao_minutos"] == 50
+    assert novo.json()["preco_aplicado"] == 55.0
+
+
+def test_configuracao_nao_apaga_recurso_usado_e_profissional_nao_edita(agenda_client):
+    ctx = agenda_client
+    criado_por_profissional = ctx["client"].post(
+        "/recursos-agenda/",
+        json={"nome": "Estacao 1", "tipo": "ESTACAO"},
+        headers=ctx["headers"]("prof1"),
+    )
+    assert criado_por_profissional.status_code == 403
+
+    recurso = ctx["client"].post(
+        "/recursos-agenda/",
+        json={"nome": "Estacao 1", "tipo": "ESTACAO"},
+        headers=ctx["headers"]("gerente"),
+    )
+    assert recurso.status_code == 200
+    desativado = ctx["client"].delete(
+        f"/recursos-agenda/{recurso.json()['id']}",
+        headers=ctx["headers"]("gerente"),
+    )
+    assert desativado.status_code == 200
+    assert desativado.json()["status"] == "INATIVO"
+    assert ctx["db"].get(RecursoAgenda, recurso.json()["id"]) is not None
+
+    servico = ctx["client"].post(
+        "/servicos/",
+        json={
+            "nome": "Serviço gerencial",
+            "categoria": "Tattoo",
+            "preco_padrao": 80,
+            "duracao_minutos": 40,
+        },
+        headers=ctx["headers"]("prof1"),
+    )
+    assert servico.status_code == 403

@@ -39,6 +39,7 @@ import Financeiro from "../pages/Financeiro";
 import NovoLancamento from "../pages/NovoLancamento";
 import EditarLancamento from "../pages/EditarLancamento";
 import Configuracoes from "../pages/Configuracoes";
+import ConfiguracaoAgenda from "../pages/ConfiguracaoAgenda";
 import Agenda from "../pages/Agenda";
 
 
@@ -82,6 +83,7 @@ export default function AppRoutes() {
                             <Route path="/financeiro/novo" element={<NovoLancamento />} />
                             <Route path="/financeiro/:id/editar" element={<EditarLancamento />} />
                             <Route path="/configuracoes" element={<Configuracoes />} />
+                            <Route path="/configuracoes/agenda" element={<ConfiguracaoAgenda />} />
                         </Route>
 
                         <Route element={<PerfilRoute perfis={ATENDIMENTO} />}>

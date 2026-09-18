@@ -90,9 +90,9 @@ const menusAdministrativos = [
 
 
     {
-        nome: "Serviços",
-        rota: "/servicos",
-        icone: Scissors
+        nome: "Config. da operação",
+        rota: "/configuracoes/agenda",
+        icone: Settings
     },
 
 

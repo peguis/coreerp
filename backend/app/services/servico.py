@@ -54,12 +54,24 @@ def _normalizar_tipo_recurso(tipo):
     return tipo.strip().upper()
 
 
+def _normalizar_categoria(categoria):
+    if categoria is None:
+        return None
+    if not isinstance(categoria, str) or not categoria.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="A categoria deve ser informada ou deixada vazia.",
+        )
+    return categoria.strip()
+
+
 def criar_servico_service(
     db: Session,
     servico,
     empresa_id: int,
 ):
     servico.nome = _validar_nome(servico.nome)
+    servico.categoria = _normalizar_categoria(servico.categoria)
     _validar_preco(servico.preco_padrao)
     servico.tipo_recurso = _normalizar_tipo_recurso(servico.tipo_recurso)
     servico.modo_selecao_recurso = ModoReservaRecurso(
@@ -141,6 +153,8 @@ def atualizar_servico_service(
 
     if "preco_padrao" in dados_dict:
         _validar_preco(dados_dict["preco_padrao"])
+    if "categoria" in dados_dict:
+        dados_dict["categoria"] = _normalizar_categoria(dados_dict["categoria"])
 
     if "tipo_recurso" in dados_dict:
         dados_dict["tipo_recurso"] = _normalizar_tipo_recurso(

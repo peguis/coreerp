@@ -15,13 +15,14 @@ from app.core.enums import ModoReservaRecurso
 class ServicoCreate(BaseModel):
     nome: str
     descricao: str | None = None
+    categoria: str | None = None
     preco_padrao: Decimal = Field(
         default=Decimal("0.00"),
         ge=0,
         max_digits=12,
         decimal_places=2,
     )
-    duracao_minutos: int = Field(default=60, gt=0, le=1440)
+    duracao_minutos: int = Field(default=40, gt=0, le=1440)
     requer_recurso: bool = False
     tipo_recurso: str | None = None
     modo_selecao_recurso: ModoReservaRecurso = ModoReservaRecurso.AUTOMATICO
@@ -38,6 +39,7 @@ class ServicoCreate(BaseModel):
 class ServicoUpdate(BaseModel):
     nome: str | None = None
     descricao: str | None = None
+    categoria: str | None = None
     preco_padrao: Decimal | None = Field(
         default=None,
         ge=0,
@@ -82,6 +84,7 @@ class ServicoResponse(BaseModel):
     empresa_id: int
     nome: str
     descricao: str | None = None
+    categoria: str | None = None
     preco_padrao: Decimal
     duracao_minutos: int
     requer_recurso: bool

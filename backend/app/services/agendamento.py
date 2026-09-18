@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from decimal import Decimal
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -161,8 +162,11 @@ def _validar_recurso(db, servico, dados, usuario, inicio_em, fim_em, atual=None)
         recurso = buscar_recurso_por_id(
             db, recurso_id_informado, usuario.empresa_id
         )
-        if not recurso or not recurso.ativo:
-            raise HTTPException(status_code=404, detail="Recurso nao encontrado.")
+        if not recurso or not recurso.disponivel:
+            raise HTTPException(
+                status_code=409,
+                detail="O recurso esta inativo ou em manutencao.",
+            )
         if recurso.tipo != servico.tipo_recurso:
             raise HTTPException(
                 status_code=400,
@@ -188,7 +192,7 @@ def _validar_recurso(db, servico, dados, usuario, inicio_em, fim_em, atual=None)
         )
         if (
             atual_recurso
-            and atual_recurso.ativo
+            and atual_recurso.disponivel
             and atual_recurso.tipo == servico.tipo_recurso
             and all(recurso.id != atual_recurso.id for recurso in livres)
         ):
@@ -203,7 +207,7 @@ def _validar_recurso(db, servico, dados, usuario, inicio_em, fim_em, atual=None)
             )
             if not conflitos:
                 return atual_recurso
-        elif atual_recurso and any(
+        elif atual_recurso and atual_recurso.disponivel and any(
             recurso.id == atual_recurso.id for recurso in livres
         ):
             return atual_recurso
@@ -285,6 +289,8 @@ def criar_agendamento_service(db: Session, dados, usuario):
             criado_por_usuario_id=usuario.id,
             inicio_em=inicio_em,
             fim_em=fim_em,
+            duracao_minutos=int(duracao),
+            preco_aplicado=Decimal(servico.preco_padrao),
             status=StatusAgendamento.AGENDADO.value,
             observacao=dados_dict.get("observacao"),
         )
@@ -331,8 +337,12 @@ def atualizar_agendamento_service(db: Session, agendamento_id: int, dados, usuar
         db, dados_dict, usuario.empresa_id, atual=agendamento
     )
     duracao = dados_dict.get("duracao_minutos")
-    if duracao is None and "servico_id" in dados_dict:
-        duracao = servico.duracao_minutos
+    if duracao is None:
+        duracao = (
+            servico.duracao_minutos
+            if "servico_id" in dados_dict
+            else agendamento.duracao_minutos
+        )
     inicio_em, fim_em = _resolver_periodo(
         dados_dict.get("inicio_em"), duracao, atual=agendamento
     )
@@ -377,6 +387,9 @@ def atualizar_agendamento_service(db: Session, agendamento_id: int, dados, usuar
         agendamento.recurso_id = recurso.id if recurso else None
         agendamento.inicio_em = inicio_em
         agendamento.fim_em = fim_em
+        agendamento.duracao_minutos = int(duracao)
+        if "servico_id" in dados_dict:
+            agendamento.preco_aplicado = Decimal(servico.preco_padrao)
         agendamento.status = status
         agendamento.observacao = dados_dict.get(
             "observacao", agendamento.observacao
@@ -417,6 +430,7 @@ def _resposta_agendamento(agendamento: Agendamento, usuario):
             "duracao_minutos": int(
                 (agendamento.fim_em - agendamento.inicio_em).total_seconds() // 60
             ),
+            "preco_aplicado": None,
             "status": agendamento.status,
             "observacao": None,
             "motivo_cancelamento": None,
@@ -438,8 +452,9 @@ def _resposta_agendamento(agendamento: Agendamento, usuario):
         "inicio_em": agendamento.inicio_em,
         "fim_em": agendamento.fim_em,
         "duracao_minutos": int(
-            (agendamento.fim_em - agendamento.inicio_em).total_seconds() // 60
+            agendamento.duracao_minutos
         ),
+        "preco_aplicado": agendamento.preco_aplicado,
         "status": agendamento.status,
         "observacao": agendamento.observacao,
         "motivo_cancelamento": agendamento.motivo_cancelamento,

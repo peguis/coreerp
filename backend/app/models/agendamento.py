@@ -1,7 +1,9 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import CheckConstraint, DateTime, ForeignKey, String, Text, func
+from decimal import Decimal
+
+from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Integer, Numeric, String, Text, func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
@@ -22,6 +24,14 @@ class Agendamento(Base):
         CheckConstraint(
             "fim_em > inicio_em",
             name="ck_agendamentos_fim_depois_inicio",
+        ),
+        CheckConstraint(
+            "duracao_minutos > 0 AND duracao_minutos <= 1440",
+            name="ck_agendamentos_duracao_valida",
+        ),
+        CheckConstraint(
+            "preco_aplicado >= 0",
+            name="ck_agendamentos_preco_valido",
         ),
         CheckConstraint(
             "status IN ('AGENDADO', 'CONFIRMADO', 'CONCLUIDO', 'CANCELADO', 'NAO_COMPARECEU')",
@@ -56,6 +66,15 @@ class Agendamento(Base):
     )
     fim_em: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
+    )
+    duracao_minutos: Mapped[int] = mapped_column(
+        Integer, nullable=False
+    )
+    preco_aplicado: Mapped[Decimal] = mapped_column(
+        Numeric(12, 2),
+        nullable=False,
+        default=Decimal("0.00"),
+        server_default=text("0.00"),
     )
     status: Mapped[str] = mapped_column(
         String(20),

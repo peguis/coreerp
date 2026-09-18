@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from decimal import Decimal
+
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
 from app.core.enums import StatusAgendamento
 
@@ -64,6 +66,7 @@ class AgendamentoResponse(BaseModel):
     inicio_em: datetime
     fim_em: datetime
     duracao_minutos: int
+    preco_aplicado: Decimal | None
     status: StatusAgendamento
     observacao: str | None
     motivo_cancelamento: str | None
@@ -71,3 +74,7 @@ class AgendamentoResponse(BaseModel):
     detalhes_restritos: bool = False
     created_at: datetime | None = None
     updated_at: datetime | None = None
+
+    @field_serializer("preco_aplicado")
+    def serializar_preco(self, value: Decimal | None) -> float | None:
+        return float(value) if value is not None else None

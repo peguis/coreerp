@@ -2,10 +2,13 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.core.enums import StatusRecursoAgenda
+
 
 class RecursoAgendaCreate(BaseModel):
     nome: str
     tipo: str
+    status: StatusRecursoAgenda = StatusRecursoAgenda.ATIVO
 
     @field_validator("nome", "tipo")
     @classmethod
@@ -20,6 +23,7 @@ class RecursoAgendaUpdate(BaseModel):
     nome: str | None = None
     tipo: str | None = None
     ativo: bool | None = None
+    status: StatusRecursoAgenda | None = None
 
     @field_validator("nome", "tipo")
     @classmethod
@@ -40,5 +44,7 @@ class RecursoAgendaResponse(BaseModel):
     nome: str
     tipo: str
     ativo: bool
+    status: StatusRecursoAgenda
+    disponivel: bool
     created_at: datetime
     updated_at: datetime

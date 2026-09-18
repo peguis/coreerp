@@ -35,3 +35,9 @@ export async function atualizarRecursoAgenda(id, dados) {
     const response = await api.put(`/recursos-agenda/${id}`, dados);
     return response.data;
 }
+
+
+export async function desativarRecursoAgenda(id) {
+    const response = await api.delete(`/recursos-agenda/${id}`);
+    return response.data;
+}

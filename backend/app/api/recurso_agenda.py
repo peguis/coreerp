@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import get_current_user, require_perfil
+from app.core.enums import StatusRecursoAgenda
 from app.database import get_db
 from app.schemas.recurso_agenda import (
     RecursoAgendaCreate,
@@ -11,6 +12,7 @@ from app.schemas.recurso_agenda import (
 from app.services.recurso_agenda import (
     atualizar_recurso_service,
     criar_recurso_service,
+    desativar_recurso_service,
     listar_recursos_service,
 )
 
@@ -37,10 +39,17 @@ def criar_recurso_endpoint(
 def listar_recursos_endpoint(
     tipo: str | None = Query(None),
     ativo: bool | None = Query(None),
+    status: StatusRecursoAgenda | None = Query(None),
     db: Session = Depends(get_db),
     usuario=Depends(get_current_user),
 ):
-    return listar_recursos_service(db, usuario.empresa_id, tipo, ativo)
+    return listar_recursos_service(
+        db,
+        usuario.empresa_id,
+        tipo,
+        ativo,
+        status.value if status else None,
+    )
 
 
 @router.put(
@@ -56,3 +65,15 @@ def atualizar_recurso_endpoint(
     return atualizar_recurso_service(
         db, recurso_id, dados, usuario.empresa_id
     )
+
+
+@router.delete(
+    "/{recurso_id}",
+    response_model=RecursoAgendaResponse,
+)
+def desativar_recurso_endpoint(
+    recurso_id: int,
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("admin", "gerente")),
+):
+    return desativar_recurso_service(db, recurso_id, usuario.empresa_id)
