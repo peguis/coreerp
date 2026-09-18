@@ -108,8 +108,7 @@ export default function Login() {
                     <p className="login-powered">
                         <span>Sistema de gestão | Powered by</span>
                         <span className="login-powered-brand">
-                            <img src="/favicon.svg" alt="" aria-hidden="true" />
-                            <strong>Pegs</strong>
+                            <img src="/images/pegs-logo.png" alt="Pegs" />
                         </span>
                     </p>
                 </div>
