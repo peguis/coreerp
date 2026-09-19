@@ -72,6 +72,15 @@ até `a3b4c5d6e7f8`.
 - Segunda execução do seed retornou conflito sem duplicar empresa ou dados.
 - Provisionamento adicional registrou 12 módulos e auditoria
   `PROVISIONAR_EMPRESA` na mesma transação.
+- A validação visual local confirmou Dashboard, Agenda, Configuração da
+  operação e Profissionais em desktop e mobile, usando a identidade da
+  empresa-demo e os dados persistidos do tenant.
+- O dashboard passou a aceitar áreas configuráveis fora do enum legado
+  (`STUDIO`, por exemplo), sem restringir a Pegs a BARBEARIA/TATTOO.
+- A suíte backend final passou com `136 passed, 1 skipped`; o build de
+  produção do frontend também passou. O lint global continua com avisos/erros
+  antigos fora do escopo; o lint direcionado dos arquivos frontend alterados
+  anteriormente passou.
 
 O cluster temporário foi usado apenas para validação controlada e não representa
 ambiente público.
@@ -81,9 +90,8 @@ Pegs continua condicionada à revisão final e à confirmação explícita do us
 
 ## Pendências antes da conclusão do roadmap
 
-- finalizar a revisão visual de todas as páginas no design system oficial,
-  incluindo evidência desktop/mobile;
+- concluir a revisão visual das páginas secundárias que não fizeram parte desta
+  rodada principal, caso sejam necessárias para a entrega comercial;
 - revisar a criação comercial de tenants e planos/assinaturas;
-- executar build, lint direcionado, testes e revisão final da HYPE;
 - apresentar o diff/commit final ao usuário e aguardar confirmação antes de
   qualquer deploy.

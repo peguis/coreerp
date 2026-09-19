@@ -124,6 +124,25 @@ class DemoSeedTests(unittest.TestCase):
         self.assertNotIn(self.env["COREERP_DEMO_ADMIN_PASSWORD"], output.getvalue())
         self.assertFalse(self.criar_demo(self.factory, self.env))
 
+    def test_dashboard_aceita_area_configuravel(self):
+        from app.schemas.dashboard_piloto import (
+            DesempenhoProfissionalResponse,
+        )
+
+        resposta = DesempenhoProfissionalResponse(
+            profissional_id=1,
+            nome="Profissional Demo",
+            area_atuacao="STUDIO",
+            quantidade_atendimentos=0,
+            faturamento_bruto=0,
+            valor_profissional=0,
+            valor_casa=0,
+            valor_repassado=0,
+            valor_pendente=0,
+        )
+
+        self.assertEqual(resposta.area_atuacao, "STUDIO")
+
 
 if __name__ == "__main__":
     unittest.main()

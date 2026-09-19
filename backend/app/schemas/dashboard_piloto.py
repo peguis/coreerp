@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel, field_serializer
 
-from app.core.enums import AreaAtuacao, FormaPagamento
+from app.core.enums import FormaPagamento
 
 
 class _ValoresDecimais(BaseModel):
@@ -17,7 +17,7 @@ class _ValoresDecimais(BaseModel):
 class DesempenhoProfissionalResponse(_ValoresDecimais):
     profissional_id: int
     nome: str
-    area_atuacao: AreaAtuacao
+    area_atuacao: str
     quantidade_atendimentos: int
     faturamento_bruto: Decimal
     valor_profissional: Decimal
@@ -78,7 +78,7 @@ class DashboardProfissionalResponse(_ValoresDecimais):
     data_fim: date
     profissional_id: int
     nome: str
-    area_atuacao: AreaAtuacao
+    area_atuacao: str
     quantidade_atendimentos: int
     faturamento_bruto: Decimal
     valor_profissional: Decimal
