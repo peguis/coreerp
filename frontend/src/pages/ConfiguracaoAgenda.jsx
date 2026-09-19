@@ -325,7 +325,7 @@ export default function ConfiguracaoAgenda() {
             >
                 <form className="configuracao-agenda-form configuracao-agenda-form-servico" onSubmit={salvarServico}>
                     <Input label="Nome do serviço" value={servicoForm.nome} onChange={(evento) => setServicoForm((atual) => ({ ...atual, nome: evento.target.value }))} placeholder="Ex.: Corte masculino" required />
-                    <Input label="Categoria" value={servicoForm.categoria} onChange={(evento) => setServicoForm((atual) => ({ ...atual, categoria: evento.target.value }))} placeholder="Ex.: Barbearia ou Tattoo" required />
+                    <Input label="Categoria" value={servicoForm.categoria} onChange={(evento) => setServicoForm((atual) => ({ ...atual, categoria: evento.target.value }))} placeholder="Ex.: Corte, tatuagem ou sessão" required />
                     <Input label="Preço padrão" type="number" min="0" step="0.01" value={servicoForm.preco_padrao} onChange={(evento) => setServicoForm((atual) => ({ ...atual, preco_padrao: evento.target.value }))} placeholder="0,00" required />
                     <Input label="Duração média (minutos)" type="number" min="1" max="1440" value={servicoForm.duracao_minutos} onChange={(evento) => setServicoForm((atual) => ({ ...atual, duracao_minutos: evento.target.value }))} required />
                     <Select label="Precisa de recurso físico?" value={servicoForm.requer_recurso} onChange={(evento) => setServicoForm((atual) => ({ ...atual, requer_recurso: evento.target.value }))} options={[{ value: "false", label: "Não" }, { value: "true", label: "Sim" }]} />

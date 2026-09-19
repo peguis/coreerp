@@ -340,7 +340,7 @@ function Configuracoes() {
             {usuario && empresa && <SectionCard titulo="Identidade da empresa" subtitulo="A Pegs mantém a estrutura do produto e aplica a identidade configurada para cada empresa.">
                 <form className="configuracoes-form" onSubmit={salvarConfiguracaoEmpresa}>
                     <Input label="Nome exibido" value={empresaForm.nome_exibicao} onChange={(evento) => alterarEmpresa("nome_exibicao", evento.target.value)} required />
-                    <Input label="Tipo de negócio" value={empresaForm.tipo_negocio} onChange={(evento) => alterarEmpresa("tipo_negocio", evento.target.value)} placeholder="Ex.: Barbearia e Tattoo" />
+                    <Input label="Tipo de negócio" value={empresaForm.tipo_negocio} onChange={(evento) => alterarEmpresa("tipo_negocio", evento.target.value)} placeholder="Ex.: Barbearia, salão ou studio" />
                     <Input label="Logo (URL ou caminho público)" value={empresaForm.logo_url} onChange={(evento) => alterarEmpresa("logo_url", evento.target.value)} placeholder="Opcional" />
                     <Select label="Tema" value={empresaForm.tema} onChange={(evento) => alterarEmpresa("tema", evento.target.value)} options={[{ value: "dark", label: "Escuro" }, { value: "light", label: "Claro (preparado)" }]} />
                     <Input label="Cor primária" value={empresaForm.cor_primaria} onChange={(evento) => alterarEmpresa("cor_primaria", evento.target.value)} placeholder="Ex.: #D9AB3F" />

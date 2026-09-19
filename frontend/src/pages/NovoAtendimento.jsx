@@ -246,7 +246,7 @@ function NovoAtendimento() {
 
             <PageHeader
                 titulo="Novo Atendimento"
-                subtitulo="Registre um serviço realizado na barbearia ou no estúdio de tattoo"
+                subtitulo="Registre um serviço realizado na operação da empresa"
             >
                 <Button
                     variant="secondary"

@@ -165,13 +165,13 @@ function Profissionais() {
             {ehAdmin ? <FormCard titulo={editarId ? "Editar profissional" : "Novo profissional"} subtitulo="Cadastre a área de atuação usada pela empresa. O percentual padrão pode ser substituído somente no atendimento por ADMIN/GERENTE.">
                 <form className="piloto-form-grid" onSubmit={salvar}>
                     {!editarId && <Select label="Usuário vinculado" value={form.usuario_id} onChange={(evento) => setForm((atual) => ({ ...atual, usuario_id: evento.target.value }))} options={usuariosDisponiveis.map((usuarioItem) => ({ value: usuarioItem.id, label: `${usuarioItem.nome} — ${usuarioItem.email}` }))} required />}
-                    <Input label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} placeholder="Ex.: BARBEARIA, TATTOO ou SALÃO" required />
+                    <Input label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} placeholder="Ex.: BARBEARIA, TATTOO, SALÃO ou STUDIO" required />
                     <Input label="Percentual padrão" type="number" min="0" max="100" step="0.01" value={form.percentual_padrao} onChange={(evento) => setForm((atual) => ({ ...atual, percentual_padrao: evento.target.value }))} required />
                     <div className="piloto-form-actions piloto-form-full"><Button type="button" variant="secondary" onClick={limparForm}>Limpar</Button><Button type="submit" variant="primary" disabled={salvando}>{salvando ? "Salvando..." : editarId ? "Salvar alterações" : "Cadastrar profissional"}</Button></div>
                 </form>
             </FormCard> : ehGerente && editarId ? <FormCard titulo="Alterar função do profissional" subtitulo="O gerente pode atualizar a área de atuação do profissional conforme a operação da empresa.">
                 <form className="piloto-form-grid" onSubmit={salvar}>
-                    <Input label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} placeholder="Ex.: BARBEARIA, TATTOO ou SALÃO" required />
+                    <Input label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} placeholder="Ex.: BARBEARIA, TATTOO, SALÃO ou STUDIO" required />
                     <div className="piloto-form-actions piloto-form-full"><Button type="button" variant="secondary" onClick={limparForm}>Cancelar</Button><Button type="submit" variant="primary" disabled={salvando}>{salvando ? "Salvando..." : "Salvar função"}</Button></div>
                 </form>
             </FormCard> : !ehGerente && <Mensagem tipo="sucesso" texto="GERENTE possui acesso à consulta. Alterações de profissionais são exclusivas do ADMIN." />}
