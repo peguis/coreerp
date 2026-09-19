@@ -55,7 +55,7 @@ class Profissional(Base):
     )
 
     area_atuacao: Mapped[str] = mapped_column(
-        String(20),
+        String(50),
         nullable=False,
     )
 

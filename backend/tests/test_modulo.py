@@ -72,3 +72,59 @@ def test_empresa_consulta_checklist_de_onboarding(client, auth_headers):
         "servicos",
         "profissionais",
     }
+
+
+def test_provisionamento_fica_restrito_ao_pegs_admin_e_cria_tenant_isolado(
+    client,
+    auth_headers,
+):
+    dados = {
+        "nome": "Empresa Nova",
+        "cnpj": "11111111000199",
+        "email": "contato@empresa-nova.com",
+        "administrador_nome": "Admin Nova",
+        "administrador_email": "admin@empresa-nova.com",
+        "administrador_senha": "senha-nova-forte",
+        "tipo_negocio": "STUDIO",
+    }
+
+    negado = client.post(
+        "/empresas/provisionar",
+        headers=auth_headers,
+        json=dados,
+    )
+    assert negado.status_code == 403
+
+    pegs_admin = client.post(
+        "/usuarios/",
+        headers=auth_headers,
+        json={
+            "nome": "Administrador Pegs",
+            "email": "admin@pegs.coreerp.com",
+            "senha": "senha-pegs-forte",
+            "empresa_id": 1,
+            "perfil": "pegs_admin",
+        },
+    )
+    assert pegs_admin.status_code == 200, pegs_admin.text
+
+    login = client.post(
+        "/usuarios/login",
+        data={
+            "username": "admin@pegs.coreerp.com",
+            "password": "senha-pegs-forte",
+        },
+    )
+    assert login.status_code == 200
+    pegs_headers = {
+        "Authorization": f"Bearer {login.json()['access_token']}"
+    }
+
+    criado = client.post(
+        "/empresas/provisionar",
+        headers=pegs_headers,
+        json=dados,
+    )
+    assert criado.status_code == 200
+    assert criado.json()["nome"] == "Empresa Nova"
+    assert criado.json()["tipo_negocio"] == "STUDIO"
