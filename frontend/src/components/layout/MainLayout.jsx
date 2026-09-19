@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 import Topbar from "./Topbar";
+import { buscarEmpresaAtual } from "../../services/empresaService";
 
 
 import "./MainLayout.css";
@@ -37,12 +38,29 @@ export default function MainLayout() {
 
         useState(false);
 
+    const [empresa, setEmpresa] = useState(null);
+
 
     useEffect(() => {
 
         void Promise.resolve().then(() => setMobileAberto(false));
 
     }, [location.pathname]);
+
+    useEffect(() => {
+        let montado = true;
+        void Promise.resolve().then(async () => {
+            try {
+                const dados = await buscarEmpresaAtual();
+                if (montado) setEmpresa(dados);
+            } catch {
+                if (montado) setEmpresa(null);
+            }
+        });
+        return () => {
+            montado = false;
+        };
+    }, []);
 
 
 
@@ -53,7 +71,19 @@ export default function MainLayout() {
 
 
 
-        <div className="layout hype-theme">
+        <div
+            className="layout hype-theme"
+            data-tenant-theme={empresa?.tema || "dark"}
+            style={{
+                "--tenant-accent": empresa?.cor_primaria || "#d9ab3f",
+                "--tenant-accent-secondary": empresa?.cor_secundaria || "#edc45c",
+                "--hype-gold": empresa?.cor_primaria || "#d9ab3f",
+                "--hype-gold-hover": empresa?.cor_secundaria || "#edc45c",
+                "--hype-gold-soft": empresa?.cor_primaria
+                    ? `color-mix(in srgb, ${empresa.cor_primaria} 12%, transparent)`
+                    : "rgba(217, 171, 63, .12)"
+            }}
+        >
 
 
 
@@ -72,6 +102,8 @@ export default function MainLayout() {
                 fecharMobile={() =>
                     setMobileAberto(false)
                 }
+
+                empresa={empresa}
 
 
             />
@@ -108,6 +140,8 @@ export default function MainLayout() {
                     abrirMenu={() =>
                         setMobileAberto(true)
                     }
+
+                    empresa={empresa}
 
 
                 />

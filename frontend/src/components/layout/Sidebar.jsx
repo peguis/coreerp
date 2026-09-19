@@ -74,7 +74,8 @@ export default function Sidebar({
     aberto = true,
     setAberto,
     mobileAberto = false,
-    fecharMobile
+    fecharMobile,
+    empresa
 }) {
     const navigate = useNavigate();
     const [perfil, setPerfil] = useState(null);
@@ -122,7 +123,7 @@ export default function Sidebar({
         >
             <div className="sidebar-top">
                 <div className="sidebar-logo">
-                    <img className="sidebar-logo-image" src="/images/hype-logo-sidebar.png" alt="HYPE STUDIO — Barbearia & Tattoo" />
+                    <img className="sidebar-logo-image" src={empresa?.logo_url || "/images/hype-logo-sidebar.png"} alt={`${empresa?.nome || "HYPE STUDIO"} — identidade da empresa`} />
                 </div>
 
                 <button
@@ -171,8 +172,8 @@ export default function Sidebar({
             </nav>
 
             <div className="sidebar-studio-card">
-                <img className="sidebar-studio-logo" src="/images/hype-logo-sidebar.png" alt="" aria-hidden="true" />
-                <span><strong>HYPE STUDIO</strong><small>Barbearia &amp; Tattoo</small></span>
+                <img className="sidebar-studio-logo" src={empresa?.logo_url || "/images/hype-logo-sidebar.png"} alt="" aria-hidden="true" />
+                <span><strong>{empresa?.nome || "HYPE STUDIO"}</strong><small>{empresa?.tipo_negocio || "Barbearia & Tattoo"}</small></span>
             </div>
             <small className="sidebar-powered">Powered by Pegs</small>
 

@@ -16,6 +16,7 @@ import {
     listarModulosEmpresa,
     listarUsuarios
 } from "../services/usuarioService";
+import { atualizarConfiguracaoEmpresa, buscarEmpresaAtual } from "../services/empresaService";
 import { getErrorMessage } from "../utils/errors";
 
 import "./Configuracoes.css";
@@ -39,11 +40,24 @@ const FORM_INICIAL = {
 };
 
 
+const EMPRESA_FORM_INICIAL = {
+    nome_exibicao: "",
+    logo_url: "",
+    cor_primaria: "",
+    cor_secundaria: "",
+    tema: "dark",
+    tipo_negocio: ""
+};
+
+
 function Configuracoes() {
 
     const [usuario, setUsuario] = useState(null);
     const [usuarios, setUsuarios] = useState([]);
     const [modulos, setModulos] = useState([]);
+    const [empresa, setEmpresa] = useState(null);
+    const [empresaForm, setEmpresaForm] = useState(EMPRESA_FORM_INICIAL);
+    const [salvandoEmpresa, setSalvandoEmpresa] = useState(false);
     const [form, setForm] = useState(FORM_INICIAL);
     const [editarId, setEditarId] = useState(null);
     const [carregando, setCarregando] = useState(true);
@@ -58,14 +72,24 @@ function Configuracoes() {
 
             setCarregando(true);
             setErro("");
-            const [usuarioDados, usuariosDados, modulosDados] = await Promise.all([
+            const [usuarioDados, usuariosDados, modulosDados, empresaDados] = await Promise.all([
                 buscarUsuarioLogado(),
                 listarUsuarios(),
-                listarModulosEmpresa()
+                listarModulosEmpresa(),
+                buscarEmpresaAtual()
             ]);
             setUsuario(usuarioDados);
             setUsuarios(Array.isArray(usuariosDados) ? usuariosDados : []);
             setModulos(Array.isArray(modulosDados) ? modulosDados : []);
+            setEmpresa(empresaDados);
+            setEmpresaForm({
+                nome_exibicao: empresaDados.nome || "",
+                logo_url: empresaDados.logo_url || "",
+                cor_primaria: empresaDados.cor_primaria || "",
+                cor_secundaria: empresaDados.cor_secundaria || "",
+                tema: empresaDados.tema || "dark",
+                tipo_negocio: empresaDados.tipo_negocio || ""
+            });
 
         } catch (error) {
 
@@ -91,6 +115,34 @@ function Configuracoes() {
 
         setForm((atual) => ({ ...atual, [campo]: valor }));
 
+    }
+
+    function alterarEmpresa(campo, valor) {
+        setEmpresaForm((atual) => ({ ...atual, [campo]: valor }));
+    }
+
+    async function salvarConfiguracaoEmpresa(evento) {
+        evento.preventDefault();
+        if (salvandoEmpresa) return;
+        try {
+            setErro("");
+            setMensagem("");
+            setSalvandoEmpresa(true);
+            const atualizada = await atualizarConfiguracaoEmpresa({
+                ...empresaForm,
+                nome_exibicao: empresaForm.nome_exibicao.trim(),
+                logo_url: empresaForm.logo_url.trim() || null,
+                cor_primaria: empresaForm.cor_primaria.trim() || null,
+                cor_secundaria: empresaForm.cor_secundaria.trim() || null,
+                tipo_negocio: empresaForm.tipo_negocio.trim() || null
+            });
+            setEmpresa(atualizada);
+            setMensagem("Identidade da empresa atualizada. Recarregue a página para aplicar o shell completo.");
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível salvar a identidade da empresa."));
+        } finally {
+            setSalvandoEmpresa(false);
+        }
     }
 
     function limparForm() {
@@ -280,6 +332,20 @@ function Configuracoes() {
                         </Button>
                     </article>)}
                 </div>
+            </SectionCard>}
+
+            {usuario && empresa && <SectionCard titulo="Identidade da empresa" subtitulo="A Pegs mantém a estrutura do produto e aplica a identidade configurada para cada empresa.">
+                <form className="configuracoes-form" onSubmit={salvarConfiguracaoEmpresa}>
+                    <Input label="Nome exibido" value={empresaForm.nome_exibicao} onChange={(evento) => alterarEmpresa("nome_exibicao", evento.target.value)} required />
+                    <Input label="Tipo de negócio" value={empresaForm.tipo_negocio} onChange={(evento) => alterarEmpresa("tipo_negocio", evento.target.value)} placeholder="Ex.: Barbearia e Tattoo" />
+                    <Input label="Logo (URL ou caminho público)" value={empresaForm.logo_url} onChange={(evento) => alterarEmpresa("logo_url", evento.target.value)} placeholder="Opcional" />
+                    <Select label="Tema" value={empresaForm.tema} onChange={(evento) => alterarEmpresa("tema", evento.target.value)} options={[{ value: "dark", label: "Escuro" }, { value: "light", label: "Claro (preparado)" }]} />
+                    <Input label="Cor primária" value={empresaForm.cor_primaria} onChange={(evento) => alterarEmpresa("cor_primaria", evento.target.value)} placeholder="Ex.: #D9AB3F" />
+                    <Input label="Cor secundária" value={empresaForm.cor_secundaria} onChange={(evento) => alterarEmpresa("cor_secundaria", evento.target.value)} placeholder="Ex.: #EDC45C" />
+                    <div className="configuracoes-form-actions">
+                        <Button type="submit" variant="primary" disabled={salvandoEmpresa}>{salvandoEmpresa ? "Salvando..." : "Salvar identidade"}</Button>
+                    </div>
+                </form>
             </SectionCard>}
         </main>
 
