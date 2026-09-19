@@ -202,7 +202,7 @@ def obter_onboarding_empresa_service(db: Session, empresa_id: int):
             "obrigatorio": False,
         },
     ]
-    obrigatorios = [item for item in itens if item["obrigatorio"]]
+    obrigatorios = [item for item in itens if item.get("obrigatorio", True)]
     concluidos = sum(item["concluido"] for item in obrigatorios)
     percentual = round((concluidos / len(obrigatorios)) * 100) if obrigatorios else 100
     return {

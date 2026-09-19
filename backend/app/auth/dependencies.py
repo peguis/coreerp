@@ -1,5 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 
@@ -115,7 +116,15 @@ def require_modulo(*codigos):
 
         # Bancos legados ainda não possuem o catálogo. Nesse estado o comportamento
         # anterior é preservado até a migração ser aplicada.
-        if db.query(Modulo.id).first() is None:
+        try:
+            catalogo_existe = db.query(Modulo.id).first() is not None
+        except OperationalError:
+            # Fixtures e bancos legados anteriores à Fase 1 ainda não possuem
+            # o catálogo. Neles, o guard deve preservar o comportamento antigo.
+            db.rollback()
+            return usuario
+
+        if not catalogo_existe:
             return usuario
 
         habilitado = (
