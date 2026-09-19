@@ -125,7 +125,9 @@ def _find_conflicts(db, config: DemoConfig) -> list[str]:
         func.lower(Empresa.email) == config.empresa_email
     ).first():
         conflicts.append("e-mail da empresa")
-    if db.query(func.lower(Usuario.email) == config.admin_email).first():
+    if db.query(Usuario).filter(
+        func.lower(Usuario.email) == config.admin_email
+    ).first():
         conflicts.append("e-mail do administrador")
     return conflicts
 

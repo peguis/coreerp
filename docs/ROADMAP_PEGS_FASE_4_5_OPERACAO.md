@@ -36,6 +36,9 @@ e agenda próprios.
 - O perfil `pegs_admin` foi separado do administrador da empresa. Ele pode ser
   criado somente pelo bootstrap explícito e usa `POST /empresas/provisionar` para
   criar um novo tenant com administrador e módulos em uma transação.
+- A checagem de conflito do seed foi corrigida para considerar somente o e-mail
+  efetivamente existente; a presença de administradores em outros tenants não
+  bloqueia a criação de uma empresa-demo nova.
 
 ## Como validar uma empresa-demo local/staging
 
@@ -52,16 +55,34 @@ Depois execute o seed somente no banco local/staging e confirme:
 6. bloqueio de acesso cruzado entre os dois tenants;
 7. checklist de onboarding em `/configuracoes`.
 
+## Evidência de staging — 19/09/2026
+
+Foi criado um PostgreSQL temporário e isolado em `127.0.0.1:55437`, fora da
+produção e sem reutilizar o `.env` da HYPE. A cadeia Alembic foi aplicada online
+até `a3b4c5d6e7f8`.
+
+- HYPE de staging criada como tenant de referência.
+- `Studio Demo Staging` criada como segundo tenant persistido.
+- HYPE: nenhum serviço, profissional, recurso, cliente ou agendamento-demo.
+- Demo: 1 serviço, 1 profissional, 1 recurso, 1 cliente e 1 agendamento.
+- Demo: 12 vínculos de módulos ativos e onboarding em 100%.
+- HYPE: onboarding em 60% por não possuir dados operacionais de demonstração.
+- Login, `/empresas/me`, onboarding e `/modulos/` responderam corretamente nos
+  dois tenants.
+- Segunda execução do seed retornou conflito sem duplicar empresa ou dados.
+- Provisionamento adicional registrou 12 módulos e auditoria
+  `PROVISIONAR_EMPRESA` na mesma transação.
+
+O cluster temporário foi usado apenas para validação controlada e não representa
+ambiente público.
+
 O script não deve ser executado contra o banco de produção. A publicação da
 Pegs continua condicionada à revisão final e à confirmação explícita do usuário.
 
 ## Pendências antes da conclusão do roadmap
 
-- executar os testes backend em um ambiente com as dependências de teste
-  instaladas;
-- levantar a segunda empresa-demo em ambiente controlado e registrar evidências
-  visuais desktop/mobile;
-- finalizar a revisão de todas as páginas no design system oficial;
+- finalizar a revisão visual de todas as páginas no design system oficial,
+  incluindo evidência desktop/mobile;
 - revisar a criação comercial de tenants e planos/assinaturas;
 - executar build, lint direcionado, testes e revisão final da HYPE;
 - apresentar o diff/commit final ao usuário e aguardar confirmação antes de

@@ -70,13 +70,37 @@ class DemoSeedTests(unittest.TestCase):
         self.engine.dispose()
 
     def test_cria_demo_com_dados_opcionais_e_isolamento(self):
+        with self.factory() as db:
+            empresa_existente = self.Empresa(
+                nome="Empresa Existente",
+                cnpj="77777777000199",
+                email="existente@coreerp.com",
+            )
+            db.add(empresa_existente)
+            db.flush()
+            db.add(
+                self.Usuario(
+                    empresa_id=empresa_existente.id,
+                    nome="Admin Existente",
+                    email="admin-existente@coreerp.com",
+                    senha="hash-existente",
+                    perfil="admin",
+                    ativo=True,
+                )
+            )
+            db.commit()
+
         output = io.StringIO()
         with redirect_stdout(output):
             self.assertTrue(self.criar_demo(self.factory, self.env))
 
         with self.factory() as db:
-            empresa = db.query(self.Empresa).one()
-            usuario = db.query(self.Usuario).one()
+            empresa = db.query(self.Empresa).filter(
+                self.Empresa.cnpj == self.env["COREERP_DEMO_EMPRESA_CNPJ"]
+            ).one()
+            usuario = db.query(self.Usuario).filter(
+                self.Usuario.email == self.env["COREERP_DEMO_ADMIN_EMAIL"]
+            ).one()
             servico = db.query(self.Servico).one()
             profissional = db.query(self.Profissional).one()
             recurso = db.query(self.RecursoAgenda).one()
