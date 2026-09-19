@@ -39,7 +39,7 @@ def criar_empresa(
     empresa: EmpresaCreate,
     db: Session = Depends(get_db),
     usuario=Depends(
-        require_perfil("admin")
+        require_perfil("pegs_admin")
     )
 ):
 
