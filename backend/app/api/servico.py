@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.auth.dependencies import get_current_user, require_perfil
+from app.auth.dependencies import get_current_user, require_modulo, require_perfil
 from app.database import get_db
 from app.schemas.servico import (
     ServicoCreate,
@@ -21,6 +21,7 @@ from app.services.servico import (
 router = APIRouter(
     prefix="/servicos",
     tags=["Servicos"],
+    dependencies=[Depends(require_modulo("servicos"))],
 )
 
 

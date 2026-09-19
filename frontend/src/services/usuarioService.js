@@ -51,3 +51,15 @@ export async function atualizarUsuario(usuarioId, dados) {
     return resposta.data;
 
 }
+
+
+export async function listarModulosEmpresa() {
+    const resposta = await api.get("/modulos/");
+    return resposta.data;
+}
+
+
+export async function atualizarModuloEmpresa(codigo, ativo) {
+    const resposta = await api.patch(`/modulos/${codigo}`, { ativo });
+    return resposta.data;
+}

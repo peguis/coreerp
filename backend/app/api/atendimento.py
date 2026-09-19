@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 from app.core.enums import FormaPagamento
 from app.database import get_db
 from app.schemas.atendimento import (
@@ -18,7 +18,11 @@ from app.services.atendimento import (
 )
 
 
-router = APIRouter(prefix="/atendimentos", tags=["Atendimentos"])
+router = APIRouter(
+    prefix="/atendimentos",
+    tags=["Atendimentos"],
+    dependencies=[Depends(require_modulo("atendimentos"))],
+)
 perfis_atendimento = require_perfil("admin", "gerente", "profissional")
 RespostaAtendimento = AtendimentoResponse | AtendimentoProfissionalResponse
 

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 from app.schemas.lancamento_financeiro import (
     LancamentoFinanceiroCreate,
@@ -27,7 +27,8 @@ from app.services.lancamento_financeiro import (
 
 router = APIRouter(
     prefix="/financeiro",
-    tags=["Financeiro"]
+    tags=["Financeiro"],
+    dependencies=[Depends(require_modulo("financeiro"))],
 )
 
 

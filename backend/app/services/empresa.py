@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.repositories import empresa as repository
 from app.schemas.empresa import EmpresaCreate
 from app.core.validators.empresa import validar_empresa
+from app.services.modulo import inicializar_modulos_empresa
 
 
 from app.repositories.empresa import (
@@ -22,10 +23,12 @@ def criar_empresa_service(
 
     validar_empresa(empresa)
 
-    return criar_empresa(
+    nova_empresa = criar_empresa(
         db,
         empresa
     )
+    inicializar_modulos_empresa(db, nova_empresa.id)
+    return nova_empresa
 
 def listar_empresas_service(db):
     return listar_empresas(db)

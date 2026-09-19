@@ -10,8 +10,10 @@ import Loading from "../components/Loading";
 import Mensagem from "../components/Mensagem";
 import {
     atualizarUsuario,
+    atualizarModuloEmpresa,
     buscarUsuarioLogado,
     criarUsuario,
+    listarModulosEmpresa,
     listarUsuarios
 } from "../services/usuarioService";
 import { getErrorMessage } from "../utils/errors";
@@ -41,6 +43,7 @@ function Configuracoes() {
 
     const [usuario, setUsuario] = useState(null);
     const [usuarios, setUsuarios] = useState([]);
+    const [modulos, setModulos] = useState([]);
     const [form, setForm] = useState(FORM_INICIAL);
     const [editarId, setEditarId] = useState(null);
     const [carregando, setCarregando] = useState(true);
@@ -55,12 +58,14 @@ function Configuracoes() {
 
             setCarregando(true);
             setErro("");
-            const [usuarioDados, usuariosDados] = await Promise.all([
+            const [usuarioDados, usuariosDados, modulosDados] = await Promise.all([
                 buscarUsuarioLogado(),
-                listarUsuarios()
+                listarUsuarios(),
+                listarModulosEmpresa()
             ]);
             setUsuario(usuarioDados);
             setUsuarios(Array.isArray(usuariosDados) ? usuariosDados : []);
+            setModulos(Array.isArray(modulosDados) ? modulosDados : []);
 
         } catch (error) {
 
@@ -204,6 +209,23 @@ function Configuracoes() {
 
     }
 
+    async function alternarModulo(modulo) {
+        if (modulo.obrigatorio || alterandoStatus) return;
+
+        try {
+            setErro("");
+            setMensagem("");
+            setAlterandoStatus(`modulo-${modulo.codigo}`);
+            await atualizarModuloEmpresa(modulo.codigo, !modulo.ativo);
+            setMensagem(modulo.ativo ? "Módulo desativado. O histórico foi preservado." : "Módulo ativado.");
+            await carregar();
+        } catch (error) {
+            setErro(getErrorMessage(error, "Não foi possível alterar o módulo."));
+        } finally {
+            setAlterandoStatus(null);
+        }
+    }
+
     function nomePerfil(perfil) {
 
         return PERFIS.find((item) => item.value === perfil)?.label || perfil;
@@ -240,6 +262,25 @@ function Configuracoes() {
                     <div className="configuracoes-mobile-cards">{usuarios.map((usuarioItem) => <article className="configuracoes-user-card" key={usuarioItem.id}><header><strong>{usuarioItem.nome}</strong><span>{usuarioItem.ativo ? "Ativo" : "Inativo"}</span></header><dl><div><dt>E-mail</dt><dd>{usuarioItem.email}</dd></div><div><dt>Perfil</dt><dd>{nomePerfil(usuarioItem.perfil)}</dd></div></dl>{ehAdmin && <div className="configuracoes-actions"><Button size="small" variant="secondary" onClick={() => editar(usuarioItem)}>Editar</Button><Button size="small" variant={usuarioItem.ativo ? "danger" : "success"} disabled={alterandoStatus === usuarioItem.id} onClick={() => alternarAtivo(usuarioItem)}>{usuarioItem.ativo ? "Desativar" : "Ativar"}</Button></div>}</article>)}</div>
                 </>}
             </SectionCard>
+
+            {ehAdmin && modulos.length > 0 && <SectionCard titulo="Módulos da empresa" subtitulo="A ativação controla a disponibilidade da funcionalidade. As permissões dos usuários continuam independentes.">
+                <div className="configuracoes-modulos-grid">
+                    {modulos.map((modulo) => <article className={`configuracoes-modulo-card ${modulo.ativo ? "ativo" : "inativo"}`} key={modulo.codigo}>
+                        <div>
+                            <strong>{modulo.nome}</strong>
+                            <p>{modulo.descricao || "Funcionalidade da plataforma Pegs."}</p>
+                        </div>
+                        <Button
+                            size="small"
+                            variant={modulo.ativo ? "danger" : "success"}
+                            disabled={modulo.obrigatorio || alterandoStatus === `modulo-${modulo.codigo}`}
+                            onClick={() => alternarModulo(modulo)}
+                        >
+                            {modulo.ativo ? "Desativar" : "Ativar"}
+                        </Button>
+                    </article>)}
+                </div>
+            </SectionCard>}
         </main>
 
     );

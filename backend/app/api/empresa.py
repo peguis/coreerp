@@ -5,7 +5,8 @@ from app.database import get_db
 
 from app.schemas.empresa import (
     EmpresaCreate,
-    EmpresaResponse
+    EmpresaResponse,
+    EmpresaConfiguracaoUpdate,
 )
 
 from app.services.empresa import (
@@ -67,6 +68,37 @@ def minha_empresa(
         )
 
 
+    return empresa
+
+
+@router.put(
+    "/me/configuracao",
+    response_model=EmpresaResponse,
+)
+def atualizar_minha_configuracao(
+    dados: EmpresaConfiguracaoUpdate,
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("admin", "gerente")),
+):
+    empresa = buscar_empresa_por_id_service(db, usuario.empresa_id)
+    if not empresa:
+        raise HTTPException(status_code=404, detail="Empresa não encontrada")
+
+    valores = dados.model_dump(exclude_unset=True)
+    if "nome_exibicao" in valores:
+        nome = (valores.pop("nome_exibicao") or "").strip()
+        if len(nome) < 3:
+            raise HTTPException(
+                status_code=400,
+                detail="O nome exibido deve ter pelo menos 3 caracteres.",
+            )
+        empresa.nome = nome
+    for campo, valor in valores.items():
+        if isinstance(valor, str):
+            valor = valor.strip() or None
+        setattr(empresa, campo, valor)
+    db.commit()
+    db.refresh(empresa)
     return empresa
 
 

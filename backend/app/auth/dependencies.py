@@ -103,3 +103,35 @@ def require_perfil(*perfis):
 
 
     return verificar
+
+
+def require_modulo(*codigos):
+    def verificar_modulo(
+        usuario=Depends(get_current_user),
+        db: Session = Depends(get_db),
+    ):
+        from app.models.modulo import EmpresaModulo, Modulo
+
+        # Bancos legados ainda não possuem o catálogo. Nesse estado o comportamento
+        # anterior é preservado até a migração ser aplicada.
+        if db.query(Modulo.id).first() is None:
+            return usuario
+
+        habilitado = (
+            db.query(EmpresaModulo.id)
+            .join(Modulo, Modulo.id == EmpresaModulo.modulo_id)
+            .filter(
+                EmpresaModulo.empresa_id == usuario.empresa_id,
+                EmpresaModulo.ativo.is_(True),
+                Modulo.codigo.in_(codigos),
+            )
+            .first()
+        )
+        if not habilitado:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Este módulo não está ativo para a empresa.",
+            )
+        return usuario
+
+    return verificar_modulo

@@ -20,6 +20,8 @@ from app.auth.hash import gerar_hash
 from app.database import Base, get_db
 from app.models.empresa import Empresa
 from app.models.usuario import Usuario
+from app.models.modulo import EmpresaModulo, Modulo
+from app.core.modulos import MODULOS_ATUAIS
 
 
 @pytest.fixture
@@ -39,6 +41,22 @@ def client():
     )
     db.add(empresa)
     db.flush()
+    modulos = [
+        Modulo(
+            codigo=codigo,
+            nome=nome,
+            ordem=indice,
+        )
+        for indice, (codigo, nome) in enumerate(MODULOS_ATUAIS.items(), start=1)
+    ]
+    db.add_all(modulos)
+    db.flush()
+    db.add_all(
+        [
+            EmpresaModulo(empresa_id=empresa.id, modulo_id=modulo.id, ativo=True)
+            for modulo in modulos
+        ]
+    )
     db.add(
         Usuario(
             empresa_id=empresa.id,

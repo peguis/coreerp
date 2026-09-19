@@ -11,6 +11,15 @@ class EmpresaCreate(BaseModel):
     telefone: str | None = None
 
 
+class EmpresaConfiguracaoUpdate(BaseModel):
+    nome_exibicao: str | None = None
+    logo_url: str | None = None
+    cor_primaria: str | None = None
+    cor_secundaria: str | None = None
+    tema: str | None = None
+    tipo_negocio: str | None = None
+
+
 
 class EmpresaResponse(BaseModel):
 
@@ -19,6 +28,11 @@ class EmpresaResponse(BaseModel):
     cnpj: str
     email: str
     telefone: str | None
+    logo_url: str | None
+    cor_primaria: str | None
+    cor_secundaria: str | None
+    tema: str | None
+    tipo_negocio: str | None
     ativo: bool
     created_at: datetime | None
 
