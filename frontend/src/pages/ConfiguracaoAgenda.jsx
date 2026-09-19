@@ -268,7 +268,7 @@ export default function ConfiguracaoAgenda() {
         <main className="configuracao-agenda-page">
             <PageHeader
                 titulo="Configuração da operação"
-                subtitulo="Cadastre os recursos e serviços reais da HYPE. Alterações futuras não reescrevem o histórico."
+                subtitulo="Cadastre os recursos e serviços reais da empresa. Alterações futuras não reescrevem o histórico."
             />
             {(erro || mensagem) && <Mensagem tipo={erro ? "erro" : "sucesso"} texto={erro || mensagem} />}
 

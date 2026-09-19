@@ -136,7 +136,7 @@ function Atendimentos() {
         <main className="piloto-page">
             <PageHeader
                 titulo={ehProfissional ? "Meus atendimentos" : "Atendimentos"}
-                subtitulo={ehProfissional ? "Consulte apenas os atendimentos vinculados a você." : "Histórico de atendimentos do piloto."}
+                subtitulo={ehProfissional ? "Consulte apenas os atendimentos vinculados a você." : "Histórico de atendimentos da empresa."}
             />
             {erro && <Mensagem tipo="erro" texto={erro} />}
             <SectionCard>
