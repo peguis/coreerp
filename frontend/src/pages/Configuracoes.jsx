@@ -16,7 +16,7 @@ import {
     listarModulosEmpresa,
     listarUsuarios
 } from "../services/usuarioService";
-import { atualizarConfiguracaoEmpresa, buscarEmpresaAtual } from "../services/empresaService";
+import { atualizarConfiguracaoEmpresa, buscarEmpresaAtual, buscarOnboardingEmpresa } from "../services/empresaService";
 import { getErrorMessage } from "../utils/errors";
 
 import "./Configuracoes.css";
@@ -56,6 +56,7 @@ function Configuracoes() {
     const [usuarios, setUsuarios] = useState([]);
     const [modulos, setModulos] = useState([]);
     const [empresa, setEmpresa] = useState(null);
+    const [onboarding, setOnboarding] = useState(null);
     const [empresaForm, setEmpresaForm] = useState(EMPRESA_FORM_INICIAL);
     const [salvandoEmpresa, setSalvandoEmpresa] = useState(false);
     const [form, setForm] = useState(FORM_INICIAL);
@@ -72,16 +73,18 @@ function Configuracoes() {
 
             setCarregando(true);
             setErro("");
-            const [usuarioDados, usuariosDados, modulosDados, empresaDados] = await Promise.all([
+            const [usuarioDados, usuariosDados, modulosDados, empresaDados, onboardingDados] = await Promise.all([
                 buscarUsuarioLogado(),
                 listarUsuarios(),
                 listarModulosEmpresa(),
-                buscarEmpresaAtual()
+                buscarEmpresaAtual(),
+                buscarOnboardingEmpresa()
             ]);
             setUsuario(usuarioDados);
             setUsuarios(Array.isArray(usuariosDados) ? usuariosDados : []);
             setModulos(Array.isArray(modulosDados) ? modulosDados : []);
             setEmpresa(empresaDados);
+            setOnboarding(onboardingDados);
             setEmpresaForm({
                 nome_exibicao: empresaDados.nome || "",
                 logo_url: empresaDados.logo_url || "",
@@ -346,6 +349,20 @@ function Configuracoes() {
                         <Button type="submit" variant="primary" disabled={salvandoEmpresa}>{salvandoEmpresa ? "Salvando..." : "Salvar identidade"}</Button>
                     </div>
                 </form>
+            </SectionCard>}
+
+            {onboarding && <SectionCard titulo="Configuração inicial" subtitulo="Acompanhe o que falta para deixar a empresa pronta para operar.">
+                <div className="configuracoes-onboarding-summary">
+                    <strong>{onboarding.percentual_concluido}% concluído</strong>
+                    <span>{onboarding.concluido ? "Configuração essencial concluída." : "Complete os itens obrigatórios para iniciar a operação."}</span>
+                </div>
+                <div className="configuracoes-onboarding-list">
+                    {onboarding.itens.map((item) => <div className={`configuracoes-onboarding-item ${item.concluido ? "concluido" : "pendente"}`} key={item.codigo}>
+                        <span className="configuracoes-onboarding-icon" aria-hidden="true">{item.concluido ? "✓" : "!"}</span>
+                        <div><strong>{item.titulo}</strong><p>{item.descricao}</p></div>
+                        <small>{item.concluido ? "Concluído" : item.obrigatorio ? "Pendente" : "Opcional"}</small>
+                    </div>)}
+                </div>
             </SectionCard>}
         </main>
 

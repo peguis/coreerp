@@ -7,13 +7,15 @@ from app.schemas.empresa import (
     EmpresaCreate,
     EmpresaResponse,
     EmpresaConfiguracaoUpdate,
+    EmpresaOnboardingResponse,
 )
 
 from app.services.empresa import (
     criar_empresa_service,
     buscar_empresa_por_id_service,
     atualizar_empresa_service,
-    deletar_empresa_service
+    deletar_empresa_service,
+    obter_onboarding_empresa_service,
 )
 
 from app.auth.dependencies import require_perfil
@@ -100,6 +102,20 @@ def atualizar_minha_configuracao(
     db.commit()
     db.refresh(empresa)
     return empresa
+
+
+@router.get(
+    "/me/onboarding",
+    response_model=EmpresaOnboardingResponse,
+)
+def onboarding_minha_empresa(
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("admin", "gerente", "operador", "consulta")),
+):
+    onboarding = obter_onboarding_empresa_service(db, usuario.empresa_id)
+    if not onboarding:
+        raise HTTPException(status_code=404, detail="Empresa não encontrada")
+    return onboarding
 
 
 

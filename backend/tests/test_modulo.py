@@ -56,3 +56,19 @@ def test_empresa_atualiza_configuracao_sem_alterar_dados_operacionais(
     consulta = client.get("/empresas/me", headers=auth_headers)
     assert consulta.status_code == 200
     assert consulta.json()["tipo_negocio"] == "servicos"
+
+
+def test_empresa_consulta_checklist_de_onboarding(client, auth_headers):
+    resposta = client.get("/empresas/me/onboarding", headers=auth_headers)
+
+    assert resposta.status_code == 200
+    dados = resposta.json()
+    assert dados["percentual_concluido"] == 60
+    assert dados["concluido"] is False
+    assert {item["codigo"] for item in dados["itens"]} >= {
+        "identidade",
+        "administrador",
+        "modulos",
+        "servicos",
+        "profissionais",
+    }

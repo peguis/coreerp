@@ -9,6 +9,7 @@ from app.core.enums import PerfilUsuario
 from app.database import SessionLocal
 from app.models.empresa import Empresa
 from app.models.usuario import Usuario
+from app.services.modulo import inicializar_modulos_empresa
 
 
 class BootstrapConfigurationError(ValueError):
@@ -116,6 +117,7 @@ def criar_admin(session_factory=SessionLocal, env: Mapping[str, str] | None = No
             ativo=True,
         )
         db.add(usuario)
+        inicializar_modulos_empresa(db, empresa.id, commit=False)
         db.commit()
         print("Bootstrap concluído: empresa e usuário ADMIN criados.")
         return True

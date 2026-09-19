@@ -6,7 +6,12 @@ from sqlalchemy.orm import Session
 from app.models.modulo import EmpresaModulo, Modulo
 
 
-def inicializar_modulos_empresa(db: Session, empresa_id: int) -> None:
+def inicializar_modulos_empresa(
+    db: Session,
+    empresa_id: int,
+    *,
+    commit: bool = True,
+) -> None:
     modulos = db.query(Modulo).all()
     if not modulos:
         return
@@ -22,7 +27,8 @@ def inicializar_modulos_empresa(db: Session, empresa_id: int) -> None:
             for modulo in modulos
         ]
     )
-    db.commit()
+    if commit:
+        db.commit()
 
 
 def listar_modulos_empresa(db: Session, empresa_id: int):

@@ -20,6 +20,20 @@ class EmpresaConfiguracaoUpdate(BaseModel):
     tipo_negocio: str | None = None
 
 
+class EmpresaOnboardingItem(BaseModel):
+    codigo: str
+    titulo: str
+    descricao: str
+    concluido: bool
+    obrigatorio: bool = True
+
+
+class EmpresaOnboardingResponse(BaseModel):
+    percentual_concluido: int
+    concluido: bool
+    itens: list[EmpresaOnboardingItem]
+
+
 
 class EmpresaResponse(BaseModel):
 
