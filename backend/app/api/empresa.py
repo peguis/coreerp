@@ -8,6 +8,7 @@ from app.schemas.empresa import (
     EmpresaResponse,
     EmpresaConfiguracaoUpdate,
     EmpresaOnboardingResponse,
+    EmpresaProvisionamentoCreate,
 )
 
 from app.services.empresa import (
@@ -16,6 +17,7 @@ from app.services.empresa import (
     atualizar_empresa_service,
     deletar_empresa_service,
     obter_onboarding_empresa_service,
+    provisionar_empresa_service,
 )
 
 from app.auth.dependencies import require_perfil
@@ -44,6 +46,18 @@ def criar_empresa(
         db,
         empresa
     )
+
+
+@router.post(
+    "/provisionar",
+    response_model=EmpresaResponse,
+)
+def provisionar_empresa(
+    dados: EmpresaProvisionamentoCreate,
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("pegs_admin")),
+):
+    return provisionar_empresa_service(db, dados)
 
 
 

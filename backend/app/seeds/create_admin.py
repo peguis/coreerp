@@ -25,6 +25,7 @@ class BootstrapConfig:
     admin_nome: str
     admin_email: str
     admin_password: str
+    admin_perfil: str
 
 
 def _required(env: Mapping[str, str], name: str) -> str:
@@ -49,6 +50,12 @@ def _read_config(env: Mapping[str, str] | None = None) -> BootstrapConfig:
             "Variável obrigatória ausente ou vazia: COREERP_ADMIN_PASSWORD"
         )
 
+    admin_perfil = source.get("COREERP_BOOTSTRAP_ADMIN_PERFIL", "admin").strip().lower()
+    if admin_perfil not in {PerfilUsuario.ADMIN.value, PerfilUsuario.PEGS_ADMIN.value}:
+        raise BootstrapConfigurationError(
+            "COREERP_BOOTSTRAP_ADMIN_PERFIL deve ser admin ou pegs_admin"
+        )
+
     return BootstrapConfig(
         empresa_nome=_required(source, "COREERP_BOOTSTRAP_EMPRESA_NOME"),
         empresa_cnpj=_required(source, "COREERP_BOOTSTRAP_EMPRESA_CNPJ"),
@@ -57,6 +64,7 @@ def _read_config(env: Mapping[str, str] | None = None) -> BootstrapConfig:
         admin_nome=_required(source, "COREERP_BOOTSTRAP_ADMIN_NOME"),
         admin_email=_required(source, "COREERP_BOOTSTRAP_ADMIN_EMAIL").lower(),
         admin_password=password,
+        admin_perfil=admin_perfil,
     )
 
 
@@ -113,7 +121,7 @@ def criar_admin(session_factory=SessionLocal, env: Mapping[str, str] | None = No
             nome=config.admin_nome,
             email=config.admin_email,
             senha=gerar_hash(config.admin_password),
-            perfil=PerfilUsuario.ADMIN.value,
+            perfil=config.admin_perfil,
             ativo=True,
         )
         db.add(usuario)

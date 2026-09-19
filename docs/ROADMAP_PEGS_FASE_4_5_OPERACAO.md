@@ -33,6 +33,9 @@ e agenda próprios.
 - A tela Configurações exibe o percentual e o estado de cada item.
 - A criação de empresa/administrador continua fora do fluxo público; o bootstrap
   permanece explícito por ambiente e sem exposição de senha.
+- O perfil `pegs_admin` foi separado do administrador da empresa. Ele pode ser
+  criado somente pelo bootstrap explícito e usa `POST /empresas/provisionar` para
+  criar um novo tenant com administrador e módulos em uma transação.
 
 ## Como validar uma empresa-demo local/staging
 

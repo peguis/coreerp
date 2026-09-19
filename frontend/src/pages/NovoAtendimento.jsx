@@ -31,7 +31,7 @@ import Mensagem from "../components/Mensagem";
 import "./NovoAtendimento.css";
 
 
-const PERFIS_COM_OVERRIDE = ["admin", "gerente"];
+const PERFIS_COM_OVERRIDE = ["pegs_admin", "admin", "gerente"];
 
 
 const FORMAS_PAGAMENTO = [

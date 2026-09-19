@@ -156,7 +156,7 @@ export default function Agenda() {
     const [mensagem, setMensagem] = useState("");
     const formularioRef = useRef(null);
 
-    const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
+    const administrativo = ["pegs_admin", "admin", "gerente"].includes(usuario?.perfil);
     const profissionalSelecionado = profissionais.find((item) => String(item.id) === String(form.profissional_id));
     const areaDaAgenda = administrativo ? profissionalSelecionado?.area_atuacao : usuario?.area_atuacao;
     const servicosVisiveis = servicos.filter((item) => servicoCompativelComArea(item, areaDaAgenda));
@@ -181,7 +181,7 @@ export default function Agenda() {
             setServicos(Array.isArray(servicosDados) ? servicosDados : []);
             setRecursos(Array.isArray(recursosDados) ? recursosDados : []);
 
-            if (["admin", "gerente"].includes(usuarioDados.perfil)) {
+            if (["pegs_admin", "admin", "gerente"].includes(usuarioDados.perfil)) {
                 const [profissionaisDados, usuariosDados] = await Promise.all([
                     listarProfissionais({ ativo: true, pagina: 1, limite: 100 }),
                     listarUsuarios()

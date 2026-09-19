@@ -23,6 +23,7 @@ export default function Topbar({ abrirMenu }) {
     }, [carregarUsuario]);
 
     const nomesPerfil = {
+        pegs_admin: "Administrador Pegs",
         admin: "Administrador",
         gerente: "Gerente",
         profissional: "Profissional"

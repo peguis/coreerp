@@ -170,7 +170,7 @@ function Servicos() {
 
             setErro("");
             setMensagem("");
-            if (servico.ativo && usuario?.perfil === "admin") {
+            if (servico.ativo && ["pegs_admin", "admin"].includes(usuario?.perfil)) {
                 await desativarServico(servico.id);
 
             } else {

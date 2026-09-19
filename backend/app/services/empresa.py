@@ -1,13 +1,19 @@
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+
+from app.auth.hash import gerar_hash
 from app.repositories import empresa as repository
-from app.schemas.empresa import EmpresaCreate
+from app.schemas.empresa import EmpresaCreate, EmpresaProvisionamentoCreate
 from app.core.validators.empresa import validar_empresa
 from app.services.modulo import inicializar_modulos_empresa
 from app.models.agendamento import Agendamento
+from app.models.empresa import Empresa
 from app.models.modulo import Modulo, EmpresaModulo
 from app.models.profissional import Profissional
 from app.models.servico import Servico
 from app.models.usuario import Usuario
+from app.core.enums import PerfilUsuario
 
 
 from app.repositories.empresa import (
@@ -33,6 +39,55 @@ def criar_empresa_service(
     )
     inicializar_modulos_empresa(db, nova_empresa.id)
     return nova_empresa
+
+
+def provisionar_empresa_service(
+    db: Session,
+    dados: EmpresaProvisionamentoCreate,
+):
+    validar_empresa(dados)
+    email_empresa = str(dados.email).lower()
+    email_admin = str(dados.administrador_email).lower()
+    if db.query(Empresa).filter(Empresa.cnpj == dados.cnpj).first():
+        raise HTTPException(status_code=409, detail="CNPJ da empresa já cadastrado.")
+    if db.query(Empresa).filter(Empresa.email == email_empresa).first():
+        raise HTTPException(status_code=409, detail="E-mail da empresa já cadastrado.")
+    if db.query(Usuario).filter(Usuario.email == email_admin).first():
+        raise HTTPException(status_code=409, detail="E-mail do administrador já cadastrado.")
+
+    empresa = Empresa(
+        nome=dados.nome.strip(),
+        cnpj=dados.cnpj.strip(),
+        email=email_empresa,
+        telefone=dados.telefone.strip() if dados.telefone else None,
+        tipo_negocio=dados.tipo_negocio.strip() if dados.tipo_negocio else None,
+        cor_primaria=dados.cor_primaria.strip() if dados.cor_primaria else None,
+        cor_secundaria=dados.cor_secundaria.strip() if dados.cor_secundaria else None,
+        ativo=True,
+    )
+    db.add(empresa)
+    db.flush()
+    db.add(
+        Usuario(
+            empresa_id=empresa.id,
+            nome=dados.administrador_nome.strip(),
+            email=email_admin,
+            senha=gerar_hash(dados.administrador_senha),
+            perfil=PerfilUsuario.ADMIN.value,
+            ativo=True,
+        )
+    )
+    inicializar_modulos_empresa(db, empresa.id, commit=False)
+    try:
+        db.commit()
+        db.refresh(empresa)
+        return empresa
+    except IntegrityError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Não foi possível provisionar a empresa com os dados informados.",
+        ) from exc
 
 def listar_empresas_service(db):
     return listar_empresas(db)

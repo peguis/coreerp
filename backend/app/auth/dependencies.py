@@ -90,7 +90,8 @@ def require_perfil(*perfis):
     ):
 
 
-        if usuario.perfil not in perfis:
+        perfil_admin_empresa = "admin" in perfis and usuario.perfil == "pegs_admin"
+        if usuario.perfil not in perfis and not perfil_admin_empresa:
 
 
             raise HTTPException(

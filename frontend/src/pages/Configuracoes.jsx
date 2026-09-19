@@ -112,7 +112,7 @@ function Configuracoes() {
 
     }, [carregar]);
 
-    const ehAdmin = usuario?.perfil === "admin";
+    const ehAdmin = ["pegs_admin", "admin"].includes(usuario?.perfil);
 
     function alterar(campo, valor) {
 

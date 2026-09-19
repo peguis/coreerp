@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class PerfilUsuario(str, Enum):
+    PEGS_ADMIN = "pegs_admin"
     ADMIN = "admin"
     GERENTE = "gerente"
     OPERADOR = "operador"

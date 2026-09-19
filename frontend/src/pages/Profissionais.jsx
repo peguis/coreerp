@@ -154,7 +154,7 @@ function Profissionais() {
     const usuariosDisponiveis = usuarios.filter((usuario) =>
         usuario.ativo && !profissionais.some((item) => item.usuario_id === usuario.id)
     );
-    const ehAdmin = usuario?.perfil === "admin";
+    const ehAdmin = ["pegs_admin", "admin"].includes(usuario?.perfil);
     const ehGerente = usuario?.perfil === "gerente";
 
     return (

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
 
 
 class EmpresaCreate(BaseModel):
@@ -9,6 +9,19 @@ class EmpresaCreate(BaseModel):
     cnpj: str
     email: str
     telefone: str | None = None
+
+
+class EmpresaProvisionamentoCreate(BaseModel):
+    nome: str = Field(min_length=3, max_length=100)
+    cnpj: str = Field(min_length=1, max_length=18)
+    email: EmailStr
+    telefone: str | None = None
+    administrador_nome: str = Field(min_length=3, max_length=150)
+    administrador_email: EmailStr
+    administrador_senha: str = Field(min_length=6, max_length=128)
+    tipo_negocio: str | None = None
+    cor_primaria: str | None = None
+    cor_secundaria: str | None = None
 
 
 class EmpresaConfiguracaoUpdate(BaseModel):
