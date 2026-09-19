@@ -5,6 +5,7 @@ from app.auth.dependencies import get_current_user, require_perfil
 from app.database import get_db
 from app.schemas.modulo import ModuloResponse, ModuloStatusUpdate
 from app.services.modulo import atualizar_modulo_empresa, listar_modulos_empresa
+from app.services.auditoria import registrar_auditoria
 
 
 router = APIRouter(prefix="/modulos", tags=["Módulos"])
@@ -25,9 +26,18 @@ def atualizar_modulo(
     db: Session = Depends(get_db),
     usuario=Depends(require_perfil("admin")),
 ):
-    return atualizar_modulo_empresa(
+    resposta = atualizar_modulo_empresa(
         db,
         usuario.empresa_id,
         codigo,
         dados.ativo,
     )
+    registrar_auditoria(
+        db,
+        empresa_id=usuario.empresa_id,
+        usuario_id=usuario.id,
+        acao="ATIVAR_MODULO" if dados.ativo else "DESATIVAR_MODULO",
+        recurso="modulo",
+        detalhes={"codigo": codigo},
+    )
+    return resposta

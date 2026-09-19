@@ -21,6 +21,7 @@ from app.services.empresa import (
 )
 
 from app.auth.dependencies import require_perfil
+from app.services.auditoria import registrar_auditoria
 
 
 router = APIRouter(
@@ -101,6 +102,7 @@ def atualizar_minha_configuracao(
         raise HTTPException(status_code=404, detail="Empresa não encontrada")
 
     valores = dados.model_dump(exclude_unset=True)
+    campos_alterados = sorted(valores.keys())
     if "nome_exibicao" in valores:
         nome = (valores.pop("nome_exibicao") or "").strip()
         if len(nome) < 3:
@@ -113,6 +115,16 @@ def atualizar_minha_configuracao(
         if isinstance(valor, str):
             valor = valor.strip() or None
         setattr(empresa, campo, valor)
+    registrar_auditoria(
+        db,
+        empresa_id=usuario.empresa_id,
+        usuario_id=usuario.id,
+        acao="ATUALIZAR_CONFIGURACAO",
+        recurso="empresa",
+        recurso_id=empresa.id,
+        detalhes={"campos": campos_alterados},
+        commit=False,
+    )
     db.commit()
     db.refresh(empresa)
     return empresa

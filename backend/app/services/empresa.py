@@ -7,6 +7,7 @@ from app.repositories import empresa as repository
 from app.schemas.empresa import EmpresaCreate, EmpresaProvisionamentoCreate
 from app.core.validators.empresa import validar_empresa
 from app.services.modulo import inicializar_modulos_empresa
+from app.services.auditoria import registrar_auditoria
 from app.models.agendamento import Agendamento
 from app.models.empresa import Empresa
 from app.models.modulo import Modulo, EmpresaModulo
@@ -79,6 +80,15 @@ def provisionar_empresa_service(
     )
     inicializar_modulos_empresa(db, empresa.id, commit=False)
     try:
+        registrar_auditoria(
+            db,
+            empresa_id=empresa.id,
+            acao="PROVISIONAR_EMPRESA",
+            recurso="empresa",
+            recurso_id=empresa.id,
+            detalhes={"origem": "pegs_admin"},
+            commit=False,
+        )
         db.commit()
         db.refresh(empresa)
         return empresa
