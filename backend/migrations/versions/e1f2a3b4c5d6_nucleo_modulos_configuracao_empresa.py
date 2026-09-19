@@ -97,25 +97,15 @@ def upgrade() -> None:
         ],
     )
 
-    bind = op.get_bind()
-    empresa_ids = [row[0] for row in bind.execute(sa.text("SELECT id FROM empresas"))]
-    modulo_ids = {
-        row[0]: row[1]
-        for row in bind.execute(sa.text("SELECT id, codigo FROM modulos"))
-    }
-    associacoes = [
-        {"empresa_id": empresa_id, "modulo_id": modulo_id, "ativo": True}
-        for empresa_id in empresa_ids
-        for modulo_id in modulo_ids.values()
-    ]
-    if associacoes:
-        vinculos = sa.table(
-            "empresas_modulos",
-            sa.column("empresa_id", sa.Integer()),
-            sa.column("modulo_id", sa.Integer()),
-            sa.column("ativo", sa.Boolean()),
+    # Use INSERT ... SELECT so the migration also supports Alembic offline SQL
+    # generation and does not load tenant IDs into the migration process.
+    op.execute(
+        sa.text(
+            "INSERT INTO empresas_modulos (empresa_id, modulo_id, ativo) "
+            "SELECT empresas.id, modulos.id, true "
+            "FROM empresas CROSS JOIN modulos"
         )
-        op.bulk_insert(vinculos, associacoes)
+    )
 
 
 def downgrade() -> None:
