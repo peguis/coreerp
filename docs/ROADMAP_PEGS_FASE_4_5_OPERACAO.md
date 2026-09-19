@@ -75,8 +75,15 @@ até `a3b4c5d6e7f8`.
 - A validação visual local confirmou Dashboard, Agenda, Configuração da
   operação e Profissionais em desktop e mobile, usando a identidade da
   empresa-demo e os dados persistidos do tenant.
+- A conferência ponta a ponta repetida confirmou login da empresa-demo,
+  dashboard, agenda, serviços, recursos, profissionais e configurações; o
+  smoke test também percorreu Novo atendimento, Atendimentos, Clientes,
+  Repasses, Financeiro, Vendas, Produtos e Estoque sem alertas após o
+  carregamento.
 - O dashboard passou a aceitar áreas configuráveis fora do enum legado
   (`STUDIO`, por exemplo), sem restringir a Pegs a BARBEARIA/TATTOO.
+- O shell passou a usar a marca Pegs enquanto os dados do tenant ainda estão
+  carregando, evitando exibir temporariamente a marca da HYPE em outra empresa.
 - A suíte backend final passou com `136 passed, 1 skipped`; o build de
   produção do frontend também passou. O lint global continua com avisos/erros
   antigos fora do escopo; o lint direcionado dos arquivos frontend alterados
