@@ -9,14 +9,11 @@ from pydantic import (
     field_validator,
 )
 
-from app.core.enums import AreaAtuacao
-
-
 class ProfissionalCreate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     usuario_id: int = Field(gt=0)
-    area_atuacao: AreaAtuacao
+    area_atuacao: str = Field(min_length=1, max_length=50)
     percentual_padrao: Decimal = Field(
         default=Decimal("0.00"),
         ge=0,
@@ -25,11 +22,19 @@ class ProfissionalCreate(BaseModel):
         decimal_places=2,
     )
 
+    @field_validator("area_atuacao")
+    @classmethod
+    def normalizar_area(cls, value: str) -> str:
+        area = value.strip().upper()
+        if not area:
+            raise ValueError("A área de atuação é obrigatória.")
+        return area
+
 
 class ProfissionalUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    area_atuacao: AreaAtuacao | None = None
+    area_atuacao: str | None = Field(default=None, min_length=1, max_length=50)
     percentual_padrao: Decimal | None = Field(
         default=None,
         ge=0,
@@ -46,6 +51,11 @@ class ProfissionalUpdate(BaseModel):
             raise ValueError("O campo informado nao pode ser nulo.")
         return value
 
+    @field_validator("area_atuacao")
+    @classmethod
+    def normalizar_area(cls, value: str | None) -> str | None:
+        return value.strip().upper() if value else value
+
 
 class ProfissionalResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -53,7 +63,7 @@ class ProfissionalResponse(BaseModel):
     id: int
     empresa_id: int
     usuario_id: int
-    area_atuacao: AreaAtuacao
+    area_atuacao: str
     percentual_padrao: Decimal
     ativo: bool
     created_at: datetime

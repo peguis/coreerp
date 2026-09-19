@@ -35,10 +35,6 @@ class Profissional(Base):
             name="uq_profissionais_empresa_usuario",
         ),
         CheckConstraint(
-            "area_atuacao IN ('BARBEARIA', 'TATTOO')",
-            name="ck_profissionais_area_atuacao",
-        ),
-        CheckConstraint(
             "percentual_padrao >= 0 AND percentual_padrao <= 100",
             name="ck_profissionais_percentual_padrao",
         ),

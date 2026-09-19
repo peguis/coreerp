@@ -17,4 +17,7 @@ def servico_compativel_com_area(
         return servico_e_tattoo(categoria, nome)
     if area == "BARBEARIA":
         return not servico_e_tattoo(categoria, nome)
-    return True
+    categoria_normalizada = normalizar_texto(categoria)
+    if not categoria_normalizada:
+        return True
+    return area == categoria_normalizada or area in categoria_normalizada or categoria_normalizada in area
