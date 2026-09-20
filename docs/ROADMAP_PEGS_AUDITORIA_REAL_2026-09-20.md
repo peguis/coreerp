@@ -1,8 +1,8 @@
 # Pegs Core — auditoria real e matriz de execução
 
-**Data:** 20/09/2026  
-**Branch segura:** `codex/pegs-roadmap`  
-**Commit auditado:** `9aeff80`  
+**Data:** 20/09/2026
+**Branch segura:** `codex/pegs-roadmap`
+**Commit auditado:** `9aeff80`
 **Produção:** não alterada por esta execução
 
 ## Escopo e fontes
