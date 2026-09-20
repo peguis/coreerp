@@ -16,7 +16,7 @@ from app.services.venda import (
     deletar_venda_service
 )
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 from app.auth.tenant import get_empresa_id
 
@@ -24,7 +24,8 @@ from app.auth.tenant import get_empresa_id
 
 router = APIRouter(
     prefix="/vendas",
-    tags=["Vendas"]
+    tags=["Vendas"],
+    dependencies=[Depends(require_modulo("vendas"))],
 )
 
 

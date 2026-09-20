@@ -17,12 +17,13 @@ from app.services.categoria_financeira import (
     deletar_categoria_service
 )
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 
 router = APIRouter(
     prefix="/categorias-financeiras",
-    tags=["Financeiro - Categorias"]
+    tags=["Financeiro - Categorias"],
+    dependencies=[Depends(require_modulo("financeiro"))],
 )
 
 

@@ -8,12 +8,13 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.produto import Produto
 from app.models.produto_imagem import ProdutoImagem
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 
 router = APIRouter(
     prefix="/produtos",
-    tags=["Produto Imagens"]
+    tags=["Produto Imagens"],
+    dependencies=[Depends(require_modulo("produtos"))],
 )
 
 

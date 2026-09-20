@@ -22,13 +22,14 @@ from app.services.produto import (
     deletar_produto_service
 )
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 from app.auth.tenant import get_empresa_id
 
 router = APIRouter(
     prefix="/produtos",
-    tags=["Produtos"]
+    tags=["Produtos"],
+    dependencies=[Depends(require_modulo("produtos"))],
 )
 
 

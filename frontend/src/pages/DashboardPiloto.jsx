@@ -91,7 +91,7 @@ function DashboardPiloto() {
         <main className="piloto-page dashboard-piloto-page">
             <PageHeader
                 titulo="Dashboard"
-                subtitulo="Aqui está o resumo da operação da HYPE STUDIO de hoje."
+                subtitulo="Aqui está o resumo da operação da empresa de hoje."
             >
                 <form className="dashboard-period-form" onSubmit={filtrar}>
                     <Input

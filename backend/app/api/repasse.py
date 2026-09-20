@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 from app.database import get_db
 from app.schemas.repasse import (
     PendenciaProfissionalResponse,
@@ -18,7 +18,11 @@ from app.services.repasse import (
 )
 
 
-router = APIRouter(prefix="/repasses", tags=["Repasses"])
+router = APIRouter(
+    prefix="/repasses",
+    tags=["Repasses"],
+    dependencies=[Depends(require_modulo("repasses"))],
+)
 perfis_leitura = require_perfil("admin", "gerente", "profissional")
 
 

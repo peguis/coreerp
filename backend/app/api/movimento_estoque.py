@@ -14,14 +14,15 @@ from app.services.movimento_estoque import (
     buscar_movimento_service
 )
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 from app.auth.tenant import get_empresa_id
 
 
 router = APIRouter(
     prefix="/movimentos-estoque",
-    tags=["Movimentos de Estoque"]
+    tags=["Movimentos de Estoque"],
+    dependencies=[Depends(require_modulo("estoque"))],
 )
 
 

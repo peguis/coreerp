@@ -4,7 +4,6 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.core.enums import AreaAtuacao
 from app.repositories.profissional import (
     atualizar_profissional,
     buscar_profissional_por_id,
@@ -17,13 +16,12 @@ from app.repositories.usuario import buscar_usuario_por_id
 
 
 def _normalizar_area(area) -> str:
-    try:
-        return AreaAtuacao(area).value
-    except (TypeError, ValueError):
+    if not isinstance(area, str) or not area.strip():
         raise HTTPException(
             status_code=400,
-            detail="Area de atuacao invalida.",
+            detail="Area de atuacao obrigatoria.",
         )
+    return area.strip().upper()
 
 
 def _normalizar_percentual(percentual) -> Decimal:

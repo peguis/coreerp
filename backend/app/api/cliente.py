@@ -17,14 +17,15 @@ from app.services.cliente import (
     deletar_cliente_service
 )
 
-from app.auth.dependencies import get_current_user, require_perfil
+from app.auth.dependencies import get_current_user, require_modulo, require_perfil
 
 from app.auth.tenant import get_empresa_id
 
 
 router = APIRouter(
     prefix="/clientes",
-    tags=["Clientes"]
+    tags=["Clientes"],
+    dependencies=[Depends(require_modulo("clientes"))],
 )
 RespostaCliente = ClienteResponse | ClienteProfissionalResponse
 

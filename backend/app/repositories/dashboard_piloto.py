@@ -40,6 +40,34 @@ def obter_totais_producao(
     )
 
 
+def listar_producao_periodo(
+    db: Session, empresa_id: int, inicio: datetime, fim_exclusivo: datetime
+):
+    """Carrega uma vez os dados-base usados nos blocos do dashboard."""
+    return (
+        db.query(
+            Atendimento.realizado_em,
+            Atendimento.valor,
+            Atendimento.valor_profissional,
+            Atendimento.valor_casa,
+            Atendimento.forma_pagamento,
+            Servico.id.label("servico_id"),
+            Servico.nome.label("servico_nome"),
+        )
+        .join(
+            Servico,
+            (Servico.id == Atendimento.servico_id)
+            & (Servico.empresa_id == Atendimento.empresa_id),
+        )
+        .filter(
+            Atendimento.empresa_id == empresa_id,
+            *_filtro_periodo(Atendimento.realizado_em, inicio, fim_exclusivo),
+        )
+        .order_by(Atendimento.realizado_em.asc(), Atendimento.id.asc())
+        .all()
+    )
+
+
 def obter_total_repassado(
     db: Session, empresa_id: int, inicio: datetime, fim_exclusivo: datetime
 ):

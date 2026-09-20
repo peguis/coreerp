@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.auth.dependencies import require_perfil
-from app.core.enums import AreaAtuacao
+from app.auth.dependencies import require_modulo, require_perfil
 from app.database import get_db
 from app.schemas.profissional import (
     ProfissionalCreate,
@@ -21,6 +20,7 @@ from app.services.profissional import (
 router = APIRouter(
     prefix="/profissionais",
     tags=["Profissionais"],
+    dependencies=[Depends(require_modulo("profissionais"))],
 )
 
 
@@ -42,7 +42,7 @@ def criar_profissional_endpoint(
 )
 def listar_profissionais_endpoint(
     ativo: bool | None = Query(None),
-    area_atuacao: AreaAtuacao | None = Query(None),
+    area_atuacao: str | None = Query(None),
     busca: str | None = Query(None),
     pagina: int = Query(1, ge=1),
     limite: int = Query(10, ge=1, le=100),

@@ -5,7 +5,8 @@ from typing import TYPE_CHECKING
 from sqlalchemy import (
     String,
     Boolean,
-    DateTime
+    DateTime,
+    Text,
 )
 
 from sqlalchemy.orm import (
@@ -70,6 +71,31 @@ class Empresa(Base):
     telefone: Mapped[str | None] = mapped_column(
         String(20),
         nullable=True
+    )
+
+    logo_url: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    cor_primaria: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True,
+    )
+
+    cor_secundaria: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True,
+    )
+
+    tema: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True,
+    )
+
+    tipo_negocio: Mapped[str | None] = mapped_column(
+        String(80),
+        nullable=True,
     )
 
 
@@ -178,6 +204,12 @@ class Empresa(Base):
 
     agendamentos: Mapped[list["Agendamento"]] = relationship(
         "Agendamento",
+        back_populates="empresa",
+        cascade="all, delete-orphan",
+    )
+
+    modulos: Mapped[list["EmpresaModulo"]] = relationship(
+        "EmpresaModulo",
         back_populates="empresa",
         cascade="all, delete-orphan",
     )

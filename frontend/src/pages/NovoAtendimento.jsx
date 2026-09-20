@@ -31,7 +31,7 @@ import Mensagem from "../components/Mensagem";
 import "./NovoAtendimento.css";
 
 
-const PERFIS_COM_OVERRIDE = ["admin", "gerente"];
+const PERFIS_COM_OVERRIDE = ["pegs_admin", "admin", "gerente"];
 
 
 const FORMAS_PAGAMENTO = [
@@ -246,7 +246,7 @@ function NovoAtendimento() {
 
             <PageHeader
                 titulo="Novo Atendimento"
-                subtitulo="Registre um serviço realizado na barbearia ou no estúdio de tattoo"
+                subtitulo="Registre um serviço realizado na operação da empresa"
             >
                 <Button
                     variant="secondary"

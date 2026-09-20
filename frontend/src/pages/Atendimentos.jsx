@@ -49,7 +49,7 @@ function Atendimentos() {
             setClientes(Array.isArray(clientesDados) ? clientesDados : []);
             setServicos(Array.isArray(servicosDados) ? servicosDados : []);
 
-            if (!ehProfissional && ["admin", "gerente"].includes(usuarioDados.perfil)) {
+            if (!ehProfissional && ["pegs_admin", "admin", "gerente"].includes(usuarioDados.perfil)) {
 
                 const [profissionaisDados, usuariosDados] = await Promise.all([
                     listarProfissionais({ ativo: true, pagina: 1, limite: 100 }),
@@ -136,7 +136,7 @@ function Atendimentos() {
         <main className="piloto-page">
             <PageHeader
                 titulo={ehProfissional ? "Meus atendimentos" : "Atendimentos"}
-                subtitulo={ehProfissional ? "Consulte apenas os atendimentos vinculados a você." : "Histórico de atendimentos do piloto."}
+                subtitulo={ehProfissional ? "Consulte apenas os atendimentos vinculados a você." : "Histórico de atendimentos da empresa."}
             />
             {erro && <Mensagem tipo="erro" texto={erro} />}
             <SectionCard>

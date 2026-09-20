@@ -170,7 +170,7 @@ function Servicos() {
 
             setErro("");
             setMensagem("");
-            if (servico.ativo && usuario?.perfil === "admin") {
+            if (servico.ativo && ["pegs_admin", "admin"].includes(usuario?.perfil)) {
                 await desativarServico(servico.id);
 
             } else {
@@ -197,12 +197,12 @@ function Servicos() {
     return (
 
         <main className="piloto-page">
-            <PageHeader titulo="Serviços" subtitulo="Cadastre os serviços de Barbearia e Tattoo do piloto." />
+            <PageHeader titulo="Serviços" subtitulo="Cadastre os serviços oferecidos pela empresa." />
             {(erro || mensagem) && <Mensagem tipo={erro ? "erro" : "sucesso"} texto={erro || mensagem} />}
             <FormCard titulo={editarId ? "Editar serviço" : "Novo serviço"} subtitulo="O preço padrão é uma referência para o registro do atendimento.">
                 <form className="piloto-form-grid" onSubmit={salvar}>
                     <Input label="Nome" value={form.nome} onChange={(evento) => alterar("nome", evento.target.value)} required />
-                    <Input label="Categoria" value={form.categoria} onChange={(evento) => alterar("categoria", evento.target.value)} placeholder="Ex.: Barbearia ou Tattoo" required />
+                    <Input label="Categoria" value={form.categoria} onChange={(evento) => alterar("categoria", evento.target.value)} placeholder="Ex.: Corte, tatuagem ou sessão" required />
                     <Input label="Preço padrão" type="number" min="0" step="0.01" value={form.preco_padrao} onChange={(evento) => alterar("preco_padrao", evento.target.value)} required />
                     <Input label="Duração padrão (minutos)" type="number" min="1" max="1440" value={form.duracao_minutos} onChange={(evento) => alterar("duracao_minutos", evento.target.value)} required />
                     <Select label="Exige recurso físico" value={form.requer_recurso} onChange={(evento) => alterar("requer_recurso", evento.target.value)} options={[{ value: "false", label: "Não" }, { value: "true", label: "Sim" }]} />

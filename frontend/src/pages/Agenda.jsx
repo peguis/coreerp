@@ -113,7 +113,12 @@ function servicoEhTattoo(servico) {
 
 function servicoCompativelComArea(servico, area) {
     if (!area) return true;
-    return area === "TATTOO" ? servicoEhTattoo(servico) : !servicoEhTattoo(servico);
+    const areaNormalizada = String(area).trim().toUpperCase();
+    if (areaNormalizada === "TATTOO") return servicoEhTattoo(servico);
+    if (areaNormalizada === "BARBEARIA") return !servicoEhTattoo(servico);
+    const categoria = String(servico?.categoria || "").trim().toUpperCase();
+    if (!categoria) return true;
+    return areaNormalizada === categoria || areaNormalizada.includes(categoria) || categoria.includes(areaNormalizada);
 }
 
 
@@ -151,7 +156,7 @@ export default function Agenda() {
     const [mensagem, setMensagem] = useState("");
     const formularioRef = useRef(null);
 
-    const administrativo = ["admin", "gerente"].includes(usuario?.perfil);
+    const administrativo = ["pegs_admin", "admin", "gerente"].includes(usuario?.perfil);
     const profissionalSelecionado = profissionais.find((item) => String(item.id) === String(form.profissional_id));
     const areaDaAgenda = administrativo ? profissionalSelecionado?.area_atuacao : usuario?.area_atuacao;
     const servicosVisiveis = servicos.filter((item) => servicoCompativelComArea(item, areaDaAgenda));
@@ -176,7 +181,7 @@ export default function Agenda() {
             setServicos(Array.isArray(servicosDados) ? servicosDados : []);
             setRecursos(Array.isArray(recursosDados) ? recursosDados : []);
 
-            if (["admin", "gerente"].includes(usuarioDados.perfil)) {
+            if (["pegs_admin", "admin", "gerente"].includes(usuarioDados.perfil)) {
                 const [profissionaisDados, usuariosDados] = await Promise.all([
                     listarProfissionais({ ativo: true, pagina: 1, limite: 100 }),
                     listarUsuarios()
@@ -395,7 +400,7 @@ export default function Agenda() {
 
     return (
         <main className="agenda-page">
-            <PageHeader titulo="Agenda" subtitulo="Organize atendimentos, profissionais e recursos do HYPE.">
+            <PageHeader titulo="Agenda" subtitulo="Organize atendimentos, profissionais e recursos da empresa.">
                 <Button variant="primary" onClick={novoAgendamento}><CalendarPlus size={17} />Novo agendamento</Button>
             </PageHeader>
 

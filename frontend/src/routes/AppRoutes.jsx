@@ -43,8 +43,8 @@ import ConfiguracaoAgenda from "../pages/ConfiguracaoAgenda";
 import Agenda from "../pages/Agenda";
 
 
-const ADMINISTRADORES = ["admin", "gerente"];
-const ATENDIMENTO = ["admin", "gerente", "profissional"];
+const ADMINISTRADORES = ["pegs_admin", "admin", "gerente"];
+const ATENDIMENTO = ["pegs_admin", "admin", "gerente", "profissional"];
 
 
 export default function AppRoutes() {

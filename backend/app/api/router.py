@@ -16,6 +16,7 @@ from app.api.atendimento import router as atendimento_router
 from app.api.repasse import router as repasse_router
 from app.api.recurso_agenda import router as recurso_agenda_router
 from app.api.agendamento import router as agendamento_router
+from app.api.modulo import router as modulo_router
 
 router = APIRouter()
 
@@ -82,4 +83,8 @@ router.include_router(
 
 router.include_router(
     agendamento_router
+)
+
+router.include_router(
+    modulo_router
 )

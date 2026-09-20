@@ -8,19 +8,13 @@ import { formatarPercentual } from "../utils/formatters";
 import PageHeader from "../components/ui/PageHeader";
 import FormCard from "../components/forms/FormCard";
 import SectionCard from "../components/ui/SectionCard";
-import Select from "../components/forms/Select";
 import Input from "../components/forms/Input";
+import Select from "../components/forms/Select";
 import Button from "../components/forms/Button";
 import Loading from "../components/Loading";
 import Mensagem from "../components/Mensagem";
 
 import "./Piloto.css";
-
-
-const AREAS = [
-    { value: "BARBEARIA", label: "Barbearia" },
-    { value: "TATTOO", label: "Tattoo" }
-];
 
 
 function Profissionais() {
@@ -160,24 +154,24 @@ function Profissionais() {
     const usuariosDisponiveis = usuarios.filter((usuario) =>
         usuario.ativo && !profissionais.some((item) => item.usuario_id === usuario.id)
     );
-    const ehAdmin = usuario?.perfil === "admin";
+    const ehAdmin = ["pegs_admin", "admin"].includes(usuario?.perfil);
     const ehGerente = usuario?.perfil === "gerente";
 
     return (
 
         <main className="piloto-page">
-            <PageHeader titulo="Profissionais" subtitulo="Gerencie os vínculos e percentuais padrão do piloto." />
+            <PageHeader titulo="Profissionais" subtitulo="Gerencie os vínculos, áreas de atuação e percentuais padrão da empresa." />
             {(erro || mensagem) && <Mensagem tipo={erro ? "erro" : "sucesso"} texto={erro || mensagem} />}
-            {ehAdmin ? <FormCard titulo={editarId ? "Editar profissional" : "Novo profissional"} subtitulo="O percentual padrão pode ser substituído somente no atendimento por ADMIN/GERENTE.">
+            {ehAdmin ? <FormCard titulo={editarId ? "Editar profissional" : "Novo profissional"} subtitulo="Cadastre a área de atuação usada pela empresa. O percentual padrão pode ser substituído somente no atendimento por ADMIN/GERENTE.">
                 <form className="piloto-form-grid" onSubmit={salvar}>
                     {!editarId && <Select label="Usuário vinculado" value={form.usuario_id} onChange={(evento) => setForm((atual) => ({ ...atual, usuario_id: evento.target.value }))} options={usuariosDisponiveis.map((usuarioItem) => ({ value: usuarioItem.id, label: `${usuarioItem.nome} — ${usuarioItem.email}` }))} required />}
-                    <Select label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} options={AREAS} required />
+                    <Input label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} placeholder="Ex.: BARBEARIA, TATTOO, SALÃO ou STUDIO" required />
                     <Input label="Percentual padrão" type="number" min="0" max="100" step="0.01" value={form.percentual_padrao} onChange={(evento) => setForm((atual) => ({ ...atual, percentual_padrao: evento.target.value }))} required />
                     <div className="piloto-form-actions piloto-form-full"><Button type="button" variant="secondary" onClick={limparForm}>Limpar</Button><Button type="submit" variant="primary" disabled={salvando}>{salvando ? "Salvando..." : editarId ? "Salvar alterações" : "Cadastrar profissional"}</Button></div>
                 </form>
-            </FormCard> : ehGerente && editarId ? <FormCard titulo="Alterar função do profissional" subtitulo="O gerente pode transferir o profissional entre Barbearia e Tattoo.">
+            </FormCard> : ehGerente && editarId ? <FormCard titulo="Alterar função do profissional" subtitulo="O gerente pode atualizar a área de atuação do profissional conforme a operação da empresa.">
                 <form className="piloto-form-grid" onSubmit={salvar}>
-                    <Select label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} options={AREAS} required />
+                    <Input label="Área de atuação" value={form.area_atuacao} onChange={(evento) => setForm((atual) => ({ ...atual, area_atuacao: evento.target.value }))} placeholder="Ex.: BARBEARIA, TATTOO, SALÃO ou STUDIO" required />
                     <div className="piloto-form-actions piloto-form-full"><Button type="button" variant="secondary" onClick={limparForm}>Cancelar</Button><Button type="submit" variant="primary" disabled={salvando}>{salvando ? "Salvando..." : "Salvar função"}</Button></div>
                 </form>
             </FormCard> : !ehGerente && <Mensagem tipo="sucesso" texto="GERENTE possui acesso à consulta. Alterações de profissionais são exclusivas do ADMIN." />}

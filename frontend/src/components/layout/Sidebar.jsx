@@ -15,7 +15,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 
-import { buscarUsuarioLogado } from "../../services/usuarioService";
+import { buscarUsuarioLogado, listarModulosEmpresa } from "../../services/usuarioService";
 
 import "./Sidebar.css";
 
@@ -24,33 +24,33 @@ const menusAdministrativos = [
     {
         grupo: "Operação",
         itens: [
-            { nome: "Dashboard", rota: "/dashboard/piloto", icone: LayoutDashboard },
-            { nome: "Agenda", rota: "/agenda", icone: CalendarDays },
-            { nome: "Novo atendimento", rota: "/atendimentos/novo", icone: Scissors },
-            { nome: "Atendimentos", rota: "/atendimentos", icone: Scissors }
+            { nome: "Dashboard", rota: "/dashboard/piloto", icone: LayoutDashboard, modulo: "dashboard" },
+            { nome: "Agenda", rota: "/agenda", icone: CalendarDays, modulo: "agenda" },
+            { nome: "Novo atendimento", rota: "/atendimentos/novo", icone: Scissors, modulo: "atendimentos" },
+            { nome: "Atendimentos", rota: "/atendimentos", icone: Scissors, modulo: "atendimentos" }
         ]
     },
     {
         grupo: "Gestão financeira",
         itens: [
-            { nome: "Repasses", rota: "/repasses", icone: Wallet },
-            { nome: "Financeiro", rota: "/financeiro", icone: Wallet }
+            { nome: "Repasses", rota: "/repasses", icone: Wallet, modulo: "repasses" },
+            { nome: "Financeiro", rota: "/financeiro", icone: Wallet, modulo: "financeiro" }
         ]
     },
     {
         grupo: "Cadastros e operação",
         itens: [
-            { nome: "Profissionais", rota: "/profissionais", icone: Users },
-            { nome: "Config. da operação", rota: "/configuracoes/agenda", icone: Settings },
-            { nome: "Clientes", rota: "/clientes", icone: Users }
+            { nome: "Profissionais", rota: "/profissionais", icone: Users, modulo: "profissionais" },
+            { nome: "Config. da operação", rota: "/configuracoes/agenda", icone: Settings, modulo: "servicos" },
+            { nome: "Clientes", rota: "/clientes", icone: Users, modulo: "clientes" }
         ]
     },
     {
         grupo: "Produtos e estoque",
         itens: [
-            { nome: "Vendas", rota: "/vendas", icone: ShoppingCart },
-            { nome: "Produtos", rota: "/produtos", icone: Package },
-            { nome: "Estoque", rota: "/estoque", icone: Boxes }
+            { nome: "Vendas", rota: "/vendas", icone: ShoppingCart, modulo: "vendas" },
+            { nome: "Produtos", rota: "/produtos", icone: Package, modulo: "produtos" },
+            { nome: "Estoque", rota: "/estoque", icone: Boxes, modulo: "estoque" }
         ]
     },
     {
@@ -63,28 +63,37 @@ const menusAdministrativos = [
 
 const menusProfissional = [
     { nome: "Início", rota: "/inicio", icone: LayoutDashboard },
-    { nome: "Minha agenda", rota: "/agenda", icone: CalendarDays },
-    { nome: "Novo atendimento", rota: "/atendimentos/novo", icone: Scissors },
-    { nome: "Meus atendimentos", rota: "/atendimentos", icone: Scissors },
-    { nome: "Minha produção", rota: "/minha-producao", icone: Wallet }
+    { nome: "Minha agenda", rota: "/agenda", icone: CalendarDays, modulo: "agenda" },
+    { nome: "Novo atendimento", rota: "/atendimentos/novo", icone: Scissors, modulo: "atendimentos" },
+    { nome: "Meus atendimentos", rota: "/atendimentos", icone: Scissors, modulo: "atendimentos" },
+    { nome: "Minha produção", rota: "/minha-producao", icone: Wallet, modulo: "atendimentos" }
 ];
+
+const LOGO_FALLBACK = "/images/pegs-logo-transparent.png";
 
 
 export default function Sidebar({
     aberto = true,
     setAberto,
     mobileAberto = false,
-    fecharMobile
+    fecharMobile,
+    empresa
 }) {
     const navigate = useNavigate();
     const [perfil, setPerfil] = useState(null);
+    const [modulosAtivos, setModulosAtivos] = useState(null);
 
     const carregarPerfil = useCallback(async () => {
         try {
-            const usuario = await buscarUsuarioLogado();
+            const [usuario, modulos] = await Promise.all([
+                buscarUsuarioLogado(),
+                listarModulosEmpresa()
+            ]);
             setPerfil(usuario.perfil);
+            setModulosAtivos(new Set(modulos.filter((modulo) => modulo.ativo).map((modulo) => modulo.codigo)));
         } catch {
             setPerfil(null);
+            setModulosAtivos(null);
         }
     }, []);
 
@@ -92,9 +101,12 @@ export default function Sidebar({
         void Promise.resolve().then(carregarPerfil);
     }, [carregarPerfil]);
 
+    const filtrarItens = (itens) => itens.filter((item) => (
+        !modulosAtivos || !item.modulo || modulosAtivos.has(item.modulo)
+    ));
     const gruposDeMenu = perfil === "profissional"
-        ? [{ grupo: "Minha operação", itens: menusProfissional }]
-        : menusAdministrativos;
+        ? [{ grupo: "Minha operação", itens: filtrarItens(menusProfissional) }]
+        : menusAdministrativos.map((grupo) => ({ ...grupo, itens: filtrarItens(grupo.itens) }));
 
     function logout() {
         localStorage.removeItem("token");
@@ -113,7 +125,7 @@ export default function Sidebar({
         >
             <div className="sidebar-top">
                 <div className="sidebar-logo">
-                    <img className="sidebar-logo-image" src="/images/hype-logo-sidebar.png" alt="HYPE STUDIO — Barbearia & Tattoo" />
+                    <img className="sidebar-logo-image" src={empresa?.logo_url || LOGO_FALLBACK} alt={`${empresa?.nome || "Pegs"} — identidade da empresa`} />
                 </div>
 
                 <button
@@ -134,7 +146,7 @@ export default function Sidebar({
             </div>
 
             <nav className="sidebar-menu" aria-label="Navegação principal">
-                {perfil && gruposDeMenu.map((grupo) => (
+                {perfil && gruposDeMenu.filter((grupo) => grupo.itens.length > 0).map((grupo) => (
                     <section className="sidebar-menu-section" key={grupo.grupo} aria-label={grupo.grupo}>
                         <p className="sidebar-menu-group-title">{grupo.grupo}</p>
                         <div className="sidebar-menu-group-items">
@@ -162,8 +174,8 @@ export default function Sidebar({
             </nav>
 
             <div className="sidebar-studio-card">
-                <img className="sidebar-studio-logo" src="/images/hype-logo-sidebar.png" alt="" aria-hidden="true" />
-                <span><strong>HYPE STUDIO</strong><small>Barbearia &amp; Tattoo</small></span>
+                <img className="sidebar-studio-logo" src={empresa?.logo_url || LOGO_FALLBACK} alt="" aria-hidden="true" />
+                <span><strong>{empresa?.nome || "Pegs"}</strong><small>{empresa?.tipo_negocio || "Plataforma de gestão"}</small></span>
             </div>
             <small className="sidebar-powered">Powered by Pegs</small>
 

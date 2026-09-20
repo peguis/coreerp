@@ -1,5 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 
@@ -90,7 +91,8 @@ def require_perfil(*perfis):
     ):
 
 
-        if usuario.perfil not in perfis:
+        perfil_admin_empresa = "admin" in perfis and usuario.perfil == "pegs_admin"
+        if usuario.perfil not in perfis and not perfil_admin_empresa:
 
 
             raise HTTPException(
@@ -103,3 +105,43 @@ def require_perfil(*perfis):
 
 
     return verificar
+
+
+def require_modulo(*codigos):
+    def verificar_modulo(
+        usuario=Depends(get_current_user),
+        db: Session = Depends(get_db),
+    ):
+        from app.models.modulo import EmpresaModulo, Modulo
+
+        # Bancos legados ainda não possuem o catálogo. Nesse estado o comportamento
+        # anterior é preservado até a migração ser aplicada.
+        try:
+            catalogo_existe = db.query(Modulo.id).first() is not None
+        except OperationalError:
+            # Fixtures e bancos legados anteriores à Fase 1 ainda não possuem
+            # o catálogo. Neles, o guard deve preservar o comportamento antigo.
+            db.rollback()
+            return usuario
+
+        if not catalogo_existe:
+            return usuario
+
+        habilitado = (
+            db.query(EmpresaModulo.id)
+            .join(Modulo, Modulo.id == EmpresaModulo.modulo_id)
+            .filter(
+                EmpresaModulo.empresa_id == usuario.empresa_id,
+                EmpresaModulo.ativo.is_(True),
+                Modulo.codigo.in_(codigos),
+            )
+            .first()
+        )
+        if not habilitado:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Este módulo não está ativo para a empresa.",
+            )
+        return usuario
+
+    return verificar_modulo

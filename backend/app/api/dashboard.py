@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import require_modulo, require_perfil
 
 from app.schemas.dashboard_piloto import (
     DashboardPilotoResponse,
@@ -22,7 +22,8 @@ from app.services.dashboard_piloto import (
 
 router = APIRouter(
     prefix="/dashboard",
-    tags=["Dashboard"]
+    tags=["Dashboard"],
+    dependencies=[Depends(require_modulo("dashboard"))],
 )
 
 

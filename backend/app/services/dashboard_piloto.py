@@ -6,15 +6,12 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.repositories.dashboard_piloto import (
-    listar_atendimentos_para_grafico,
-    listar_desempenho_formas_pagamento,
     listar_desempenho_profissionais,
-    listar_desempenho_servicos,
+    listar_producao_periodo,
     listar_ultimos_atendimentos,
     obter_caixa_piloto,
     obter_total_pendente,
     obter_total_repassado,
-    obter_totais_producao,
 )
 from app.repositories.profissional import buscar_profissional_por_usuario
 
@@ -62,7 +59,20 @@ def buscar_dashboard_piloto_service(
         data_inicio, data_fim
     )
     empresa_id = usuario.empresa_id
-    producao = obter_totais_producao(db, empresa_id, inicio, fim_exclusivo)
+    linhas_producao = listar_producao_periodo(
+        db, empresa_id, inicio, fim_exclusivo
+    )
+    total_atendimentos = len(linhas_producao)
+    faturamento_bruto = sum(
+        (_decimal(row.valor) for row in linhas_producao), Decimal("0.00")
+    )
+    valor_profissionais = sum(
+        (_decimal(row.valor_profissional) for row in linhas_producao),
+        Decimal("0.00"),
+    )
+    valor_casa = sum(
+        (_decimal(row.valor_casa) for row in linhas_producao), Decimal("0.00")
+    )
     total_repassado = _decimal(
         obter_total_repassado(db, empresa_id, inicio, fim_exclusivo)
     )
@@ -85,27 +95,8 @@ def buscar_dashboard_piloto_service(
             db, empresa_id, inicio, fim_exclusivo
         )
     ]
-    servicos = [
-        {
-            "servico_id": row.servico_id,
-            "nome": row.nome,
-            "quantidade": int(row.total_atendimentos),
-            "faturamento_bruto": _decimal(row.faturamento_bruto),
-        }
-        for row in listar_desempenho_servicos(
-            db, empresa_id, inicio, fim_exclusivo
-        )
-    ]
-    formas = [
-        {
-            "forma_pagamento": row.forma_pagamento,
-            "quantidade_atendimentos": int(row.total_atendimentos),
-            "valor_total": _decimal(row.faturamento_bruto),
-        }
-        for row in listar_desempenho_formas_pagamento(
-            db, empresa_id, inicio, fim_exclusivo
-        )
-    ]
+    servicos_agrupados = {}
+    formas_agrupadas = {}
     faturamento_por_dia_semana = [
         {
             "dia_semana": dia_semana,
@@ -114,14 +105,42 @@ def buscar_dashboard_piloto_service(
         }
         for dia_semana in range(7)
     ]
-    for row in listar_atendimentos_para_grafico(
-        db, empresa_id, inicio, fim_exclusivo
-    ):
+    for row in linhas_producao:
         dia_semana = row.realizado_em.weekday()
         faturamento_por_dia_semana[dia_semana]["quantidade_atendimentos"] += 1
         faturamento_por_dia_semana[dia_semana]["faturamento_bruto"] += _decimal(
             row.valor
         )
+        servico = servicos_agrupados.setdefault(
+            row.servico_id,
+            {
+                "servico_id": row.servico_id,
+                "nome": row.servico_nome,
+                "quantidade": 0,
+                "faturamento_bruto": Decimal("0.00"),
+            },
+        )
+        servico["quantidade"] += 1
+        servico["faturamento_bruto"] += _decimal(row.valor)
+        forma = formas_agrupadas.setdefault(
+            row.forma_pagamento,
+            {
+                "forma_pagamento": row.forma_pagamento,
+                "quantidade_atendimentos": 0,
+                "valor_total": Decimal("0.00"),
+            },
+        )
+        forma["quantidade_atendimentos"] += 1
+        forma["valor_total"] += _decimal(row.valor)
+
+    servicos = sorted(
+        servicos_agrupados.values(),
+        key=lambda item: (-item["faturamento_bruto"], item["nome"]),
+    )
+    formas = sorted(
+        formas_agrupadas.values(),
+        key=lambda item: (-item["valor_total"], item["forma_pagamento"]),
+    )
 
     ultimos_atendimentos = [
         {
@@ -139,10 +158,10 @@ def buscar_dashboard_piloto_service(
     return {
         "data_inicio": inicio_data,
         "data_fim": fim_data,
-        "total_atendimentos": int(producao.total_atendimentos or 0),
-        "faturamento_bruto": _decimal(producao.faturamento_bruto),
-        "valor_casa": _decimal(producao.valor_casa),
-        "valor_profissionais": _decimal(producao.valor_profissionais),
+        "total_atendimentos": total_atendimentos,
+        "faturamento_bruto": _decimal(faturamento_bruto),
+        "valor_casa": _decimal(valor_casa),
+        "valor_profissionais": _decimal(valor_profissionais),
         "total_repassado": total_repassado,
         "total_pendente_repasses": total_pendente,
         "entradas_caixa_piloto": entradas,

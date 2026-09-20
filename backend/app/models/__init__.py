@@ -14,3 +14,5 @@ from app.models.atendimento import Atendimento
 from app.models.repasse import Repasse, RepasseItem
 from app.models.recurso_agenda import RecursoAgenda
 from app.models.agendamento import Agendamento
+from app.models.modulo import Modulo, EmpresaModulo
+from app.models.auditoria import RegistroAuditoria

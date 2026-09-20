@@ -176,7 +176,7 @@ def test_cria_profissional_mesma_empresa_e_impede_duplicidade(
     assert cross_tenant.status_code == 400
 
 
-def test_percentuais_limites_e_areas_validas(profissional_client):
+def test_percentuais_limites_e_areas_configuraveis(profissional_client):
     ctx = profissional_client
 
     zero = criar_profissional(
@@ -205,7 +205,7 @@ def test_percentuais_limites_e_areas_validas(profissional_client):
         ctx["usuarios"]["a3"].id,
         percentual=100.01,
     )
-    area_invalida = criar_profissional(
+    area_configuravel = criar_profissional(
         ctx["client"],
         ctx["headers_a"],
         ctx["usuarios"]["a3"].id,
@@ -220,7 +220,8 @@ def test_percentuais_limites_e_areas_validas(profissional_client):
     assert cem.json()["area_atuacao"] == "TATTOO"
     assert negativo.status_code == 422
     assert acima_cem.status_code == 422
-    assert area_invalida.status_code == 422
+    assert area_configuravel.status_code == 200
+    assert area_configuravel.json()["area_atuacao"] == "ESTETICA"
 
 
 def test_cross_tenant_nao_consulta_edita_ou_desativa(profissional_client):

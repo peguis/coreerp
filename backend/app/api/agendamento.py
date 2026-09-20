@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.auth.dependencies import get_current_user, require_perfil
+from app.auth.dependencies import get_current_user, require_modulo, require_perfil
 from app.core.enums import StatusAgendamento
 from app.database import get_db
 from app.schemas.agendamento import (
@@ -19,7 +19,11 @@ from app.services.agendamento import (
 )
 
 
-router = APIRouter(prefix="/agendamentos", tags=["Agendamentos"])
+router = APIRouter(
+    prefix="/agendamentos",
+    tags=["Agendamentos"],
+    dependencies=[Depends(require_modulo("agenda"))],
+)
 perfis_agenda = require_perfil("admin", "gerente", "profissional")
 
 

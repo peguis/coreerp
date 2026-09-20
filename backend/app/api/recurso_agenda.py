@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.auth.dependencies import get_current_user, require_perfil
+from app.auth.dependencies import get_current_user, require_modulo, require_perfil
 from app.core.enums import StatusRecursoAgenda
 from app.database import get_db
 from app.schemas.recurso_agenda import (
@@ -18,7 +18,11 @@ from app.services.recurso_agenda import (
 )
 
 
-router = APIRouter(prefix="/recursos-agenda", tags=["Recursos da Agenda"])
+router = APIRouter(
+    prefix="/recursos-agenda",
+    tags=["Recursos da Agenda"],
+    dependencies=[Depends(require_modulo("recursos"))],
+)
 
 
 @router.post(
