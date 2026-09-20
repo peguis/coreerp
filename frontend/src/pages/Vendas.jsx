@@ -31,6 +31,8 @@ import {
     formatarMoeda
 } from "../utils/formatters";
 
+import { getErrorMessage } from "../utils/errors";
+
 import {
 
     badgeStatus
@@ -65,15 +67,6 @@ function Vendas() {
     const [erro, setErro] = useState("");
 
     const [pesquisa, setPesquisa] = useState("");
-
-
-
-
-    useEffect(() => {
-
-        carregarVendas();
-
-    }, []);
 
 
 
@@ -124,6 +117,10 @@ function Vendas() {
 
 
     }
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregarVendas());
+    }, []);
 
 
 
@@ -190,32 +187,6 @@ function Vendas() {
 
     
 
-
-
-
-
-
-
-    function definirBadge(status) {
-
-
-        const mapa = {
-
-
-            ABERTA: "warning",
-
-            FINALIZADA: "success",
-
-            CANCELADA: "danger"
-
-
-        };
-
-
-        return mapa[status] || "default";
-
-
-    }
 
 
 

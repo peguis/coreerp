@@ -126,6 +126,8 @@ function EditarProduto() {
         carregarImagens();
 
 
+    // Os carregadores são estáveis para a vida do formulário.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import { useContext } from "react";
 
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "../auth/AuthContextValue";
 
 
 

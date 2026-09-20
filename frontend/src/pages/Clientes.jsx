@@ -42,16 +42,6 @@ function Clientes() {
 
 
 
-    useEffect(() => {
-
-        carregarClientes();
-
-    }, []);
-
-
-
-
-
     async function carregarClientes() {
 
         try {
@@ -87,6 +77,10 @@ function Clientes() {
         }
 
     }
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregarClientes());
+    }, []);
 
 
 

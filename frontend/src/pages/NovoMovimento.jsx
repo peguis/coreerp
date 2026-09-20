@@ -65,7 +65,9 @@ function NovoMovimento() {
     useEffect(() => {
 
 
-        carregarProdutos();
+        // Produtos são carregados somente na abertura do formulário.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregarProdutos());
 
 
     }, []);

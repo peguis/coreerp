@@ -112,21 +112,6 @@ const financeiroService = {
         return response.data;
     },
 
-    async criarCategoria(dados) {
-
-        const response = await api.post(
-            "/categorias-financeiras/",
-            dados
-        );
-
-        return response.data;
-
-    },
-
-    
-
-
-
     async getCategorias() {
 
 

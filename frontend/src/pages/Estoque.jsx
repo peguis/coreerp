@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import {
-    PackagePlus,
-    Search
-} from "lucide-react";
+import { PackagePlus } from "lucide-react";
 
 
 import {
@@ -70,7 +67,9 @@ function Estoque() {
     useEffect(() => {
 
 
-        carregar();
+        // O carregamento inicial é disparado uma única vez ao abrir a tela.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregar());
 
 
     }, []);

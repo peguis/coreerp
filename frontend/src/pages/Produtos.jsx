@@ -25,6 +25,8 @@ import {
     formatarMoeda
 } from "../utils/formatters";
 
+import { getErrorMessage } from "../utils/errors";
+
 
 import Checkbox from "../components/forms/Checkbox";
 
@@ -113,7 +115,9 @@ function Produtos() {
     useEffect(() => {
 
 
-        carregarProdutos();
+        // A rota controla quando a lista deve ser atualizada.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregarProdutos());
 
 
     }, [location.pathname]);

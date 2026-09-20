@@ -48,8 +48,11 @@ function EditarCliente() {
 
     useEffect(() => {
 
-        carregarCliente();
+        // O carregamento inicial depende apenas do id informado pela rota.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregarCliente());
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
 

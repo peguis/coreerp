@@ -40,15 +40,6 @@ function Dashboard() {
 
 
 
-    useEffect(() => {
-
-        carregar();
-
-    }, []);
-
-
-
-
     async function carregar() {
 
 
@@ -70,6 +61,10 @@ function Dashboard() {
 
 
     }
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregar());
+    }, []);
 
 
 

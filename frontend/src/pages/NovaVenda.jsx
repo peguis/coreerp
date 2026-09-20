@@ -43,12 +43,6 @@ function NovaVenda() {
     const [mensagem, setMensagem] = useState("");
     const [tipo, setTipo] = useState("");
 
-    useEffect(() => {
-
-        carregarDados();
-
-    }, []);
-
     async function carregarDados() {
 
         const clientesDados = await listarClientes();
@@ -67,6 +61,10 @@ function NovaVenda() {
         );
 
     }
+
+    useEffect(() => {
+        void Promise.resolve().then(() => carregarDados());
+    }, []);
 
     async function salvar(e) {
 

@@ -11,6 +11,17 @@
 
     --color-danger: #e26b72;
 
+    /* Pegs Core: identidade neutra usada antes de carregar a configuração do tenant. */
+    --pegs-accent: #6f8cff;
+    --pegs-accent-secondary: #9bb0ff;
+    --pegs-accent-soft: rgba(111, 140, 255, .14);
+    --pegs-surface: #11161d;
+    --pegs-surface-raised: #18202b;
+    --pegs-border: #2b3544;
+    --pegs-text: #f1f5fb;
+    --pegs-text-secondary: #aab5c5;
+    --pegs-text-muted: #718096;
+
 
 
     /* BACKGROUND */

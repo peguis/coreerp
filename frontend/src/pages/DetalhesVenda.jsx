@@ -43,8 +43,11 @@ function DetalhesVenda() {
 
     useEffect(() => {
 
-        carregar();
+        // O carregamento inicial é disparado uma única vez ao abrir o detalhe.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregar());
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

@@ -83,8 +83,6 @@ function NovoProduto() {
 
     const [salvando, setSalvando] = useState(false);
 
-    const [imagens, setImagens] = useState([]); 
-    
     const [preview, setPreview] = useState([]);
 
 
@@ -109,8 +107,6 @@ function NovoProduto() {
     function selecionarImagens(e) {
 
         const arquivos = Array.from(e.target.files);
-
-        setImagens(arquivos);
 
         setPreview(
 

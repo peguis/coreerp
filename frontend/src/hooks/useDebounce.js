@@ -1,9 +1,12 @@
-const pesquisaDebounce =
+import { useEffect, useState } from "react";
 
-    useDebounce(
+export default function useDebounce(value, delay = 300) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
-        pesquisa,
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedValue(value), delay);
+        return () => clearTimeout(timer);
+    }, [value, delay]);
 
-        300
-
-    );
+    return debouncedValue;
+}

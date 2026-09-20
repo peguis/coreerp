@@ -1,4 +1,5 @@
-import Card from "../Card";
+import SectionCard from "../ui/SectionCard";
+import { formatarMoeda } from "../../utils/formatters";
 
 
 
@@ -56,22 +57,8 @@ export default function FinanceiroResumo({
                 dados.map(item => (
 
 
-                    <SectionCard>
-
-
-                        key={item.titulo}
-
-
-                        titulo={item.titulo}
-
-
-                        valor={
-
-                            formatarMoeda(valor)
-
-                        }
-
-
+                    <SectionCard key={item.titulo} titulo={item.titulo}>
+                        <strong>{formatarMoeda(item.valor)}</strong>
                     </SectionCard>
 
 

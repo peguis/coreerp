@@ -62,7 +62,9 @@ function NovoLancamento() {
         document.title = "Novo Lançamento";
 
 
-        carregarCategorias();
+        // Categorias são carregadas somente na abertura do formulário.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregarCategorias());
 
 
     }, []);

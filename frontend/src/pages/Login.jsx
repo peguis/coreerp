@@ -3,7 +3,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../api/auth";
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "../auth/AuthContextValue";
 
 import "./Login.css";
 
@@ -51,17 +51,17 @@ export default function Login() {
 
     return (
         <main className="login-page">
-            <section className="login-showcase" aria-label="Identidade HYPE STUDIO">
+            <section className="login-showcase" aria-label="Identidade Pegs">
                 <div className="login-showcase-overlay" />
                 <div className="login-showcase-content">
-                    <div className="login-brand-lockup" aria-label="HYPE STUDIO — Barbearia e Tattoo">
-                        <img className="login-logo-image" src="/images/hype-logo-official.png" alt="HYPE STUDIO — Barbearia & Tattoo" />
+                    <div className="login-brand-lockup" aria-label="Pegs — plataforma de gestão">
+                        <img className="login-logo-image" src="/images/pegs-logo-transparent.png" alt="Pegs" />
                     </div>
                     <div className="login-showcase-divider" aria-hidden="true" />
                     <div className="login-showcase-slogan">
-                        <strong>ESTILO</strong>
-                        <strong>DISCIPLINA</strong>
-                        <strong>IDENTIDADE</strong>
+                        <strong>ORGANIZAÇÃO</strong>
+                        <strong>OPERAÇÃO</strong>
+                        <strong>CRESCIMENTO</strong>
                     </div>
                 </div>
             </section>
@@ -70,7 +70,7 @@ export default function Login() {
                 <div className="login-card">
                     <div className="login-header">
                         <h1>Bem-vindo de volta!</h1>
-                        <p>Acesse o sistema da HYPE STUDIO</p>
+                        <p>Acesse a plataforma Pegs</p>
                     </div>
 
                     <form onSubmit={entrar} className="login-form">
@@ -97,7 +97,7 @@ export default function Login() {
 
                         {mostrarAjudaSenha && (
                             <p className="login-forgot-message" role="status" aria-live="polite">
-                                Para trocar a senha, entre em contato com o gerente ou administrador da HYPE STUDIO.
+                                Para trocar a senha, entre em contato com o gerente ou administrador da sua empresa.
                             </p>
                         )}
 

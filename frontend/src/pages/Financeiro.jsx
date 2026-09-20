@@ -95,6 +95,8 @@ function Financeiro() {
         carregarDados();
 
 
+    // A listagem inicial é feita uma vez ao abrir o módulo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -266,7 +268,7 @@ function Financeiro() {
 
 
 
-        } catch (error) {
+        } catch {
 
             setErro(
                 "Erro ao excluir lançamento."

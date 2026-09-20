@@ -69,9 +69,12 @@ function EditarLancamento() {
     useEffect(() => {
 
 
-        carregarDados();
+        // O formulário carrega uma vez para o lançamento da rota.
+        // eslint-disable-next-line react-hooks/immutability
+        void Promise.resolve().then(() => carregarDados());
 
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
