@@ -11,6 +11,7 @@ def inicializar_modulos_empresa(
     empresa_id: int,
     *,
     commit: bool = True,
+    modulos_ativos: set[str] | None = None,
 ) -> None:
     modulos = db.query(Modulo).all()
     if not modulos:
@@ -21,8 +22,9 @@ def inicializar_modulos_empresa(
             EmpresaModulo(
                 empresa_id=empresa_id,
                 modulo_id=modulo.id,
-                ativo=True,
-                ativado_em=agora,
+                ativo=modulos_ativos is None or modulo.codigo in modulos_ativos,
+                ativado_em=agora if modulos_ativos is None or modulo.codigo in modulos_ativos else None,
+                desativado_em=None if modulos_ativos is None or modulo.codigo in modulos_ativos else agora,
             )
             for modulo in modulos
         ]

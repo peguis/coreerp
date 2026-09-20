@@ -56,6 +56,7 @@ def criar_empresa_service(
 def provisionar_empresa_service(
     db: Session,
     dados: EmpresaProvisionamentoCreate,
+    usuario_id: int | None = None,
 ):
     validar_empresa(dados)
     email_empresa = str(dados.email).lower()
@@ -85,6 +86,7 @@ def provisionar_empresa_service(
         tipo_negocio=dados.tipo_negocio.strip() if dados.tipo_negocio else None,
         cor_primaria=dados.cor_primaria.strip() if dados.cor_primaria else None,
         cor_secundaria=dados.cor_secundaria.strip() if dados.cor_secundaria else None,
+        logo_url=dados.logo_url.strip() if dados.logo_url else None,
         ativo=True,
     )
     db.add(empresa)
@@ -99,11 +101,25 @@ def provisionar_empresa_service(
             ativo=True,
         )
     )
-    inicializar_modulos_empresa(db, empresa.id, commit=False)
+    catalogo = {modulo.codigo for modulo in db.query(Modulo).all()}
+    modulos_iniciais = set(dados.modulos_iniciais or catalogo)
+    desconhecidos = modulos_iniciais - catalogo
+    if desconhecidos:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Módulos iniciais inválidos: {', '.join(sorted(desconhecidos))}",
+        )
+    inicializar_modulos_empresa(
+        db,
+        empresa.id,
+        commit=False,
+        modulos_ativos=modulos_iniciais,
+    )
     try:
         registrar_auditoria(
             db,
             empresa_id=empresa.id,
+            usuario_id=usuario_id,
             acao="PROVISIONAR_EMPRESA",
             recurso="empresa",
             recurso_id=empresa.id,

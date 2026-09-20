@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import { useAuth } from "../hooks/useAuth";
 import { buscarEmpresaAtual } from "../services/empresaService";
 import {
     applyTenantDocumentIdentity,
+    createPegsMatrixIdentity,
     resolveTenantIdentity,
     TenantIdentityError,
     tenantIdentityToCssVariables
@@ -22,6 +24,7 @@ function getHostname() {
 
 export function TenantProvider({ children }) {
     const { token } = useAuth();
+    const location = useLocation();
     const [estado, setEstado] = useState({
         status: "loading",
         empresa: null,
@@ -33,10 +36,19 @@ export function TenantProvider({ children }) {
         let montado = true;
         const hostname = getHostname();
         const configuredKey = getRuntimeTenantKey();
+        const isMatrix = location.pathname.startsWith("/matriz");
 
         async function resolver() {
             setEstado({ status: "loading", empresa: null, identity: null, error: null });
             try {
+                if (isMatrix) {
+                    const identity = createPegsMatrixIdentity();
+                    if (montado) {
+                        applyTenantDocumentIdentity(identity);
+                        setEstado({ status: "ready", empresa: null, identity, error: null });
+                    }
+                    return;
+                }
                 if (!token) {
                     const identity = resolveTenantIdentity({ hostname, configuredKey });
                     if (montado) {
@@ -69,7 +81,7 @@ export function TenantProvider({ children }) {
         return () => {
             montado = false;
         };
-    }, [token]);
+    }, [token, location.pathname]);
 
     const value = useMemo(() => ({
         ...estado,

@@ -1,5 +1,4 @@
 import {
-    BrowserRouter,
     Navigate,
     Route,
     Routes
@@ -41,6 +40,12 @@ import EditarLancamento from "../pages/EditarLancamento";
 import Configuracoes from "../pages/Configuracoes";
 import ConfiguracaoAgenda from "../pages/ConfiguracaoAgenda";
 import Agenda from "../pages/Agenda";
+import MatrizLayout from "../pages/matriz/MatrizLayout";
+import MatrizDashboard from "../pages/matriz/MatrizDashboard";
+import MatrizEmpresas from "../pages/matriz/MatrizEmpresas";
+import MatrizEmpresaDetalhe from "../pages/matriz/MatrizEmpresaDetalhe";
+import MatrizProvisionar from "../pages/matriz/MatrizProvisionar";
+import MatrizAuditoria from "../pages/matriz/MatrizAuditoria";
 
 
 const ADMINISTRADORES = ["pegs_admin", "admin", "gerente"];
@@ -51,12 +56,21 @@ export default function AppRoutes() {
 
     return (
 
-        <BrowserRouter>
-            <Routes>
+        <Routes>
                 <Route path="/login" element={<Login />} />
 
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<HomeRedirect />} />
+                    <Route element={<PerfilRoute perfis={["pegs_admin"]} />}>
+                        <Route element={<MatrizLayout />}>
+                            <Route path="/matriz" element={<Navigate to="/matriz/dashboard" replace />} />
+                            <Route path="/matriz/dashboard" element={<MatrizDashboard />} />
+                            <Route path="/matriz/empresas" element={<MatrizEmpresas />} />
+                            <Route path="/matriz/empresas/nova" element={<MatrizProvisionar />} />
+                            <Route path="/matriz/empresas/:empresaId" element={<MatrizEmpresaDetalhe />} />
+                            <Route path="/matriz/auditoria" element={<MatrizAuditoria />} />
+                        </Route>
+                    </Route>
                     <Route element={<MainLayout />}>
                         <Route path="/sem-permissao" element={<SemPermissao />} />
 
@@ -101,8 +115,7 @@ export default function AppRoutes() {
                 </Route>
 
                 <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-        </BrowserRouter>
+        </Routes>
 
     );
 

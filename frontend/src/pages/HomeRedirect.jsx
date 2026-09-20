@@ -46,7 +46,7 @@ export default function HomeRedirect() {
     return (
 
         <Navigate
-            to={perfil === "profissional" ? "/inicio" : "/dashboard/piloto"}
+            to={perfil === "pegs_admin" ? "/matriz/dashboard" : perfil === "profissional" ? "/inicio" : "/dashboard/piloto"}
             replace
         />
 

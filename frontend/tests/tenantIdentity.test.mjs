@@ -5,6 +5,7 @@ import {
     TENANT_KEYS,
     TenantIdentityError,
     createTenantIdentity,
+    createPegsMatrixIdentity,
     resolveTenantIdentity,
     tenantIdentityToCssVariables
 } from "../src/tenant/tenantIdentity.js";
@@ -80,4 +81,15 @@ test("a configuração explícita funciona no primeiro carregamento e após reca
         tenantIdentityToCssVariables(recarregamento)
     );
     assert.equal(primeiroCarregamento.assets.loginLogo, recarregamento.assets.loginLogo);
+});
+
+test("a matriz usa a identidade Pegs sem transformar a matriz em tenant", () => {
+    const identity = createPegsMatrixIdentity();
+    const css = tenantIdentityToCssVariables(identity);
+
+    assert.equal(identity.tenantKey, "pegs-matrix");
+    assert.equal(identity.tenantName, "Matriz Pegs");
+    assert.match(identity.tenantLogo, /brand\/pegs\/logo\.png$/);
+    assert.equal(css["--tenant-accent"], "#6f8cff");
+    assert.equal(identity.tenantLoginMessage, "Administração da plataforma Pegs");
 });

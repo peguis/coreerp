@@ -58,7 +58,7 @@ def provisionar_empresa(
     db: Session = Depends(get_db),
     usuario=Depends(require_perfil("pegs_admin")),
 ):
-    return provisionar_empresa_service(db, dados)
+    return provisionar_empresa_service(db, dados, usuario_id=usuario.id)
 
 
 

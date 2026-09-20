@@ -75,6 +75,43 @@ export const PLATFORM_ASSETS = Object.freeze({
     logo: "/brand/pegs/logo.png"
 });
 
+export const PEGS_MATRIX_KEY = "pegs-matrix";
+
+export function createPegsMatrixIdentity() {
+    return Object.freeze({
+        tenantKey: PEGS_MATRIX_KEY,
+        tenantBrandName: "Pegs",
+        tenantName: "Matriz Pegs",
+        businessType: "Administração da plataforma",
+        theme: "platform",
+        primary: PALETTES.pegs.primary,
+        secondary: PALETTES.pegs.secondary,
+        background: "#0b1017",
+        surface: "#11161d",
+        surfaceRaised: "#18202b",
+        surfaceElevated: "#202a38",
+        border: "#2b3544",
+        borderStrong: "#43516a",
+        text: "#f1f5fb",
+        textSecondary: "#aab5c5",
+        textMuted: "#718096",
+        loginMessage: "Administração da plataforma Pegs",
+        slogan: ["NÚCLEO", "PLATAFORMA", "CRESCIMENTO"],
+        tenantPrimaryColor: PALETTES.pegs.primary,
+        tenantAccentColor: PALETTES.pegs.secondary,
+        tenantBackground: "#0b1017",
+        tenantLoginMessage: "Administração da plataforma Pegs",
+        tenantTheme: "platform",
+        tenantLogo: PLATFORM_ASSETS.logo,
+        assets: Object.freeze({
+            sidebarLogo: PLATFORM_ASSETS.logo,
+            loginLogo: PLATFORM_ASSETS.logo,
+            favicon: PLATFORM_ASSETS.logo,
+            loginHero: null
+        })
+    });
+}
+
 export class TenantIdentityError extends Error {
     constructor(message, details = {}) {
         super(message);

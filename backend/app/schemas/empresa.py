@@ -24,6 +24,8 @@ class EmpresaProvisionamentoCreate(BaseModel):
     tipo_negocio: str | None = None
     cor_primaria: str | None = None
     cor_secundaria: str | None = None
+    logo_url: str | None = None
+    modulos_iniciais: list[str] | None = None
 
 
 class EmpresaConfiguracaoUpdate(BaseModel):

@@ -1,5 +1,6 @@
 import AppRoutes from "./routes/AppRoutes";
 import { TenantProvider } from "./tenant/TenantContext";
+import { BrowserRouter } from "react-router-dom";
 
 
 function App() {
@@ -7,9 +8,11 @@ function App() {
 
     return (
 
-        <TenantProvider>
-            <AppRoutes />
-        </TenantProvider>
+        <BrowserRouter>
+            <TenantProvider>
+                <AppRoutes />
+            </TenantProvider>
+        </BrowserRouter>
 
     );
 
