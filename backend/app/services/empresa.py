@@ -57,6 +57,10 @@ def provisionar_empresa_service(
     db: Session,
     dados: EmpresaProvisionamentoCreate,
     usuario_id: int | None = None,
+    *,
+    eh_demo: bool = False,
+    criado_por_usuario_id: int | None = None,
+    origem: str = "pegs_admin",
 ):
     validar_empresa(dados)
     email_empresa = str(dados.email).lower()
@@ -88,6 +92,8 @@ def provisionar_empresa_service(
         cor_secundaria=dados.cor_secundaria.strip() if dados.cor_secundaria else None,
         logo_url=dados.logo_url.strip() if dados.logo_url else None,
         ativo=True,
+        eh_demo=eh_demo,
+        criado_por_usuario_id=criado_por_usuario_id,
     )
     db.add(empresa)
     db.flush()
@@ -120,10 +126,10 @@ def provisionar_empresa_service(
             db,
             empresa_id=empresa.id,
             usuario_id=usuario_id,
-            acao="PROVISIONAR_EMPRESA",
+            acao="CRIAR_DEMONSTRACAO" if eh_demo else "PROVISIONAR_EMPRESA",
             recurso="empresa",
             recurso_id=empresa.id,
-            detalhes={"origem": "pegs_admin"},
+            detalhes={"origem": origem, "ambiente": "DEMO" if eh_demo else "REAL"},
             commit=False,
         )
         db.commit()

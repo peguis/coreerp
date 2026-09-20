@@ -22,6 +22,7 @@ from app.models.recurso_agenda import RecursoAgenda
 from app.models.agendamento import Agendamento
 from app.models.modulo import Modulo, EmpresaModulo
 from app.models.auditoria import RegistroAuditoria
+from app.models.oportunidade import Oportunidade, OportunidadeInteracao
 
 from app.core.config import settings
 

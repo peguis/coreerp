@@ -3,6 +3,7 @@ from enum import Enum
 
 class PerfilUsuario(str, Enum):
     PEGS_ADMIN = "pegs_admin"
+    VENDEDOR_PEGS = "vendedor_pegs"
     ADMIN = "admin"
     GERENTE = "gerente"
     OPERADOR = "operador"

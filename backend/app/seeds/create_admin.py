@@ -119,6 +119,7 @@ def criar_admin(session_factory=SessionLocal, env: Mapping[str, str] | None = No
             email=config.empresa_email,
             telefone=config.empresa_telefone,
             ativo=True,
+            eh_matriz=config.admin_perfil == PerfilUsuario.PEGS_ADMIN.value,
         )
         db.add(empresa)
         db.flush()

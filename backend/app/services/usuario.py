@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.usuario import UsuarioCreate
@@ -15,6 +16,8 @@ from app.auth.hash import verificar_senha
 from app.auth.jwt import criar_token
 
 from app.core.validators.usuario import validar_usuario
+from app.core.enums import PerfilUsuario
+from app.models.empresa import Empresa
 
 
 
@@ -26,12 +29,22 @@ def criar_usuario_service(
 
     validar_usuario(usuario)
 
-
-    return criar_usuario(
+    if usuario.perfil == PerfilUsuario.VENDEDOR_PEGS:
+        empresa = db.query(Empresa).filter(Empresa.id == empresa_id).first()
+        if not empresa or not empresa.eh_matriz:
+            raise HTTPException(status_code=400, detail="Vendedor Pegs só pode pertencer à Matriz Pegs.")
+    criado = criar_usuario(
         db,
         usuario,
         empresa_id
     )
+    if usuario.perfil == PerfilUsuario.PEGS_ADMIN:
+        empresa = db.query(Empresa).filter(Empresa.id == empresa_id).first()
+        if empresa and not empresa.eh_matriz:
+            empresa.eh_matriz = True
+            db.commit()
+            db.refresh(criado)
+    return criado
 
 
 
@@ -118,6 +131,11 @@ def atualizar_usuario_service(
         if hasattr(perfil, "value"):
 
             dados_dict["perfil"] = perfil.value
+
+        if dados_dict["perfil"] == PerfilUsuario.VENDEDOR_PEGS.value:
+            empresa = db.query(Empresa).filter(Empresa.id == empresa_id).first()
+            if not empresa or not empresa.eh_matriz:
+                raise HTTPException(status_code=400, detail="Vendedor Pegs só pode pertencer à Matriz Pegs.")
 
 
 

@@ -6,6 +6,7 @@ from sqlalchemy import (
     String,
     Boolean,
     DateTime,
+    ForeignKey,
     Text,
 )
 
@@ -104,6 +105,29 @@ class Empresa(Base):
         nullable=True,
     )
 
+    eh_matriz: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+    )
+
+    eh_demo: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+    )
+
+    criado_por_usuario_id: Mapped[int | None] = mapped_column(
+        ForeignKey("usuarios.id"),
+        nullable=True,
+        index=True,
+    )
+
+    demo_expira_em: Mapped[datetime | None] = mapped_column(
+        DateTime,
+        nullable=True,
+    )
+
 
     ativo: Mapped[bool] = mapped_column(
         Boolean,
@@ -120,6 +144,7 @@ class Empresa(Base):
     usuarios: Mapped[list["Usuario"]] = relationship(
         "Usuario",
         back_populates="empresa",
+        foreign_keys="Usuario.empresa_id",
         cascade="all, delete-orphan"
     )
 

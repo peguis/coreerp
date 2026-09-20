@@ -28,6 +28,11 @@ class EmpresaProvisionamentoCreate(BaseModel):
     modulos_iniciais: list[str] | None = None
 
 
+class MatrizDemonstracaoCreate(EmpresaProvisionamentoCreate):
+    vendedor_id: int | None = None
+    oportunidade_id: int | None = None
+
+
 class EmpresaConfiguracaoUpdate(BaseModel):
     nome_exibicao: str | None = None
     logo_url: str | None = None

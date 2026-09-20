@@ -46,6 +46,9 @@ import MatrizEmpresas from "../pages/matriz/MatrizEmpresas";
 import MatrizEmpresaDetalhe from "../pages/matriz/MatrizEmpresaDetalhe";
 import MatrizProvisionar from "../pages/matriz/MatrizProvisionar";
 import MatrizAuditoria from "../pages/matriz/MatrizAuditoria";
+import MatrizOportunidades from "../pages/matriz/MatrizOportunidades";
+import MatrizCriarDemonstracao from "../pages/matriz/MatrizCriarDemonstracao";
+import MatrizDemonstracaoPrevia from "../pages/matriz/MatrizDemonstracaoPrevia";
 
 
 const ADMINISTRADORES = ["pegs_admin", "admin", "gerente"];
@@ -61,14 +64,19 @@ export default function AppRoutes() {
 
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<HomeRedirect />} />
-                    <Route element={<PerfilRoute perfis={["pegs_admin"]} />}>
+                    <Route element={<PerfilRoute perfis={["pegs_admin", "vendedor_pegs"]} />}>
                         <Route element={<MatrizLayout />}>
-                            <Route path="/matriz" element={<Navigate to="/matriz/dashboard" replace />} />
-                            <Route path="/matriz/dashboard" element={<MatrizDashboard />} />
-                            <Route path="/matriz/empresas" element={<MatrizEmpresas />} />
-                            <Route path="/matriz/empresas/nova" element={<MatrizProvisionar />} />
-                            <Route path="/matriz/empresas/:empresaId" element={<MatrizEmpresaDetalhe />} />
-                            <Route path="/matriz/auditoria" element={<MatrizAuditoria />} />
+                            <Route path="/matriz" element={<Navigate to="/matriz/oportunidades" replace />} />
+                            <Route path="/matriz/oportunidades" element={<MatrizOportunidades />} />
+                            <Route path="/matriz/demonstracoes/nova" element={<MatrizCriarDemonstracao />} />
+                            <Route path="/matriz/demonstracoes/:empresaId/previa" element={<MatrizDemonstracaoPrevia />} />
+                            <Route element={<PerfilRoute perfis={["pegs_admin"]} />}>
+                                <Route path="/matriz/dashboard" element={<MatrizDashboard />} />
+                                <Route path="/matriz/empresas" element={<MatrizEmpresas />} />
+                                <Route path="/matriz/empresas/nova" element={<MatrizProvisionar />} />
+                                <Route path="/matriz/empresas/:empresaId" element={<MatrizEmpresaDetalhe />} />
+                                <Route path="/matriz/auditoria" element={<MatrizAuditoria />} />
+                            </Route>
                         </Route>
                     </Route>
                     <Route element={<MainLayout />}>

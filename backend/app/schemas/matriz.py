@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -12,6 +12,10 @@ class MatrizTenantResumo(EmpresaResponse):
     modulos_ativos: int = 0
     administrador_principal: UsuarioResponse | None = None
     protegido: bool = False
+    eh_matriz: bool = False
+    eh_demo: bool = False
+    criado_por_usuario_id: int | None = None
+    demo_expira_em: datetime | None = None
 
 
 class MatrizModuloUso(BaseModel):
@@ -38,6 +42,114 @@ class MatrizUsuarioUpdate(BaseModel):
     email: str | None = None
     perfil: PerfilUsuario | None = None
     ativo: bool | None = None
+
+
+class MatrizVendedorResponse(BaseModel):
+    id: int
+    nome: str
+    email: str
+    ativo: bool
+
+
+class MatrizOportunidadeCreate(BaseModel):
+    nome_negocio_contato: str = Field(min_length=2, max_length=150)
+    pessoa_responsavel: str | None = Field(default=None, max_length=150)
+    telefone: str | None = Field(default=None, max_length=30)
+    email: str | None = Field(default=None, max_length=150)
+    canal_contato: str | None = Field(default=None, max_length=80)
+    cidade_regiao: str | None = Field(default=None, max_length=120)
+    tipo_negocio: str | None = Field(default=None, max_length=80)
+    vendedor_id: int | None = None
+    origem: str | None = Field(default=None, max_length=100)
+    status: str = Field(default="NOVO", max_length=40)
+    proxima_acao: str | None = Field(default=None, max_length=180)
+    proximo_contato: date | None = None
+    observacoes: str | None = None
+    modulos_interesse: list[str] = Field(default_factory=list, max_length=30)
+    tenant_demo_id: int | None = None
+
+
+class MatrizOportunidadeUpdate(BaseModel):
+    nome_negocio_contato: str | None = Field(default=None, min_length=2, max_length=150)
+    pessoa_responsavel: str | None = Field(default=None, max_length=150)
+    telefone: str | None = Field(default=None, max_length=30)
+    email: str | None = Field(default=None, max_length=150)
+    canal_contato: str | None = Field(default=None, max_length=80)
+    cidade_regiao: str | None = Field(default=None, max_length=120)
+    tipo_negocio: str | None = Field(default=None, max_length=80)
+    vendedor_id: int | None = None
+    origem: str | None = Field(default=None, max_length=100)
+    status: str | None = Field(default=None, max_length=40)
+    proxima_acao: str | None = Field(default=None, max_length=180)
+    proximo_contato: date | None = None
+    observacoes: str | None = None
+    modulos_interesse: list[str] | None = Field(default=None, max_length=30)
+    tenant_demo_id: int | None = None
+
+
+class MatrizInteracaoCreate(BaseModel):
+    descricao: str = Field(min_length=2, max_length=5000)
+    proxima_acao: str | None = Field(default=None, max_length=180)
+    proximo_contato: date | None = None
+    status: str | None = Field(default=None, max_length=40)
+
+
+class MatrizOportunidadeInteracaoResponse(BaseModel):
+    id: int
+    usuario_id: int
+    usuario_nome: str | None = None
+    descricao: str
+    proxima_acao: str | None = None
+    proximo_contato: date | None = None
+    criado_em: datetime
+
+
+class MatrizOportunidadeResponse(BaseModel):
+    id: int
+    empresa_id: int
+    vendedor_id: int
+    vendedor_nome: str | None = None
+    nome_negocio_contato: str
+    pessoa_responsavel: str | None = None
+    telefone: str | None = None
+    email: str | None = None
+    canal_contato: str | None = None
+    cidade_regiao: str | None = None
+    tipo_negocio: str | None = None
+    origem: str | None = None
+    status: str
+    proxima_acao: str | None = None
+    proximo_contato: date | None = None
+    observacoes: str | None = None
+    modulos_interesse: list[str] = Field(default_factory=list)
+    tenant_demo_id: int | None = None
+    tenant_demo_nome: str | None = None
+    tenant_demo_ativo: bool | None = None
+    tenant_demo_eh_demo: bool | None = None
+    ultima_interacao_em: datetime | None = None
+    conversao_solicitada_em: datetime | None = None
+    convertido_em: datetime | None = None
+    criado_em: datetime
+    interacoes: list[MatrizOportunidadeInteracaoResponse] = Field(default_factory=list)
+
+
+class MatrizPreviaDemonstracaoResponse(BaseModel):
+    id: int
+    nome: str
+    identidade_codigo: str | None = None
+    logo_url: str | None = None
+    cor_primaria: str | None = None
+    cor_secundaria: str | None = None
+    tipo_negocio: str | None = None
+    ativo: bool
+    eh_demo: bool
+    criado_por_usuario_id: int | None = None
+    criado_por_usuario_nome: str | None = None
+    modulos_ativos: list[str] = Field(default_factory=list)
+
+
+class MatrizAprovarConversao(BaseModel):
+    confirmar: bool = False
 
 
 class MatrizAlerta(BaseModel):

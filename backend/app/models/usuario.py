@@ -37,7 +37,8 @@ class Usuario(Base):
 
     empresa = relationship(
         "Empresa",
-        back_populates="usuarios"
+        back_populates="usuarios",
+        foreign_keys=[empresa_id],
     )
 
 
@@ -121,4 +122,10 @@ class Usuario(Base):
         "Agendamento",
         foreign_keys="Agendamento.cancelado_por_usuario_id",
         back_populates="cancelado_por",
+    )
+
+    oportunidades = relationship(
+        "Oportunidade",
+        foreign_keys="Oportunidade.vendedor_id",
+        back_populates="vendedor",
     )

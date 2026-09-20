@@ -55,6 +55,10 @@ def _resumo_empresa(db: Session, empresa: Empresa):
         "tema": empresa.tema,
         "tipo_negocio": empresa.tipo_negocio,
         "ativo": empresa.ativo,
+        "eh_matriz": empresa.eh_matriz,
+        "eh_demo": empresa.eh_demo,
+        "criado_por_usuario_id": empresa.criado_por_usuario_id,
+        "demo_expira_em": empresa.demo_expira_em,
         "created_at": empresa.created_at,
         "modulos_ativos": int(modulos_ativos),
         "administrador_principal": _administrador_principal(db, empresa.id),
@@ -295,6 +299,14 @@ def atualizar_usuario_empresa_matriz(
     perfil = valores.get("perfil")
     if perfil == "pegs_admin" or getattr(perfil, "value", None) == "pegs_admin":
         raise HTTPException(status_code=400, detail="pegs_admin pertence somente à Matriz Pegs.")
+    if (
+        perfil == "vendedor_pegs"
+        or getattr(perfil, "value", None) == "vendedor_pegs"
+    ) and not empresa.eh_matriz:
+        raise HTTPException(
+            status_code=400,
+            detail="vendedor_pegs pertence somente à Matriz Pegs.",
+        )
     if "email" in valores:
         valores["email"] = str(valores["email"]).lower()
     if "perfil" in valores and hasattr(valores["perfil"], "value"):
@@ -315,3 +327,36 @@ def atualizar_usuario_empresa_matriz(
     db.commit()
     db.refresh(usuario)
     return usuario
+
+
+def listar_usuarios_matriz(db: Session, usuario_responsavel: Usuario):
+    empresa = db.query(Empresa).filter(Empresa.id == usuario_responsavel.empresa_id).first()
+    if not empresa or not empresa.eh_matriz:
+        raise HTTPException(status_code=403, detail="Acesso restrito à Matriz Pegs.")
+    return (
+        db.query(Usuario)
+        .filter(Usuario.empresa_id == empresa.id)
+        .order_by(Usuario.ativo.desc(), Usuario.nome)
+        .all()
+    )
+
+
+def atualizar_usuario_matriz(
+    db: Session,
+    usuario_id_alvo: int,
+    dados: MatrizUsuarioUpdate,
+    usuario_responsavel: Usuario,
+):
+    alvo = db.query(Usuario).filter(
+        Usuario.id == usuario_id_alvo,
+        Usuario.empresa_id == usuario_responsavel.empresa_id,
+    ).first()
+    if not alvo:
+        raise HTTPException(status_code=404, detail="Usuário da Matriz não encontrado.")
+    return atualizar_usuario_empresa_matriz(
+        db,
+        usuario_responsavel.empresa_id,
+        usuario_id_alvo,
+        dados,
+        usuario_responsavel.id,
+    )

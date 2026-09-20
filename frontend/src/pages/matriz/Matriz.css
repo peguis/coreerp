@@ -172,6 +172,50 @@
 .matriz-loading, .matriz-error { display: grid; min-height: 340px; place-items: center; gap: 8px; color: var(--matriz-muted); text-align: center; }
 .matriz-loading::before { width: 24px; height: 24px; border: 2px solid rgba(111, 140, 255, .24); border-top-color: var(--matriz-accent); border-radius: 50%; content: ""; animation: matriz-spin .8s linear infinite; }
 .matriz-error { color: #ffb7bc; }
+.matriz-opportunity-kpis .matriz-kpi:nth-child(2)::before { background: #65d5ac; }
+.matriz-opportunity-kpis .matriz-kpi:nth-child(3)::before { background: #6f8cff; }
+.matriz-opportunity-kpis .matriz-kpi:nth-child(4)::before { background: #e1ae4a; }
+.matriz-vendor-config { margin-bottom: 18px; }
+.matriz-opportunity-filters { margin-bottom: 18px; }
+.matriz-filter-date { display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 12px; border: 1px solid var(--matriz-border); border-radius: 10px; color: var(--matriz-muted); background: var(--matriz-surface-raised); }
+.matriz-filter-date:focus-within { border-color: var(--matriz-accent); box-shadow: 0 0 0 3px rgba(111, 140, 255, .13); }
+.matriz-filter-date input { border: 0; outline: 0; color: var(--matriz-text); background: transparent; font: inherit; font-size: 13px; }
+.matriz-form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.matriz-inline-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.matriz-inline-actions .matriz-button { min-height: 32px; padding: 0 10px; font-size: 11px; }
+.matriz-opportunity-status { display: inline-flex; align-items: center; min-height: 24px; padding: 0 9px; border-radius: 999px; color: #dbe5ff; background: rgba(111, 140, 255, .16); font-size: 10px; font-weight: 800; white-space: nowrap; }
+.matriz-opportunity-status::before { width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: currentColor; content: ""; }
+.matriz-opportunity-status.status-convertido { color: #91e5c6; background: rgba(67, 197, 139, .14); }
+.matriz-opportunity-status.status-perdido, .matriz-opportunity-status.status-recusado { color: #ffb7bc; background: rgba(226, 107, 114, .14); }
+.matriz-opportunity-status.status-proposta_enviada { color: #f3d483; background: rgba(225, 174, 74, .14); }
+.matriz-opportunity-status.status-em_demonstracao { color: #a9d7ff; background: rgba(71, 164, 224, .16); }
+.matriz-opportunities-table td { min-width: 110px; }
+.matriz-opportunities-table td:first-child { min-width: 190px; }
+.matriz-opportunity-mobile { display: none; }
+.matriz-opportunity-detail { margin-top: 18px; }
+.matriz-opportunity-actions { justify-content: flex-start; margin-bottom: 20px; }
+.matriz-opportunity-history { padding-top: 18px; border-top: 1px solid var(--matriz-border); }
+.matriz-opportunity-history h3 { margin-bottom: 15px; font-size: 16px; }
+.matriz-opportunity-timeline { display: grid; gap: 9px; margin-top: 20px; }
+.matriz-opportunity-timeline-item { display: grid; gap: 4px; padding: 12px 14px; border-left: 2px solid var(--matriz-accent); border-radius: 0 10px 10px 0; background: rgba(255, 255, 255, .025); }
+.matriz-opportunity-timeline-item strong { font-size: 12px; }
+.matriz-opportunity-timeline-item span { color: var(--matriz-text); font-size: 13px; line-height: 1.45; }
+.matriz-opportunity-timeline-item small { color: var(--matriz-muted); font-size: 10px; }
+.matriz-preview-hero { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; padding: 24px; border-color: color-mix(in srgb, var(--preview-accent) 50%, var(--matriz-border)); background: linear-gradient(115deg, color-mix(in srgb, var(--preview-accent) 12%, transparent), rgba(17, 22, 29, .84)); }
+.matriz-preview-logo { display: grid; flex: 0 0 auto; width: 84px; height: 84px; place-items: center; overflow: hidden; border: 1px solid color-mix(in srgb, var(--preview-accent) 60%, var(--matriz-border)); border-radius: 18px; color: var(--preview-accent); background: rgba(0, 0, 0, .25); font-size: 32px; font-weight: 850; }
+.matriz-preview-logo img { width: 100%; height: 100%; object-fit: contain; }
+.matriz-preview-hero h2 { margin-top: 12px; font-size: 23px; }
+.matriz-preview-hero p { margin-top: 4px; color: var(--matriz-muted); }
+.matriz-preview-hero small { display: block; margin-top: 12px; color: var(--matriz-muted); font-size: 11px; }
+.matriz-preview-colors { display: flex; align-items: center; gap: 12px; }
+.matriz-preview-colors > span { width: 28px; height: 28px; border: 1px solid var(--matriz-border-strong); border-radius: 50%; }
+.matriz-preview-colors div { margin-left: 6px; }
+.matriz-preview-colors strong, .matriz-preview-colors small { display: block; }
+.matriz-preview-colors small { margin-top: 3px; color: var(--matriz-muted); font-size: 11px; }
+.matriz-preview-info { display: flex; align-items: center; gap: 8px; color: #91e5c6; font-size: 13px; }
+.matriz-preview-info + small { display: block; margin-top: 12px; color: var(--matriz-muted); line-height: 1.45; }
+.matriz-preview-modules { display: flex; flex-wrap: wrap; gap: 9px; }
+.matriz-preview-modules span { padding: 8px 11px; border: 1px solid var(--matriz-border); border-radius: 9px; color: var(--matriz-text); background: rgba(255, 255, 255, .03); font-size: 12px; }
 @keyframes matriz-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 1100px) {
@@ -202,4 +246,13 @@
     .matriz-tenant-summary, .matriz-overview-grid { grid-template-columns: 1fr; }
     .matriz-detail-module { align-items: flex-start; flex-direction: column; }
     .matriz-module-actions { justify-content: flex-start; }
+    .matriz-form-grid-3 { grid-template-columns: 1fr; }
+    .matriz-opportunity-desktop { display: none; }
+    .matriz-opportunity-mobile { display: grid; gap: 10px; }
+    .matriz-opportunity-card { display: grid; gap: 8px; padding: 15px; border: 1px solid var(--matriz-border); border-radius: 11px; background: rgba(255, 255, 255, .025); }
+    .matriz-opportunity-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; }
+    .matriz-opportunity-card p { color: var(--matriz-muted); font-size: 12px; }
+    .matriz-opportunity-card > span { color: var(--matriz-muted); font-size: 11px; }
+    .matriz-preview-hero { align-items: flex-start; flex-direction: column; }
+    .matriz-preview-logo { width: 68px; height: 68px; }
 }

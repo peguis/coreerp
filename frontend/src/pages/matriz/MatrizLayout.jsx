@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
     Building2,
+    BriefcaseBusiness,
     ClipboardList,
     LayoutDashboard,
     LogOut,
@@ -16,10 +17,15 @@ import { useTenant } from "../../tenant/TenantContextValue";
 
 import "./Matriz.css";
 
-const itens = [
+const itensAdmin = [
     { nome: "Visão geral", rota: "/matriz/dashboard", icone: LayoutDashboard },
     { nome: "Empresas", rota: "/matriz/empresas", icone: Building2 },
+    { nome: "Oportunidades", rota: "/matriz/oportunidades", icone: BriefcaseBusiness },
     { nome: "Auditoria", rota: "/matriz/auditoria", icone: ClipboardList }
+];
+
+const itensVendedor = [
+    { nome: "Oportunidades", rota: "/matriz/oportunidades", icone: BriefcaseBusiness }
 ];
 
 export default function MatrizLayout() {
@@ -29,6 +35,7 @@ export default function MatrizLayout() {
     const { identity, cssVariables } = useTenant();
     const [menuAberto, setMenuAberto] = useState(false);
     const [usuario, setUsuario] = useState(null);
+    const itens = usuario?.perfil === "vendedor_pegs" ? itensVendedor : itensAdmin;
 
     const carregarUsuario = useCallback(async () => {
         try {
@@ -58,7 +65,7 @@ export default function MatrizLayout() {
                     </div>
                     <div>
                         <strong>Matriz Pegs</strong>
-                        <span>Administração da plataforma</span>
+                        <span>{usuario?.perfil === "vendedor_pegs" ? "Operação comercial" : "Administração da plataforma"}</span>
                     </div>
                 </div>
 
@@ -84,7 +91,7 @@ export default function MatrizLayout() {
                 <div className="matriz-sidebar-footer">
                     <div className="matriz-security-note">
                         <ShieldCheck size={18} />
-                        <span>Ambiente protegido<br /><small>Acesso exclusivo pegs_admin</small></span>
+                        <span>Ambiente protegido<br /><small>{usuario?.perfil === "vendedor_pegs" ? "Acesso comercial limitado" : "Acesso exclusivo pegs_admin"}</small></span>
                     </div>
                     <button type="button" className="matriz-logout" onClick={sair}>
                         <LogOut size={17} />
@@ -110,13 +117,13 @@ export default function MatrizLayout() {
                     </button>
                     <div className="matriz-topbar-context">
                         <span className="matriz-topbar-kicker">Pegs Core</span>
-                        <strong>Matriz administrativa</strong>
+                        <strong>{usuario?.perfil === "vendedor_pegs" ? "Central comercial" : "Matriz administrativa"}</strong>
                     </div>
                     <div className="matriz-topbar-user">
                         <div className="matriz-avatar">{(usuario?.nome || "P").slice(0, 1).toUpperCase()}</div>
                         <div>
                             <strong>{usuario?.nome || "Administrador Pegs"}</strong>
-                            <span>Administrador da plataforma</span>
+                            <span>{usuario?.perfil === "vendedor_pegs" ? "Vendedor Pegs" : "Administrador da plataforma"}</span>
                         </div>
                     </div>
                 </header>
