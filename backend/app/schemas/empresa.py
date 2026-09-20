@@ -6,6 +6,7 @@ from pydantic import BaseModel, EmailStr, Field
 class EmpresaCreate(BaseModel):
 
     nome: str
+    identidade_codigo: str | None = None
     cnpj: str
     email: str
     telefone: str | None = None
@@ -13,6 +14,7 @@ class EmpresaCreate(BaseModel):
 
 class EmpresaProvisionamentoCreate(BaseModel):
     nome: str = Field(min_length=3, max_length=100)
+    identidade_codigo: str | None = Field(default=None, max_length=40)
     cnpj: str = Field(min_length=1, max_length=18)
     email: EmailStr
     telefone: str | None = None
@@ -52,6 +54,7 @@ class EmpresaResponse(BaseModel):
 
     id: int
     nome: str
+    identidade_codigo: str | None
     cnpj: str
     email: str
     telefone: str | None

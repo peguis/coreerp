@@ -102,7 +102,7 @@ export default function RevenueChart({
 
                                     <CartesianGrid
 
-                                        stroke="var(--hype-border)"
+                                        stroke="var(--tenant-border)"
                                         strokeDasharray="3 3"
 
                                     />
@@ -112,21 +112,21 @@ export default function RevenueChart({
                                     <XAxis
 
                                         dataKey="mes"
-                                        tick={{ fill: "var(--hype-text-secondary)", fontSize: 12 }}
-                                        axisLine={{ stroke: "var(--hype-border)" }}
+                                        tick={{ fill: "var(--tenant-text-secondary)", fontSize: 12 }}
+                                        axisLine={{ stroke: "var(--tenant-border)" }}
                                         tickLine={false}
 
                                     />
 
 
 
-                                    <YAxis tick={{ fill: "var(--hype-text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} />
+                                    <YAxis tick={{ fill: "var(--tenant-text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} />
 
 
 
                                     <Tooltip
-                                        contentStyle={{ background: "var(--hype-surface-elevated)", border: "1px solid var(--hype-border)", borderRadius: "10px", color: "var(--hype-text)" }}
-                                        labelStyle={{ color: "var(--hype-text-secondary)" }}
+                                        contentStyle={{ background: "var(--tenant-surface-elevated)", border: "1px solid var(--tenant-border)", borderRadius: "10px", color: "var(--tenant-text)" }}
+                                        labelStyle={{ color: "var(--tenant-text-secondary)" }}
 
                                         formatter={(valor) =>
 
@@ -141,7 +141,7 @@ export default function RevenueChart({
                                     <Bar
 
                                         dataKey="valor"
-                                        fill="var(--hype-gold)"
+                                        fill="var(--tenant-accent)"
                                         radius={[4, 4, 0, 0]}
 
                                     />

@@ -15,6 +15,7 @@ from app.models.profissional import Profissional
 from app.models.servico import Servico
 from app.models.usuario import Usuario
 from app.core.enums import PerfilUsuario
+from app.core.identidade import IDENTIDADE_PEGS_DEMO, resolver_identidade_codigo
 
 
 from app.repositories.empresa import (
@@ -33,6 +34,16 @@ def criar_empresa_service(
 ):
 
     validar_empresa(empresa)
+
+    identidade_codigo = resolver_identidade_codigo(
+        empresa.identidade_codigo,
+        nome=empresa.nome,
+        email=empresa.email,
+        padrao=IDENTIDADE_PEGS_DEMO,
+    )
+    if not identidade_codigo:
+        raise HTTPException(status_code=400, detail="Identidade visual de tenant inválida.")
+    empresa.identidade_codigo = identidade_codigo
 
     nova_empresa = criar_empresa(
         db,
@@ -56,8 +67,18 @@ def provisionar_empresa_service(
     if db.query(Usuario).filter(Usuario.email == email_admin).first():
         raise HTTPException(status_code=409, detail="E-mail do administrador já cadastrado.")
 
+    identidade_codigo = resolver_identidade_codigo(
+        dados.identidade_codigo,
+        nome=dados.nome,
+        email=email_empresa,
+        padrao=IDENTIDADE_PEGS_DEMO,
+    )
+    if not identidade_codigo:
+        raise HTTPException(status_code=400, detail="Identidade visual de tenant inválida.")
+
     empresa = Empresa(
         nome=dados.nome.strip(),
+        identidade_codigo=identidade_codigo,
         cnpj=dados.cnpj.strip(),
         email=email_empresa,
         telefone=dados.telefone.strip() if dados.telefone else None,

@@ -20,7 +20,7 @@
 
     font-size: clamp(24px, 2.4vw, 32px);
 
-    color: var(--hype-text);
+    color: var(--tenant-text);
 
     font-weight: 800;
     letter-spacing: -.035em;
@@ -34,7 +34,7 @@
 
     margin: 8px 0 0;
 
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
 
     font-size: 14px;
     line-height: 1.55;

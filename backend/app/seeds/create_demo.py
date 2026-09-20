@@ -149,6 +149,7 @@ def criar_demo(session_factory=SessionLocal, env: Mapping[str, str] | None = Non
             )
         empresa = Empresa(
             nome=config.empresa_nome,
+            identidade_codigo="pegs-demo",
             cnpj=config.empresa_cnpj,
             email=config.empresa_email,
             tipo_negocio=config.tipo_negocio,

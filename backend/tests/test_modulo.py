@@ -128,3 +128,4 @@ def test_provisionamento_fica_restrito_ao_pegs_admin_e_cria_tenant_isolado(
     assert criado.status_code == 200
     assert criado.json()["nome"] == "Empresa Nova"
     assert criado.json()["tipo_negocio"] == "STUDIO"
+    assert criado.json()["identidade_codigo"] == "pegs-demo"

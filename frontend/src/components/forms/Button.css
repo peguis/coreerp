@@ -85,7 +85,7 @@
 
 
 .form-button:focus-visible {
-    outline: 2px solid var(--hype-gold);
+    outline: 2px solid var(--tenant-accent);
     outline-offset: 2px;
 }
 

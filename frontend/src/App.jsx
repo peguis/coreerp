@@ -1,4 +1,5 @@
 import AppRoutes from "./routes/AppRoutes";
+import { TenantProvider } from "./tenant/TenantContext";
 
 
 function App() {
@@ -6,7 +7,9 @@ function App() {
 
     return (
 
-        <AppRoutes />
+        <TenantProvider>
+            <AppRoutes />
+        </TenantProvider>
 
     );
 

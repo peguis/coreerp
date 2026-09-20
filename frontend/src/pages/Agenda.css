@@ -35,7 +35,7 @@
     gap: 16px;
     overflow: hidden;
     padding: 18px 20px;
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
     border-radius: 8px;
     background: linear-gradient(145deg, #171a1b, #101213);
     box-shadow: var(--shadow-sm);
@@ -47,7 +47,7 @@
     right: 0;
     left: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--hype-gold), rgba(217, 171, 63, .08) 70%, transparent);
+    background: linear-gradient(90deg, var(--tenant-accent), color-mix(in srgb, var(--tenant-accent) 8%, transparent) 70%, transparent);
     content: "";
 }
 
@@ -85,12 +85,12 @@
 .agenda-item-content small,
 .agenda-item-meta small,
 .agenda-auto-note span {
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
     font-size: 12px;
 }
 
 .agenda-toolbar-summary strong {
-    color: var(--hype-text);
+    color: var(--tenant-text);
     font-size: 24px;
     line-height: 1;
 }
@@ -102,7 +102,7 @@
 .agenda-form-card .form-card-header {
     margin: -1px 0 18px;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--hype-border);
+    border-bottom: 1px solid var(--tenant-border);
 }
 
 .agenda-form {
@@ -131,7 +131,7 @@
 
 .agenda-form-heading > svg {
     flex: 0 0 auto;
-    color: var(--hype-gold);
+    color: var(--tenant-accent);
 }
 
 .agenda-form-heading > div {
@@ -145,7 +145,7 @@
 }
 
 .agenda-form-heading span {
-    color: var(--hype-text-muted);
+    color: var(--tenant-text-muted);
     font-size: 11px;
     line-height: 1.4;
 }
@@ -157,13 +157,13 @@
     gap: 4px;
     min-height: 42px;
     padding: 10px 12px;
-    border: 1px solid rgba(217, 171, 63, .38);
+    border: 1px solid color-mix(in srgb, var(--tenant-accent) 38%, transparent);
     border-radius: 10px;
-    background: rgba(217, 171, 63, .08);
+    background: color-mix(in srgb, var(--tenant-accent) 8%, transparent);
 }
 
 .agenda-auto-note strong {
-    color: var(--hype-gold);
+    color: var(--tenant-accent);
     font-size: 13px;
 }
 
@@ -173,10 +173,10 @@
     gap: 12px;
     grid-column: 1 / -1;
     padding: 12px 14px;
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
     border-radius: 8px;
     background: rgba(255, 255, 255, .018);
-    color: var(--hype-text-muted);
+    color: var(--tenant-text-muted);
     font-size: 13px;
 }
 
@@ -202,21 +202,21 @@
     align-items: center;
     gap: 18px;
     padding: 15px 16px;
-    border: 1px solid var(--hype-border);
-    border-left: 3px solid var(--hype-gold);
+    border: 1px solid var(--tenant-border);
+    border-left: 3px solid var(--tenant-accent);
     border-radius: 8px;
     background: linear-gradient(135deg, rgba(29, 31, 32, .96), rgba(20, 22, 23, .96));
     transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
 }
 
 .agenda-item:hover {
-    border-color: var(--hype-border-strong);
-    background: var(--hype-surface-elevated);
+    border-color: var(--tenant-border-strong);
+    background: var(--tenant-surface-elevated);
     transform: translateY(-1px);
 }
 
 .agenda-item-restrito {
-    border-left-color: var(--hype-text-muted);
+    border-left-color: var(--tenant-text-muted);
     opacity: .82;
 }
 
@@ -227,7 +227,7 @@
 }
 
 .agenda-item-time strong {
-    color: var(--hype-text);
+    color: var(--tenant-text);
     font-size: 20px;
 }
 
@@ -240,7 +240,7 @@
 
 .agenda-item-content strong {
     overflow: hidden;
-    color: var(--hype-text);
+    color: var(--tenant-text);
     font-size: 15px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -257,7 +257,7 @@
     display: inline-flex;
     padding: 4px 9px;
     border-radius: 999px;
-    color: var(--hype-text);
+    color: var(--tenant-text);
     background: rgba(255, 255, 255, .08);
     font-size: 11px;
     font-weight: 700;
@@ -265,7 +265,7 @@
 
 .agenda-status-agendado {
     color: #f0c96d;
-    background: rgba(217, 171, 63, .14);
+    background: color-mix(in srgb, var(--tenant-accent) 14%, transparent);
 }
 
 .agenda-status-confirmado,
@@ -298,14 +298,14 @@
 }
 
 .agenda-area-barbearia {
-    border-color: rgba(217, 171, 63, .25);
+    border-color: color-mix(in srgb, var(--tenant-accent) 25%, transparent);
     color: #f0c96d;
-    background: rgba(217, 171, 63, .09);
+    background: color-mix(in srgb, var(--tenant-accent) 9%, transparent);
 }
 
 .agenda-area-neutral {
     border-color: rgba(170, 166, 156, .22);
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
     background: rgba(170, 166, 156, .08);
 }
 
@@ -316,7 +316,7 @@
 
 .agenda-empty {
     padding: 32px 12px;
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
     text-align: center;
 }
 
@@ -326,7 +326,7 @@
     align-items: end;
     gap: 12px;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--hype-border);
+    border-bottom: 1px solid var(--tenant-border);
 }
 
 .agenda-resource-form .form-group {
@@ -346,9 +346,9 @@
     justify-content: space-between;
     gap: 12px;
     padding: 12px;
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
     border-radius: 10px;
-    background: var(--hype-surface-raised);
+    background: var(--tenant-surface-raised);
 }
 
 .agenda-resource-chip > span {
@@ -360,13 +360,13 @@
 
 .agenda-resource-chip strong {
     overflow: hidden;
-    color: var(--hype-text);
+    color: var(--tenant-text);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .agenda-resource-chip small {
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
     font-size: 11px;
 }
 
@@ -441,7 +441,7 @@
 /* A grade é uma leitura visual do dia; os detalhes e ações continuam na lista abaixo. */
 .agenda-calendar-card {
     overflow: hidden;
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
     border-radius: 10px;
     background: linear-gradient(145deg, #151819, #0e1011);
     box-shadow: var(--shadow-sm);
@@ -453,7 +453,7 @@
     justify-content: space-between;
     gap: 18px;
     padding: 16px 18px;
-    border-bottom: 1px solid var(--hype-border);
+    border-bottom: 1px solid var(--tenant-border);
     background: rgba(7, 9, 10, .22);
 }
 
@@ -472,7 +472,7 @@
 }
 
 .agenda-calendar-overline {
-    color: var(--hype-text-muted);
+    color: var(--tenant-text-muted);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: .14em;
@@ -480,7 +480,7 @@
 
 .agenda-calendar-toolbar strong {
     overflow: hidden;
-    color: var(--hype-text);
+    color: var(--tenant-text);
     font-size: 16px;
     text-overflow: ellipsis;
     text-transform: capitalize;
@@ -493,9 +493,9 @@
     place-items: center;
     flex: 0 0 auto;
     min-height: 34px;
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
     border-radius: 7px;
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
     background: rgba(255, 255, 255, .018);
     cursor: pointer;
     transition: border-color var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
@@ -508,21 +508,21 @@
 
 .agenda-calendar-today {
     padding: 0 12px;
-    color: var(--hype-gold-hover);
+    color: var(--tenant-accent-secondary);
     font-size: 11px;
     font-weight: 800;
 }
 
 .agenda-calendar-nav-button:hover,
 .agenda-calendar-today:hover {
-    border-color: rgba(217, 171, 63, .5);
-    color: var(--hype-text);
-    background: var(--hype-gold-soft);
+    border-color: color-mix(in srgb, var(--tenant-accent) 50%, transparent);
+    color: var(--tenant-text);
+    background: var(--tenant-accent-soft);
 }
 
 .agenda-calendar-nav-button:focus-visible,
 .agenda-calendar-today:focus-visible {
-    outline: 2px solid var(--hype-gold);
+    outline: 2px solid var(--tenant-accent);
     outline-offset: 2px;
 }
 
@@ -538,7 +538,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
     font-size: 10px;
 }
 
@@ -546,12 +546,12 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--hype-gold);
-    box-shadow: 0 0 0 3px rgba(217, 171, 63, .1);
+    background: var(--tenant-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tenant-accent) 10%, transparent);
 }
 
-.agenda-legend-confirmed { background: var(--hype-success); box-shadow: 0 0 0 3px rgba(67, 197, 139, .1); }
-.agenda-legend-cancelled { background: var(--hype-danger); box-shadow: 0 0 0 3px rgba(226, 107, 114, .1); }
+.agenda-legend-confirmed { background: var(--tenant-success); box-shadow: 0 0 0 3px rgba(67, 197, 139, .1); }
+.agenda-legend-cancelled { background: var(--tenant-danger); box-shadow: 0 0 0 3px rgba(226, 107, 114, .1); }
 
 .agenda-calendar-shell {
     min-width: 640px;
@@ -561,7 +561,7 @@
 .agenda-calendar-head {
     display: grid;
     grid-template-columns: 74px repeat(var(--agenda-column-count), minmax(160px, 1fr));
-    border-bottom: 1px solid var(--hype-border);
+    border-bottom: 1px solid var(--tenant-border);
     background: rgba(255, 255, 255, .012);
 }
 
@@ -569,8 +569,8 @@
     min-width: 0;
     min-height: 62px;
     padding: 12px 14px;
-    border-right: 1px solid var(--hype-border);
-    color: var(--hype-text-muted);
+    border-right: 1px solid var(--tenant-border);
+    color: var(--tenant-text-muted);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: .06em;
@@ -582,7 +582,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 4px;
-    color: var(--hype-text);
+    color: var(--tenant-text);
 }
 
 .agenda-calendar-head strong {
@@ -594,7 +594,7 @@
 }
 
 .agenda-calendar-head small {
-    color: var(--hype-text-muted);
+    color: var(--tenant-text-muted);
     font-size: 9px;
 }
 
@@ -614,7 +614,7 @@
 .agenda-calendar-hours span {
     height: 48px;
     padding: 8px 12px;
-    color: var(--hype-text-muted);
+    color: var(--tenant-text-muted);
     font-size: 10px;
     text-align: right;
 }
@@ -676,7 +676,7 @@
 
 .agenda-calendar-block.status-cancelado,
 .agenda-calendar-block.status-nao_compareceu {
-    border-left-color: var(--hype-danger);
+    border-left-color: var(--tenant-danger);
     background: linear-gradient(135deg, #f2b2b5, #dc858d);
     opacity: .58;
     filter: grayscale(.25);

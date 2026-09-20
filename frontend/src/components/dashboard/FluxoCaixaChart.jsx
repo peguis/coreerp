@@ -69,7 +69,7 @@ export default function FluxoCaixaChart({
 
         "#e26b72",
 
-        "#d9ab3f"
+        "var(--tenant-accent)"
 
     ];
 
@@ -154,7 +154,7 @@ export default function FluxoCaixaChart({
 
 
                                 <Tooltip
-                                    contentStyle={{ background: "var(--hype-surface-elevated)", border: "1px solid var(--hype-border)", borderRadius: "10px", color: "var(--hype-text)" }}
+                                    contentStyle={{ background: "var(--tenant-surface-elevated)", border: "1px solid var(--tenant-border)", borderRadius: "10px", color: "var(--tenant-text)" }}
 
                                     formatter={(valor) =>
 
@@ -165,7 +165,7 @@ export default function FluxoCaixaChart({
                                 />
 
 
-                                <Legend wrapperStyle={{ color: "var(--hype-text-secondary)" }} />
+                                <Legend wrapperStyle={{ color: "var(--tenant-text-secondary)" }} />
 
 
                             </PieChart>

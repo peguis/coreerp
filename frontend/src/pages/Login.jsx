@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../api/auth";
 import { AuthContext } from "../auth/AuthContextValue";
+import { TenantErrorState, TenantLoading } from "../tenant/TenantContext";
+import { useTenant } from "../tenant/TenantContextValue";
+import { PLATFORM_ASSETS } from "../tenant/tenantIdentity";
 
 import "./Login.css";
 
@@ -11,6 +14,7 @@ export default function Login() {
 
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
+    const tenant = useTenant();
 
     const [email, setEmail] = useState("");
 
@@ -23,6 +27,15 @@ export default function Login() {
     const [lembrarDeMim, setLembrarDeMim] = useState(false);
 
     const [mostrarAjudaSenha, setMostrarAjudaSenha] = useState(false);
+
+    if (tenant.status === "loading") return <TenantLoading />;
+    if (tenant.status === "error") return <TenantErrorState error={tenant.error} />;
+
+    const { identity, cssVariables } = tenant;
+    const loginStyle = {
+        ...cssVariables,
+        "--tenant-login-hero": identity.assets.loginHero ? `url(${identity.assets.loginHero})` : "none"
+    };
 
     async function entrar(e) {
 
@@ -50,18 +63,16 @@ export default function Login() {
     }
 
     return (
-        <main className="login-page">
-            <section className="login-showcase" aria-label="Identidade HYPE STUDIO">
+        <main className={`login-page tenant-login tenant-login-${identity.tenantKey}`} data-tenant-key={identity.tenantKey} style={loginStyle}>
+            <section className="login-showcase" aria-label={`Identidade ${identity.tenantName}`}>
                 <div className="login-showcase-overlay" />
                 <div className="login-showcase-content">
-                    <div className="login-brand-lockup" aria-label="HYPE STUDIO — Barbearia e Tattoo">
-                        <img className="login-logo-image" src="/images/hype-logo-official.png" alt="HYPE STUDIO — Barbearia e Tattoo" />
+                    <div className="login-brand-lockup" aria-label={identity.tenantBrandName}>
+                        <img className="login-logo-image" src={identity.assets.loginLogo} alt={identity.tenantBrandName} />
                     </div>
                     <div className="login-showcase-divider" aria-hidden="true" />
                     <div className="login-showcase-slogan">
-                        <strong>ORGANIZAÇÃO</strong>
-                        <strong>OPERAÇÃO</strong>
-                        <strong>CRESCIMENTO</strong>
+                        {identity.slogan.map((line) => <strong key={line}>{line}</strong>)}
                     </div>
                 </div>
             </section>
@@ -70,7 +81,7 @@ export default function Login() {
                 <div className="login-card">
                     <div className="login-header">
                         <h1>Bem-vindo de volta!</h1>
-                        <p>Acesse o sistema da HYPE STUDIO</p>
+                        <p>{identity.tenantLoginMessage}</p>
                     </div>
 
                     <form onSubmit={entrar} className="login-form">
@@ -108,7 +119,7 @@ export default function Login() {
                     <p className="login-powered">
                         <span>Sistema de gestão | Powered by</span>
                         <span className="login-powered-brand">
-                            <img src="/images/pegs-logo-transparent.png" alt="Pegs" />
+                            <img src={PLATFORM_ASSETS.logo} alt="Pegs" />
                         </span>
                     </p>
                 </div>

@@ -15,18 +15,12 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 import Topbar from "./Topbar";
-import { buscarEmpresaAtual } from "../../services/empresaService";
+import { TenantErrorState, TenantLoading } from "../../tenant/TenantContext";
+import { useTenant } from "../../tenant/TenantContextValue";
 
 
 import "./MainLayout.css";
 import "../../styles/hype.css";
-
-const HYPE_DEFAULTS = {
-    accent: "#d9ab3f",
-    accentSecondary: "#edc45c",
-    accentSoft: "rgba(217, 171, 63, .12)"
-};
-
 
 export default function MainLayout() {
 
@@ -43,7 +37,7 @@ export default function MainLayout() {
 
         useState(false);
 
-    const [empresa, setEmpresa] = useState(null);
+    const tenant = useTenant();
 
 
     useEffect(() => {
@@ -52,20 +46,10 @@ export default function MainLayout() {
 
     }, [location.pathname]);
 
-    useEffect(() => {
-        let montado = true;
-        void Promise.resolve().then(async () => {
-            try {
-                const dados = await buscarEmpresaAtual();
-                if (montado) setEmpresa(dados);
-            } catch {
-                if (montado) setEmpresa(null);
-            }
-        });
-        return () => {
-            montado = false;
-        };
-    }, []);
+    if (tenant.status === "loading") return <TenantLoading />;
+    if (tenant.status === "error") return <TenantErrorState error={tenant.error} />;
+
+    const { identity, cssVariables } = tenant;
 
 
 
@@ -77,31 +61,10 @@ export default function MainLayout() {
 
 
         <div
-            className="layout pegs-theme hype-theme"
-            data-tenant-theme={empresa?.tema || "pegs"}
-            style={{
-                "--tenant-accent": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
-                "--tenant-accent-secondary": empresa?.cor_secundaria || HYPE_DEFAULTS.accentSecondary,
-                "--pegs-accent": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
-                "--pegs-accent-secondary": empresa?.cor_secundaria || HYPE_DEFAULTS.accentSecondary,
-                "--pegs-accent-soft": empresa?.cor_primaria
-                    ? `color-mix(in srgb, ${empresa.cor_primaria} 14%, transparent)`
-                    : HYPE_DEFAULTS.accentSoft,
-                /* Tokens globais também seguem o tenant para evitar Pegs/HYPE
-                   misturados nas telas que ainda usam componentes legados. */
-                "--color-primary": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
-                "--primary": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
-                "--primary-color": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
-                "--focus-ring": empresa?.cor_primaria
-                    ? `0 0 0 3px color-mix(in srgb, ${empresa.cor_primaria} 18%, transparent)`
-                    : "0 0 0 3px rgba(217, 171, 63, .18)",
-                /* Aliases mantidos para as telas legadas durante a migração visual. */
-                "--hype-gold": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
-                "--hype-gold-hover": empresa?.cor_secundaria || HYPE_DEFAULTS.accentSecondary,
-                "--hype-gold-soft": empresa?.cor_primaria
-                    ? `color-mix(in srgb, ${empresa.cor_primaria} 12%, transparent)`
-                    : HYPE_DEFAULTS.accentSoft
-            }}
+            className={`layout tenant-shell tenant-theme tenant-theme-${identity.tenantKey}`}
+            data-tenant-key={identity.tenantKey}
+            data-tenant-theme={identity.tenantTheme}
+            style={cssVariables}
         >
 
 
@@ -121,9 +84,6 @@ export default function MainLayout() {
                 fecharMobile={() =>
                     setMobileAberto(false)
                 }
-
-                empresa={empresa}
-
 
             />
 
@@ -159,9 +119,6 @@ export default function MainLayout() {
                     abrirMenu={() =>
                         setMobileAberto(true)
                     }
-
-                    empresa={empresa}
-
 
                 />
 

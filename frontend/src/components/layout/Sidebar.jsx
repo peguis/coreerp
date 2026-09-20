@@ -16,6 +16,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 
 import { buscarUsuarioLogado, listarModulosEmpresa } from "../../services/usuarioService";
+import { useTenant } from "../../tenant/TenantContextValue";
 
 import "./Sidebar.css";
 
@@ -69,19 +70,14 @@ const menusProfissional = [
     { nome: "Minha produção", rota: "/minha-producao", icone: Wallet, modulo: "atendimentos" }
 ];
 
-// A HYPE tenant must never fall back to the Pegs platform mark. Pegs remains
-// visible only in the explicit "Powered by Pegs" signature below.
-const LOGO_FALLBACK = "/images/hype-logo-sidebar.png";
-
-
 export default function Sidebar({
     aberto = true,
     setAberto,
     mobileAberto = false,
-    fecharMobile,
-    empresa
+    fecharMobile
 }) {
     const navigate = useNavigate();
+    const { identity } = useTenant();
     const [perfil, setPerfil] = useState(null);
     const [modulosAtivos, setModulosAtivos] = useState(null);
 
@@ -127,7 +123,7 @@ export default function Sidebar({
         >
             <div className="sidebar-top">
                 <div className="sidebar-logo">
-                    <img className="sidebar-logo-image" src={empresa?.logo_url || LOGO_FALLBACK} alt={`${empresa?.nome || "HYPE STUDIO"} — identidade da empresa`} />
+                    <img className="sidebar-logo-image" src={identity.tenantLogo} alt={`${identity.tenantName} — identidade da empresa`} />
                 </div>
 
                 <button
@@ -176,8 +172,8 @@ export default function Sidebar({
             </nav>
 
             <div className="sidebar-studio-card">
-                <img className="sidebar-studio-logo" src={empresa?.logo_url || LOGO_FALLBACK} alt="" aria-hidden="true" />
-                <span><strong>{empresa?.nome || "HYPE STUDIO"}</strong><small>{empresa?.tipo_negocio || "Barbearia & Tattoo"}</small></span>
+                <img className="sidebar-studio-logo" src={identity.tenantLogo} alt="" aria-hidden="true" />
+                <span><strong>{identity.tenantName}</strong><small>{identity.businessType}</small></span>
             </div>
             <small className="sidebar-powered">Powered by Pegs</small>
 

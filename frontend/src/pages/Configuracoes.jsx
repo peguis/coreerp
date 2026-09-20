@@ -323,7 +323,7 @@ function Configuracoes() {
                     {modulos.map((modulo) => <article className={`configuracoes-modulo-card ${modulo.ativo ? "ativo" : "inativo"}`} key={modulo.codigo}>
                         <div>
                             <strong>{modulo.nome}</strong>
-                            <p>{modulo.descricao || "Funcionalidade da plataforma Pegs."}</p>
+                            <p>{modulo.descricao || "Funcionalidade disponível para esta empresa."}</p>
                         </div>
                         <Button
                             size="small"
@@ -337,7 +337,7 @@ function Configuracoes() {
                 </div>
             </SectionCard>}
 
-            {usuario && empresa && <SectionCard titulo="Identidade da empresa" subtitulo="A Pegs mantém a estrutura do produto e aplica a identidade configurada para cada empresa.">
+            {usuario && empresa && <SectionCard titulo="Identidade da empresa" subtitulo="Configure os dados que identificam esta empresa no sistema.">
                 <form className="configuracoes-form" onSubmit={salvarConfiguracaoEmpresa}>
                     <Input label="Nome exibido" value={empresaForm.nome_exibicao} onChange={(evento) => alterarEmpresa("nome_exibicao", evento.target.value)} required />
                     <Input label="Tipo de negócio" value={empresaForm.tipo_negocio} onChange={(evento) => alterarEmpresa("tipo_negocio", evento.target.value)} placeholder="Ex.: Barbearia, salão ou studio" />

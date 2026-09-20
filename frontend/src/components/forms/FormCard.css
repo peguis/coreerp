@@ -1,10 +1,10 @@
 .form-card {
 
-    background: var(--hype-surface);
+    background: var(--tenant-surface);
 
     border-radius: var(--radius-lg);
 
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
 
     padding: 24px;
 
@@ -31,7 +31,7 @@
 
     font-weight: 700;
 
-    color: var(--hype-text);
+    color: var(--tenant-text);
 
 }
 
@@ -43,7 +43,7 @@
 
     font-size: 14px;
 
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
 
 }
 

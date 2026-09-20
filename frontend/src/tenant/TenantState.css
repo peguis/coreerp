@@ -1,0 +1,35 @@
+.tenant-state {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    min-height: 100vh;
+    padding: 32px;
+    color: #e8edf4;
+    background: #10151c;
+    text-align: center;
+}
+
+.tenant-state span,
+.tenant-state small {
+    color: #9ca9b9;
+}
+
+.tenant-state-spinner {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 8px;
+    border: 3px solid rgba(156, 169, 185, .24);
+    border-top-color: #e8edf4;
+    border-radius: 50%;
+    animation: tenant-state-spin .8s linear infinite;
+}
+
+.tenant-state-error {
+    gap: 12px;
+    color: #f4c5c5;
+}
+
+@keyframes tenant-state-spin {
+    to { transform: rotate(360deg); }
+}

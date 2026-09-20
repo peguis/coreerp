@@ -1,8 +1,8 @@
 .section-card {
 
-    background: var(--hype-surface);
+    background: var(--tenant-surface);
 
-    border: 1px solid var(--hype-border);
+    border: 1px solid var(--tenant-border);
     border-radius: var(--radius-lg);
 
     padding: 22px;
@@ -27,7 +27,7 @@
 
     margin: 0;
 
-    color: var(--hype-text);
+    color: var(--tenant-text);
 
     font-size: 20px;
 
@@ -41,7 +41,7 @@
 
     margin: 8px 0 0;
 
-    color: var(--hype-text-secondary);
+    color: var(--tenant-text-secondary);
 
     font-size: 14px;
 

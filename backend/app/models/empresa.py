@@ -53,6 +53,12 @@ class Empresa(Base):
         nullable=False
     )
 
+    identidade_codigo: Mapped[str | None] = mapped_column(
+        String(40),
+        nullable=True,
+        index=True,
+    )
+
 
     cnpj: Mapped[str] = mapped_column(
         String(18),

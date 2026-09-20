@@ -98,7 +98,7 @@ export default function SalesChart({
 
                                     <CartesianGrid
 
-                                        stroke="var(--hype-border)"
+                                        stroke="var(--tenant-border)"
                                         strokeDasharray="3 3"
 
                                     />
@@ -108,19 +108,19 @@ export default function SalesChart({
                                     <XAxis
 
                                         dataKey="nome"
-                                        tick={{ fill: "var(--hype-text-secondary)", fontSize: 12 }}
-                                        axisLine={{ stroke: "var(--hype-border)" }}
+                                        tick={{ fill: "var(--tenant-text-secondary)", fontSize: 12 }}
+                                        axisLine={{ stroke: "var(--tenant-border)" }}
                                         tickLine={false}
 
                                     />
 
 
 
-                                    <YAxis tick={{ fill: "var(--hype-text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} />
+                                    <YAxis tick={{ fill: "var(--tenant-text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} />
 
 
 
-                                    <Tooltip contentStyle={{ background: "var(--hype-surface-elevated)", border: "1px solid var(--hype-border)", borderRadius: "10px", color: "var(--hype-text)" }} labelStyle={{ color: "var(--hype-text-secondary)" }} />
+                                    <Tooltip contentStyle={{ background: "var(--tenant-surface-elevated)", border: "1px solid var(--tenant-border)", borderRadius: "10px", color: "var(--tenant-text)" }} labelStyle={{ color: "var(--tenant-text-secondary)" }} />
 
 
 

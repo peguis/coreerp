@@ -3,7 +3,22 @@
 
     /* CORES PRINCIPAIS */
 
-    --color-primary: #d9ab3f;
+    /* Platform-neutral primitives. Tenant colors are injected on .tenant-shell
+       and .tenant-login after identity resolution. */
+    --tenant-accent: #64748b;
+    --tenant-accent-secondary: #94a3b8;
+    --tenant-accent-soft: rgba(100, 116, 139, .14);
+    --tenant-bg: #10151c;
+    --tenant-surface: #171d25;
+    --tenant-surface-raised: #202936;
+    --tenant-surface-elevated: #283445;
+    --tenant-border: #334155;
+    --tenant-border-strong: #475569;
+    --tenant-text: #f1f5fb;
+    --tenant-text-secondary: #c0cad8;
+    --tenant-text-muted: #8997aa;
+
+    --color-primary: var(--tenant-accent);
 
     --color-success: #43c58b;
 
@@ -11,26 +26,13 @@
 
     --color-danger: #e26b72;
 
-    /* Pegs Core: identidade neutra usada antes de carregar a configuração do tenant. */
-    --pegs-accent: #6f8cff;
-    --pegs-accent-secondary: #9bb0ff;
-    --pegs-accent-soft: rgba(111, 140, 255, .14);
-    --pegs-surface: #11161d;
-    --pegs-surface-raised: #18202b;
-    --pegs-border: #2b3544;
-    --pegs-text: #f1f5fb;
-    --pegs-text-secondary: #aab5c5;
-    --pegs-text-muted: #718096;
-
-
-
     /* BACKGROUND */
 
-    --bg-page: #0b0b0c;
+    --bg-page: var(--tenant-bg);
 
-    --bg-card: #151517;
+    --bg-card: var(--tenant-surface);
 
-    --bg-muted: #1d1d20;
+    --bg-muted: var(--tenant-surface-raised);
 
 
 
@@ -46,7 +48,7 @@
 
     /* BORDAS */
 
-    --border-color: #2d2d31;
+    --border-color: var(--tenant-border);
 
 
 
@@ -69,28 +71,15 @@
 
     --radius-lg: 16px;
 
-    /* HYPE STUDIO white-label seam and compatibility aliases. */
-    --hype-bg: #0b0b0c;
-    --hype-surface: #151517;
-    --hype-surface-raised: #1d1d20;
-    --hype-surface-elevated: #232326;
-    --hype-border: #2d2d31;
-    --hype-border-strong: #414148;
-    --hype-gold: #d9ab3f;
-    --hype-gold-hover: #edc45c;
-    --hype-gold-soft: rgba(217, 171, 63, .12);
-    --hype-text: #f5f2ea;
-    --hype-text-secondary: #aaa69c;
-    --hype-text-muted: #77736b;
-    --hype-success: #43c58b;
-    --hype-warning: #e1ae4a;
-    --hype-danger: #e26b72;
-    --primary: #d9ab3f;
-    --primary-color: #d9ab3f;
-    --background: #0b0b0c;
-    --background-secondary: #1d1d20;
-    --border: #2d2d31;
-    --focus-ring: 0 0 0 3px rgba(217, 171, 63, .18);
+    --tenant-success: #43c58b;
+    --tenant-warning: #e1ae4a;
+    --tenant-danger: #e26b72;
+    --primary: var(--tenant-accent);
+    --primary-color: var(--tenant-accent);
+    --background: var(--tenant-bg);
+    --background-secondary: var(--tenant-surface-raised);
+    --border: var(--tenant-border);
+    --focus-ring: 0 0 0 3px color-mix(in srgb, var(--tenant-accent) 18%, transparent);
     --transition-fast: 160ms ease;
     --transition-base: 220ms ease;
 

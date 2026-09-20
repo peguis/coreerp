@@ -9,8 +9,8 @@
     overflow-x: hidden;
 
     background:
-        radial-gradient(circle at 78% -12%, rgba(217, 171, 63, .06), transparent 32%),
-        var(--hype-bg);
+        radial-gradient(circle at 78% -12%, color-mix(in srgb, var(--tenant-accent) 6%, transparent), transparent 32%),
+        var(--tenant-bg);
 
 }
 
@@ -49,11 +49,11 @@
 
 }
 
-.hype-theme .layout-content {
-    background: radial-gradient(circle at 86% 0%, rgba(217, 171, 63, .045), transparent 28%);
+.tenant-theme .layout-content {
+    background: radial-gradient(circle at 86% 0%, color-mix(in srgb, var(--tenant-accent) 4.5%, transparent), transparent 28%);
 }
 
-.hype-theme .layout-main {
+.tenant-theme .layout-main {
     padding: 26px clamp(18px, 2.6vw, 42px) 42px;
 }
 

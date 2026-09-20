@@ -10,6 +10,7 @@ def criar_empresa(
 ):
     nova_empresa = Empresa(
         nome=empresa.nome,
+        identidade_codigo=empresa.identidade_codigo,
         cnpj=empresa.cnpj,
         email=empresa.email,
         telefone=empresa.telefone,

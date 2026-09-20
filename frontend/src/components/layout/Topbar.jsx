@@ -2,6 +2,7 @@ import { Menu, UserCircle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import { buscarUsuarioLogado } from "../../services/usuarioService";
+import { useTenant } from "../../tenant/TenantContextValue";
 
 import "./Topbar.css";
 
@@ -9,6 +10,7 @@ import "./Topbar.css";
 export default function Topbar({ abrirMenu }) {
 
     const [usuario, setUsuario] = useState(null);
+    const { identity } = useTenant();
 
     const carregarUsuario = useCallback(async () => {
         try {
@@ -30,7 +32,7 @@ export default function Topbar({ abrirMenu }) {
     };
 
     return (
-        <header className="topbar">
+        <header className="topbar" data-tenant-key={identity.tenantKey} aria-label={`Área da empresa ${identity.tenantName}`}>
             <button
                 type="button"
                 className="mobile-menu"

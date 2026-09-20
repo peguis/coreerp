@@ -5,6 +5,7 @@ from typing import Mapping
 from sqlalchemy import func
 
 from app.auth.hash import gerar_hash
+from app.core.identidade import IDENTIDADE_PEGS_DEMO, resolver_identidade_codigo
 from app.core.enums import PerfilUsuario
 from app.database import SessionLocal
 from app.models.empresa import Empresa
@@ -108,6 +109,12 @@ def criar_admin(session_factory=SessionLocal, env: Mapping[str, str] | None = No
 
         empresa = Empresa(
             nome=config.empresa_nome,
+            identidade_codigo=resolver_identidade_codigo(
+                None,
+                nome=config.empresa_nome,
+                email=config.empresa_email,
+                padrao=IDENTIDADE_PEGS_DEMO,
+            ),
             cnpj=config.empresa_cnpj,
             email=config.empresa_email,
             telefone=config.empresa_telefone,

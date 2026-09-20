@@ -156,31 +156,31 @@
     justify-content: space-between;
     gap: 14px;
     padding: 15px;
-    border: 1px solid var(--hype-border, #2d2d31);
+    border: 1px solid var(--tenant-border, #2d2d31);
     border-radius: 10px;
-    background: var(--hype-surface-raised, #1d1d20);
+    background: var(--tenant-surface-raised, #1d1d20);
 }
 
 
 .configuracoes-modulo-card.ativo {
-    box-shadow: inset 3px 0 0 var(--hype-success, #43c58b);
+    box-shadow: inset 3px 0 0 var(--tenant-success, #43c58b);
 }
 
 
 .configuracoes-modulo-card.inativo {
     opacity: .72;
-    box-shadow: inset 3px 0 0 var(--hype-text-muted, #77736b);
+    box-shadow: inset 3px 0 0 var(--tenant-text-muted, #77736b);
 }
 
 
 .configuracoes-modulo-card strong {
-    color: var(--hype-text, #f5f2ea);
+    color: var(--tenant-text, #f5f2ea);
 }
 
 
 .configuracoes-modulo-card p {
     margin: 5px 0 0;
-    color: var(--hype-text-secondary, #aaa69c);
+    color: var(--tenant-text-secondary, #aaa69c);
     font-size: 12px;
     line-height: 1.4;
 }
@@ -275,7 +275,7 @@
     align-items: baseline;
     gap: 12px;
     margin-bottom: 14px;
-    color: var(--hype-text-secondary, #aaa69c);
+    color: var(--tenant-text-secondary, #aaa69c);
 }
 
 
@@ -297,14 +297,14 @@
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    border: 1px solid var(--hype-border, #303034);
+    border: 1px solid var(--tenant-border, #303034);
     border-radius: 10px;
-    background: var(--hype-surface-raised, #1d1d20);
+    background: var(--tenant-surface-raised, #1d1d20);
 }
 
 
 .configuracoes-onboarding-item.concluido {
-    border-color: color-mix(in srgb, var(--hype-success, #43c58b) 45%, transparent);
+    border-color: color-mix(in srgb, var(--tenant-success, #43c58b) 45%, transparent);
 }
 
 
@@ -320,7 +320,7 @@
     place-items: center;
     border-radius: 50%;
     color: #111;
-    background: var(--hype-success, #43c58b);
+    background: var(--tenant-success, #43c58b);
     font-weight: 800;
 }
 
@@ -332,19 +332,19 @@
 
 
 .configuracoes-onboarding-item strong {
-    color: var(--hype-text, #f5f2ea);
+    color: var(--tenant-text, #f5f2ea);
 }
 
 
 .configuracoes-onboarding-item p {
     margin: 3px 0 0;
-    color: var(--hype-text-secondary, #aaa69c);
+    color: var(--tenant-text-secondary, #aaa69c);
     font-size: 12px;
 }
 
 
 .configuracoes-onboarding-item small {
-    color: var(--hype-text-secondary, #aaa69c);
+    color: var(--tenant-text-secondary, #aaa69c);
     white-space: nowrap;
 }
 

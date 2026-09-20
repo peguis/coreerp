@@ -74,11 +74,11 @@
 
 }
 
-.hype-theme .dashboard-page {
+.tenant-theme .dashboard-page {
     padding: 0;
 }
 
-.hype-theme .dashboard-cards,
-.hype-theme .dashboard-grid {
+.tenant-theme .dashboard-cards,
+.tenant-theme .dashboard-grid {
     gap: 16px;
 }
