@@ -38,7 +38,7 @@
 .login-showcase-divider { width: min(270px, 64%); height: 1px; margin-top: auto; margin-bottom: 28px; background: rgba(248, 241, 223, .92); }
 .login-showcase-slogan { display: flex; flex-direction: column; align-items: center; gap: 9px; }
 .login-showcase-slogan strong { width: fit-content; color: #f7f1e4; font-size: clamp(24px, 3vw, 43px); font-weight: 400; letter-spacing: .14em; line-height: 1; }
-.login-showcase-slogan strong:last-child { color: var(--pegs-accent-secondary); }
+.login-showcase-slogan strong:last-child { color: var(--hype-gold-hover); }
 
 .login-panel { display: grid; place-items: center; padding: 42px clamp(22px, 5vw, 76px); background: #090d13; }
 .login-card { width: 100%; max-width: 700px; padding: clamp(38px, 5vw, 70px) clamp(30px, 5vw, 68px); border: 1px solid rgba(104, 122, 130, .48); border-radius: 22px; background: radial-gradient(circle at 50% 10%, rgba(54, 67, 71, .15), transparent 46%), rgba(13, 17, 18, .75); box-shadow: 0 22px 70px rgba(0, 0, 0, .28); }
@@ -48,7 +48,7 @@
 
 .login-form { display: flex; flex-direction: column; gap: 20px; }
 .input-group { display: flex; align-items: center; gap: 16px; border: 1px solid #465055; background: rgba(25, 30, 31, .82); border-radius: 12px; padding: 19px 20px; transition: .2s; }
-.input-group:focus-within { border-color: var(--pegs-accent); box-shadow: 0 0 0 3px rgba(111, 140, 255, .16); }
+.input-group:focus-within { border-color: var(--hype-gold); box-shadow: 0 0 0 3px rgba(217, 171, 63, .16); }
 .input-group svg { color: #f8f1df; flex-shrink: 0; }
 .input-group input { width: 100%; border: none; outline: none; color: var(--pegs-text); font-size: 18px; background: transparent; }
 .input-group input::placeholder { color: var(--pegs-text-muted); }
@@ -65,16 +65,16 @@
     transition: background-color 9999s ease-out 0s;
 }
 .login-password-toggle { display: grid; place-items: center; padding: 2px; border: 0; color: var(--pegs-text-muted); background: transparent; cursor: pointer; }
-.login-password-toggle:hover { color: var(--pegs-accent-secondary); }
+.login-password-toggle:hover { color: var(--hype-gold-hover); }
 
 .login-support-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 3px; color: #f4f4f0; font-size: 16px; }
 .login-remember { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; }
-.login-remember input { width: 25px; height: 25px; accent-color: var(--pegs-accent-secondary); cursor: pointer; }
-.login-forgot { padding: 0; border: 0; color: var(--pegs-accent-secondary); background: transparent; font: inherit; cursor: pointer; }
-.login-forgot-message { margin: -4px 0 0; padding: 12px 14px; border-left: 2px solid var(--pegs-accent); color: #dbe5f5; background: var(--pegs-accent-soft); font-size: 13px; line-height: 1.5; }
+.login-remember input { width: 25px; height: 25px; accent-color: var(--hype-gold-hover); cursor: pointer; }
+.login-forgot { padding: 0; border: 0; color: var(--hype-gold-hover); background: transparent; font: inherit; cursor: pointer; }
+.login-forgot-message { margin: -4px 0 0; padding: 12px 14px; border-left: 2px solid var(--hype-gold); color: var(--hype-text); background: var(--hype-gold-soft); font-size: 13px; line-height: 1.5; }
 
-.login-form > button { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; padding: 19px; border: 0; border-radius: 11px; color: #09101b; background: var(--pegs-accent-secondary); font-size: 20px; font-weight: 800; cursor: pointer; transition: .2s; }
-.login-form > button:hover { background: #b1c0ff; }
+.login-form > button { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; padding: 19px; border: 0; border-radius: 11px; color: #17130b; background: var(--hype-gold); font-size: 20px; font-weight: 800; cursor: pointer; transition: .2s; }
+.login-form > button:hover { background: var(--hype-gold-hover); }
 .login-form > button:disabled { opacity: .68; cursor: not-allowed; }
 
 .login-powered { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 58px 0 0; color: #d2d5d3; font-size: 15px; letter-spacing: .02em; text-align: center; }

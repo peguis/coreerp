@@ -21,10 +21,10 @@ import { buscarEmpresaAtual } from "../../services/empresaService";
 import "./MainLayout.css";
 import "../../styles/hype.css";
 
-const PEGS_DEFAULTS = {
-    accent: "#6f8cff",
-    accentSecondary: "#9bb0ff",
-    accentSoft: "rgba(111, 140, 255, .14)"
+const HYPE_DEFAULTS = {
+    accent: "#d9ab3f",
+    accentSecondary: "#edc45c",
+    accentSoft: "rgba(217, 171, 63, .12)"
 };
 
 
@@ -80,27 +80,27 @@ export default function MainLayout() {
             className="layout pegs-theme hype-theme"
             data-tenant-theme={empresa?.tema || "pegs"}
             style={{
-                "--tenant-accent": empresa?.cor_primaria || PEGS_DEFAULTS.accent,
-                "--tenant-accent-secondary": empresa?.cor_secundaria || PEGS_DEFAULTS.accentSecondary,
-                "--pegs-accent": empresa?.cor_primaria || PEGS_DEFAULTS.accent,
-                "--pegs-accent-secondary": empresa?.cor_secundaria || PEGS_DEFAULTS.accentSecondary,
+                "--tenant-accent": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
+                "--tenant-accent-secondary": empresa?.cor_secundaria || HYPE_DEFAULTS.accentSecondary,
+                "--pegs-accent": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
+                "--pegs-accent-secondary": empresa?.cor_secundaria || HYPE_DEFAULTS.accentSecondary,
                 "--pegs-accent-soft": empresa?.cor_primaria
                     ? `color-mix(in srgb, ${empresa.cor_primaria} 14%, transparent)`
-                    : PEGS_DEFAULTS.accentSoft,
+                    : HYPE_DEFAULTS.accentSoft,
                 /* Tokens globais também seguem o tenant para evitar Pegs/HYPE
                    misturados nas telas que ainda usam componentes legados. */
-                "--color-primary": empresa?.cor_primaria || PEGS_DEFAULTS.accent,
-                "--primary": empresa?.cor_primaria || PEGS_DEFAULTS.accent,
-                "--primary-color": empresa?.cor_primaria || PEGS_DEFAULTS.accent,
+                "--color-primary": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
+                "--primary": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
+                "--primary-color": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
                 "--focus-ring": empresa?.cor_primaria
                     ? `0 0 0 3px color-mix(in srgb, ${empresa.cor_primaria} 18%, transparent)`
-                    : "0 0 0 3px rgba(111, 140, 255, .18)",
+                    : "0 0 0 3px rgba(217, 171, 63, .18)",
                 /* Aliases mantidos para as telas legadas durante a migração visual. */
-                "--hype-gold": empresa?.cor_primaria || PEGS_DEFAULTS.accent,
-                "--hype-gold-hover": empresa?.cor_secundaria || PEGS_DEFAULTS.accentSecondary,
+                "--hype-gold": empresa?.cor_primaria || HYPE_DEFAULTS.accent,
+                "--hype-gold-hover": empresa?.cor_secundaria || HYPE_DEFAULTS.accentSecondary,
                 "--hype-gold-soft": empresa?.cor_primaria
                     ? `color-mix(in srgb, ${empresa.cor_primaria} 12%, transparent)`
-                    : PEGS_DEFAULTS.accentSoft
+                    : HYPE_DEFAULTS.accentSoft
             }}
         >
 
