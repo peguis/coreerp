@@ -69,7 +69,9 @@ const menusProfissional = [
     { nome: "Minha produção", rota: "/minha-producao", icone: Wallet, modulo: "atendimentos" }
 ];
 
-const LOGO_FALLBACK = "/images/pegs-logo-transparent.png";
+// A HYPE tenant must never fall back to the Pegs platform mark. Pegs remains
+// visible only in the explicit "Powered by Pegs" signature below.
+const LOGO_FALLBACK = "/images/hype-logo-sidebar.png";
 
 
 export default function Sidebar({
@@ -125,7 +127,7 @@ export default function Sidebar({
         >
             <div className="sidebar-top">
                 <div className="sidebar-logo">
-                    <img className="sidebar-logo-image" src={empresa?.logo_url || LOGO_FALLBACK} alt={`${empresa?.nome || "Pegs"} — identidade da empresa`} />
+                    <img className="sidebar-logo-image" src={empresa?.logo_url || LOGO_FALLBACK} alt={`${empresa?.nome || "HYPE STUDIO"} — identidade da empresa`} />
                 </div>
 
                 <button
@@ -175,7 +177,7 @@ export default function Sidebar({
 
             <div className="sidebar-studio-card">
                 <img className="sidebar-studio-logo" src={empresa?.logo_url || LOGO_FALLBACK} alt="" aria-hidden="true" />
-                <span><strong>{empresa?.nome || "Pegs"}</strong><small>{empresa?.tipo_negocio || "Plataforma de gestão"}</small></span>
+                <span><strong>{empresa?.nome || "HYPE STUDIO"}</strong><small>{empresa?.tipo_negocio || "Barbearia & Tattoo"}</small></span>
             </div>
             <small className="sidebar-powered">Powered by Pegs</small>
 

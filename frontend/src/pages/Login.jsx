@@ -51,11 +51,11 @@ export default function Login() {
 
     return (
         <main className="login-page">
-            <section className="login-showcase" aria-label="Identidade Pegs">
+            <section className="login-showcase" aria-label="Identidade HYPE STUDIO">
                 <div className="login-showcase-overlay" />
                 <div className="login-showcase-content">
-                    <div className="login-brand-lockup" aria-label="Pegs — plataforma de gestão">
-                        <img className="login-logo-image" src="/images/pegs-logo-transparent.png" alt="Pegs" />
+                    <div className="login-brand-lockup" aria-label="HYPE STUDIO — Barbearia e Tattoo">
+                        <img className="login-logo-image" src="/images/hype-logo-official.png" alt="HYPE STUDIO — Barbearia e Tattoo" />
                     </div>
                     <div className="login-showcase-divider" aria-hidden="true" />
                     <div className="login-showcase-slogan">
@@ -70,7 +70,7 @@ export default function Login() {
                 <div className="login-card">
                     <div className="login-header">
                         <h1>Bem-vindo de volta!</h1>
-                        <p>Acesse a plataforma Pegs</p>
+                        <p>Acesse o sistema da HYPE STUDIO</p>
                     </div>
 
                     <form onSubmit={entrar} className="login-form">
