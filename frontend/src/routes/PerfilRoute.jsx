@@ -37,7 +37,7 @@ export default function PerfilRoute({ perfis }) {
 
     if (carregando) {
 
-        return <Loading texto="Validando perfil..." />;
+        return <Loading texto="Validando suas permissões..." />;
 
     }
 

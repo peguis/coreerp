@@ -7,7 +7,7 @@ export default function DashboardSkeleton() {
 
     return (
 
-        <div className="dashboard-skeleton">
+        <div className="dashboard-skeleton" role="status" aria-live="polite" aria-busy="true" aria-label="Carregando dashboard">
 
 
             <div className="skeleton-header">

@@ -6,6 +6,7 @@ import {
     criarDemonstracaoMatriz,
     listarCatalogoModulosMatriz,
 } from "../../services/matrizService";
+import { SectionLoading } from "../../components/loading/LoadingPrimitives";
 
 const inicial = {
     nome: "",
@@ -33,12 +34,15 @@ export default function MatrizCriarDemonstracao() {
     const [salvando, setSalvando] = useState(false);
 
     useEffect(() => {
+        let ativo = true;
         listarCatalogoModulosMatriz()
             .then((catalogo) => {
+                if (!ativo) return;
                 setModulos(catalogo);
                 setSelecionados(new Set(catalogo.filter((modulo) => modulo.obrigatorio).map((modulo) => modulo.codigo)));
             })
-            .catch((error) => setErro(error.message));
+            .catch((error) => ativo && setErro(error.message));
+        return () => { ativo = false; };
     }, []);
 
     function alterar(campo, valor) {
@@ -98,8 +102,8 @@ export default function MatrizCriarDemonstracao() {
                 <section className="matriz-card matriz-section"><div className="matriz-section-heading"><div><h2>Identificação da demonstração</h2><p>A demonstração terá identidade própria e permanecerá separada dos tenants reais.</p></div><Building2 size={20} color="var(--matriz-accent)" /></div><div className="matriz-form-grid">{campo("nome", "Nome do negócio *", "text", true)}{campo("tipo_negocio", "Tipo de negócio", "text", false)}{campo("cnpj", "CNPJ ou identificador *", "text", true)}{campo("email", "E-mail do negócio *", "email", true)}{campo("telefone", "Telefone")}</div></section>
                 <section className="matriz-card matriz-section"><div className="matriz-section-heading"><div><h2>Identidade da prévia</h2><p>Logo e cores podem ser ajustadas na configuração do tenant depois.</p></div><span className="matriz-badge protected"><ShieldCheck size={12} /> Ambiente demo</span></div><div className="matriz-form-grid">{campo("logo_url", "URL da logo (opcional)")}{campo("cor_primaria", "Cor primária (opcional)")}{campo("cor_secundaria", "Cor secundária (opcional)")}</div></section>
                 <section className="matriz-card matriz-section"><div className="matriz-section-heading"><div><h2>Acesso de prévia</h2><p>Crie o administrador inicial para a demonstração.</p></div><ShieldCheck size={20} color="var(--matriz-accent)" /></div><div className="matriz-form-grid">{campo("administrador_nome", "Nome do administrador *", "text", true)}{campo("administrador_email", "E-mail de acesso *", "email", true)}{campo("administrador_senha", "Senha temporária *", "password", true)}</div></section>
-                <section className="matriz-card matriz-section"><div className="matriz-section-heading"><div><h2>Módulos da prévia</h2><p>Selecione apenas o que será apresentado. A demonstração nasce sem registros operacionais.</p></div><Layers3 size={20} color="var(--matriz-accent)" /></div><div className="matriz-module-check-grid">{modulos.map((modulo) => { const marcado = selecionados.has(modulo.codigo); return <label className={`matriz-module-check ${marcado ? "checked" : ""}`} key={modulo.codigo}><input type="checkbox" checked={marcado} disabled={modulo.obrigatorio} onChange={() => alternarModulo(modulo.codigo, modulo.obrigatorio)} /><span><strong>{modulo.nome}</strong><small>{modulo.descricao || "Módulo disponível na plataforma."}</small></span>{modulo.obrigatorio && <em>Obrigatório</em>}</label>; })}</div></section>
-                <div className="matriz-form-actions"><Link className="matriz-button" to="/matriz/oportunidades">Cancelar</Link><button className="matriz-button primary" type="submit" disabled={salvando || !modulos.length}><Save size={16} /> {salvando ? "Criando..." : "Criar demonstração"}</button></div>
+                <section className="matriz-card matriz-section" aria-busy={!modulos.length && !erro}><div className="matriz-section-heading"><div><h2>Módulos da prévia</h2><p>Selecione apenas o que será apresentado. A demonstração nasce sem registros operacionais.</p></div><Layers3 size={20} color="var(--matriz-accent)" /></div>{!modulos.length && !erro ? <SectionLoading message="Carregando catálogo de módulos..." /> : <div className="matriz-module-check-grid">{modulos.map((modulo) => { const marcado = selecionados.has(modulo.codigo); return <label className={`matriz-module-check ${marcado ? "checked" : ""}`} key={modulo.codigo}><input type="checkbox" checked={marcado} disabled={modulo.obrigatorio} onChange={() => alternarModulo(modulo.codigo, modulo.obrigatorio)} /><span><strong>{modulo.nome}</strong><small>{modulo.descricao || "Módulo disponível na plataforma."}</small></span>{modulo.obrigatorio && <em>Obrigatório</em>}</label>; })}</div>}</section>
+                <div className="matriz-form-actions"><Link className="matriz-button" to="/matriz/oportunidades">Cancelar</Link><button className="matriz-button primary" type="submit" disabled={salvando || !modulos.length} aria-busy={salvando || undefined}><Save size={16} /> {salvando ? "Criando..." : "Criar demonstração"}</button></div>
             </form>
         </div>
     );

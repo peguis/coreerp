@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, CheckCircle2, ClipboardList, Layers3, LockKeyhole, Save, ShieldCheck, Users } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 
 import { atualizarIdentidadeEmpresaMatriz, atualizarModuloEmpresaMatriz, atualizarUsuarioEmpresaMatriz, buscarDetalheEmpresaMatriz } from "../../services/matrizService";
+import { LoadingError, SectionLoading } from "../../components/loading/LoadingPrimitives";
 
 const dataHora = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" });
 function formatarData(value) {
@@ -11,8 +12,8 @@ function formatarData(value) {
     return Number.isNaN(data.valueOf()) ? "—" : dataHora.format(data);
 }
 
-function Estado({ children, erro = false }) {
-    return <div className={erro ? "matriz-error" : "matriz-loading"} role={erro ? "alert" : "status"} aria-live="polite">{children}</div>;
+function Estado({ children, erro = false, onRetry }) {
+    return erro ? <LoadingError onRetry={onRetry}>{children}</LoadingError> : <SectionLoading message={children} />;
 }
 
 export default function MatrizEmpresaDetalhe() {
@@ -23,11 +24,14 @@ export default function MatrizEmpresaDetalhe() {
     const [erro, setErro] = useState(null);
     const [salvando, setSalvando] = useState(false);
     const [identidade, setIdentidade] = useState(null);
+    const requisicaoAtual = useRef(0);
 
     const carregar = useCallback(async () => {
+        const requisicao = ++requisicaoAtual.current;
         setErro(null);
         try {
             const resposta = await buscarDetalheEmpresaMatriz(empresaId);
+            if (requisicao !== requisicaoAtual.current) return;
             setDetalhe(resposta);
             setIdentidade({
                 nome_exibicao: resposta.empresa.nome,
@@ -40,7 +44,7 @@ export default function MatrizEmpresaDetalhe() {
                 ativo: resposta.empresa.ativo
             });
         } catch (error) {
-            setErro(error.message);
+            if (requisicao === requisicaoAtual.current) setErro(error.message);
         }
     }, [empresaId]);
 
@@ -89,7 +93,7 @@ export default function MatrizEmpresaDetalhe() {
         setIdentidade((atual) => ({ ...atual, [campo]: valor }));
     }
 
-    if (erro && !detalhe) return <Estado erro>Não foi possível carregar o tenant. {erro}</Estado>;
+    if (erro && !detalhe) return <Estado erro onRetry={() => void carregar()}>Não foi possível carregar o tenant. {erro}</Estado>;
     if (!detalhe || !identidade) return <Estado>Carregando detalhes da empresa...</Estado>;
 
     const { empresa, modulos, usuarios, auditoria } = detalhe;

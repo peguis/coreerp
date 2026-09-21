@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Activity, AlertTriangle, ArrowRight, Building2, ClipboardList, Layers3, Plus, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { buscarDashboardMatriz } from "../../services/matrizService";
+import { LoadingError, SectionLoading, SkeletonCards, SkeletonTable } from "../../components/loading/LoadingPrimitives";
 
 const dataFormatada = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" });
 const dataHoraFormatada = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" });
@@ -13,15 +14,12 @@ function dataFormatadaSegura(value, comHora = false) {
     return Number.isNaN(data.valueOf()) ? "—" : (comHora ? dataHoraFormatada.format(data) : dataFormatada.format(data));
 }
 
-function EstadoMatriz({ children, erro = false }) {
-    return <div className={erro ? "matriz-error" : "matriz-loading"} role={erro ? "alert" : "status"} aria-live="polite">{children}</div>;
-}
-
 export default function MatrizDashboard() {
     const [dados, setDados] = useState(null);
     const [erro, setErro] = useState(null);
 
-    useEffect(() => {
+    const carregar = useCallback(() => {
+        setErro(null);
         let ativo = true;
         buscarDashboardMatriz()
             .then((resposta) => ativo && setDados(resposta))
@@ -29,13 +27,25 @@ export default function MatrizDashboard() {
         return () => { ativo = false; };
     }, []);
 
+    useEffect(() => {
+        let ativo = true;
+        let limpar;
+        void Promise.resolve().then(() => {
+            if (ativo) limpar = carregar();
+        });
+        return () => {
+            ativo = false;
+            limpar?.();
+        };
+    }, [carregar]);
+
     const maiorUso = useMemo(
         () => Math.max(...(dados?.modulos_mais_utilizados || []).map((modulo) => modulo.empresas_ativas), 1),
         [dados]
     );
 
-    if (erro) return <EstadoMatriz erro>Não foi possível carregar os dados administrativos. {erro}</EstadoMatriz>;
-    if (!dados) return <EstadoMatriz>Carregando visão geral da Matriz...</EstadoMatriz>;
+    if (erro) return <LoadingError message={`Não foi possível carregar os dados administrativos. ${erro}`} onRetry={() => void carregar()} />;
+    if (!dados) return <div className="matriz-dashboard-loading" aria-busy="true"><SkeletonCards count={4} /><div className="matriz-grid-2"><section className="matriz-card matriz-section"><SectionLoading message="Carregando uso dos módulos..." /></section><section className="matriz-card matriz-section"><SectionLoading message="Carregando alertas administrativos..." /></section></div><section className="matriz-card matriz-section"><SkeletonTable columns={6} rows={5} /></section></div>;
 
     return (
         <div>

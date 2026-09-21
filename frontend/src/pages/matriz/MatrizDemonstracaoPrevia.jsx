@@ -1,20 +1,35 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, CheckCircle2, Eye, Layers3, Palette, UserRound } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
 import { obterPreviaDemonstracaoMatriz } from "../../services/matrizService";
+import { LoadingError, PageLoading } from "../../components/loading/LoadingPrimitives";
 
 export default function MatrizDemonstracaoPrevia() {
     const { empresaId } = useParams();
     const [demo, setDemo] = useState(null);
     const [erro, setErro] = useState(null);
 
-    useEffect(() => {
+    const carregar = useCallback(() => {
+        setErro(null);
+        setDemo(null);
         obterPreviaDemonstracaoMatriz(empresaId).then(setDemo).catch((error) => setErro(error.message));
     }, [empresaId]);
 
-    if (erro) return <div className="matriz-error" role="alert">Não foi possível carregar a prévia. {erro}</div>;
-    if (!demo) return <div className="matriz-loading" role="status" aria-live="polite">Carregando prévia da demonstração...</div>;
+    useEffect(() => {
+        let ativo = true;
+        let limpar;
+        void Promise.resolve().then(() => {
+            if (ativo) limpar = carregar();
+        });
+        return () => {
+            ativo = false;
+            limpar?.();
+        };
+    }, [carregar]);
+
+    if (erro) return <LoadingError message={`Não foi possível carregar a prévia. ${erro}`} onRetry={() => void carregar()} />;
+    if (!demo) return <PageLoading message="Carregando prévia da demonstração..." />;
 
     return (
         <div>

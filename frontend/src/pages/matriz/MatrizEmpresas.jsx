@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Building2, Eye, Plus, Search, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { listarEmpresasMatriz } from "../../services/matrizService";
+import { LoadingError, SectionLoading, SkeletonTable } from "../../components/loading/LoadingPrimitives";
 
-function Estado({ children, erro = false }) {
-    return <div className={erro ? "matriz-error" : "matriz-loading"} role={erro ? "alert" : "status"} aria-live="polite">{children}</div>;
+function Estado({ children, erro = false, onRetry }) {
+    return erro ? <LoadingError onRetry={onRetry}>{children}</LoadingError> : <SectionLoading message={children} />;
 }
 
 export default function MatrizEmpresas() {
@@ -13,13 +14,16 @@ export default function MatrizEmpresas() {
     const [busca, setBusca] = useState("");
     const [status, setStatus] = useState("");
     const [erro, setErro] = useState(null);
+    const requisicaoAtual = useRef(0);
 
     const carregar = useCallback(async () => {
+        const requisicao = ++requisicaoAtual.current;
         setErro(null);
         try {
-            setEmpresas(await listarEmpresasMatriz({ busca: busca || undefined, status: status || undefined }));
+            const resultado = await listarEmpresasMatriz({ busca: busca || undefined, status: status || undefined });
+            if (requisicao === requisicaoAtual.current) setEmpresas(resultado);
         } catch (error) {
-            setErro(error.message);
+            if (requisicao === requisicaoAtual.current) setErro(error.message);
         }
     }, [busca, status]);
 
@@ -56,7 +60,7 @@ export default function MatrizEmpresas() {
                     <div><h2>Tenants cadastrados</h2><p>{empresas ? `${empresas.length} resultado(s) encontrado(s)` : "Carregando registros reais"}</p></div>
                     <Building2 size={20} color="var(--matriz-accent)" />
                 </div>
-                {erro ? <Estado erro>Não foi possível carregar as empresas. {erro}</Estado> : !empresas ? <Estado>Carregando empresas...</Estado> : empresas.length === 0 ? <div className="matriz-empty">Nenhuma empresa corresponde aos filtros atuais.</div> : (
+                {erro ? <Estado erro onRetry={() => void carregar()}>Não foi possível carregar as empresas. {erro}</Estado> : !empresas ? <SkeletonTable columns={7} rows={6} /> : empresas.length === 0 ? <div className="matriz-empty">Nenhuma empresa corresponde aos filtros atuais.</div> : (
                     <div className="matriz-table-scroll">
                         <table className="matriz-data-table matriz-empresas-table">
                             <thead><tr><th>Empresa</th><th>Tipo de negócio</th><th>Administrador principal</th><th>Módulos</th><th>Status</th><th>Identidade</th><th>Ações</th></tr></thead>

@@ -1,4 +1,5 @@
 import "./DataTable.css";
+import { SkeletonTable } from "../loading/LoadingPrimitives";
 
 
 export default function DataTable({
@@ -19,21 +20,7 @@ export default function DataTable({
     if (loading) {
 
 
-        return (
-
-            <div className="table-container">
-
-
-                <div className="table-loading" role="status" aria-live="polite">
-
-                    Carregando dados...
-
-                </div>
-
-
-            </div>
-
-        );
+        return <div className="table-container"><SkeletonTable columns={columns.length || 5} /></div>;
 
 
     }

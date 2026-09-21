@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ClipboardList, Filter, RefreshCw } from "lucide-react";
 
 import { listarAuditoriaMatriz, listarEmpresasMatriz } from "../../services/matrizService";
+import { LoadingError, SkeletonTable } from "../../components/loading/LoadingPrimitives";
 
 const dataHora = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" });
 
@@ -11,8 +12,8 @@ function formatarData(value) {
     return Number.isNaN(data.valueOf()) ? "—" : dataHora.format(data);
 }
 
-function Estado({ children, erro = false }) {
-    return <div className={erro ? "matriz-error" : "matriz-loading"} role={erro ? "alert" : "status"} aria-live="polite">{children}</div>;
+function Estado({ children, erro = false, onRetry }) {
+    return erro ? <LoadingError onRetry={onRetry}>{children}</LoadingError> : <div className="matriz-empty" role="status" aria-live="polite">{children}</div>;
 }
 
 export default function MatrizAuditoria() {
@@ -21,13 +22,16 @@ export default function MatrizAuditoria() {
     const [empresaId, setEmpresaId] = useState("");
     const [acao, setAcao] = useState("");
     const [erro, setErro] = useState(null);
+    const requisicaoAtual = useRef(0);
 
     const carregar = useCallback(async () => {
+        const requisicao = ++requisicaoAtual.current;
         setErro(null);
         try {
-            setRegistros(await listarAuditoriaMatriz({ empresa_id: empresaId || undefined, acao: acao || undefined, limite: 100 }));
+            const resultado = await listarAuditoriaMatriz({ empresa_id: empresaId || undefined, acao: acao || undefined, limite: 100 });
+            if (requisicao === requisicaoAtual.current) setRegistros(resultado);
         } catch (error) {
-            setErro(error.message);
+            if (requisicao === requisicaoAtual.current) setErro(error.message);
         }
     }, [acao, empresaId]);
 
@@ -54,7 +58,7 @@ export default function MatrizAuditoria() {
             </section>
             <section className="matriz-card matriz-section">
                 <div className="matriz-section-heading"><div><h2>Registro administrativo</h2><p>{registros ? `${registros.length} registro(s) encontrado(s)` : "Carregando registros reais"}</p></div><ClipboardList size={20} color="var(--matriz-accent)" /></div>
-                {erro ? <Estado erro>Não foi possível carregar a auditoria. {erro}</Estado> : !registros ? <Estado>Carregando auditoria...</Estado> : registros.length === 0 ? <div className="matriz-empty">Nenhum registro corresponde aos filtros atuais.</div> : <div className="matriz-table-scroll"><table className="matriz-data-table"><thead><tr><th>Data e hora</th><th>Empresa afetada</th><th>Usuário responsável</th><th>Ação</th><th>Recurso</th><th>Detalhes</th></tr></thead><tbody>{registros.map((registro) => <tr key={registro.id}><td>{formatarData(registro.criado_em)}</td><td>{registro.empresa_nome || `Empresa #${registro.empresa_id}`}</td><td>{registro.usuario_nome || "Sistema"}</td><td><span className="matriz-badge protected">{registro.acao}</span></td><td>{registro.recurso}{registro.recurso_id ? ` #${registro.recurso_id}` : ""}</td><td>{registro.detalhes ? JSON.stringify(registro.detalhes) : "—"}</td></tr>)}</tbody></table></div>}
+                {erro ? <Estado erro onRetry={() => void carregar()}>Não foi possível carregar a auditoria. {erro}</Estado> : !registros ? <SkeletonTable columns={6} rows={8} /> : registros.length === 0 ? <div className="matriz-empty">Nenhum registro corresponde aos filtros atuais.</div> : <div className="matriz-table-scroll"><table className="matriz-data-table"><thead><tr><th>Data e hora</th><th>Empresa afetada</th><th>Usuário responsável</th><th>Ação</th><th>Recurso</th><th>Detalhes</th></tr></thead><tbody>{registros.map((registro) => <tr key={registro.id}><td>{formatarData(registro.criado_em)}</td><td>{registro.empresa_nome || `Empresa #${registro.empresa_id}`}</td><td>{registro.usuario_nome || "Sistema"}</td><td><span className="matriz-badge protected">{registro.acao}</span></td><td>{registro.recurso}{registro.recurso_id ? ` #${registro.recurso_id}` : ""}</td><td>{registro.detalhes ? JSON.stringify(registro.detalhes) : "—"}</td></tr>)}</tbody></table></div>}
             </section>
         </div>
     );

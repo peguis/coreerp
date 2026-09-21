@@ -3,6 +3,7 @@ import { ArrowLeft, Building2, KeyRound, Layers3, Save } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { listarCatalogoModulosMatriz, provisionarEmpresaMatriz } from "../../services/matrizService";
+import { SectionLoading } from "../../components/loading/LoadingPrimitives";
 
 const inicial = {
     nome: "",
@@ -28,12 +29,15 @@ export default function MatrizProvisionar() {
     const [salvando, setSalvando] = useState(false);
 
     useEffect(() => {
+        let ativo = true;
         listarCatalogoModulosMatriz()
             .then((catalogo) => {
+                if (!ativo) return;
                 setModulos(catalogo);
                 setSelecionados(new Set(catalogo.map((modulo) => modulo.codigo)));
             })
-            .catch((error) => setErro(error.message));
+            .catch((error) => ativo && setErro(error.message));
+        return () => { ativo = false; };
     }, []);
 
     function alterar(campo, valor) {
@@ -93,7 +97,7 @@ export default function MatrizProvisionar() {
 
             {erro && <div className="matriz-form-error" role="alert">{erro}</div>}
             <form className="matriz-provision-form" onSubmit={salvar}>
-                <section className="matriz-card matriz-section">
+                <section className="matriz-card matriz-section" aria-busy={!modulos.length && !erro}>
                     <div className="matriz-section-heading"><div><h2>Dados da empresa</h2><p>Esses dados identificam o novo tenant na matriz.</p></div><Building2 size={20} color="var(--matriz-accent)" /></div>
                     <div className="matriz-form-grid">
                         {campo("nome", "Nome da empresa", "text", true)}
@@ -125,15 +129,15 @@ export default function MatrizProvisionar() {
 
                 <section className="matriz-card matriz-section">
                     <div className="matriz-section-heading"><div><h2>Módulos iniciais</h2><p>Desativar aqui não apaga dados; apenas inicia o tenant sem novos registros nesses módulos.</p></div><Layers3 size={20} color="var(--matriz-accent)" /></div>
-                    <div className="matriz-module-check-grid">
+                    {!modulos.length && !erro ? <SectionLoading message="Carregando catálogo de módulos..." /> : <div className="matriz-module-check-grid">
                         {modulos.map((modulo) => {
                             const marcado = selecionados?.has(modulo.codigo);
                             return <label className={`matriz-module-check ${marcado ? "checked" : ""}`} key={modulo.codigo}><input type="checkbox" checked={marcado || false} disabled={modulo.obrigatorio} onChange={() => alternarModulo(modulo.codigo, modulo.obrigatorio)} /><span><strong>{modulo.nome}</strong><small>{modulo.descricao || "Módulo disponível na plataforma."}</small></span>{modulo.obrigatorio && <em>Obrigatório</em>}</label>;
                         })}
-                    </div>
+                    </div>}
                 </section>
 
-                <div className="matriz-form-actions"><Link className="matriz-button" to="/matriz/empresas">Cancelar</Link><button className="matriz-button primary" type="submit" disabled={salvando || !modulos.length}><Save size={16} /> {salvando ? "Provisionando..." : "Provisionar empresa"}</button></div>
+                <div className="matriz-form-actions"><Link className="matriz-button" to="/matriz/empresas">Cancelar</Link><button className="matriz-button primary" type="submit" disabled={salvando || !modulos.length} aria-busy={salvando || undefined}><Save size={16} /> {salvando ? "Provisionando..." : "Provisionar empresa"}</button></div>
             </form>
         </div>
     );

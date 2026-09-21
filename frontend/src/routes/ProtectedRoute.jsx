@@ -17,7 +17,7 @@ export default function ProtectedRoute({ children }) {
 
     if (carregando) {
 
-        return <Loading texto="Carregando..." />;
+        return <Loading texto="Validando sua sessão..." variant="page" showBrand={false} />;
 
     }
 

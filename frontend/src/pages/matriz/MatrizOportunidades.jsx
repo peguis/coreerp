@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     ArrowRight,
     BriefcaseBusiness,
@@ -25,6 +25,7 @@ import {
     registrarInteracaoMatriz,
     solicitarConversaoMatriz,
 } from "../../services/matrizService";
+import { LoadingError, SkeletonTable } from "../../components/loading/LoadingPrimitives";
 
 const STATUS = [
     ["NOVO", "Novo"],
@@ -54,10 +55,6 @@ const formularioInicial = {
     observacoes: "",
     modulos_interesse: "",
 };
-
-function Estado({ children, erro = false }) {
-    return <div className={erro ? "matriz-error" : "matriz-loading"} role={erro ? "alert" : "status"} aria-live="polite">{children}</div>;
-}
 
 function statusClass(status) {
     return `matriz-opportunity-status status-${String(status || "").toLowerCase()}`;
@@ -95,11 +92,13 @@ export default function MatrizOportunidades() {
     const [erro, setErro] = useState(null);
     const [mensagem, setMensagem] = useState(null);
     const [salvando, setSalvando] = useState(false);
+    const requisicaoAtual = useRef(0);
 
     const admin = usuario?.perfil === "pegs_admin";
     const selecionada = oportunidades?.find((item) => item.id === selecionadaId) || null;
 
     const carregar = useCallback(async () => {
+        const requisicao = ++requisicaoAtual.current;
         setErro(null);
         try {
             const params = Object.fromEntries(Object.entries(filtros).filter(([, value]) => value));
@@ -108,12 +107,13 @@ export default function MatrizOportunidades() {
                 listarVendedoresMatriz(),
                 admin ? listarUsuariosMatriz() : Promise.resolve([]),
             ]);
+            if (requisicao !== requisicaoAtual.current) return;
             setOportunidades(lista);
             setVendedores(listaVendedores);
             setUsuariosMatriz(listaUsuarios);
             setSelecionadaId((atual) => (lista.some((item) => item.id === atual) ? atual : null));
         } catch (error) {
-            setErro(error.message);
+            if (requisicao === requisicaoAtual.current) setErro(error.message);
         }
     }, [filtros, admin]);
 
@@ -235,7 +235,7 @@ export default function MatrizOportunidades() {
                 </div>
             </div>
 
-            {erro && <div className="matriz-form-error" role="alert">{erro}</div>}
+            {erro && <LoadingError message={erro} onRetry={() => void carregar()} />}
             {mensagem && <div className="matriz-success" role="status" aria-live="polite"><CheckCircle2 size={16} /> {mensagem}</div>}
 
             {admin && <section className="matriz-card matriz-section matriz-vendor-config"><div className="matriz-section-heading"><div><h2>Configuração de vendedores</h2><p>Defina quem atua no comercial da Pegs. O perfil não concede acesso aos tenants.</p></div><UserRound size={20} color="var(--matriz-accent)" /></div>{usuariosMatriz.length ? <div className="matriz-table-scroll"><table className="matriz-data-table"><thead><tr><th>Usuário</th><th>E-mail</th><th>Função</th><th>Status</th></tr></thead><tbody>{usuariosMatriz.filter((item) => item.perfil !== "pegs_admin").map((item) => <tr key={item.id}><td><strong>{item.nome}</strong></td><td>{item.email}</td><td><select className="matriz-select" value={item.perfil} onChange={(event) => void alterarPerfil(item, event.target.value)}><option value="admin">Administrador</option><option value="gerente">Gerente</option><option value="operador">Operador</option><option value="consulta">Consulta</option><option value="vendedor_pegs">Vendedor Pegs</option></select></td><td><span className={`matriz-badge ${item.ativo ? "" : "inactive"}`}>{item.ativo ? "Ativo" : "Inativo"}</span></td></tr>)}</tbody></table></div> : <div className="matriz-empty">Nenhum usuário adicional cadastrado na Matriz.</div>}</section>}
@@ -283,7 +283,7 @@ export default function MatrizOportunidades() {
 
             <section className="matriz-card matriz-section">
                 <div className="matriz-section-heading"><div><h2>Pipeline comercial</h2><p>{oportunidades ? `${oportunidades.length} oportunidade(s) encontrada(s)` : "Carregando registros reais"}</p></div><UserRound size={20} color="var(--matriz-accent)" /></div>
-                {!oportunidades ? <Estado>Carregando oportunidades...</Estado> : oportunidades.length === 0 ? <div className="matriz-empty">Nenhuma oportunidade corresponde aos filtros atuais.</div> : (
+                {!oportunidades ? <SkeletonTable columns={7} rows={6} /> : oportunidades.length === 0 ? <div className="matriz-empty">Nenhuma oportunidade corresponde aos filtros atuais.</div> : (
                     <>
                         <div className="matriz-table-scroll matriz-opportunity-desktop"><table className="matriz-data-table matriz-opportunities-table"><thead><tr><th>Negócio</th><th>Status</th><th>Vendedor</th><th>Próxima ação</th><th>Próximo contato</th><th>Demonstração</th><th>Ações</th></tr></thead><tbody>{oportunidades.map((item) => <tr key={item.id}><td><strong>{item.nome_negocio_contato}</strong><small className="matriz-cell-muted">{item.pessoa_responsavel || item.email || item.telefone || "Sem contato informado"}</small></td><td><span className={statusClass(item.status)}>{STATUS_LABEL[item.status] || item.status}</span></td><td>{item.vendedor_nome || "—"}</td><td>{item.proxima_acao || "—"}</td><td>{item.proximo_contato ? new Intl.DateTimeFormat("pt-BR").format(new Date(`${item.proximo_contato}T12:00:00`)) : "—"}</td><td>{item.tenant_demo_id ? <Link className="matriz-link" to={`/matriz/demonstracoes/${item.tenant_demo_id}/previa`}>{item.tenant_demo_nome || "Abrir prévia"}</Link> : "—"}</td><td><div className="matriz-inline-actions"><button className="matriz-button" type="button" onClick={() => { setSelecionadaId(item.id); setInteracao({ descricao: "", proxima_acao: item.proxima_acao || "", proximo_contato: item.proximo_contato || "", status: item.status }); }}>Detalhes</button><button className="matriz-button" type="button" onClick={() => { setEditandoId(item.id); setFormulario(mapForm(item)); document.querySelector(".matriz-opportunity-form")?.scrollIntoView({ behavior: "smooth" }); }}>Editar</button></div></td></tr>)}</tbody></table></div>
                         <div className="matriz-opportunity-mobile">{oportunidades.map((item) => <article className="matriz-opportunity-card" key={item.id}><div className="matriz-opportunity-card-top"><strong>{item.nome_negocio_contato}</strong><span className={statusClass(item.status)}>{STATUS_LABEL[item.status] || item.status}</span></div><p>{item.pessoa_responsavel || item.email || item.telefone || "Sem contato informado"}</p><span>Vendedor: {item.vendedor_nome || "—"}</span><span>Próxima ação: {item.proxima_acao || "—"}</span><div className="matriz-inline-actions"><button className="matriz-button" type="button" onClick={() => setSelecionadaId(item.id)}>Detalhes</button><button className="matriz-button" type="button" onClick={() => { setEditandoId(item.id); setFormulario(mapForm(item)); }}>Editar</button></div></article>)}</div>

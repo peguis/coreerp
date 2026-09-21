@@ -1,30 +1,5 @@
-import "./Loading.css";
+import { LoadingState } from "./loading/LoadingPrimitives";
 
-
-export default function Loading({
-
-    texto = "Carregando..."
-
-}) {
-
-
-    return (
-
-        <div className="loading-container" role="status" aria-live="polite">
-
-
-            <div className="loading-spinner"></div>
-
-
-            <p>
-
-                {texto}
-
-            </p>
-
-
-        </div>
-
-    );
-
+export default function Loading({ texto = "Carregando dados...", ...props }) {
+    return <LoadingState {...props} message={texto} />;
 }

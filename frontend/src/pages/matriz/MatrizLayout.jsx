@@ -14,6 +14,7 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { buscarUsuarioLogado } from "../../services/usuarioService";
 import { useTenant } from "../../tenant/TenantContextValue";
+import { LoadingError, PageLoading } from "../../components/loading/LoadingPrimitives";
 
 import "./Matriz.css";
 
@@ -35,25 +36,37 @@ export default function MatrizLayout() {
     const { identity, cssVariables } = useTenant();
     const [menuAberto, setMenuAberto] = useState(false);
     const [usuario, setUsuario] = useState(null);
+    const [statusUsuario, setStatusUsuario] = useState("loading");
     const itens = usuario?.perfil === "vendedor_pegs" ? itensVendedor : itensAdmin;
 
     const carregarUsuario = useCallback(async () => {
+        setStatusUsuario("loading");
         try {
             setUsuario(await buscarUsuarioLogado());
-        } catch {
+            setStatusUsuario("ready");
+        } catch (error) {
             setUsuario(null);
+            setStatusUsuario(() => `error:${error.message}`);
         }
     }, []);
 
     useEffect(() => {
         void Promise.resolve().then(carregarUsuario);
+    }, [carregarUsuario]);
+
+    useEffect(() => {
         void Promise.resolve().then(() => setMenuAberto(false));
-    }, [carregarUsuario, location.pathname]);
+    }, [location.pathname]);
 
     function sair() {
         logout();
         localStorage.removeItem("usuario");
         navigate("/login");
+    }
+
+    if (statusUsuario === "loading") return <PageLoading message="Carregando acesso da Matriz..." />;
+    if (statusUsuario.startsWith("error:")) {
+        return <LoadingError message={`Não foi possível validar o acesso da Matriz. ${statusUsuario.slice(6)}`} onRetry={() => void carregarUsuario()} />;
     }
 
     return (

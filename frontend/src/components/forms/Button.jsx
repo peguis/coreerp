@@ -17,7 +17,9 @@ export default function Button({
 
     disabled = false,
 
-    loading = false
+    loading = false,
+
+    loadingLabel = "Carregando..."
 
 }) {
 
@@ -31,6 +33,7 @@ export default function Button({
             onClick={onClick}
 
             disabled={disabled || loading}
+            aria-busy={loading || undefined}
 
             className={`
                 form-button
@@ -43,7 +46,7 @@ export default function Button({
 
             {
                 loading
-                    ? "Carregando..."
+                    ? loadingLabel
                     : children
             }
 

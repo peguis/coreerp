@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // Instância base do Axios apontando para a sua API FastAPI
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000"
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
+    timeout: 15000
 });
 
 // Request Interceptor: Injeta automaticamente o token JWT salvo no localStorage em todas as requisições
@@ -33,9 +34,12 @@ api.interceptors.response.use(
 
         // Extrai a mensagem de erro retornada pela FastAPI (detail) ou aplica uma mensagem padrão
         const detalhe = error.response?.data?.detail;
+        const mensagemTimeout = error.code === 'ECONNABORTED'
+            ? 'A solicitação demorou mais do que o esperado. Tente novamente.'
+            : null;
         const mensagemErro = Array.isArray(detalhe)
             ? detalhe.map((item) => item.msg || item.message || String(item)).join(" ")
-            : detalhe || 'Ocorreu um erro ao processar sua requisição. Tente novamente.';
+            : detalhe || mensagemTimeout || 'Ocorreu um erro ao processar sua requisição. Tente novamente.';
         const erroNormalizado = new Error(mensagemErro);
         erroNormalizado.response = error.response;
 

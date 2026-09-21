@@ -11,6 +11,7 @@ import {
     tenantIdentityToCssVariables
 } from "./tenantIdentity";
 import { TenantContext } from "./TenantContextValue";
+import Loading from "../components/Loading";
 
 import "./TenantState.css";
 
@@ -93,13 +94,7 @@ export function TenantProvider({ children }) {
 }
 
 export function TenantLoading() {
-    return (
-        <main className="tenant-state" role="status" aria-live="polite">
-            <div className="tenant-state-spinner" aria-hidden="true" />
-            <strong>Carregando identidade da empresa...</strong>
-            <span>Preparando o ambiente correto.</span>
-        </main>
-    );
+    return <Loading texto="Preparando o ambiente correto..." variant="page" showBrand={false} />;
 }
 
 export function TenantErrorState({ error }) {
