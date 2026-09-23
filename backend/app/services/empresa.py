@@ -61,7 +61,14 @@ def provisionar_empresa_service(
     eh_demo: bool = False,
     criado_por_usuario_id: int | None = None,
     origem: str = "pegs_admin",
+    chave_idempotencia: str | None = None,
 ):
+    if chave_idempotencia:
+        existente = db.query(Empresa).filter(Empresa.chave_idempotencia == chave_idempotencia).first()
+        if existente:
+            if existente.eh_demo != eh_demo or existente.criado_por_usuario_id != criado_por_usuario_id:
+                raise HTTPException(status_code=409, detail="Chave de criação já utilizada em outra operação.")
+            return existente
     validar_empresa(dados)
     email_empresa = str(dados.email).lower()
     email_admin = str(dados.administrador_email).lower()
@@ -94,6 +101,7 @@ def provisionar_empresa_service(
         ativo=True,
         eh_demo=eh_demo,
         criado_por_usuario_id=criado_por_usuario_id,
+        chave_idempotencia=chave_idempotencia,
     )
     db.add(empresa)
     db.flush()
@@ -137,6 +145,10 @@ def provisionar_empresa_service(
         return empresa
     except IntegrityError as exc:
         db.rollback()
+        if chave_idempotencia:
+            existente = db.query(Empresa).filter(Empresa.chave_idempotencia == chave_idempotencia).first()
+            if existente and existente.eh_demo == eh_demo and existente.criado_por_usuario_id == criado_por_usuario_id:
+                return existente
         raise HTTPException(
             status_code=409,
             detail="Não foi possível provisionar a empresa com os dados informados.",

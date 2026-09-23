@@ -90,12 +90,17 @@ export async function obterPreviaDemonstracaoMatriz(empresaId) {
     return resposta.data;
 }
 
+export async function arquivarDemonstracaoMatriz(empresaId) {
+    const resposta = await api.post(`/matriz/demonstracoes/${empresaId}/arquivar`);
+    return resposta.data;
+}
+
 export async function solicitarConversaoMatriz(oportunidadeId) {
     const resposta = await api.post(`/matriz/oportunidades/${oportunidadeId}/solicitar-conversao`);
     return resposta.data;
 }
 
-export async function aprovarConversaoMatriz(oportunidadeId) {
-    const resposta = await api.post(`/matriz/oportunidades/${oportunidadeId}/aprovar-conversao`, { confirmar: true });
+export async function aprovarConversaoMatriz(oportunidadeId, dados) {
+    const resposta = await api.post(`/matriz/oportunidades/${oportunidadeId}/aprovar-conversao`, { ...dados, confirmar: true });
     return resposta.data;
 }

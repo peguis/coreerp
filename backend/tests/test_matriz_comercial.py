@@ -95,11 +95,35 @@ def test_vendedor_isola_oportunidades_e_cria_demo_com_auditoria(client, auth_hea
             "tipo_negocio": "STUDIO",
             "modulos_iniciais": ["dashboard", "agenda"],
             "oportunidade_id": oportunidade_id,
+            "template": "tatuagem",
+            "dados_apresentacao": True,
+            "chave_idempotencia": "demo-idempotency-key-0001",
         },
     )
     assert demo.status_code == 200, demo.text
     empresa_demo_id = demo.json()["id"]
     assert demo.json()["eh_demo"] is True
+    repetida_demo = client.post(
+        "/matriz/demonstracoes",
+        headers=vendedor_headers,
+        json={
+            "nome": "Studio Aurora Demo",
+            "cnpj": "22222222000199",
+            "email": "contato@aurora-demo.com",
+            "administrador_nome": "Marina Aurora",
+            "administrador_email": "admin@aurora-demo.com",
+            "administrador_senha": "senha-demo-forte",
+            "tipo_negocio": "STUDIO",
+            "modulos_iniciais": ["dashboard", "agenda"],
+            "oportunidade_id": oportunidade_id,
+            "template": "tatuagem",
+            "dados_apresentacao": True,
+            "chave_idempotencia": "demo-idempotency-key-0001",
+        },
+    )
+    assert repetida_demo.status_code == 200
+    assert repetida_demo.json()["id"] == empresa_demo_id
+    assert repetida_demo.json()["dados_apresentacao"] is True
 
     previa = client.get(f"/matriz/demonstracoes/{empresa_demo_id}/previa", headers=vendedor_headers)
     assert previa.status_code == 200
@@ -115,10 +139,39 @@ def test_vendedor_isola_oportunidades_e_cria_demo_com_auditoria(client, auth_hea
     aprovado = client.post(
         f"/matriz/oportunidades/{oportunidade_id}/aprovar-conversao",
         headers=admin_headers,
-        json={"confirmar": True},
+        json={
+            "confirmar": True,
+            "cnpj": "33333333000199",
+            "email": "contato@aurora-real.com",
+            "administrador_nome": "Marina Aurora",
+            "administrador_email": "admin@aurora-real.com",
+            "administrador_senha": "senha-real-forte",
+        },
     )
     assert aprovado.status_code == 200, aprovado.text
     assert aprovado.json()["status"] == "CONVERTIDO"
+    empresa_real_id = aprovado.json()["tenant_real_id"]
+    assert empresa_real_id != empresa_demo_id
+    assert aprovado.json()["tenant_demo_eh_demo"] is True
+
+    repetida = client.post(
+        f"/matriz/oportunidades/{oportunidade_id}/aprovar-conversao",
+        headers=admin_headers,
+        json={
+            "confirmar": True,
+            "cnpj": "33333333000199",
+            "email": "contato@aurora-real.com",
+            "administrador_nome": "Marina Aurora",
+            "administrador_email": "admin@aurora-real.com",
+            "administrador_senha": "senha-real-forte",
+        },
+    )
+    assert repetida.status_code == 200
+    assert repetida.json()["tenant_real_id"] == empresa_real_id
+
+    arquivada = client.post(f"/matriz/demonstracoes/{empresa_demo_id}/arquivar", headers=admin_headers)
+    assert arquivada.status_code == 200
+    assert arquivada.json()["arquivada"] is True
 
     auditoria = client.get("/matriz/auditoria", headers=admin_headers)
     assert auditoria.status_code == 200

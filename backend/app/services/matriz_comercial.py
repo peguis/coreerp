@@ -11,7 +11,9 @@ from app.models.empresa import Empresa
 from app.models.modulo import EmpresaModulo, Modulo
 from app.models.oportunidade import Oportunidade, OportunidadeInteracao
 from app.models.usuario import Usuario
-from app.schemas.empresa import MatrizDemonstracaoCreate
+from app.models.cliente import Cliente
+from app.models.servico import Servico
+from app.schemas.empresa import EmpresaProvisionamentoCreate, MatrizDemonstracaoCreate
 from app.schemas.matriz import (
     MatrizAprovarConversao,
     MatrizInteracaoCreate,
@@ -30,6 +32,12 @@ STATUS_OPORTUNIDADE = {
     "CONVERTIDO",
     "RECUSADO",
     "PERDIDO",
+}
+
+DEPENDENCIAS_MODULOS = {
+    "estoque": {"produtos"},
+    "repasses": {"atendimentos"},
+    "atendimentos": {"servicos", "profissionais"},
 }
 
 
@@ -111,6 +119,7 @@ def _interacao_dict(interacao: OportunidadeInteracao) -> dict:
 
 def _oportunidade_dict(oportunidade: Oportunidade) -> dict:
     demo = oportunidade.tenant_demo
+    real = oportunidade.tenant_real
     return {
         "id": oportunidade.id,
         "empresa_id": oportunidade.empresa_id,
@@ -133,6 +142,8 @@ def _oportunidade_dict(oportunidade: Oportunidade) -> dict:
         "tenant_demo_nome": demo.nome if demo else None,
         "tenant_demo_ativo": demo.ativo if demo else None,
         "tenant_demo_eh_demo": demo.eh_demo if demo else None,
+        "tenant_real_id": oportunidade.tenant_real_id,
+        "tenant_real_nome": real.nome if real else None,
         "ultima_interacao_em": oportunidade.ultima_interacao_em,
         "conversao_solicitada_em": oportunidade.conversao_solicitada_em,
         "convertido_em": oportunidade.convertido_em,
@@ -253,6 +264,8 @@ def atualizar_oportunidade_matriz(
     valores = dados.model_dump(exclude_unset=True)
     if "status" in valores:
         valores["status"] = _validar_status(valores["status"])
+        if valores["status"] == "CONVERTIDO" and not oportunidade.tenant_real_id:
+            raise HTTPException(status_code=400, detail="Use o fluxo de aprovação para converter em empresa real.")
     if "vendedor_id" in valores:
         if not _is_admin(usuario):
             raise HTTPException(status_code=403, detail="Somente a Matriz pode redistribuir oportunidades.")
@@ -332,14 +345,37 @@ def criar_demonstracao_matriz(
             raise HTTPException(status_code=400, detail="A oportunidade não pertence ao vendedor selecionado.")
         vendedor_id = oportunidade.vendedor_id
 
+    if dados.template not in {"barbearia", "salao", "tatuagem", "servicos", "personalizado"}:
+        raise HTTPException(status_code=400, detail="Modelo de negócio inválido.")
+    catalogo_codigos = {item.codigo for item in db.query(Modulo).all()}
+    modulos = set(dados.modulos_iniciais or [])
+    if not modulos:
+        raise HTTPException(status_code=400, detail="Selecione ao menos um módulo para a demonstração.")
+    obrigatorios = {item.codigo for item in db.query(Modulo).filter(Modulo.obrigatorio.is_(True)).all()}
+    if not obrigatorios.issubset(modulos):
+        raise HTTPException(status_code=400, detail="Inclua todos os módulos obrigatórios.")
+    if modulos - catalogo_codigos:
+        raise HTTPException(status_code=400, detail="A seleção contém módulos inválidos.")
+    ausentes = {dependencia for codigo in modulos for dependencia in DEPENDENCIAS_MODULOS.get(codigo, set()) if dependencia not in modulos}
+    if ausentes:
+        raise HTTPException(status_code=400, detail=f"Módulos dependentes também devem ser selecionados: {', '.join(sorted(ausentes))}.")
     empresa = provisionar_empresa_service(
         db,
         dados,
         usuario_id=usuario.id,
         eh_demo=True,
-        criado_por_usuario_id=vendedor_id,
+        criado_por_usuario_id=vendedor_id or usuario.id,
         origem="vendedor_pegs" if not _is_admin(usuario) else "matriz_pegs",
+        chave_idempotencia=dados.chave_idempotencia,
     )
+    if not empresa.template_demo:
+        empresa.template_demo = dados.template
+    if dados.dados_apresentacao and not empresa.dados_apresentacao:
+        categoria = {"barbearia": "BARBEARIA", "salao": "BELEZA", "tatuagem": "TATTOO", "servicos": "SERVIÇO", "personalizado": "DEMONSTRAÇÃO"}[dados.template]
+        db.add(Cliente(empresa_id=empresa.id, nome="Cliente de demonstração"))
+        db.add(Servico(empresa_id=empresa.id, nome=f"Serviço de exemplo · {categoria}", categoria=categoria, preco_padrao=0, duracao_minutos=40, requer_recurso=False, ativo=True))
+        empresa.dados_apresentacao = True
+        registrar_auditoria(db, empresa_id=usuario.empresa_id, usuario_id=usuario.id, acao="CRIAR_DADOS_APRESENTACAO_DEMO", recurso="empresa", recurso_id=empresa.id, detalhes={"template": dados.template}, commit=False)
     if dados.oportunidade_id is not None:
         oportunidade = _obter_oportunidade(db, usuario, dados.oportunidade_id)
         oportunidade.tenant_demo_id = empresa.id
@@ -354,6 +390,8 @@ def criar_demonstracao_matriz(
             detalhes={"tenant_demo_id": empresa.id},
             commit=False,
         )
+        db.commit()
+    elif dados.dados_apresentacao or empresa.template_demo == dados.template:
         db.commit()
     return obter_previa_demonstracao_matriz(db, usuario, empresa.id)
 
@@ -381,13 +419,34 @@ def obter_previa_demonstracao_matriz(db: Session, usuario: Usuario, empresa_id: 
         "criado_por_usuario_id": demo.criado_por_usuario_id,
         "criado_por_usuario_nome": criado_por.nome if criado_por else None,
         "modulos_ativos": [codigo for (codigo,) in modulos],
+        "template": demo.template_demo,
+        "dados_apresentacao": demo.dados_apresentacao,
+        "demo_arquivada_em": demo.demo_arquivada_em,
+        "url_acesso": "/login",
     }
+
+
+def arquivar_demonstracao_matriz(db: Session, usuario: Usuario, empresa_id: int):
+    if not _is_admin(usuario):
+        raise HTTPException(status_code=403, detail="Somente pegs_admin pode arquivar demonstrações.")
+    demo = db.query(Empresa).filter(Empresa.id == empresa_id, Empresa.eh_demo.is_(True)).first()
+    if not demo:
+        raise HTTPException(status_code=404, detail="Demonstração não encontrada.")
+    if demo.demo_arquivada_em:
+        return {"id": demo.id, "arquivada": True, "demo_arquivada_em": demo.demo_arquivada_em}
+    demo.demo_arquivada_em = datetime.now(timezone.utc).replace(tzinfo=None)
+    demo.ativo = False
+    registrar_auditoria(db, empresa_id=usuario.empresa_id, usuario_id=usuario.id, acao="ARQUIVAR_DEMONSTRACAO", recurso="empresa", recurso_id=demo.id, detalhes={"dados_preservados": True}, commit=False)
+    db.commit()
+    return {"id": demo.id, "arquivada": True, "demo_arquivada_em": demo.demo_arquivada_em}
 
 
 def solicitar_conversao_matriz(db: Session, usuario: Usuario, oportunidade_id: int):
     oportunidade = _obter_oportunidade(db, usuario, oportunidade_id)
-    if oportunidade.status == "CONVERTIDO" or oportunidade.convertido_em:
-        raise HTTPException(status_code=409, detail="Esta oportunidade já foi convertida.")
+    if oportunidade.tenant_real_id:
+        return _oportunidade_dict(oportunidade)
+    if oportunidade.conversao_solicitada_em:
+        return _oportunidade_dict(oportunidade)
     if not oportunidade.tenant_demo_id:
         raise HTTPException(status_code=400, detail="Vincule uma demonstração antes de solicitar conversão.")
     _obter_demo(db, usuario, oportunidade.tenant_demo_id)
@@ -420,13 +479,34 @@ def aprovar_conversao_matriz(
     oportunidade = _obter_oportunidade(db, usuario, oportunidade_id)
     if not dados.confirmar:
         raise HTTPException(status_code=400, detail="Confirme a aprovação da conversão.")
+    if oportunidade.tenant_real_id:
+        return _oportunidade_dict(oportunidade)
     if not oportunidade.tenant_demo_id or not oportunidade.conversao_solicitada_em:
         raise HTTPException(status_code=400, detail="A oportunidade ainda não possui solicitação de conversão.")
     demo = db.query(Empresa).filter(Empresa.id == oportunidade.tenant_demo_id).first()
     if not demo or not demo.eh_demo:
         raise HTTPException(status_code=409, detail="O tenant relacionado não é uma demonstração ativa.")
-    demo.eh_demo = False
-    demo.ativo = True
+    dados_empresa = EmpresaProvisionamentoCreate(
+        nome=demo.nome,
+        identidade_codigo=demo.identidade_codigo,
+        cnpj=dados.cnpj,
+        email=dados.email,
+        telefone=demo.telefone,
+        administrador_nome=dados.administrador_nome,
+        administrador_email=dados.administrador_email,
+        administrador_senha=dados.administrador_senha,
+        tipo_negocio=demo.tipo_negocio,
+        cor_primaria=demo.cor_primaria,
+        cor_secundaria=demo.cor_secundaria,
+        logo_url=demo.logo_url,
+        modulos_iniciais=[codigo for (codigo,) in db.query(Modulo.codigo).join(EmpresaModulo, EmpresaModulo.modulo_id == Modulo.id).filter(EmpresaModulo.empresa_id == demo.id, EmpresaModulo.ativo.is_(True)).all()],
+    )
+    empresa_real = provisionar_empresa_service(
+        db, dados_empresa, usuario_id=usuario.id, eh_demo=False,
+        criado_por_usuario_id=oportunidade.convertido_por_id or usuario.id, origem="conversao_demo",
+        chave_idempotencia=f"conversao-oportunidade-{oportunidade.id}",
+    )
+    oportunidade.tenant_real_id = empresa_real.id
     oportunidade.status = "CONVERTIDO"
     oportunidade.convertido_em = datetime.now(timezone.utc)
     oportunidade.convertido_por_id = usuario.id
@@ -436,8 +516,8 @@ def aprovar_conversao_matriz(
         usuario_id=usuario.id,
         acao="CONVERTER_EMPRESA_REAL",
         recurso="empresa",
-        recurso_id=demo.id,
-        detalhes={"oportunidade_id": oportunidade.id, "tenant_demo_id": demo.id},
+        recurso_id=empresa_real.id,
+        detalhes={"oportunidade_id": oportunidade.id, "tenant_demo_id": demo.id, "tenant_real_id": empresa_real.id, "origem": "demo"},
         commit=False,
     )
     registrar_auditoria(
@@ -447,7 +527,7 @@ def aprovar_conversao_matriz(
         acao="APROVAR_CONVERSAO_EMPRESA",
         recurso="oportunidade",
         recurso_id=oportunidade.id,
-        detalhes={"empresa_id": demo.id},
+        detalhes={"empresa_id": empresa_real.id, "tenant_demo_id": demo.id},
         commit=False,
     )
     db.commit()

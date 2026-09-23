@@ -26,6 +26,7 @@ import {
     solicitarConversaoMatriz,
 } from "../../services/matrizService";
 import { LoadingError, SkeletonTable } from "../../components/loading/LoadingPrimitives";
+import MatrizAprovarConversao from "./MatrizAprovarConversao";
 
 const STATUS = [
     ["NOVO", "Novo"],
@@ -92,6 +93,7 @@ export default function MatrizOportunidades() {
     const [erro, setErro] = useState(null);
     const [mensagem, setMensagem] = useState(null);
     const [salvando, setSalvando] = useState(false);
+    const [modalConversao, setModalConversao] = useState(false);
     const requisicaoAtual = useRef(0);
 
     const admin = usuario?.perfil === "pegs_admin";
@@ -221,6 +223,22 @@ export default function MatrizOportunidades() {
         }
     }
 
+    async function confirmarConversao(dados) {
+        if (!selecionada) return;
+        setErro(null);
+        setSalvando(true);
+        try {
+            await aprovarConversaoMatriz(selecionada.id, dados);
+            setModalConversao(false);
+            setMensagem("Empresa real criada. A demonstração original foi preservada.");
+            await carregar();
+        } catch (error) {
+            setErro(error.message);
+        } finally {
+            setSalvando(false);
+        }
+    }
+
     return (
         <div>
             <div className="matriz-page-header">
@@ -291,7 +309,8 @@ export default function MatrizOportunidades() {
                 )}
             </section>
 
-            {selecionada && <section className="matriz-card matriz-section matriz-opportunity-detail"><div className="matriz-section-heading"><div><div className="matriz-eyebrow">Oportunidade selecionada</div><h2>{selecionada.nome_negocio_contato}</h2><p>{selecionada.vendedor_nome} · {STATUS_LABEL[selecionada.status] || selecionada.status}</p></div><MessageSquarePlus size={21} color="var(--matriz-accent)" /></div><div className="matriz-inline-actions matriz-opportunity-actions">{!selecionada.tenant_demo_id && <Link className="matriz-button primary" to={`/matriz/demonstracoes/nova?oportunidadeId=${selecionada.id}`}><Plus size={15} /> Criar demonstração</Link>}{selecionada.tenant_demo_id && <Link className="matriz-button" to={`/matriz/demonstracoes/${selecionada.tenant_demo_id}/previa`}><Eye size={15} /> Abrir prévia</Link>}{selecionada.tenant_demo_id && !selecionada.conversao_solicitada_em && selecionada.status !== "CONVERTIDO" && <button className="matriz-button" type="button" onClick={() => void executarAcao(solicitarConversaoMatriz, "Solicitar conversão desta demonstração para empresa real?")}>Solicitar conversão</button>}{admin && selecionada.conversao_solicitada_em && selecionada.status !== "CONVERTIDO" && <button className="matriz-button primary" type="button" onClick={() => void executarAcao(aprovarConversaoMatriz, "Confirma a aprovação desta empresa real?")}>Aprovar conversão</button>}</div><div className="matriz-opportunity-history"><h3>Registrar interação</h3><form onSubmit={salvarInteracao}><div className="matriz-form-grid"><label className="matriz-field"><span>Descrição *</span><textarea required rows="3" value={interacao.descricao} onChange={(event) => setInteracao((atual) => ({ ...atual, descricao: event.target.value }))} /></label><label className="matriz-field"><span>Próxima ação</span><input value={interacao.proxima_acao} onChange={(event) => setInteracao((atual) => ({ ...atual, proxima_acao: event.target.value }))} /></label><label className="matriz-field"><span>Próximo contato</span><input type="date" value={interacao.proximo_contato} onChange={(event) => setInteracao((atual) => ({ ...atual, proximo_contato: event.target.value }))} /></label><label className="matriz-field"><span>Atualizar status</span><select value={interacao.status} onChange={(event) => setInteracao((atual) => ({ ...atual, status: event.target.value }))}><option value="">Manter status</option>{STATUS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label></div><div className="matriz-form-actions"><button className="matriz-button primary" disabled={salvando}><MessageSquarePlus size={15} /> Registrar interação</button></div></form>{selecionada.interacoes?.length ? <div className="matriz-opportunity-timeline">{selecionada.interacoes.map((item) => <div className="matriz-opportunity-timeline-item" key={item.id}><strong>{item.usuario_nome || "Usuário"}</strong><span>{item.descricao}</span><small>{new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" }).format(new Date(item.criado_em))}</small></div>)}</div> : <div className="matriz-empty">Ainda não há interações registradas.</div>}</div></section>}
+            {selecionada && <section className="matriz-card matriz-section matriz-opportunity-detail"><div className="matriz-section-heading"><div><div className="matriz-eyebrow">Oportunidade selecionada</div><h2>{selecionada.nome_negocio_contato}</h2><p>{selecionada.vendedor_nome} · {STATUS_LABEL[selecionada.status] || selecionada.status}</p>{selecionada.tenant_real_id && <p>Empresa real criada: {selecionada.tenant_real_nome} · demonstração original mantida.</p>}</div><MessageSquarePlus size={21} color="var(--matriz-accent)" /></div><div className="matriz-inline-actions matriz-opportunity-actions">{!selecionada.tenant_demo_id && <Link className="matriz-button primary" to={`/matriz/demonstracoes/nova?oportunidadeId=${selecionada.id}`}><Plus size={15} /> Criar demonstração</Link>}{selecionada.tenant_demo_id && <Link className="matriz-button" to={`/matriz/demonstracoes/${selecionada.tenant_demo_id}/previa`}><Eye size={15} /> Abrir prévia</Link>}{selecionada.tenant_demo_id && !selecionada.conversao_solicitada_em && selecionada.status !== "CONVERTIDO" && <button className="matriz-button" type="button" onClick={() => void executarAcao(solicitarConversaoMatriz, "Solicitar conversão desta demonstração para empresa real?")}>Solicitar conversão</button>}{admin && selecionada.conversao_solicitada_em && !selecionada.tenant_real_id && <button className="matriz-button primary" type="button" onClick={() => setModalConversao(true)}>Revisar e aprovar conversão</button>}</div><div className="matriz-opportunity-history"><h3>Registrar interação</h3><form onSubmit={salvarInteracao}><div className="matriz-form-grid"><label className="matriz-field"><span>Descrição *</span><textarea required rows="3" value={interacao.descricao} onChange={(event) => setInteracao((atual) => ({ ...atual, descricao: event.target.value }))} /></label><label className="matriz-field"><span>Próxima ação</span><input value={interacao.proxima_acao} onChange={(event) => setInteracao((atual) => ({ ...atual, proxima_acao: event.target.value }))} /></label><label className="matriz-field"><span>Próximo contato</span><input type="date" value={interacao.proximo_contato} onChange={(event) => setInteracao((atual) => ({ ...atual, proximo_contato: event.target.value }))} /></label><label className="matriz-field"><span>Atualizar status</span><select value={interacao.status} onChange={(event) => setInteracao((atual) => ({ ...atual, status: event.target.value }))}><option value="">Manter status</option>{STATUS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label></div><div className="matriz-form-actions"><button className="matriz-button primary" disabled={salvando}><MessageSquarePlus size={15} /> Registrar interação</button></div></form>{selecionada.interacoes?.length ? <div className="matriz-opportunity-timeline">{selecionada.interacoes.map((item) => <div className="matriz-opportunity-timeline-item" key={item.id}><strong>{item.usuario_nome || "Usuário"}</strong><span>{item.descricao}</span><small>{new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" }).format(new Date(item.criado_em))}</small></div>)}</div> : <div className="matriz-empty">Ainda não há interações registradas.</div>}</div></section>}
+            {modalConversao && selecionada && <MatrizAprovarConversao oportunidade={selecionada} onConfirmar={confirmarConversao} onFechar={() => setModalConversao(false)} salvando={salvando} />}
         </div>
     );
 }

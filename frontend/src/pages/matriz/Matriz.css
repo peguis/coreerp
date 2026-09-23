@@ -253,3 +253,79 @@
     .matriz-preview-hero { align-items: flex-start; flex-direction: column; }
     .matriz-preview-logo { width: 68px; height: 68px; }
 }
+.matriz-provision-form.wizard-step-1 > :nth-child(2),
+.matriz-provision-form.wizard-step-1 > :nth-child(3),
+.matriz-provision-form.wizard-step-1 > :nth-child(4),
+.matriz-provision-form.wizard-step-2 > :nth-child(1),
+.matriz-provision-form.wizard-step-2 > :nth-child(3),
+.matriz-provision-form.wizard-step-3 > :nth-child(1),
+.matriz-provision-form.wizard-step-3 > :nth-child(2),
+.matriz-provision-form.wizard-step-3 > :nth-child(4) {
+    display: none;
+}
+
+.matriz-wizard-progress {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.matriz-wizard-progress > div {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--matriz-muted, #a6a6a6);
+}
+
+.matriz-wizard-progress > div span {
+    display: inline-grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+}
+
+.matriz-wizard-progress > div.active {
+    color: var(--matriz-accent, #d8ae35);
+}
+
+@media (max-width: 600px) {
+    .matriz-wizard-progress { gap: .45rem; justify-content: space-between; }
+    .matriz-wizard-progress > div { gap: .25rem; font-size: .75rem; }
+}
+
+.matriz-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+    padding: 1rem;
+    background: rgba(0, 0, 0, .76);
+}
+
+.matriz-conversion-modal {
+    width: min(760px, 100%);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .45);
+}
+
+.matriz-conversion-summary {
+    display: grid;
+    gap: .4rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px solid var(--matriz-border);
+    border-radius: 10px;
+    color: var(--matriz-muted);
+}
+
+.matriz-conversion-summary strong { color: var(--matriz-text); }
+
+@media (max-width: 600px) {
+    .matriz-modal-backdrop { padding: .5rem; }
+    .matriz-conversion-modal { max-height: calc(100vh - 1rem); }
+}

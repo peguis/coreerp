@@ -38,6 +38,9 @@ class Oportunidade(Base):
     tenant_demo_id: Mapped[int | None] = mapped_column(
         ForeignKey("empresas.id"), nullable=True, index=True
     )
+    tenant_real_id: Mapped[int | None] = mapped_column(
+        ForeignKey("empresas.id"), nullable=True, index=True
+    )
     ultima_interacao_em: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
@@ -67,6 +70,9 @@ class Oportunidade(Base):
     )
     tenant_demo: Mapped["Empresa | None"] = relationship(
         "Empresa", foreign_keys=[tenant_demo_id]
+    )
+    tenant_real: Mapped["Empresa | None"] = relationship(
+        "Empresa", foreign_keys=[tenant_real_id]
     )
     interacoes: Mapped[list["OportunidadeInteracao"]] = relationship(
         "OportunidadeInteracao",

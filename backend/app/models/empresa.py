@@ -128,6 +128,14 @@ class Empresa(Base):
         nullable=True,
     )
 
+    demo_arquivada_em: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    template_demo: Mapped[str | None] = mapped_column(String(40), nullable=True)
+
+    dados_apresentacao: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    chave_idempotencia: Mapped[str | None] = mapped_column(String(80), unique=True, index=True, nullable=True)
+
 
     ativo: Mapped[bool] = mapped_column(
         Boolean,

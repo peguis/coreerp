@@ -29,8 +29,12 @@ class EmpresaProvisionamentoCreate(BaseModel):
 
 
 class MatrizDemonstracaoCreate(EmpresaProvisionamentoCreate):
+    modulos_iniciais: list[str] = Field(min_length=1, max_length=30)
     vendedor_id: int | None = None
     oportunidade_id: int | None = None
+    template: str = Field(default="personalizado", max_length=40)
+    dados_apresentacao: bool = False
+    chave_idempotencia: str = Field(min_length=16, max_length=80)
 
 
 class EmpresaConfiguracaoUpdate(BaseModel):

@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 from app.schemas.empresa import EmpresaResponse
 from app.schemas.modulo import ModuloResponse
@@ -126,6 +126,8 @@ class MatrizOportunidadeResponse(BaseModel):
     tenant_demo_nome: str | None = None
     tenant_demo_ativo: bool | None = None
     tenant_demo_eh_demo: bool | None = None
+    tenant_real_id: int | None = None
+    tenant_real_nome: str | None = None
     ultima_interacao_em: datetime | None = None
     conversao_solicitada_em: datetime | None = None
     convertido_em: datetime | None = None
@@ -146,10 +148,24 @@ class MatrizPreviaDemonstracaoResponse(BaseModel):
     criado_por_usuario_id: int | None = None
     criado_por_usuario_nome: str | None = None
     modulos_ativos: list[str] = Field(default_factory=list)
+    template: str | None = None
+    dados_apresentacao: bool = False
+    demo_arquivada_em: datetime | None = None
+    url_acesso: str | None = None
 
 
 class MatrizAprovarConversao(BaseModel):
     confirmar: bool = False
+    cnpj: str = Field(min_length=1, max_length=18)
+    email: EmailStr
+    administrador_nome: str = Field(min_length=3, max_length=150)
+    administrador_email: EmailStr
+    administrador_senha: str = Field(min_length=6, max_length=128)
+
+    @field_validator("email", "administrador_email")
+    @classmethod
+    def normalizar_email(cls, value):
+        return str(value).strip().lower()
 
 
 class MatrizAlerta(BaseModel):

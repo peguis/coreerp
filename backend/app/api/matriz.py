@@ -37,6 +37,7 @@ from app.services.matriz import (
     listar_usuarios_matriz,
 )
 from app.services.matriz_comercial import (
+    arquivar_demonstracao_matriz,
     aprovar_conversao_matriz,
     atualizar_oportunidade_matriz,
     criar_demonstracao_matriz,
@@ -240,6 +241,15 @@ def previa_demonstracao(
     usuario=Depends(require_perfil("pegs_admin", "vendedor_pegs")),
 ):
     return obter_previa_demonstracao_matriz(db, usuario, empresa_id)
+
+
+@router.post("/demonstracoes/{empresa_id}/arquivar")
+def arquivar_demonstracao(
+    empresa_id: int,
+    db: Session = Depends(get_db),
+    usuario=Depends(require_perfil("pegs_admin")),
+):
+    return arquivar_demonstracao_matriz(db, usuario, empresa_id)
 
 
 @router.post(
