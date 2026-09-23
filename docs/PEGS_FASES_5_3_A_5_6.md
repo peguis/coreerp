@@ -96,6 +96,49 @@ estados de loading/skeleton/erro/retry/vazio e semântica `role=status/alert`.
 
 ## Fase 5.6 — segurança e operação
 
-**Estado: revisão de código/testes em andamento.** Registrar aqui apenas achados
-reproduzidos, correções e comandos/ambientes efetivamente usados. Revisão de
-staging, restauração real e homologação permanecem separadas de validação local.
+**Estado: revisão local concluída; validação operacional em staging pendente.**
+
+### Escopo revisado e evidências
+
+- A API da Matriz restringe oportunidades à empresa da sessão e vendedores às
+  próprias oportunidades/demonstrações; ações administrativas e arquivamento
+  exigem `pegs_admin`. A suíte cobre isolamento de vendedor, tenant e perfis.
+- Tokens/autorização passam pela dependência de usuário autenticado; as rotas
+  operacionais usam `empresa_id` do usuário, e as configurações exigem
+  `SECRET_KEY` não-placeholder. Nenhum `.env`, token ou segredo foi lido ou
+  alterado nesta revisão.
+- Provisionamento existente conserva idempotência por chave e tenant demo;
+  conversão cria tenant real separado, preserva vínculo com a demo e registra
+  auditoria. A migração anteriormente validada foi testada apenas em PostgreSQL
+  local descartável, não em staging.
+- **Achado confirmado e corrigido:** era possível solicitar conversão de demo
+  arquivada/inativa e aprovar solicitação pendente após o arquivamento. Agora os
+  dois caminhos respondem HTTP 409; teste de integração cobre ambos. O histórico
+  e os dados da demo continuam preservados.
+- A verificação de upload da Matriz não se aplica: o wizard aceita URL de logo,
+  não upload. Upload de imagem de produto é fluxo distinto e ficou fora do escopo.
+- Limitações operacionais confirmadas: limite de login em memória por processo;
+  logs em arquivo/stdout sem rotação configurada; backup gera dump custom e hash,
+  mas não há automação de retenção/cópia externa/restauração validada; `/healthz`
+  verifica banco via `SELECT 1`, não monitoramento integral.
+
+### Validação executada
+
+- `backend/tests/test_matriz_comercial.py`: **2 passaram**.
+- `backend/tests`: **143 passaram, 1 ignorado**. Permanecem avisos antigos de
+  depreciação SQLAlchemy/Pydantic/Starlette e dependências cíclicas nas fixtures.
+- Fase 5.5: ESLint direcionado, build frontend e 6 testes de identidade passaram;
+  build ainda alerta bundle JavaScript acima de 500 kB. Revisão visual desktop e
+  mobile continua pendente porque o navegador não foi liberado para automação.
+- `git diff --check` passou antes do commit. Não houve acesso a staging,
+  restauração real de backup, deploy, alteração de infraestrutura ou produção.
+
+### Pendências antes de considerar pronto para exposição pública
+
+1. Preparar staging isolado com segredos no secret manager e autorização explícita.
+2. Ensaiar restauração do backup em banco descartável; definir retenção e cópia
+   externa.
+3. Compartilhar rate limit entre instâncias e estabelecer rotação/retensão de
+   logs e monitoramento além do health check do banco.
+4. Validar visualmente a Matriz em desktop/mobile e realizar homologação humana
+   com roteiro e versão/ambiente identificados.

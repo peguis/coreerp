@@ -184,3 +184,89 @@ def test_vendedor_isola_oportunidades_e_cria_demo_com_auditoria(client, auth_hea
         "CONVERTER_EMPRESA_REAL",
         "APROVAR_CONVERSAO_EMPRESA",
     }.issubset(acoes)
+
+
+def test_demo_arquivada_bloqueia_solicitacao_e_aprovacao_de_conversao(client, auth_headers):
+    criar_usuario_matriz(
+        client,
+        auth_headers,
+        nome="Admin Matriz Arquivamento",
+        email="admin.arquivamento@coreerp.com",
+        perfil="pegs_admin",
+    )
+    criar_usuario_matriz(
+        client,
+        auth_headers,
+        nome="Vendedor Arquivamento",
+        email="vendedor.arquivamento@coreerp.com",
+        perfil="vendedor_pegs",
+    )
+    admin_headers = autenticar(client, "admin.arquivamento@coreerp.com", "senha-forte")
+    vendedor_headers = autenticar(client, "vendedor.arquivamento@coreerp.com", "senha-forte")
+
+    def criar_oportunidade_demo(sufixo):
+        oportunidade = client.post(
+            "/matriz/oportunidades",
+            headers=vendedor_headers,
+            json={"nome_negocio_contato": f"Studio Arquivado {sufixo}", "status": "NOVO"},
+        )
+        assert oportunidade.status_code == 200, oportunidade.text
+        oportunidade_id = oportunidade.json()["id"]
+        demo = client.post(
+            "/matriz/demonstracoes",
+            headers=vendedor_headers,
+            json={
+                "nome": f"Studio Arquivado Demo {sufixo}",
+                "cnpj": f"555555550001{str(sufixo).zfill(2)}",
+                "email": f"contato.arquivado.{sufixo}@example.com",
+                "administrador_nome": "Admin Demo",
+                "administrador_email": f"admin.demo.arquivado.{sufixo}@example.com",
+                "administrador_senha": "senha-demo-forte",
+                "tipo_negocio": "STUDIO",
+                "modulos_iniciais": ["dashboard"],
+                "oportunidade_id": oportunidade_id,
+                "template": "tatuagem",
+                "dados_apresentacao": False,
+                "chave_idempotencia": f"demo-arquivada-key-{str(sufixo).zfill(8)}",
+            },
+        )
+        assert demo.status_code == 200, demo.text
+        return oportunidade_id, demo.json()["id"]
+
+    # Uma solicitação feita antes do arquivamento não pode ser aprovada depois.
+    oportunidade_id, demo_id = criar_oportunidade_demo(1)
+    solicitada = client.post(
+        f"/matriz/oportunidades/{oportunidade_id}/solicitar-conversao",
+        headers=vendedor_headers,
+    )
+    assert solicitada.status_code == 200, solicitada.text
+    arquivada = client.post(f"/matriz/demonstracoes/{demo_id}/arquivar", headers=admin_headers)
+    assert arquivada.status_code == 200, arquivada.text
+    aprovada = client.post(
+        f"/matriz/oportunidades/{oportunidade_id}/aprovar-conversao",
+        headers=admin_headers,
+        json={
+            "confirmar": True,
+            "cnpj": "66666666000199",
+            "email": "contato.real.arquivado@example.com",
+            "administrador_nome": "Admin Real",
+            "administrador_email": "admin.real.arquivado@example.com",
+            "administrador_senha": "senha-real-forte",
+        },
+    )
+    assert aprovada.status_code == 409
+    assert "demonstração ativa" in aprovada.json()["detail"]
+
+    # Uma demonstração arquivada antes do pedido também não aceita solicitação.
+    oportunidade_nova_id, demo_nova_id = criar_oportunidade_demo(2)
+    arquivada_antes = client.post(
+        f"/matriz/demonstracoes/{demo_nova_id}/arquivar",
+        headers=admin_headers,
+    )
+    assert arquivada_antes.status_code == 200, arquivada_antes.text
+    solicitada_apos_arquivo = client.post(
+        f"/matriz/oportunidades/{oportunidade_nova_id}/solicitar-conversao",
+        headers=vendedor_headers,
+    )
+    assert solicitada_apos_arquivo.status_code == 409
+    assert "arquivada ou inativa" in solicitada_apos_arquivo.json()["detail"]

@@ -449,7 +449,9 @@ def solicitar_conversao_matriz(db: Session, usuario: Usuario, oportunidade_id: i
         return _oportunidade_dict(oportunidade)
     if not oportunidade.tenant_demo_id:
         raise HTTPException(status_code=400, detail="Vincule uma demonstração antes de solicitar conversão.")
-    _obter_demo(db, usuario, oportunidade.tenant_demo_id)
+    demo = _obter_demo(db, usuario, oportunidade.tenant_demo_id)
+    if not demo.ativo or demo.demo_arquivada_em:
+        raise HTTPException(status_code=409, detail="Não é possível converter uma demonstração arquivada ou inativa.")
     oportunidade.conversao_solicitada_em = datetime.now(timezone.utc)
     oportunidade.conversao_solicitada_por_id = usuario.id
     oportunidade.status = "PROPOSTA_ENVIADA"
@@ -484,7 +486,7 @@ def aprovar_conversao_matriz(
     if not oportunidade.tenant_demo_id or not oportunidade.conversao_solicitada_em:
         raise HTTPException(status_code=400, detail="A oportunidade ainda não possui solicitação de conversão.")
     demo = db.query(Empresa).filter(Empresa.id == oportunidade.tenant_demo_id).first()
-    if not demo or not demo.eh_demo:
+    if not demo or not demo.eh_demo or not demo.ativo or demo.demo_arquivada_em:
         raise HTTPException(status_code=409, detail="O tenant relacionado não é uma demonstração ativa.")
     dados_empresa = EmpresaProvisionamentoCreate(
         nome=demo.nome,
