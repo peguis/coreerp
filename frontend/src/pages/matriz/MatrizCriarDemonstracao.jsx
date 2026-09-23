@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Building2, Layers3, Save, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, Layers3, Save, ShieldCheck } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -146,7 +146,14 @@ export default function MatrizCriarDemonstracao() {
                 <section className="matriz-card matriz-section"><div className="matriz-section-heading"><div><h2>Identidade da prévia</h2><p>Logo e cores podem ser ajustadas na configuração do tenant depois.</p></div><span className="matriz-badge protected"><ShieldCheck size={12} /> Ambiente demo</span></div><div className="matriz-form-grid">{campo("logo_url", "URL da logo (opcional)")}{campo("cor_primaria", "Cor primária (opcional)")}{campo("cor_secundaria", "Cor secundária (opcional)")}</div></section>
                 <section className="matriz-card matriz-section"><div className="matriz-section-heading"><div><h2>Acesso de prévia</h2><p>Crie o administrador inicial para a demonstração.</p></div><ShieldCheck size={20} color="var(--matriz-accent)" /></div><div className="matriz-form-grid">{campo("administrador_nome", "Nome do administrador *", "text", true)}{campo("administrador_email", "E-mail de acesso *", "email", true)}{campo("administrador_senha", "Senha temporária *", "password", true)}</div></section>
                 <section className="matriz-card matriz-section" aria-busy={!modulos.length && !erro}><div className="matriz-section-heading"><div><h2>Módulos da prévia</h2><p>Selecione as funcionalidades que serão apresentadas.</p></div><Layers3 size={20} color="var(--matriz-accent)" /></div>{!modulos.length && !erro ? <SectionLoading message="Carregando catálogo de módulos..." /> : <div className="matriz-module-check-grid">{modulos.map((modulo) => { const marcado = selecionados.has(modulo.codigo); return <label className={`matriz-module-check ${marcado ? "checked" : ""}`} key={modulo.codigo}><input type="checkbox" checked={marcado} disabled={modulo.obrigatorio} onChange={() => alternarModulo(modulo.codigo, modulo.obrigatorio)} /><span><strong>{modulo.nome}</strong><small>{modulo.descricao || "Módulo disponível na plataforma."}</small></span>{modulo.obrigatorio && <em>Obrigatório</em>}</label>; })}</div>}<label className="matriz-module-check"><input type="checkbox" checked={dadosApresentacao} onChange={(event) => setDadosApresentacao(event.target.checked)} /><span><strong>Incluir dados ilustrativos de apresentação</strong><small>Opcional. Os registros serão claramente identificados e existirão apenas neste tenant demo.</small></span></label></section>
-                <div className="matriz-form-actions"><Link className="matriz-button" to="/matriz/oportunidades">Cancelar</Link><button className="matriz-button primary" type="submit" disabled={salvando || !modulos.length} aria-busy={salvando || undefined}><Save size={16} /> {salvando ? "Criando..." : "Criar demonstração"}</button></div>
+                <div className="matriz-form-actions">
+                    <Link className="matriz-button" to="/matriz/oportunidades">Cancelar</Link>
+                    {etapa > 1 && <button className="matriz-button" type="button" onClick={() => setEtapa((atual) => Math.max(1, atual - 1))}><ArrowLeft size={16} /> Voltar etapa</button>}
+                    <button className="matriz-button primary" type="submit" disabled={salvando || !modulos.length} aria-busy={salvando || undefined}>
+                        {etapa === 3 ? <Save size={16} /> : <ArrowRight size={16} />}
+                        {salvando ? "Criando..." : etapa === 1 ? "Continuar" : etapa === 2 ? "Revisar demonstração" : "Criar demonstração"}
+                    </button>
+                </div>
             </form>
         </div>
     );

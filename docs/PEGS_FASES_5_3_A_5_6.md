@@ -78,13 +78,21 @@ criada para uso público.
 
 ## Fase 5.5 — UX/UI da Matriz Pegs
 
-**Estado: auditoria de código iniciada; inspeção visual desktop/mobile pendente.**
+**Estado: auditoria de código concluída; inspeção visual desktop/mobile pendente.**
 As telas existentes incluem Dashboard, Empresas, Provisionamento, Detalhe,
-Auditoria, Oportunidades, criação de demonstração e prévia. Os componentes de
-loading compartilhados cobrem página, seção, skeletons, erro/retry e vazio.
-Nenhuma mudança visual foi feita sem captura verificável do navegador. A janela
-local não foi liberada para automação na validação anterior; repetir somente
-quando o navegador/ambiente local estiver disponível.
+Auditoria, Oportunidades, criação de demonstração e prévia. A base já tem
+breakpoints responsivos, cartões mobile para oportunidades, foco global visível,
+estados de loading/skeleton/erro/retry/vazio e semântica `role=status/alert`.
+- Achado concreto: no wizard de criação, os passos 1 e 2 anunciavam “Criar
+  demonstração” mesmo apenas avançando e não permitiam voltar para revisar os
+  dados. Corrigido com rótulos de ação por passo e botão “Voltar etapa”.
+- O ajuste alterou somente a interface de `MatrizCriarDemonstracao.jsx`; payload,
+  API, permissões e regras de negócio foram preservados.
+- Validação: ESLint direcionado, build frontend e 6 testes de identidade passaram;
+  o build mantém aviso do bundle JavaScript >500 kB.
+- A janela do navegador não foi liberada para automação, portanto não declaro
+  conferência visual de desktop/mobile. Conferir a navegação corrigida em ambos
+  quando o ambiente visual estiver disponível.
 
 ## Fase 5.6 — segurança e operação
 
