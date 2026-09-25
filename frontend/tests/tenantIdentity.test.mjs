@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { clearAuthSession } from "../src/auth/session.js";
+import { attachSessionToken } from "../src/services/sessionAuth.js";
+import { shouldFetchAuthenticatedTenantIdentity } from "../src/tenant/tenantIdentityFlow.js";
 
 import {
     TENANT_KEYS,
@@ -92,4 +95,45 @@ test("a matriz usa a identidade Pegs sem transformar a matriz em tenant", () => 
     assert.match(identity.tenantLogo, /brand\/pegs\/logo\.png$/);
     assert.equal(css["--tenant-accent"], "#6f8cff");
     assert.equal(identity.tenantLoginMessage, "Administração da plataforma Pegs");
+});
+
+test("logout limpa a sessão e interrompe a busca autenticada da identidade do tenant", () => {
+    const values = new Map([
+        ["token", "token-profissional-hype"],
+        ["usuario", JSON.stringify({ perfil: "profissional" })]
+    ]);
+    const storage = { removeItem: (key) => values.delete(key) };
+
+    assert.equal(shouldFetchAuthenticatedTenantIdentity(values.get("token"), "/inicio"), true);
+
+    clearAuthSession(storage);
+
+    assert.equal(values.has("token"), false);
+    assert.equal(values.has("usuario"), false);
+    assert.equal(shouldFetchAuthenticatedTenantIdentity(values.get("token"), "/login"), false);
+});
+
+test("login da HYPE ignora um token residual e não busca identidade autenticada", () => {
+    assert.equal(shouldFetchAuthenticatedTenantIdentity("token-antigo", "/login"), false);
+});
+
+test("requisições iniciadas depois do logout não enviam o bearer antigo", () => {
+    const previousStorage = globalThis.localStorage;
+    const values = new Map([["token", "token-antigo"]]);
+    globalThis.localStorage = {
+        getItem: (key) => values.get(key) ?? null,
+        removeItem: (key) => values.delete(key)
+    };
+
+    try {
+        clearAuthSession();
+        const config = attachSessionToken({ headers: {} });
+        assert.equal(config.headers.Authorization, undefined);
+    } finally {
+        if (previousStorage === undefined) {
+            delete globalThis.localStorage;
+        } else {
+            globalThis.localStorage = previousStorage;
+        }
+    }
 });

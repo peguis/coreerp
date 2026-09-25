@@ -11,6 +11,7 @@ import {
     tenantIdentityToCssVariables
 } from "./tenantIdentity";
 import { TenantContext } from "./TenantContextValue";
+import { shouldFetchAuthenticatedTenantIdentity } from "./tenantIdentityFlow";
 
 import "./TenantState.css";
 
@@ -49,7 +50,7 @@ export function TenantProvider({ children }) {
                     }
                     return;
                 }
-                if (!token || location.pathname === "/login") {
+                if (!shouldFetchAuthenticatedTenantIdentity(token, location.pathname)) {
                     const identity = resolveTenantIdentity({ hostname, configuredKey });
                     if (montado) {
                         applyTenantDocumentIdentity(identity);

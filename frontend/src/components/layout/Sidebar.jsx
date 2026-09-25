@@ -15,6 +15,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "../../hooks/useAuth";
 import { buscarUsuarioLogado, listarModulosEmpresa } from "../../services/usuarioService";
 import { useTenant } from "../../tenant/TenantContextValue";
 
@@ -77,6 +78,7 @@ export default function Sidebar({
     fecharMobile
 }) {
     const navigate = useNavigate();
+    const { logout: encerrarSessao } = useAuth();
     const { identity } = useTenant();
     const [perfil, setPerfil] = useState(null);
     const [modulosAtivos, setModulosAtivos] = useState(null);
@@ -106,10 +108,9 @@ export default function Sidebar({
         ? [{ grupo: "Minha operação", itens: filtrarItens(menusProfissional) }]
         : menusAdministrativos.map((grupo) => ({ ...grupo, itens: filtrarItens(grupo.itens) }));
 
-    function logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("usuario");
-        navigate("/login");
+    function sair() {
+        encerrarSessao();
+        navigate("/login", { replace: true });
     }
 
     function clicarMenu() {
@@ -177,7 +178,7 @@ export default function Sidebar({
             </div>
             <small className="sidebar-powered">Powered by Pegs</small>
 
-            <button className="sidebar-logout" onClick={logout}>
+            <button type="button" className="sidebar-logout" onClick={sair}>
                 <LogOut size={18} />
                 <span>Sair</span>
             </button>

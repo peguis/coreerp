@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { attachSessionToken } from "./sessionAuth";
 
 // Instância base do Axios apontando para a sua API FastAPI
 const api = axios.create({
@@ -8,11 +9,7 @@ const api = axios.create({
 // Request Interceptor: Injeta automaticamente o token JWT salvo no localStorage em todas as requisições
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
+        return attachSessionToken(config);
     },
     (error) => Promise.reject(error)
 );

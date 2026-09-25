@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { AuthContext } from "./AuthContextValue";
+import { clearAuthSession } from "./session";
 
 
 
@@ -42,18 +43,8 @@ export function AuthProvider({ children }) {
 
 
     function logout() {
-
-
-        localStorage.removeItem(
-
-            "token"
-
-        );
-
-
+        clearAuthSession();
         setToken(null);
-
-
     }
 
 
