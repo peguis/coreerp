@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { useAuth } from "../hooks/useAuth";
-import { buscarEmpresaAtual } from "../services/empresaService";
+import { buscarIdentidadeEmpresaAtual } from "../services/empresaService";
 import {
     applyTenantDocumentIdentity,
     createPegsMatrixIdentity,
@@ -49,7 +49,7 @@ export function TenantProvider({ children }) {
                     }
                     return;
                 }
-                if (!token) {
+                if (!token || location.pathname === "/login") {
                     const identity = resolveTenantIdentity({ hostname, configuredKey });
                     if (montado) {
                         applyTenantDocumentIdentity(identity);
@@ -58,7 +58,7 @@ export function TenantProvider({ children }) {
                     return;
                 }
 
-                const empresa = await buscarEmpresaAtual();
+                const empresa = await buscarIdentidadeEmpresaAtual();
                 const identity = resolveTenantIdentity({ empresa, hostname, configuredKey });
                 if (montado) {
                     applyTenantDocumentIdentity(identity);

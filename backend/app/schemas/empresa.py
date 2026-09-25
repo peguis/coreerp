@@ -56,6 +56,20 @@ class EmpresaOnboardingResponse(BaseModel):
     itens: list[EmpresaOnboardingItem]
 
 
+class EmpresaIdentidadeResponse(BaseModel):
+    id: int
+    nome: str
+    identidade_codigo: str | None
+    logo_url: str | None
+    cor_primaria: str | None
+    cor_secundaria: str | None
+    tema: str | None
+    tipo_negocio: str | None
+
+    class Config:
+        from_attributes = True
+
+
 
 class EmpresaResponse(BaseModel):
 

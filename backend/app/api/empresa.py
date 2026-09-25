@@ -7,6 +7,7 @@ from app.schemas.empresa import (
     EmpresaCreate,
     EmpresaResponse,
     EmpresaConfiguracaoUpdate,
+    EmpresaIdentidadeResponse,
     EmpresaOnboardingResponse,
     EmpresaProvisionamentoCreate,
 )
@@ -20,7 +21,7 @@ from app.services.empresa import (
     provisionar_empresa_service,
 )
 
-from app.auth.dependencies import require_perfil
+from app.auth.dependencies import get_current_user, require_perfil
 from app.services.auditoria import registrar_auditoria
 
 
@@ -59,6 +60,20 @@ def provisionar_empresa(
     usuario=Depends(require_perfil("pegs_admin")),
 ):
     return provisionar_empresa_service(db, dados, usuario_id=usuario.id)
+
+
+@router.get(
+    "/me/identidade",
+    response_model=EmpresaIdentidadeResponse,
+)
+def identidade_minha_empresa(
+    db: Session = Depends(get_db),
+    usuario=Depends(get_current_user),
+):
+    empresa = buscar_empresa_por_id_service(db, usuario.empresa_id)
+    if not empresa:
+        raise HTTPException(status_code=404, detail="Empresa não encontrada")
+    return empresa
 
 
 

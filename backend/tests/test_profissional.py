@@ -31,9 +31,16 @@ def profissional_client():
     db = session_factory()
 
     empresa_a = Empresa(
-        nome="Empresa A",
+        nome="HYPE STUDIO",
+        identidade_codigo="hype",
         cnpj="33333333333333",
         email="prof-empresa-a@teste.local",
+        telefone="85999999999",
+        logo_url="/tenants/hype/logo.png",
+        cor_primaria="#d9ab3f",
+        cor_secundaria="#edc45c",
+        tema="dark",
+        tipo_negocio="BARBEARIA_TATTOO",
     )
     empresa_b = Empresa(
         nome="Empresa B",
@@ -330,6 +337,68 @@ def test_perfil_profissional_faz_login_sem_acesso_administrativo(
     )
     assert acesso_profissionais.status_code == 403
     assert acesso_usuarios.status_code == 403
+
+
+def test_identidade_minima_respeita_empresa_e_permissoes_existentes(
+    profissional_client,
+):
+    ctx = profissional_client
+
+    headers_profissional_hype = {
+        "Authorization": f"Bearer {criar_token({'sub': ctx['usuarios']['a1'].email})}"
+    }
+    headers_profissional_outra_empresa = {
+        "Authorization": f"Bearer {criar_token({'sub': ctx['usuarios']['b1'].email})}"
+    }
+
+    identidade_hype = ctx["client"].get(
+        "/empresas/me/identidade",
+        headers=headers_profissional_hype,
+    )
+    assert identidade_hype.status_code == 200
+    assert identidade_hype.json() == {
+        "id": ctx["empresa_a"].id,
+        "nome": "HYPE STUDIO",
+        "identidade_codigo": "hype",
+        "logo_url": "/tenants/hype/logo.png",
+        "cor_primaria": "#d9ab3f",
+        "cor_secundaria": "#edc45c",
+        "tema": "dark",
+        "tipo_negocio": "BARBEARIA_TATTOO",
+    }
+    assert {"cnpj", "email", "telefone", "ativo", "created_at"}.isdisjoint(
+        identidade_hype.json()
+    )
+
+    identidade_outra_empresa = ctx["client"].get(
+        "/empresas/me/identidade",
+        headers=headers_profissional_outra_empresa,
+    )
+    assert identidade_outra_empresa.status_code == 200
+    assert identidade_outra_empresa.json()["id"] == ctx["empresa_b"].id
+    assert identidade_outra_empresa.json()["id"] != ctx["empresa_a"].id
+    assert identidade_outra_empresa.json()["identidade_codigo"] is None
+
+    assert ctx["client"].get(
+        "/empresas/me",
+        headers=headers_profissional_hype,
+    ).status_code == 403
+    assert ctx["client"].get(
+        f"/empresas/{ctx['empresa_a'].id}",
+        headers=headers_profissional_hype,
+    ).status_code == 403
+
+    assert ctx["client"].get(
+        "/empresas/me/identidade",
+        headers=ctx["headers_a"],
+    ).status_code == 200
+    empresa_completa = ctx["client"].get("/empresas/me", headers=ctx["headers_a"])
+    assert empresa_completa.status_code == 200
+    assert empresa_completa.json()["cnpj"] == ctx["empresa_a"].cnpj
+    assert ctx["client"].get(
+        "/empresas/me/identidade",
+        headers=ctx["headers_gerente_a"],
+    ).status_code == 200
 
 
 def test_admin_pode_editar_usuario_para_perfil_profissional(
