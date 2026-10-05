@@ -24,6 +24,30 @@ def criar_venda(
     return venda
 
 
+def buscar_venda_por_chave_idempotencia(
+    db: Session,
+    empresa_id,
+    chave_idempotencia,
+    bloquear=False
+):
+    consulta = (
+        db.query(Venda)
+        .options(
+            joinedload(Venda.cliente),
+            joinedload(Venda.itens)
+        )
+        .filter(
+            Venda.empresa_id == empresa_id,
+            Venda.chave_idempotencia == chave_idempotencia
+        )
+    )
+
+    if bloquear:
+        consulta = consulta.with_for_update()
+
+    return consulta.first()
+
+
 
 
 
@@ -56,10 +80,11 @@ def listar_vendas(
 def buscar_venda_por_id(
     db,
     venda_id,
-    empresa_id
+    empresa_id,
+    bloquear=False
 ):
 
-    return (
+    consulta = (
 
         db.query(Venda)
 
@@ -78,9 +103,13 @@ def buscar_venda_por_id(
 
         )
 
-        .first()
 
     )
+
+    if bloquear:
+        consulta = consulta.with_for_update()
+
+    return consulta.first()
 
 
 
@@ -93,7 +122,8 @@ def atualizar_venda(
 ):
 
     campos_permitidos = [
-        "status"
+        "status",
+        "estoque_baixado"
     ]
 
 

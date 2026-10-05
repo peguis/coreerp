@@ -10,6 +10,7 @@ from app.schemas.venda import (
 
 from app.services.venda import (
     criar_venda_service,
+    criar_pedido_ecommerce_service,
     listar_vendas_service,
     buscar_venda_service,
     atualizar_venda_service,
@@ -167,6 +168,28 @@ def remover_venda(
     sucesso = deletar_venda_service(
         db,
         venda_id,
+        empresa_id,
+        usuario.id
+    )
+
+
+@router.post(
+    "/integracao/ecommerce",
+    response_model=VendaResponse
+)
+def receber_pedido_ecommerce_endpoint(
+    venda: VendaCreate,
+    db: Session = Depends(get_db),
+    empresa_id: int = Depends(get_empresa_id),
+    usuario=Depends(require_perfil(
+        "admin",
+        "gerente",
+        "operador"
+    ))
+):
+    return criar_pedido_ecommerce_service(
+        db,
+        venda,
         empresa_id,
         usuario.id
     )

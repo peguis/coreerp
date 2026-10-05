@@ -32,6 +32,7 @@ export default function Login() {
     if (tenant.status === "error") return <TenantErrorState error={tenant.error} />;
 
     const { identity, cssVariables } = tenant;
+    const ehHeyPrimo = identity.tenantKey === "hey-primo";
     const loginStyle = {
         ...cssVariables,
         "--tenant-login-hero": identity.assets.loginHero ? `url(${identity.assets.loginHero})` : "none"
@@ -116,11 +117,22 @@ export default function Login() {
                             {loading ? "Entrando..." : "Entrar"}
                         </button>
                     </form>
-                    <p className="login-powered">
-                        <span>Sistema de gestão | Powered by</span>
-                        <span className="login-powered-brand">
-                            <img src={PLATFORM_ASSETS.logo} alt="Pegs" />
-                        </span>
+                    <p className={`login-powered ${ehHeyPrimo ? "login-powered-creator" : ""}`}>
+                        {ehHeyPrimo ? (
+                            <>
+                                <span>Criado pela</span>
+                                <span className="login-powered-brand">
+                                    <img src={identity.assets.creatorLogo} alt="Cuscuz Lab" />
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                <span>Sistema de gestão | Powered by</span>
+                                <span className="login-powered-brand">
+                                    <img src={PLATFORM_ASSETS.logo} alt="Pegs" />
+                                </span>
+                            </>
+                        )}
                     </p>
                 </div>
             </section>

@@ -553,6 +553,19 @@
 /* Dashboard composition follows the HYPE reference: four KPI cards, a visual
    summary and a compact attention panel. Every value is still API-backed. */
 .tenant-theme .piloto-page { gap: 18px; }
+.tenant-theme .dashboard-piloto-page {
+    position: relative;
+    isolation: isolate;
+    padding: 18px;
+    margin: -8px -8px -18px;
+    border-radius: 12px;
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--tenant-bg) 91%, transparent), color-mix(in srgb, var(--tenant-bg) 97%, transparent) 55%, var(--tenant-bg)),
+        var(--tenant-dashboard-hero);
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 .tenant-theme .piloto-page > .page-header { margin-bottom: 2px; }
 .tenant-theme .piloto-page > .form-card { background: transparent; border: 0; box-shadow: none; padding: 0; }
 .tenant-theme .piloto-page > .form-card .form-card-header { display: none; }
@@ -774,6 +787,27 @@
 
 .piloto-bar-column:hover .piloto-bar-tooltip {
     opacity: 1;
+}
+
+/* A série do dashboard é compartilhada: somente o tenant Pegs usa azul. */
+.tenant-theme-pegs-demo .piloto-chart-card .piloto-bar-column.has-revenue .piloto-bar-track > span {
+    background: var(--tenant-accent);
+}
+
+.tenant-theme-pegs-demo .piloto-chart-card .piloto-bar-column.no-revenue .piloto-bar-track > span {
+    background: var(--tenant-text-muted);
+}
+
+.tenant-theme-pegs-demo .piloto-chart-card .piloto-bar-column.is-highlighted.has-revenue .piloto-bar-track > span {
+    background: linear-gradient(180deg, var(--tenant-accent-secondary), var(--tenant-accent));
+}
+
+.tenant-theme-pegs-demo .piloto-chart-card .piloto-dot-revenue {
+    background: var(--tenant-accent);
+}
+
+.tenant-theme-pegs-demo .piloto-chart-card .piloto-dot-muted {
+    background: var(--tenant-text-muted);
 }
 
 .piloto-chart-legend {

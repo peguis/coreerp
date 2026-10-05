@@ -4,7 +4,10 @@ from sqlalchemy import (
     Float,
     String,
     ForeignKey,
-    DateTime
+    DateTime,
+    Boolean,
+    Text,
+    Index
 )
 
 from sqlalchemy.sql import func
@@ -18,6 +21,15 @@ from app.database import Base
 class Venda(Base):
 
     __tablename__ = "vendas"
+
+    __table_args__ = (
+        Index(
+            "uq_vendas_empresa_chave_idempotencia",
+            "empresa_id",
+            "chave_idempotencia",
+            unique=True
+        ),
+    )
 
 
     id = Column(
@@ -61,6 +73,48 @@ class Venda(Base):
         String,
         nullable=False,
         default="ABERTA"
+    )
+
+
+    estoque_baixado = Column(
+        Boolean,
+        nullable=False,
+        default=True,
+        server_default="1"
+    )
+
+
+    origem = Column(
+        String(30),
+        nullable=False,
+        default="ERP",
+        server_default="ERP"
+    )
+
+
+    pedido_externo_id = Column(
+        String(100),
+        nullable=True,
+        index=True
+    )
+
+
+    chave_idempotencia = Column(
+        String(80),
+        nullable=True,
+        index=True
+    )
+
+
+    observacoes = Column(
+        Text,
+        nullable=True
+    )
+
+
+    endereco_entrega = Column(
+        Text,
+        nullable=True
     )
 
 

@@ -31,6 +31,20 @@ class VendaCreate(BaseModel):
 
     itens: list[VendaItemCreate]
 
+    # A venda manual continua iniciando como ABERTA. A integração do
+    # e-commerce pode criar o pedido como PENDENTE, sem baixar estoque.
+    status: str = "ABERTA"
+
+    origem: str = Field(default="ERP", max_length=30)
+
+    pedido_externo_id: str | None = Field(default=None, max_length=100)
+
+    chave_idempotencia: str | None = Field(default=None, max_length=80)
+
+    observacoes: str | None = None
+
+    endereco_entrega: str | None = None
+
 
 
 class VendaResponse(BaseModel):
@@ -46,6 +60,18 @@ class VendaResponse(BaseModel):
     total: float
 
     status: str
+
+    estoque_baixado: bool
+
+    origem: str
+
+    pedido_externo_id: str | None = None
+
+    chave_idempotencia: str | None = None
+
+    observacoes: str | None = None
+
+    endereco_entrega: str | None = None
 
     created_at: datetime
 

@@ -164,7 +164,7 @@ function DashboardPiloto() {
                                         : 3;
                                     const ativo = item.diaSemana === grafico.diaDestaque;
                                     return (
-                                        <div className={`piloto-bar-column ${ativo ? "is-highlighted" : ""}`} key={item.diaSemana}>
+                                        <div className={`piloto-bar-column ${item.valor > 0 ? "has-revenue" : "no-revenue"} ${ativo ? "is-highlighted" : ""}`} key={item.diaSemana}>
                                             <span className="piloto-bar-tooltip">{formatarMoeda(item.valor)} · {item.quantidade} atend.</span>
                                             <div className="piloto-bar-track">
                                                 <span style={{ height: `${altura}%` }} title={`${DIAS_SEMANA[item.diaSemana]}: ${formatarMoeda(item.valor)} — ${item.quantidade} atendimentos`} />
@@ -175,7 +175,7 @@ function DashboardPiloto() {
                                 })}
                             </div>
                             <div className="piloto-chart-legend">
-                                <span><i className="piloto-dot piloto-dot-gold" /> Faturamento bruto</span>
+                                <span><i className="piloto-dot piloto-dot-revenue" /> Faturamento bruto</span>
                                 <span><i className="piloto-dot piloto-dot-muted" /> Sem faturamento</span>
                             </div>
                         </article>

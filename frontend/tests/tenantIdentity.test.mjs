@@ -34,6 +34,18 @@ test("Pegs-demo resolve logo, texto e paleta da plataforma", () => {
     assert.equal(css["--tenant-accent"], "#6f8cff");
 });
 
+test("Hey Primo resolve a identidade provisória de tabacaria", () => {
+    const identity = createTenantIdentity(TENANT_KEYS.HEY_PRIMO, { nome: "Hey Primo" });
+    const css = tenantIdentityToCssVariables(identity);
+
+    assert.equal(identity.tenantKey, "hey-primo");
+    assert.match(identity.tenantLogo, /tenants\/hey-primo\/logo-dashboard\.png$/);
+    assert.equal(identity.tenantPrimaryColor, "#c69b37");
+    assert.equal(identity.tenantAccentColor, "#c92b30");
+    assert.equal(identity.tenantLoginMessage, "Acesse o ambiente da Hey Primo");
+    assert.equal(css["--tenant-accent"], "#c69b37");
+});
+
 test("uma empresa não herda asset ou cor da outra identidade", () => {
     const hype = createTenantIdentity(TENANT_KEYS.HYPE, {
         nome: "HYPE STUDIO",

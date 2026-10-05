@@ -70,6 +70,10 @@ const menusProfissional = [
     { nome: "Minha produção", rota: "/minha-producao", icone: Wallet, modulo: "atendimentos" }
 ];
 
+const modulosOcultosPorTenant = Object.freeze({
+    "hey-primo": new Set(["agenda", "atendimentos", "profissionais", "servicos"])
+});
+
 export default function Sidebar({
     aberto = true,
     setAberto,
@@ -78,6 +82,7 @@ export default function Sidebar({
 }) {
     const navigate = useNavigate();
     const { identity } = useTenant();
+    const ehHeyPrimo = identity.tenantKey === "hey-primo";
     const [perfil, setPerfil] = useState(null);
     const [modulosAtivos, setModulosAtivos] = useState(null);
 
@@ -99,8 +104,10 @@ export default function Sidebar({
         void Promise.resolve().then(carregarPerfil);
     }, [carregarPerfil]);
 
+    const modulosOcultos = modulosOcultosPorTenant[identity.tenantKey] || new Set();
     const filtrarItens = (itens) => itens.filter((item) => (
-        !modulosAtivos || !item.modulo || modulosAtivos.has(item.modulo)
+        !modulosOcultos.has(item.modulo)
+        && (!modulosAtivos || !item.modulo || modulosAtivos.has(item.modulo))
     ));
     const gruposDeMenu = perfil === "profissional"
         ? [{ grupo: "Minha operação", itens: filtrarItens(menusProfissional) }]
@@ -175,7 +182,14 @@ export default function Sidebar({
                 <img className="sidebar-studio-logo" src={identity.tenantLogo} alt="" aria-hidden="true" />
                 <span><strong>{identity.tenantName}</strong><small>{identity.businessType}</small></span>
             </div>
-            <small className="sidebar-powered">Powered by Pegs</small>
+            <small className={`sidebar-powered ${ehHeyPrimo ? "sidebar-powered-creator" : ""}`}>
+                {ehHeyPrimo ? (
+                    <>
+                        <span>Criado pela</span>
+                        <img src={identity.assets.creatorLogo} alt="Cuscuz Lab" />
+                    </>
+                ) : "Powered by Pegs"}
+            </small>
 
             <button className="sidebar-logout" onClick={logout}>
                 <LogOut size={18} />

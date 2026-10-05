@@ -399,6 +399,27 @@
     text-align: center;
 }
 
+.sidebar-powered-creator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    letter-spacing: .03em;
+    text-transform: none;
+}
+.sidebar-powered-creator img {
+    display: block;
+    width: 72px;
+    height: 18px;
+    object-fit: contain;
+    transform: translateY(-3px);
+}
+.sidebar-powered-creator > span {
+    display: inline-flex;
+    align-items: center;
+    transform: translateY(0);
+}
+
 /* Tenant shell: compact rail, brand area and grouped navigation footer. */
 .tenant-theme .sidebar {
     width: 220px;

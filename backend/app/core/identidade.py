@@ -5,7 +5,12 @@ import re
 
 IDENTIDADE_HYPE = "hype"
 IDENTIDADE_PEGS_DEMO = "pegs-demo"
-IDENTIDADES_VALIDAS = frozenset({IDENTIDADE_HYPE, IDENTIDADE_PEGS_DEMO})
+IDENTIDADE_HEY_PRIMO = "hey-primo"
+IDENTIDADES_VALIDAS = frozenset({
+    IDENTIDADE_HYPE,
+    IDENTIDADE_PEGS_DEMO,
+    IDENTIDADE_HEY_PRIMO,
+})
 
 
 def normalizar_identidade_codigo(codigo: str | None) -> str | None:
@@ -15,6 +20,8 @@ def normalizar_identidade_codigo(codigo: str | None) -> str | None:
         "coreerp": IDENTIDADE_PEGS_DEMO,
         "demo": IDENTIDADE_PEGS_DEMO,
         "hype-studio": IDENTIDADE_HYPE,
+        "heyprimo": IDENTIDADE_HEY_PRIMO,
+        "hey primo": IDENTIDADE_HEY_PRIMO,
     }
     valor = aliases.get(valor, valor)
     return valor if valor in IDENTIDADES_VALIDAS else None
@@ -24,6 +31,8 @@ def inferir_identidade_codigo(nome: str | None, email: str | None) -> str | None
     texto = f"{nome or ''} {email or ''}".strip().lower()
     if re.search(r"\bhype\b", texto):
         return IDENTIDADE_HYPE
+    if re.search(r"\bhey\s+primo\b", texto):
+        return IDENTIDADE_HEY_PRIMO
     if re.search(r"\b(pegs|coreerp|demo)\b", texto):
         return IDENTIDADE_PEGS_DEMO
     return None

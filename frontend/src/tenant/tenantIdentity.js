@@ -1,6 +1,7 @@
 const TENANT_KEYS = Object.freeze({
     HYPE: "hype",
-    PEGS_DEMO: "pegs-demo"
+    PEGS_DEMO: "pegs-demo",
+    HEY_PRIMO: "hey-primo"
 });
 
 const KNOWN_TENANT_KEYS = new Set(Object.values(TENANT_KEYS));
@@ -13,6 +14,10 @@ const PALETTES = Object.freeze({
     hype: Object.freeze({
         primary: "#d9ab3f",
         secondary: "#edc45c"
+    }),
+    heyPrimo: Object.freeze({
+        primary: "#c69b37",
+        secondary: "#c92b30"
     })
 });
 
@@ -40,7 +45,8 @@ const TENANT_REGISTRY = Object.freeze({
             sidebarLogo: "/tenants/hype/logo.png",
             loginLogo: "/tenants/hype/logo-official.png",
             favicon: "/tenants/hype/logo-official.png",
-            loginHero: "/tenants/hype/login-hero.png"
+            loginHero: "/tenants/hype/login-hero.png",
+            dashboardHero: null
         })
     }),
     [TENANT_KEYS.PEGS_DEMO]: Object.freeze({
@@ -66,7 +72,36 @@ const TENANT_REGISTRY = Object.freeze({
             sidebarLogo: "/tenants/demo/logo.png",
             loginLogo: "/tenants/demo/logo.png",
             favicon: "/tenants/demo/logo.png",
-            loginHero: null
+            loginHero: null,
+            dashboardHero: null
+        })
+    }),
+    [TENANT_KEYS.HEY_PRIMO]: Object.freeze({
+        tenantKey: TENANT_KEYS.HEY_PRIMO,
+        tenantBrandName: "Hey Primo!",
+        tenantName: "Hey Primo",
+        businessType: "Tabacaria",
+        theme: "dark",
+        primary: PALETTES.heyPrimo.primary,
+        secondary: PALETTES.heyPrimo.secondary,
+        background: "#090909",
+        surface: "#151211",
+        surfaceRaised: "#211a16",
+        surfaceElevated: "#2a201a",
+        border: "#3b2a20",
+        borderStrong: "#5b3e27",
+        text: "#f6edd9",
+        textSecondary: "#d4c5a8",
+        textMuted: "#9e8d72",
+        loginMessage: "Acesse o ambiente da Hey Primo",
+        slogan: ["ATITUDE", "ESTILO", "CONEXÃO"],
+        assets: Object.freeze({
+            sidebarLogo: "/tenants/hey-primo/logo-dashboard.png",
+            loginLogo: "/tenants/hey-primo/logo.png",
+            favicon: "/tenants/hey-primo/logo.png",
+            loginHero: "/tenants/hey-primo/login-hero-v1.png",
+            dashboardHero: "/tenants/hey-primo/dashboard-hero-v1.png",
+            creatorLogo: "/brand/cuscuzlab/logo.png"
         })
     })
 });
@@ -133,12 +168,14 @@ export function normalizarTenantKey(value) {
     if (KNOWN_TENANT_KEYS.has(normalized)) return normalized;
     if (["pegs", "coreerp", "demo"].includes(normalized)) return TENANT_KEYS.PEGS_DEMO;
     if (["hype-studio", "hype studio"].includes(normalized)) return TENANT_KEYS.HYPE;
+    if (["heyprimo", "hey primo"].includes(normalized)) return TENANT_KEYS.HEY_PRIMO;
     return null;
 }
 
 function tenantKeyFromHost(hostname) {
     const host = normalizarTexto(hostname);
     if (host.includes("hype-studio")) return TENANT_KEYS.HYPE;
+    if (host.includes("hey-primo") || host.includes("heyprimo")) return TENANT_KEYS.HEY_PRIMO;
     if (host.includes("pegs") || host.includes("coreerp") || host.includes("demo")) {
         return TENANT_KEYS.PEGS_DEMO;
     }
@@ -153,6 +190,7 @@ function tenantKeyFromCompany(empresa) {
 
     const companyText = normalizarTexto(`${empresa?.nome || ""} ${empresa?.email || ""}`);
     if (companyText.includes("hype")) return TENANT_KEYS.HYPE;
+    if (companyText.includes("hey primo") || companyText.includes("heyprimo")) return TENANT_KEYS.HEY_PRIMO;
     if (companyText.includes("pegs") || companyText.includes("coreerp") || companyText.includes("demo")) {
         return TENANT_KEYS.PEGS_DEMO;
     }
@@ -194,10 +232,20 @@ export function createTenantIdentity(tenantKey, empresa = null) {
     }
 
     const isHype = base.tenantKey === TENANT_KEYS.HYPE;
+    const isHeyPrimo = base.tenantKey === TENANT_KEYS.HEY_PRIMO;
     const forbiddenColors = isHype
         ? [PALETTES.pegs.primary, PALETTES.pegs.secondary]
-        : [PALETTES.hype.primary, PALETTES.hype.secondary];
-    const forbiddenLogo = isHype ? /pegs|coreerp/i : /hype/i;
+        : isHeyPrimo
+            ? [PALETTES.pegs.primary, PALETTES.pegs.secondary, PALETTES.hype.primary, PALETTES.hype.secondary]
+            : [PALETTES.hype.primary, PALETTES.hype.secondary];
+    const forbiddenLogo = isHype
+        ? /pegs|coreerp/i
+        : isHeyPrimo
+            ? /pegs|coreerp|hype/i
+            : /hype/i;
+    const tenantLogo = isHeyPrimo
+        ? base.assets.sidebarLogo
+        : assetOrFallback(empresa?.logo_url, base.assets.sidebarLogo, forbiddenLogo);
 
     return Object.freeze({
         ...base,
@@ -208,10 +256,10 @@ export function createTenantIdentity(tenantKey, empresa = null) {
         tenantBackground: base.background,
         tenantLoginMessage: base.loginMessage,
         tenantTheme: base.theme,
-        tenantLogo: assetOrFallback(empresa?.logo_url, base.assets.sidebarLogo, forbiddenLogo),
+        tenantLogo,
         assets: Object.freeze({
             ...base.assets,
-            sidebarLogo: assetOrFallback(empresa?.logo_url, base.assets.sidebarLogo, forbiddenLogo)
+            sidebarLogo: tenantLogo
         })
     });
 }
@@ -249,7 +297,8 @@ export function tenantIdentityToCssVariables(identity) {
         "--focus-ring": `0 0 0 3px color-mix(in srgb, ${primary} 18%, transparent)`,
         "--tenant-success": "#43c58b",
         "--tenant-warning": "#e1ae4a",
-        "--tenant-danger": "#e26b72"
+        "--tenant-danger": "#e26b72",
+        "--tenant-dashboard-hero": identity.assets.dashboardHero ? `url(${identity.assets.dashboardHero})` : "none"
     };
 }
 

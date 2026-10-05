@@ -2,12 +2,25 @@ from fastapi import HTTPException
 
 
 STATUS_VALIDOS = [
+    "PENDENTE",
     "ABERTA",
     "SEPARACAO",
     "FATURADA",
     "PAGA",
+    "CONCLUIDA",
+    "FINALIZADA",
     "CANCELADA"
 ]
+
+
+STATUS_COM_BAIXA_DE_ESTOQUE = {
+    "ABERTA",
+    "SEPARACAO",
+    "FATURADA",
+    "PAGA",
+    "CONCLUIDA",
+    "FINALIZADA",
+}
 
 
 def validar_venda(
@@ -55,10 +68,16 @@ def validar_venda(
 
 def validar_status_venda(status):
 
-    if status.upper() not in STATUS_VALIDOS:
+    if not isinstance(status, str) or status.upper() not in STATUS_VALIDOS:
         raise HTTPException(
             status_code=400,
             detail="Status da venda inválido."
         )
 
     return status.upper()
+
+
+def status_baixa_estoque(status):
+    """Indica se o status representa uma venda que já ocupa o estoque."""
+
+    return status in STATUS_COM_BAIXA_DE_ESTOQUE
