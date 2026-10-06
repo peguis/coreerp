@@ -21,6 +21,17 @@ class Settings(BaseSettings):
 
     LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = 60
 
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def normalizar_database_url(cls, value: str) -> str:
+        """Garante o driver psycopg para URLs PostgreSQL de provedores gerenciados."""
+        url = str(value or "").strip()
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        if url.startswith("postgresql://"):
+            url = "postgresql+psycopg://" + url[len("postgresql://"):]
+        return url
+
     @field_validator("SECRET_KEY")
     @classmethod
     def validar_secret_key(cls, value: str) -> str:

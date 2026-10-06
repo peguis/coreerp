@@ -1,0 +1,36 @@
+# Homologação do backend Hey Primo/CoreERP.
+# Este arquivo apenas descreve a infraestrutura; nada é criado até a Blueprint
+# ser conectada e aprovada no painel do Render.
+services:
+  - type: web
+    name: hey-primo-erp-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: codex/hey-primo-homologacao
+    dockerfilePath: ./backend/Dockerfile.prod
+    dockerContext: ./backend
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hey-primo-erp-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://hey-primo-erp-homologacao.pages.dev
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: LOGIN_RATE_LIMIT_MAX_ATTEMPTS
+        value: "10"
+      - key: LOGIN_RATE_LIMIT_WINDOW_SECONDS
+        value: "60"
+
+databases:
+  - name: hey-primo-erp-db
+    plan: free
+    region: frankfurt
+    databaseName: coreerp
+    user: coreerp
+    postgresMajorVersion: "17"
