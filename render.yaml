@@ -20,6 +20,8 @@ services:
         generateValue: true
       - key: CORS_ORIGINS
         value: https://hey-primo-erp-homologacao.pages.dev
+      - key: PORT
+        value: "8000"
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "60"
       - key: LOGIN_RATE_LIMIT_MAX_ATTEMPTS
