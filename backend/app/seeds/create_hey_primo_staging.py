@@ -5,6 +5,7 @@ duplicatas e nunca altera senhas de usuários já existentes.
 """
 
 import json
+import os
 import secrets
 from datetime import datetime, timezone
 
@@ -21,18 +22,21 @@ EMPRESA_IDENTIFICADOR = "hey-primo-staging"
 TEMP_USERS = (
     {
         "nome": "Javé",
-        "email": "cuscuzlab+heyprimo-jave@gmail.com",
+        "email": "jave@heyprimo.com",
         "perfil": "admin",
     },
     {
         "nome": "Jeova",
-        "email": "cuscuzlab+heyprimo-jeova@gmail.com",
+        "email": "jeova@heyprimo.com",
         "perfil": "gerente",
     },
 )
 
 
 def _senha_temporaria():
+    senha_configurada = os.getenv("HEY_PRIMO_STAGING_PASSWORD", "").strip()
+    if senha_configurada:
+        return senha_configurada
     return secrets.token_urlsafe(18)
 
 
